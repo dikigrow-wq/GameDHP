@@ -165,13 +165,27 @@ input{-webkit-user-select:text;user-select:text;touch-action:auto;font-size:16px
 .aset label{display:flex;align-items:center;gap:8px;justify-content:space-between}
 .aset input[type=range]{width:55%;touch-action:pan-x;padding:0;accent-color:#ffd24a}
 #musNow{font-size:12px;word-break:break-word}
+#musLs{max-height:110px;overflow:auto;display:flex;flex-direction:column;gap:2px;touch-action:pan-y}
+.mrow{padding:3px 6px;border-radius:6px;cursor:pointer;font-size:12px;word-break:break-word}.mrow.on{background:rgba(255,210,74,.2)}
+#dl{padding:6px 10px;width:170px;font-size:11px;border-radius:12px;display:none}
+.dtx{margin-bottom:4px;word-break:break-word}
+.dbar{display:block;height:6px;background:rgba(0,0,0,.5);border-radius:4px;overflow:hidden}.dbar u{display:block;height:100%;width:0;background:linear-gradient(90deg,#8fdcff,#2f8fe0);text-decoration:none;transition:width .15s}
+#load{position:absolute;inset:0;z-index:30;display:none;align-items:center;justify-content:center;background:radial-gradient(ellipse at 50% 30%,#2f5a26,#101a0c 75%);color:#fff;padding:14px}
+.lcard{width:min(92%,380px);display:flex;flex-direction:column;gap:12px;align-items:stretch}
+.lcard h1{margin:0;text-align:center;font:900 clamp(26px,6vw,44px)/1 system-ui;letter-spacing:4px;color:#ffe08a;text-shadow:0 4px 0 #8a4b12,0 8px 14px rgba(0,0,0,.55)}
+#ltitle{text-align:center;font-weight:700;font-size:15px}
+.lbar{height:16px;border-radius:9px;background:rgba(0,0,0,.5);border:2px solid #c99a4a;overflow:hidden}
+.lbar u{display:block;height:100%;width:0;background:linear-gradient(90deg,#ffd24a,#ff8a3a);transition:width .15s;text-decoration:none}
+#ldet{text-align:center;font-size:12px;opacity:.8;min-height:16px;word-break:break-word}
+#lsteps{list-style:none;margin:0;padding:8px 12px;background:rgba(0,0,0,.3);border-radius:10px;display:flex;flex-direction:column;gap:4px;font-size:13px}
+#lsteps li{opacity:.5}#lsteps li.now,#lsteps li.ok{opacity:1}
 </style></head><body>
 <div id="wrap"><canvas id="c" width="960" height="672"></canvas>
 <div id="ui" style="display:none"><div id="hurt"></div>
 <div id="tl" class="panel"><div id="av"></div><div><b id="pn"></b><div id="dt"></div></div><div id="gold"></div></div>
 <div id="vit" class="panel"><div class="vr"><span>❤️</span><i class="vb"><u id="vHp"></u></i><em id="vHpN"></em></div><div class="vr"><span>🍗</span><i class="vb"><u id="vFd"></u></i><em id="vFdN"></em></div><div class="vr"><span>💧</span><i class="vb"><u id="vWt"></u></i><em id="vWtN"></em></div></div><div id="roster"></div>
 <div id="rt"><div id="tr" class="panel"><canvas id="mm" width="192" height="132"></canvas><div id="mmcap"></div></div>
-<div id="side"><button class="panel ib" id="bagb" onclick="openModal('bag')" title="Tas (I)">🎒</button><button class="panel ib" id="chatb" onclick="toggleChat()" title="Chat (Enter)" style="display:none">💬<i id="unread"></i></button><button class="panel ib" id="tradeb" onclick="openModal('trade')" title="Trade" style="display:none">🤝</button><button class="panel ib" onclick="openModal('pause')" title="Jeda (Esc)">⏸</button><button class="panel ib" id="fsb" title="Layar penuh">⛶</button></div></div>
+<div id="side"><button class="panel ib" id="bagb" onclick="openModal('bag')" title="Tas (I)">🎒</button><button class="panel ib" id="chatb" onclick="toggleChat()" title="Chat (Enter)" style="display:none">💬<i id="unread"></i></button><button class="panel ib" id="tradeb" onclick="openModal('trade')" title="Trade" style="display:none">🤝</button><button class="panel ib" onclick="openModal('pause')" title="Jeda (Esc)">⏸</button><button class="panel ib" id="fsb" title="Layar penuh">⛶</button></div><div id="dl" class="panel"></div></div>
 <div id="hot" class="panel"></div>
 <div id="hint"></div><div id="toast"></div><div id="pops"></div>
 <div id="chatw" class="panel"><div class="mh"><b>💬 Chat</b><span id="cmeta"></span><button class="x" onclick="toggleChat(0)">✕</button></div>
@@ -182,20 +196,21 @@ input{-webkit-user-select:text;user-select:text;touch-action:auto;font-size:16px
 <div id="bag" class="modal"><div class="panel mcard"><div class="mh"><b>🎒 Tas</b><button class="x" onclick="closeModal()">✕</button></div><div class="bw"><div id="grid"></div><div id="info"></div></div></div></div>
 <div id="pause" class="modal"><div class="panel mcard" style="max-width:340px"><div class="mh"><b>⏸ Jeda &amp; Pengaturan</b></div><button class="mb" onclick="closeModal()">▶ Lanjutkan</button>
 <div class="aset"><label>🎵 Musik<input type="range" id="vM" min="0" max="100"></label><label>🔊 Efek suara<input type="range" id="vS" min="0" max="100"></label><label>🍃 Suasana<input type="range" id="vA" min="0" max="100"></label>
-<div id="musNow" class="mut"></div>
+<div id="musNow" class="mut"></div><div id="musLs"></div>
 <div class="row"><button class="mb sm sec" id="musPrev" style="flex:1">⏮</button><button class="mb sm" id="musPP" style="flex:1">⏯</button><button class="mb sm sec" id="musNext" style="flex:1">⏭</button></div>
-<button class="mb sec sm" id="musPick">📁 Pilih musik dari perangkat</button><input type="file" id="musFile" accept="audio/*" multiple hidden>
-<div class="row"><button class="mb sec sm" id="muteB" style="flex:1">🔇 Bisu</button><button class="mb sec sm" id="musClr" style="flex:1">🗑 Hapus musik</button></div></div>
+
+<div class="row"><button class="mb sec sm" id="muteB" style="flex:1">🔇 Bisu</button></div></div>
 <button class="mb sec sm" id="pvpB" style="display:none"></button>
 <button class="mb sec" onclick="location.reload()">🏠 Menu Utama</button></div></div>
 <div id="shop" class="modal"><div class="panel mcard"><div class="mh"><b>🏪 Toko</b><button class="x" onclick="closeModal()">✕</button></div><div id="sb"></div></div></div>
 <div id="trade" class="modal"><div class="panel mcard"><div class="mh"><b>🤝 Trade</b><button class="x" onclick="closeModal()">✕</button></div><div id="tb"></div></div></div>
+<div id="load"><div class="lcard"><h1>🌾 PIXEL FARM</h1><div id="ltitle">Memuat…</div><div class="lbar"><u id="lb1"></u></div><div id="ldet"></div><ul id="lsteps"></ul><button class="mb sec sm" id="lskip" style="display:none">Lewati unduhan →</button></div></div>
 <div id="menu"><div id="mbox">
 <div id="logo"><span>🌾</span><h1>PIXEL FARM</h1><p>Co-op Valley</p></div>
 <div id="m0" class="mp"><button class="mb" onclick="show('sp')">▶ Single Player</button><button class="mb" onclick="show('mp')">👥 Multiplayer</button><button class="mb sec" onclick="show('how')">❓ Cara Main</button></div>
 <div id="sp" class="mp"><h2>Single Player</h2><input id="nm1" placeholder="Nama kamu" maxlength="12"><div id="pk1" class="pk"></div><button class="mb" id="cont">Lanjutkan</button><button class="mb" id="newg">Game Baru</button><button class="mb sec" onclick="show('m0')">← Kembali</button></div>
 <div id="mp" class="mp"><h2>Multiplayer</h2><input id="nm2" placeholder="Nama kamu" maxlength="12"><div id="pk2" class="pk"></div><div class="row"><input id="rm" placeholder="Kode room" maxlength="12"><button class="mb sm" id="rnd">Acak</button></div><button class="mb" id="join">Gabung / Buat Room</button><small id="st"></small><button class="mb sec" onclick="show('m0')">← Kembali</button></div>
-<div id="how" class="mp"><h2>Cara Main</h2><ul><li>🌱 Bertani: ⛏️ gali tanah → pilih biji (slot 4-8) → Pakai buat tanam → 💧 siram TIAP HARI → 🧺 panen. Makin rajin disiram, makin bagus grade (Biasa / ⭐ Bagus / 🌟 Prima). Biji dibeli di Toko, dan panen bisa ngasih biji lagi.</li><li>HP: joystick kiri untuk jalan, tombol ⛏️ pakai alat (tahan = ulang), tombol kanan = aksi (bicara/tidur/jual)</li><li>WASD / panah: jalan</li><li>1-8: pilih alat &amp; bibit · Q/Z/scroll: ganti slot</li><li>Spasi: pakai alat di tile depan</li><li>E: bicara NPC, tidur di rumah, jual di toko</li><li>🎣 (slot 9): hadap air, Pakai, tunggu ❗ lalu Pakai lagi · berenang di kolam/danau · E dekat ayam = telur</li><li>Trade: dekati pemain lain lalu E, atau tombol 🤝</li><li>⚔️ F / tombol Serang: pukul pemain lain (friendly fire, host bisa mematikannya di menu ⏸). 🎵 Musik sendiri: menu ⏸ → Pilih musik dari perangkat.</li><li>❤️ Darah · 🍗 Lapar · 💧 Haus: makan panen/ikan/telur dari 🎒 Tas (pilih item → Makan), minum dengan E di dekat air / air mancur. Kalau lapar atau haus habis, darah berkurang. Tidur di rumah memulihkan darah.</li><li>Waktu: Pagi 06-11 · Siang 11-15 · Sore 15-18 · Malam 18-24 (lampu menyala, kunang-kunang muncul)</li><li>I: buka tas · Enter / 💬: chat (multiplayer) · Esc: jeda</li></ul><button class="mb sec" onclick="show('m0')">← Kembali</button></div>
+<div id="how" class="mp"><h2>Cara Main</h2><ul><li>🌱 Bertani: ⛏️ gali tanah → pilih biji (slot 4-8) → Pakai buat tanam → 💧 siram TIAP HARI → 🧺 panen. Makin rajin disiram, makin bagus grade (Biasa / ⭐ Bagus / 🌟 Prima). Biji dibeli di Toko, dan panen bisa ngasih biji lagi.</li><li>HP: joystick kiri untuk jalan, tombol ⛏️ pakai alat (tahan = ulang), tombol kanan = aksi (bicara/tidur/jual)</li><li>WASD / panah: jalan</li><li>1-8: pilih alat &amp; bibit · Q/Z/scroll: ganti slot</li><li>Spasi: pakai alat di tile depan</li><li>E: bicara NPC, tidur di rumah, jual di toko</li><li>🎣 (slot 9): hadap air, Pakai, tunggu ❗ lalu Pakai lagi · berenang di kolam/danau · E dekat ayam = telur</li><li>Trade: dekati pemain lain lalu E, atau tombol 🤝</li><li>⚔️ F / tombol Serang: pukul pemain lain (friendly fire, host bisa mematikannya di menu ⏸). 🎵 Musik latar diunduh otomatis saat masuk game. Atur volume atau ganti lagu di menu ⏸.</li><li>❤️ Darah · 🍗 Lapar · 💧 Haus: makan panen/ikan/telur dari 🎒 Tas (pilih item → Makan), minum dengan E di dekat air / air mancur. Kalau lapar atau haus habis, darah berkurang. Tidur di rumah memulihkan darah.</li><li>Waktu: Pagi 06-11 · Siang 11-15 · Sore 15-18 · Malam 18-24 (lampu menyala, kunang-kunang muncul)</li><li>I: buka tas · Enter / 💬: chat (multiplayer) · Esc: jeda</li></ul><button class="mb sec" onclick="show('m0')">← Kembali</button></div>
 </div></div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.57.4/dist/umd/supabase.min.js"></script>
@@ -551,7 +566,7 @@ function loop(now){const dt=Math.min(.05,(now-last)/1000);last=now;
   if(started&&(ch||!modal)){vitTick(dt);S.t+=dt;if(S.t>=DAY){if(isHost()){nextDay();bcast(1)}else S.t=DAY}}
   toastT-=dt;for(const k in remote){const o=remote[k];if(o.tx==null)continue;const el=Math.min(.2,(now-o.seen)/1000),px=o.tx+(o.vx||0)*el,py=o.ty+(o.vy||0)*el,mx=px-o.x,my=py-o.y,dd=Math.hypot(mx,my);if(dd>260){o.x=px;o.y=py}else{const f=Math.min(1,dt*22);o.x+=mx*f;o.y+=my*f}o.mv=Math.hypot(o.vx||0,o.vy||0)>12||dd>4;if(o.mv){o.ph+=dt*12;o.sd=(o.sd||0)+Math.hypot(o.vx||0,o.vy||0)*dt;if(o.sd>38){o.sd=0;const d2=Math.hypot(o.x-me.x,o.y-me.y);if(d2<420)sfx('step',{s:surfAt(o.x,o.y),v:.7*(1-d2/420)})}}}
   pAcc+=dt;if(pAcc>.055&&ch&&started){pAcc=0;const k=[Math.round(me.x),Math.round(me.y),me.f,me.mv,Math.round(vit.hp/4)].join();if(k!==lastP||now-lastPT>1500){lastP=k;lastPT=now;send('pos',{id:myId,x:me.x,y:me.y,vx:Math.round(me.vx||0),vy:Math.round(me.vy||0),f:me.f,col:me.col,n:me.n,g:me.g,hp:Math.round(vit.hp)})}}
-  hAcc+=dt;if(hAcc>1){hAcc=0;hud();if(ch&&isHost()){syncN++;if(syncN%12===0)send('state',{h:myId,s:S});else send('sync',{h:myId,d:S.d,t:S.t,g:S.gold,pv:S.pvp})}}
+  hAcc+=dt;if(hAcc>1){hAcc=0;hud();if(ch&&isHost()){syncN++;if(syncN%12===0)send('state',{h:myId,s:S});else sendSync()}}
   {const vw=VW/Z,vh=VH/Z,tx=Math.max(0,Math.min(W*T-vw,me.x-vw/2)),ty=Math.max(0,Math.min(H*T-vh,me.y-vh/2-20)),k=cam.s?1:1-Math.exp(-dt*9);cam.s=0;cam.x+=(tx-cam.x)*k;cam.y+=(ty-cam.y)*k}
   if(fishing){if(me.mv||modal)fishing=null;else if(fishing.st==='wait'&&now>=fishing.at){fishing.st='bite';fishing.until=now+1300;navigator.vibrate&&navigator.vibrate(30);say('❗ Ikan menyambar! Tekan Pakai!');sfx('bite')}else if(fishing.st==='bite'&&now>fishing.until){fishing=null;say('Ikan lepas…');sfx('miss')}}
   cAcc+=dt;if(cAcc>.12){cAcc=0;ctxUpdate();if(started){vitUI();ambUpdate(performance.now())}}
@@ -718,7 +733,15 @@ function renderTrade(){if(modal!=='trade')return;let h='';
 const _near=near;near=function(){const r=_near();if(r)return r;if(ch)for(const k in remote){const o=remote[k];if(Math.hypot(o.x-me.x,o.y-me.y)<90)return['🤝','Trade','Ajak trade '+(o.n||'Teman')]}if(started&&drinkSpot())return['💧','Minum','Minum air'];return null};
 
 /* ===== v5: audio, musik, friendly fire ===== */
-const MUSIC_URLS=[]; /* contoh: ['bgm.mp3'] — taruh file musik di folder yang sama dengan file html ini */
+/* ============ MUSIK LATAR — DIISI OLEH PEMBUAT GAME ============
+   1) Supabase Dashboard -> Storage -> bucket "music" (Public) -> Upload file MP3 (boleh dalam folder, mis. bgm/).
+   2) Tulis path filenya di daftar BGM di bawah. Contoh:
+        const BGM=['bgm/pagi.mp3','bgm/siang.mp3','bgm/malam.mp3'];
+   3) Entri yang diawali http(s):// atau ./ dipakai apa adanya (mis. './music/lagu.mp3' kalau file ditaruh di sebelah file html).
+   4) Kalau kamu MENGGANTI isi file dengan nama yang sama, naikkan BGM_VER supaya semua pemain mengunduh ulang. */
+const BGM=[];
+const BGM_VER=1;
+/* ================================================================ */
 let AC=null,aM,aS,aA,aMus,noiseB,sv=1,amb=null,nxBird=0,nxOwl=0,nxCl=0,hbT=0,wasWet=false,stepD=0,atkT=0,iFr=0,hurtT=0,musEl=null,musList=[],musI=0,musErr=0,AU={m:.5,s:.8,a:.6,mute:0};
 const swings=[];
 try{Object.assign(AU,JSON.parse(localStorage.getItem('pfc2_aud')||'{}'))}catch(e){}
@@ -796,32 +819,74 @@ function ambUpdate(now){if(!AC||!amb||AC.state!=='running')return;const t=AC.cur
   if(h>20&&now>nxOwl){nxOwl=now+14000+Math.random()*16000;owl()}
   const df=Math.hypot(tx-5.5,ty-18.5);if(df<10&&Math.random()<.35)crackle(1-df/10);
   if(now>nxCl){nxCl=now+7000+Math.random()*9000;for(const n of NPC){if(n.k!=='c')continue;const p=npcPos(n,Date.now()),d=Math.hypot(p.x-me.x,p.y-me.y);if(d<300){sfx('cluck',{v:1-d/300});break}}}}
-/* --- pemutar musik (file dari perangkat disimpan di browser) --- */
-function idb(){return new Promise((res,rej)=>{const r=indexedDB.open('pfc_music',1);r.onupgradeneeded=()=>r.result.createObjectStore('t',{keyPath:'id',autoIncrement:true});r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)})}
-async function musDbAll(){try{const db=await idb();return await new Promise(res=>{const q=db.transaction('t').objectStore('t').getAll();q.onsuccess=()=>res(q.result||[]);q.onerror=()=>res([])})}catch(e){return[]}}
-async function musDbAdd(files){try{const db=await idb(),tx=db.transaction('t','readwrite'),s=tx.objectStore('t');for(const f of files)s.add({name:f.name,blob:f});await new Promise((res,rej)=>{tx.oncomplete=res;tx.onerror=rej})}catch(e){say('Gagal menyimpan musik di browser');return false}return true}
-async function musDbClear(){try{const db=await idb(),tx=db.transaction('t','readwrite');tx.objectStore('t').clear();await new Promise(res=>{tx.oncomplete=res;tx.onerror=res})}catch(e){}}
-async function musLoad(){const rows=await musDbAll();musList=MUSIC_URLS.map(u=>({name:String(u).split('/').pop(),url:u})).concat(rows.map(r=>({name:r.name,blob:r.blob})));if(musI>=musList.length)musI=0;musUI()}
-const musP=musLoad();
-function musStop(){if(musEl){musEl.pause();musEl.onended=musEl.onerror=null;musEl=null}}
-function musPlay(i){if(!musList.length){musUI();return}musStop();const n=musList.length;musI=(((i==null?musI:i)%n)+n)%n;const tr=musList[musI],el=new Audio();el.preload='auto';el.loop=n===1;
+/* --- musik latar: dari daftar BGM, diunduh saat loading, dicache di browser --- */
+let blobs={},musBusy=null,dlHook=null;
+const MIMES={mp3:'audio/mpeg',ogg:'audio/ogg',opus:'audio/ogg',wav:'audio/wav',m4a:'audio/mp4',aac:'audio/aac',flac:'audio/flac',webm:'audio/webm'};
+const extOf=n=>((String(n).match(/\.([a-z0-9]+)$/i)||[])[1]||'').toLowerCase(),fmtMB=n=>(n/1048576).toFixed(1)+' MB',sleep=ms=>new Promise(r=>setTimeout(r,ms));
+const bgmUrl=f=>/^(https?:)?\/\//.test(f)||/^\.?\//.test(f)?f:String(SB_URL).replace(/\/+$/,'')+'/storage/v1/object/public/music/'+f.split('/').map(encodeURIComponent).join('/');
+const bgmName=f=>{let s=String(f).split('/').pop();try{s=decodeURIComponent(s)}catch(e){}return s.replace(/\.[^.]+$/,'')};
+function sendSync(){if(ch&&isHost())send('sync',{h:myId,d:S.d,t:S.t,g:S.gold,pv:S.pvp})}
+function idb(){return new Promise((res,rej)=>{const r=indexedDB.open('pfc_music',2);r.onupgradeneeded=()=>{const d=r.result;if(!d.objectStoreNames.contains('t'))d.createObjectStore('t',{keyPath:'id',autoIncrement:true});if(!d.objectStoreNames.contains('c'))d.createObjectStore('c',{keyPath:'k'})};r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)})}
+async function idbAll(s){try{const db=await idb();return await new Promise(res=>{const q=db.transaction(s).objectStore(s).getAll();q.onsuccess=()=>res(q.result||[]);q.onerror=()=>res([])})}catch(e){return[]}}
+async function idbGet(s,k){try{const db=await idb();return await new Promise(res=>{const q=db.transaction(s).objectStore(s).get(k);q.onsuccess=()=>res(q.result);q.onerror=()=>res(null)})}catch(e){return null}}
+async function idbPut(s,v){try{const db=await idb(),tx=db.transaction(s,'readwrite');tx.objectStore(s).put(v);await new Promise((res,rej)=>{tx.oncomplete=res;tx.onerror=()=>rej(tx.error);tx.onabort=()=>rej(tx.error)});return true}catch(e){return false}}
+async function idbDel(s,k){try{const db=await idb(),tx=db.transaction(s,'readwrite');tx.objectStore(s).delete(k);await new Promise(res=>{tx.oncomplete=res;tx.onerror=res})}catch(e){}}
+function musLoad(){musList=BGM.map(f=>({f,name:bgmName(f),url:bgmUrl(f),key:f+'@'+BGM_VER,blob:null}));if(musI>=musList.length)musI=0;musUI()}
+async function dlTrack(t,cb){const res=await fetch(t.url);if(!res.ok)throw new Error('HTTP '+res.status);
+  const total=+res.headers.get('content-length')||0,type=MIMES[extOf(t.f)]||'audio/mpeg';
+  if(!res.body||!res.body.getReader){const b=await res.blob();cb(b.size,b.size);return b}
+  const rd=res.body.getReader(),parts=[];let got=0;for(;;){const{done,value}=await rd.read();if(done)break;parts.push(value);got+=value.length;cb(got,total||got)}
+  return new Blob(parts,{type})}
+/* cek cache -> unduh yang belum ada (atau versinya berubah) -> buang cache lama */
+function musFetchMissing(){if(musBusy)return musBusy;
+  musBusy=(async()=>{await 0;try{const emit=ev=>(dlHook||dlEv)(ev);
+    const keep=new Set(musList.map(t=>t.key));for(const r of await idbAll('c'))if(!keep.has(r.k))idbDel('c',r.k);
+    const need=[];for(const t of musList){if(t.blob)continue;const c=await idbGet('c',t.key);if(c&&c.blob)t.blob=c.blob;else need.push(t)}
+    if(need.length){emit({k:'plan',n:need.length});
+      for(let i=0;i<need.length;i++){const t=need[i];
+        try{const b=await dlTrack(t,(got,total)=>emit({k:'prog',i,n:need.length,name:t.name,got,total}));t.blob=b;await idbPut('c',{k:t.key,blob:b,size:b.size,ts:Date.now()})}
+        catch(e){emit({k:'err',name:t.name,msg:e.message||String(e)})}}}
+    emit({k:'done'})}finally{musBusy=null}})();return musBusy}
+function setDl(t,f){const e=$('dl');if(!e)return;if(!t){e.style.display='none';return}e.style.display='block';e.innerHTML='<div class="dtx"></div><i class="dbar"><u></u></i>';e.firstChild.textContent=t;const u=e.querySelector('u');u.style.width=(f==null?100:Math.round(f*100))+'%';u.style.animation=f==null?'blink .6s infinite alternate':''}
+function dlEv(ev){if(ev.k==='plan')setDl('🎵 Mengunduh musik 0/'+ev.n,0);
+  else if(ev.k==='prog')setDl('🎵 '+(ev.i+1)+'/'+ev.n+' · '+ev.name+' · '+fmtMB(ev.got)+(ev.total?' / '+fmtMB(ev.total):''),ev.total?ev.got/ev.total:null);
+  else if(ev.k==='done'){setDl(null);musUI();if(started&&!musEl&&musList.length)musPlay(Math.random()*musList.length|0)}}
+/* pemutaran (lokal di tiap pemain) */
+function musStop(){if(musEl){musEl.pause();musEl.onended=musEl.onerror=musEl.onplaying=null;musEl=null}}
+function musPlay(i){if(!musList.length){musUI();return}const n=musList.length;i=(((i==null?musI:i)%n)+n)%n;const tr=musList[i];
+  musStop();musI=i;const el=new Audio();el.preload='auto';el.loop=n===1;el._id=tr.key;
   if(tr.blob){if(!tr.u)tr.u=URL.createObjectURL(tr.blob);el.src=tr.u;if(AC){try{AC.createMediaElementSource(el).connect(aMus);el._wa=1}catch(e){}}}
   else{el.src=tr.url;el.volume=AU.mute?0:AU.m}
   el.onplaying=()=>{musErr=0;musUI()};el.onended=()=>musPlay(musI+1);
-  el.onerror=()=>{say('Musik gagal diputar: '+tr.name);if(n>1&&++musErr<=n)setTimeout(()=>{if(musEl===el)musPlay(musI+1)},800)};
+  el.onerror=()=>{if(++musErr<=n&&n>1)setTimeout(()=>{if(musEl===el)musPlay(musI+1)},500)};
   musEl=el;el.play().catch(()=>{});musUI()}
-function musUI(){const e=$('musNow');if(!e)return;e.textContent=musList.length&&musList[musI]?'🎵 '+musList[musI].name+' ('+(musI+1)+'/'+musList.length+')'+(musEl&&!musEl.paused?'':' · jeda'):'Belum ada musik. Pilih file MP3 dari perangkatmu.'}
+function musUI(){const e=$('musNow');if(!e)return;const t=musList[musI];e.textContent=musList.length?'🎵 '+(t?t.name:'-')+' ('+(musI+1)+'/'+musList.length+')'+(musEl&&!musEl.paused?'':' · jeda'):'Belum ada musik latar.';audList()}
+function audList(){const e=$('musLs');if(!e)return;e.innerHTML='';musList.forEach((t,i)=>{const d=document.createElement('div'),cur=musEl&&i===musI;d.className='mrow'+(cur?' on':'');d.textContent=(cur?'▶ ':'')+t.name;d.onclick=()=>{audInit();musPlay(i)};e.appendChild(d)})}
 function audUI(){$('vM').value=Math.round(AU.m*100);$('vS').value=Math.round(AU.s*100);$('vA').value=Math.round(AU.a*100);$('muteB').textContent=AU.mute?'🔊 Nyalakan':'🔇 Bisu';musUI();pvpUI()}
 function pvpUI(){const b=$('pvpB');if(!b)return;b.style.display=ch?'':'none';b.textContent='⚔️ Friendly fire: '+(S.pvp===0?'MATI':'AKTIF')+(isHost()?'':' (diatur host)');b.disabled=!isHost()}
+musLoad();
 $('vM').oninput=e=>{AU.m=e.target.value/100;audVol()};$('vS').oninput=e=>{AU.s=e.target.value/100;audVol()};$('vA').oninput=e=>{AU.a=e.target.value/100;audVol()};
 $('muteB').onclick=()=>{AU.mute=AU.mute?0:1;audVol();audUI()};
-$('musPP').onclick=()=>{audInit();if(!musList.length){$('musFile').click();return}if(musEl&&!musEl.paused)musEl.pause();else if(musEl)musEl.play().catch(()=>{});else musPlay(0);setTimeout(musUI,80)};
+$('musPP').onclick=()=>{audInit();if(!musList.length)return;if(musEl&&!musEl.paused)musEl.pause();else if(musEl)musEl.play().catch(()=>{});else musPlay(0);setTimeout(musUI,80)};
 $('musNext').onclick=()=>{audInit();musPlay(musI+1)};$('musPrev').onclick=()=>{audInit();musPlay(musI-1)};
-$('musPick').onclick=()=>{audInit();$('musFile').click()};
-$('musFile').onchange=async e=>{const fs=[...e.target.files].filter(f=>/^audio\//.test(f.type)||/\.(mp3|ogg|wav|m4a|aac|flac|opus)$/i.test(f.name));e.target.value='';if(!fs.length){say('Pilih file audio (MP3, OGG, WAV, M4A)');return}
-  if(await musDbAdd(fs)){const before=musList.length;await musLoad();musPlay(before);say('🎵 '+fs.length+' lagu ditambahkan')}};
-$('musClr').onclick=async()=>{musStop();await musDbClear();await musLoad();say('Musik dihapus');musUI()};
 $('pvpB').onclick=()=>{if(!isHost())return;S.pvp=S.pvp===0?1:0;bcast(1);pvpUI();say('Friendly fire '+(S.pvp===0?'dimatikan':'diaktifkan'))};
+/* --- layar loading: unduh musik latar sebelum masuk game --- */
+let LD_STEPS=[];
+function ldSet(f,title,det,step){$('lb1').style.width=Math.round(Math.max(0,Math.min(1,f))*100)+'%';$('ltitle').textContent=title;$('ldet').textContent=det||'';
+  if(step!=null)$('lsteps').innerHTML=LD_STEPS.map((s,i)=>'<li class="'+(i<step?'ok':i===step?'now':'')+'">'+(i<step?'✅':i===step?'⏳':'⬜')+' '+s+'</li>').join('')}
+async function bgmLoad(s0,f0){ldSet(f0,'Memeriksa pembaruan musik…','',s0);let skip;const skipP=new Promise(r=>skip=r);$('lskip').onclick=()=>skip();
+  dlHook=ev=>{if(ev.k==='plan'){ldSet(f0+.05,'Mengunduh pembaruan…','0/'+ev.n+' lagu',s0+1);$('lskip').style.display='block'}
+    else if(ev.k==='prog'){$('lskip').style.display='block';ldSet(f0+(.95-f0)*((ev.i+(ev.total?ev.got/ev.total:0))/ev.n),'Mengunduh musik '+(ev.i+1)+'/'+ev.n,ev.name+' · '+fmtMB(ev.got)+(ev.total?' / '+fmtMB(ev.total):''),s0+1)}
+    else if(ev.k==='err')$('ldet').textContent='⚠ Gagal mengunduh: '+ev.name};
+  await Promise.race([musFetchMissing(),skipP]);dlHook=null;$('lskip').style.display='none';
+  ldSet(1,'Masuk ke dunia…','',s0+2);await sleep(300);$('load').style.display='none'}
+async function enterSolo(){if($('load').style.display==='flex')return;LD_STEPS=['Menyiapkan dunia','Memeriksa pembaruan musik','Mengunduh musik','Masuk ke dunia'];
+  $('load').style.display='flex';$('lskip').style.display='none';ldSet(.1,'Menyiapkan dunia…','',0);await sleep(150);await bgmLoad(1,.3);begin()}
+async function enterRoom(){LD_STEPS=['Menghubungkan ke room','Memuat dunia bersama','Memeriksa pembaruan musik','Mengunduh musik','Masuk ke dunia'];
+  $('load').style.display='flex';$('lskip').style.display='none';ldSet(.05,'Menghubungkan ke room '+code+'…','',0);
+  const ok=await connect();if(!ok){$('load').style.display='none';return false}
+  ldSet(.3,'Memuat dunia bersama…','',1);await sleep(150);await bgmLoad(2,.4);return true}
+
 /* --- friendly fire --- */
 const DIRS={up:[0,-1],down:[0,1],left:[-1,0],right:[1,0]};
 function attack(){const now=performance.now();if(now<atkT||!started)return;atkT=now+450;const d=DIRS[me.f]||[0,1];
@@ -855,14 +920,14 @@ function renderPick(){['pk1','pk2'].forEach(id=>{const e=$(id);
   e.querySelectorAll('.gb').forEach(b=>{const k=b.dataset.g;b.onclick=()=>{pick.g=k;renderPick()};prev(b.querySelector('canvas'),k==='f')});
   e.querySelectorAll('.swb').forEach(b=>b.onclick=()=>{pick.col=b.dataset.c;renderPick()})})}
 function show(id){document.querySelectorAll('.mp').forEach(e=>e.style.display=e.id===id?'flex':'none')}
-function begin(){started=true;loadInv();cam.s=1;resize();audInit();musP.then(()=>{if(musList.length&&!musEl)musPlay(0)});$('chatb').style.display=$('tradeb').style.display=ch?'':'none';$('bAtk').style.display=ch?'':'none';if(ch)addLog(0,0,'Terhubung ke room '+code+' · tekan Enter untuk chat',0,1);$('menu').style.display='none';$('ui').style.display='block';hud()}
+function begin(){started=true;loadInv();cam.s=1;resize();audInit();if(musList.length&&!musEl)musPlay(Math.random()*musList.length|0);$('chatb').style.display=$('tradeb').style.display=ch?'':'none';$('bAtk').style.display=ch?'':'none';if(ch)addLog(0,0,'Terhubung ke room '+code+' · tekan Enter untuk chat',0,1);$('menu').style.display='none';$('ui').style.display='block';hud()}
 function setup(mp){me.n=($(mp?'nm2':'nm1').value.trim()||'Petani').slice(0,12);me.g=pick.g;me.col=pick.col;try{localStorage.setItem('pfc2_char',JSON.stringify({g:pick.g,col:pick.col,n:me.n}))}catch(e){}}
-$('cont').onclick=()=>{setup(0);code='SOLO';try{const sv=JSON.parse(localStorage.getItem('pfc2_SOLO')||'null');if(sv&&sv.tiles)S=fixS(sv)}catch(e){}begin()};
-$('newg').onclick=()=>{setup(0);code='SOLO';try{localStorage.removeItem('pfc2_SOLO');localStorage.removeItem('pfc2_inv_SOLO')}catch(e){}begin()};
+$('cont').onclick=()=>{setup(0);code='SOLO';try{const sv=JSON.parse(localStorage.getItem('pfc2_SOLO')||'null');if(sv&&sv.tiles)S=fixS(sv)}catch(e){}enterSolo()};
+$('newg').onclick=()=>{setup(0);code='SOLO';try{localStorage.removeItem('pfc2_SOLO');localStorage.removeItem('pfc2_inv_SOLO')}catch(e){}enterSolo()};
 $('rnd').onclick=()=>{$('rm').value=Math.random().toString(36).slice(2,7).toUpperCase()};
 $('join').onclick=async()=>{setup(1);code=$('rm').value.trim().toUpperCase().replace(/[^A-Z0-9]/g,'');
   if(!code){$('st').textContent='Isi kode room dulu atau tekan Acak.';return}
-  $('join').disabled=true;$('st').textContent='Menghubungkan…';const ok=await connect();$('join').disabled=false;if(ok)begin()};
+  $('join').disabled=true;const ok=await enterRoom();$('join').disabled=false;if(ok)begin()};
 try{if(!localStorage.getItem('pfc2_SOLO'))$('cont').disabled=true}catch(e){}
 if(!/^https?:/.test(SB_URL))$('st').textContent='⚠ Supabase belum diisi di file ini.';
 show('m0');
