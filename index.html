@@ -158,6 +158,13 @@ input{-webkit-user-select:text;user-select:text;touch-action:auto;font-size:16px
 .vr em{font-style:normal;width:26px;text-align:right;font-weight:700}
 #hurt{position:absolute;inset:0;pointer-events:none!important;box-shadow:inset 0 0 130px 20px rgba(230,30,30,.85);opacity:0;transition:opacity .4s}
 @media (pointer:coarse) and (orientation:landscape){#vit{width:140px;padding:5px 8px;gap:3px}}
+/* v5 */
+#acts #bAtk{width:56px;height:56px;border-color:#e5484d;font-size:20px}
+@media (max-width:420px){#acts{gap:8px}#acts button{width:56px;height:56px}#bUse{width:70px!important;height:70px!important}#joy{width:108px;height:108px}}
+.aset{display:flex;flex-direction:column;gap:7px;background:rgba(0,0,0,.28);border-radius:10px;padding:8px}
+.aset label{display:flex;align-items:center;gap:8px;justify-content:space-between}
+.aset input[type=range]{width:55%;touch-action:pan-x;padding:0;accent-color:#ffd24a}
+#musNow{font-size:12px;word-break:break-word}
 </style></head><body>
 <div id="wrap"><canvas id="c" width="960" height="672"></canvas>
 <div id="ui" style="display:none"><div id="hurt"></div>
@@ -170,10 +177,17 @@ input{-webkit-user-select:text;user-select:text;touch-action:auto;font-size:16px
 <div id="chatw" class="panel"><div class="mh"><b>💬 Chat</b><span id="cmeta"></span><button class="x" onclick="toggleChat(0)">✕</button></div>
 <div id="clog"></div><div id="quick"></div>
 <div id="cform"><input id="ci" placeholder="Ketik pesan…" maxlength="80" autocomplete="off" enterkeyhint="send"><button class="mb sm" id="csend">➤</button></div></div>
-<div id="ctl"><div id="joy"><div id="knob"></div></div><div id="acts"><button id="bUse" data-a="use"><span>⛏️</span><small>Pakai</small></button><button id="bE" data-a="e"><span id="eI">✋</span><small id="eL">Aksi</small></button></div></div>
+<div id="ctl"><div id="joy"><div id="knob"></div></div><div id="acts"><button id="bUse" data-a="use"><span>⛏️</span><small>Pakai</small></button><button id="bE" data-a="e"><span id="eI">✋</span><small id="eL">Aksi</small></button><button id="bAtk" data-a="atk" style="display:none"><span>⚔️</span><small>Serang</small></button></div></div>
 </div>
 <div id="bag" class="modal"><div class="panel mcard"><div class="mh"><b>🎒 Tas</b><button class="x" onclick="closeModal()">✕</button></div><div class="bw"><div id="grid"></div><div id="info"></div></div></div></div>
-<div id="pause" class="modal"><div class="panel mcard" style="max-width:320px"><div class="mh"><b>⏸ Jeda</b></div><button class="mb" onclick="closeModal()">▶ Lanjutkan</button><button class="mb sec" onclick="location.reload()">🏠 Menu Utama</button></div></div>
+<div id="pause" class="modal"><div class="panel mcard" style="max-width:340px"><div class="mh"><b>⏸ Jeda &amp; Pengaturan</b></div><button class="mb" onclick="closeModal()">▶ Lanjutkan</button>
+<div class="aset"><label>🎵 Musik<input type="range" id="vM" min="0" max="100"></label><label>🔊 Efek suara<input type="range" id="vS" min="0" max="100"></label><label>🍃 Suasana<input type="range" id="vA" min="0" max="100"></label>
+<div id="musNow" class="mut"></div>
+<div class="row"><button class="mb sm sec" id="musPrev" style="flex:1">⏮</button><button class="mb sm" id="musPP" style="flex:1">⏯</button><button class="mb sm sec" id="musNext" style="flex:1">⏭</button></div>
+<button class="mb sec sm" id="musPick">📁 Pilih musik dari perangkat</button><input type="file" id="musFile" accept="audio/*" multiple hidden>
+<div class="row"><button class="mb sec sm" id="muteB" style="flex:1">🔇 Bisu</button><button class="mb sec sm" id="musClr" style="flex:1">🗑 Hapus musik</button></div></div>
+<button class="mb sec sm" id="pvpB" style="display:none"></button>
+<button class="mb sec" onclick="location.reload()">🏠 Menu Utama</button></div></div>
 <div id="shop" class="modal"><div class="panel mcard"><div class="mh"><b>🏪 Toko</b><button class="x" onclick="closeModal()">✕</button></div><div id="sb"></div></div></div>
 <div id="trade" class="modal"><div class="panel mcard"><div class="mh"><b>🤝 Trade</b><button class="x" onclick="closeModal()">✕</button></div><div id="tb"></div></div></div>
 <div id="menu"><div id="mbox">
@@ -181,7 +195,7 @@ input{-webkit-user-select:text;user-select:text;touch-action:auto;font-size:16px
 <div id="m0" class="mp"><button class="mb" onclick="show('sp')">▶ Single Player</button><button class="mb" onclick="show('mp')">👥 Multiplayer</button><button class="mb sec" onclick="show('how')">❓ Cara Main</button></div>
 <div id="sp" class="mp"><h2>Single Player</h2><input id="nm1" placeholder="Nama kamu" maxlength="12"><div id="pk1" class="pk"></div><button class="mb" id="cont">Lanjutkan</button><button class="mb" id="newg">Game Baru</button><button class="mb sec" onclick="show('m0')">← Kembali</button></div>
 <div id="mp" class="mp"><h2>Multiplayer</h2><input id="nm2" placeholder="Nama kamu" maxlength="12"><div id="pk2" class="pk"></div><div class="row"><input id="rm" placeholder="Kode room" maxlength="12"><button class="mb sm" id="rnd">Acak</button></div><button class="mb" id="join">Gabung / Buat Room</button><small id="st"></small><button class="mb sec" onclick="show('m0')">← Kembali</button></div>
-<div id="how" class="mp"><h2>Cara Main</h2><ul><li>🌱 Bertani: ⛏️ gali tanah → pilih biji (slot 4-8) → Pakai buat tanam → 💧 siram TIAP HARI → 🧺 panen. Makin rajin disiram, makin bagus grade (Biasa / ⭐ Bagus / 🌟 Prima). Biji dibeli di Toko, dan panen bisa ngasih biji lagi.</li><li>HP: joystick kiri untuk jalan, tombol ⛏️ pakai alat (tahan = ulang), tombol kanan = aksi (bicara/tidur/jual)</li><li>WASD / panah: jalan</li><li>1-8: pilih alat &amp; bibit · Q/Z/scroll: ganti slot</li><li>Spasi: pakai alat di tile depan</li><li>E: bicara NPC, tidur di rumah, jual di toko</li><li>🎣 (slot 9): hadap air, Pakai, tunggu ❗ lalu Pakai lagi · berenang di kolam/danau · E dekat ayam = telur</li><li>Trade: dekati pemain lain lalu E, atau tombol 🤝</li><li>❤️ Darah · 🍗 Lapar · 💧 Haus: makan panen/ikan/telur dari 🎒 Tas (pilih item → Makan), minum dengan E di dekat air / air mancur. Kalau lapar atau haus habis, darah berkurang. Tidur di rumah memulihkan darah.</li><li>Waktu: Pagi 06-11 · Siang 11-15 · Sore 15-18 · Malam 18-24 (lampu menyala, kunang-kunang muncul)</li><li>I: buka tas · Enter / 💬: chat (multiplayer) · Esc: jeda</li></ul><button class="mb sec" onclick="show('m0')">← Kembali</button></div>
+<div id="how" class="mp"><h2>Cara Main</h2><ul><li>🌱 Bertani: ⛏️ gali tanah → pilih biji (slot 4-8) → Pakai buat tanam → 💧 siram TIAP HARI → 🧺 panen. Makin rajin disiram, makin bagus grade (Biasa / ⭐ Bagus / 🌟 Prima). Biji dibeli di Toko, dan panen bisa ngasih biji lagi.</li><li>HP: joystick kiri untuk jalan, tombol ⛏️ pakai alat (tahan = ulang), tombol kanan = aksi (bicara/tidur/jual)</li><li>WASD / panah: jalan</li><li>1-8: pilih alat &amp; bibit · Q/Z/scroll: ganti slot</li><li>Spasi: pakai alat di tile depan</li><li>E: bicara NPC, tidur di rumah, jual di toko</li><li>🎣 (slot 9): hadap air, Pakai, tunggu ❗ lalu Pakai lagi · berenang di kolam/danau · E dekat ayam = telur</li><li>Trade: dekati pemain lain lalu E, atau tombol 🤝</li><li>⚔️ F / tombol Serang: pukul pemain lain (friendly fire, host bisa mematikannya di menu ⏸). 🎵 Musik sendiri: menu ⏸ → Pilih musik dari perangkat.</li><li>❤️ Darah · 🍗 Lapar · 💧 Haus: makan panen/ikan/telur dari 🎒 Tas (pilih item → Makan), minum dengan E di dekat air / air mancur. Kalau lapar atau haus habis, darah berkurang. Tidur di rumah memulihkan darah.</li><li>Waktu: Pagi 06-11 · Siang 11-15 · Sore 15-18 · Malam 18-24 (lampu menyala, kunang-kunang muncul)</li><li>I: buka tas · Enter / 💬: chat (multiplayer) · Esc: jeda</li></ul><button class="mb sec" onclick="show('m0')">← Kembali</button></div>
 </div></div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.57.4/dist/umd/supabase.min.js"></script>
@@ -207,7 +221,7 @@ const solid=(px,py)=>{const x=Math.floor(px/T),y=Math.floor(py/T);
   return x<1||x>=W-1||y<1||y>=H-1||(y<=2&&((x>=1&&x<=3)||(x>=16&&x<=18)))||TS.has(x+y*W)||(y===15&&((x>=13&&x<=15)||(x>=19&&x<=21)))||Math.hypot(px/T-17,py/T-17.5)<1.1||Math.hypot(px/T-5.5,py/T-18.5)<.6};
 
 /* ===== aturan game (divalidasi host) ===== */
-function nextDay(){S.tiles.forEach(t=>{if(t[0]&&t[1]&&t[2]<CROPS[t[1]].g){if(t[3]){t[2]++;t[4]=(t[4]|0)+1}else t[5]=(t[5]|0)+1}t[3]=0});S.d++;S.t=0;save()}
+function nextDay(){S.tiles.forEach(t=>{if(t[0]&&t[1]&&t[2]<CROPS[t[1]].g){if(t[3]){t[2]++;t[4]=(t[4]|0)+1}else t[5]=(t[5]|0)+1}t[3]=0});S.d++;S.t=0;save();sfx('chime')}
 function give(by,id){if(by===myId||!ch)inv[id]=(inv[id]||0)+1;else send('got',{to:by,id})}
 function apply(a,by){
   if(a.t==='sell'){S.gold+=Math.max(0,Math.min(99999,a.v|0));return 1}
@@ -235,7 +249,7 @@ const snapInv=()=>JSON.stringify({inv,sd,vit:{hp:Math.round(vit.hp),food:Math.ro
 function applyA(a,by){const ok=apply(a,by);if(ok&&Number.isInteger(a.x)&&Number.isInteger(a.y))dirty.add(a.x+a.y*W);return ok}
 function bdelta(){if(!ch)return;const tl=[];dirty.forEach(i=>tl.push([i,S.tiles[i]]));dirty.clear();send('delta',{h:myId,tl,gold:S.gold,d:S.d,t:S.t})}
 const bcast=full=>{if(isHost()){if(ch){if(full===1)send('state',{h:myId,s:S});else bdelta()}save()}};
-function tSync(p){if(p.d!==S.d){S.d=p.d;S.t=p.t}else if(Math.abs(S.t-p.t)>.6)S.t=p.t}
+function tSync(p){if(p.d!==S.d){S.d=p.d;S.t=p.t;sfx('chime')}else if(Math.abs(S.t-p.t)>.6)S.t=p.t}
 function predict(a){if(!farm(a.x,a.y))return;const t=S.tiles[a.x+a.y*W];
   if(a.t==='hoe'&&!t[0])t[0]=1;
   else if(a.t==='water'&&t[0]&&t[1]&&!t[3]&&t[2]<CROPS[t[1]].g)t[3]=1;
@@ -254,10 +268,11 @@ async function connect(){
     ch.on('presence',{event:'leave'},({key,leftPresences:lp})=>{if(key!==myId&&lp&&lp[0])addLog(0,0,(lp[0].n||'Teman')+' keluar',0,1)});
     ch.on('broadcast',{event:'pos'},({payload:p})=>{if(p.id===myId)return;const o=remote[p.id]||(remote[p.id]={x:p.x,y:p.y,ph:0});o.tx=p.x;o.ty=p.y;o.vx=p.vx||0;o.vy=p.vy||0;o.hp=p.hp;o.f=p.f;o.col=p.col;o.n=p.n;o.g=p.g;o.seen=performance.now()});
     ch.on('broadcast',{event:'state'},({payload:p})=>{if(p.h!==roster[0]||p.h===myId)return;const t=S.t;S=fixS(p.s);if(Math.abs(S.t-t)<.6)S.t=t;hud()});
-    ch.on('broadcast',{event:'sync'},({payload:p})=>{if(p.h!==roster[0]||p.h===myId)return;tSync(p);S.gold=p.g;hud()});
-    ch.on('broadcast',{event:'delta'},({payload:p})=>{if(p.h!==roster[0]||p.h===myId)return;(p.tl||[]).forEach(([i,t])=>{if(S.tiles[i]&&Array.isArray(t))S.tiles[i]=t});S.gold=p.gold;tSync(p);hud()});
-    ch.on('broadcast',{event:'act'},({payload:p})=>{if(!isHost())return;const a=p.a||{};if(applyA(a,p.by))bcast(a.t==='sleep'?1:0);else{if(a.t==='seed')lootTo(p.by,{},{[a.c]:1},'Biji dikembalikan');if(Number.isInteger(a.x)&&Number.isInteger(a.y)&&farm(a.x,a.y)){dirty.add(a.x+a.y*W);bdelta()}}});
+    ch.on('broadcast',{event:'sync'},({payload:p})=>{if(p.h!==roster[0]||p.h===myId)return;tSync(p);S.gold=p.g;if(p.pv!=null)S.pvp=p.pv;hud()});
+    ch.on('broadcast',{event:'delta'},({payload:p})=>{if(p.h!==roster[0]||p.h===myId)return;(p.tl||[]).forEach(([i,t])=>{if(S.tiles[i]&&Array.isArray(t)){tileSfx(i,S.tiles[i],t);S.tiles[i]=t}});S.gold=p.gold;tSync(p);hud()});
+    ch.on('broadcast',{event:'act'},({payload:p})=>{if(!isHost())return;const a=p.a||{};if(applyA(a,p.by)){actSfx(a);bcast(a.t==='sleep'?1:0)}else{if(a.t==='seed')lootTo(p.by,{},{[a.c]:1},'Biji dikembalikan');if(Number.isInteger(a.x)&&Number.isInteger(a.y)&&farm(a.x,a.y)){dirty.add(a.x+a.y*W);bdelta()}}});
     ch.on('broadcast',{event:'loot'},({payload:p})=>{if(p.to===myId)addLoot(p.items||{},p.seeds||{},p.msg)});
+    ch.on('broadcast',{event:'atk'},({payload:p})=>onAtk(p));
     ch.on('broadcast',{event:'chat'},({payload:p})=>onChat(p));
     ch.on('broadcast',{event:'trade'},({payload:p})=>onTrade(p));
     await new Promise((res,rej)=>ch.subscribe(async s=>{if(s==='SUBSCRIBED'){await ch.track({n:me.n,col:me.col,g:me.g,ts:Date.now()});res()}else if(s==='CHANNEL_ERROR'||s==='TIMED_OUT')rej(new Error('Realtime '+s))}));
@@ -269,18 +284,18 @@ function target(){const d={up:[0,-1],down:[0,1],left:[-1,0],right:[1,0]}[me.f];r
 function use(){if(tool===4){fish();return}navigator.vibrate&&navigator.vibrate(8);const[x,y]=target();
   if(!farm(x,y)){say('Arahkan ke lahan kebun 🌱');return}
   const t=S.tiles[x+y*W],c=CROPS[sel];
-  if(tool===0){if(t[0]){say(t[1]?'Ada tanaman di sini':'Tanah sudah digali');return}puff(x,y,'dirt')}
-  else if(tool===1){if(!t[0]){say('Gali dulu pakai Cangkul');return}if(!t[1]){say('Tanam biji dulu, baru disiram');return}if(t[2]>=CROPS[t[1]].g){say('Sudah siap panen!');return}if(t[3]){say('Sudah disiram hari ini 💧');return}puff(x,y,'water')}
-  else if(tool===2){if(!t[0]){say('Gali tanah dulu pakai Cangkul');return}if(t[1]){say('Sudah ada tanaman');return}if(!(sd[sel]>0)){say('Biji '+c.n+' habis — beli di Toko 🏪');return}sd[sel]--;puff(x,y,'seed');say(c.e+' Ditanam! Siram supaya tumbuh · '+c.g+' hari');hud()}
-  else if(tool===3){if(!t[1]){say('Tidak ada tanaman');return}const m=CROPS[t[1]];if(t[2]<m.g){say('Belum siap · hari '+t[2]+'/'+m.g);return}puff(x,y,'star')}
+  if(tool===0){if(t[0]){say(t[1]?'Ada tanaman di sini':'Tanah sudah digali');return}puff(x,y,'dirt');sfx('hoe')}
+  else if(tool===1){if(!t[0]){say('Gali dulu pakai Cangkul');return}if(!t[1]){say('Tanam biji dulu, baru disiram');return}if(t[2]>=CROPS[t[1]].g){say('Sudah siap panen!');return}if(t[3]){say('Sudah disiram hari ini 💧');return}puff(x,y,'water');sfx('water')}
+  else if(tool===2){if(!t[0]){say('Gali tanah dulu pakai Cangkul');return}if(t[1]){say('Sudah ada tanaman');return}if(!(sd[sel]>0)){say('Biji '+c.n+' habis — beli di Toko 🏪');return}sd[sel]--;puff(x,y,'seed');sfx('seed');say(c.e+' Ditanam! Siram supaya tumbuh · '+c.g+' hari');hud()}
+  else if(tool===3){if(!t[1]){say('Tidak ada tanaman');return}const m=CROPS[t[1]];if(t[2]<m.g){say('Belum siap · hari '+t[2]+'/'+m.g);return}puff(x,y,'star');sfx('harvest')}
   dispatch({t:['hoe','water','seed','harvest'][tool],x,y,c:sel})}
 const egg={};
 function inter(){const now=Date.now();
   for(const n of NPC){if(n.k!=='h')continue;const p=npcPos(n,now);if(Math.hypot(p.x-me.x,p.y-me.y)<80){bub[n.id]={text:n.L[Math.floor(now/1000)%n.L.length],until:performance.now()+3500};return}}
   if(ch)for(const k in remote){const o=remote[k];if(Math.hypot(o.x-me.x,o.y-me.y)<90){tradeReq(k);return}}
   for(const n of NPC){if(n.k==='h')continue;const p=npcPos(n,now);if(Math.hypot(p.x-me.x,p.y-me.y)<64){
-    if(n.k==='k'){bub[n.id]={text:'Meong ❤',until:performance.now()+2500};return}
-    if((egg[n.id]||0)<now){egg[n.id]=now+45000;inv[8]=(inv[8]||0)+1;bub[n.id]={text:'Kluk kluk! 🥚',until:performance.now()+2500};say('🥚 Dapat telur!');hud()}
+    if(n.k==='k'){bub[n.id]={text:'Meong ❤',until:performance.now()+2500};sfx('meow');return}
+    if((egg[n.id]||0)<now){egg[n.id]=now+45000;inv[8]=(inv[8]||0)+1;bub[n.id]={text:'Kluk kluk! 🥚',until:performance.now()+2500};say('🥚 Dapat telur!');sfx('cluck');hud()}
     else{bub[n.id]={text:'Kok…',until:performance.now()+2000};say('Ayamnya belum bertelur lagi')}return}}
   if(drinkSpot()){drink(atFountain()?'f':'w');return}
   if(Math.hypot(me.x-2.5*T,me.y-3.2*T)<1.6*T){dispatch({t:'sleep'});vit.hp=Math.min(100,vit.hp+40);vit.food=Math.max(20,vit.food-8);say('Zzz… hari baru dimulai!');hud()}
@@ -296,7 +311,7 @@ addEventListener('keydown',e=>{if(document.activeElement===$('ci')){if(e.key==='
   else if(k==='q'||k==='Q')setHot((hot+1)%9)
   else if(k==='z'||k==='Z')setHot((hot+8)%9)
   else if(e.key===' '){if(!(e.repeat&&tool===4))use();e.preventDefault()}
-  else if(e.key==='e'||e.key==='E')inter();
+  else if(e.key==='e'||e.key==='E')inter();else if(e.key==='f'||e.key==='F')attack();
   else if(e.key==='Enter'){toggleChat(1)}});
 addEventListener('keyup',e=>{if(km[e.key])keys[km[e.key]]=0});
 addEventListener('wheel',e=>{if(started&&!modal)setHot((hot+(e.deltaY>0?1:8))%9)},{passive:true});
@@ -321,7 +336,7 @@ function renderBag(){const ids=Object.keys(inv).filter(k=>inv[k]>0).sort((a,b)=>
   if(bs[0]==='s'&&sd[bs.slice(1)]>0){const c=CROPS[bs.slice(1)];inf=`<div class="big">${c.e}</div><h3>Biji ${c.n}</h3>Jumlah: ${sd[bs.slice(1)]}<br>Tumbuh: ${c.g} hari<br>Harga beli: ${c.c}g<br><span class="mut">Panen: ${c.n} + peluang biji</span>`}
   else if(inv[bs]>0){const i=IT(bs);inf=`<div class="big">${i.e}</div><h3>${i.n}</h3>Jumlah: ${inv[bs]}<br>Harga jual: ${i.s}g / buah<br>Nilai: ${i.s*inv[bs]}g${FD[bs%100]?`<br><button class="mb sm" onclick="eat('${bs}')">🍴 Makan · +${Math.round(FD[bs%100].f*(1+.25*i.q))} lapar</button>`:''}`}
   put('info',inf+`<hr>Total panen: ${cnt}<br>Nilai panen: <b>${tot}g</b><br><span class="mut">Beli biji & jual panen di Toko (E di depan toko).</span>`)}
-function openModal(m){modal=m;keys={};resetJoy();fishing=null;['bag','pause','trade','shop'].forEach(i=>$(i).style.display=m===i?'flex':'none');if(m==='bag')renderBag();if(m==='trade')renderTrade();if(m==='shop')renderShop()}
+function openModal(m){sfx('click');if(m==='pause')audUI();modal=m;keys={};resetJoy();fishing=null;['bag','pause','trade','shop'].forEach(i=>$(i).style.display=m===i?'flex':'none');if(m==='bag')renderBag();if(m==='trade')renderTrade();if(m==='shop')renderShop()}
 function closeModal(){if(modal==='trade'&&trade){tsend('cancel');trade=null}modal='';['bag','pause','trade','shop'].forEach(i=>$(i).style.display='none')}
 const mm=$('mm'),mc=mm.getContext('2d');
 function minimap(time){mc.clearRect(0,0,192,132);mc.drawImage(bg,0,0,192,132);const s=6;
@@ -440,11 +455,11 @@ function drawP(x,y,f,col,ph,mv,o){if(!wet(x,y)){person(x,y,f,col,ph,mv,o);return
   g.fillStyle='rgba(90,170,230,.35)';g.beginPath();g.ellipse(x,y-10,15,5,0,0,7);g.fill();
   g.strokeStyle='rgba(255,255,255,.55)';g.lineWidth=2;for(let i=0;i<2;i++){const q=(t+i*1.5)%3;g.beginPath();g.ellipse(x,y-8,16+q*4,5+q,0,0,7);g.stroke()}}
 function fish(){const now=performance.now();
-  if(fishing){if(fishing.st==='bite'){const id=Math.random()<.62?6:7;inv[id]=(inv[id]||0)+1;say('🎣 Dapat '+CROPS[id].n+'!');hud()}else say('Terlalu cepat, ikan kabur');fishing=null;return}
+  if(fishing){if(fishing.st==='bite'){const id=Math.random()<.62?6:7;inv[id]=(inv[id]||0)+1;say('🎣 Dapat '+CROPS[id].n+'!');sfx('catch');hud()}else{say('Terlalu cepat, ikan kabur');sfx('miss')}fishing=null;return}
   if(wet(me.x,me.y)){say('Naik ke daratan dulu buat mancing');return}
   const d={up:[0,-1],down:[0,1],left:[-1,0],right:[1,0]}[me.f],x=me.x+d[0]*62,y=me.y+d[1]*62-8;
   if(!wet(x,y)){say('Hadap ke air buat mancing 🎣');return}
-  fishing={st:'wait',at:now+1800+Math.random()*3500,x,y};say('Menunggu ikan…')}
+  fishing={st:'wait',at:now+1800+Math.random()*3500,x,y};say('Menunggu ikan…');sfx('cast')}
 
 /* ===== gambar dinamis ===== */
 function soil(x,y,t){const px=x*T,py=y*T,R=rng(x*31+y*17+1),w=t[3];
@@ -520,7 +535,7 @@ function draw(now,time){
     const q=bub[n.id];if(q&&performance.now()<q.until)say2(p.x,p.y-72,q.text)}})}
   for(const t of TL)if(t.x>cam.x-70&&t.x<cam.x+VW/Z+70&&t.y>cam.y&&t.y<cam.y+VH/Z+120)E.push({y:t.y,d:()=>g.drawImage(t.sp.c,t.x-t.sp.ox,t.y-t.sp.oy,t.sp.w,t.sp.h)});
   E.push({y:18.7*T,d:()=>fire(time)});
-  E.sort((a,b)=>a.y-b.y).forEach(e=>e.d());drawParts(performance.now());
+  E.sort((a,b)=>a.y-b.y).forEach(e=>e.d());drawParts(performance.now());drawSwings(performance.now());
   const p=S.t/DAY,hh=6+Math.min(1,p)*18;tint(hh);lights(time,p);flies(time,hh)}
 
 /* ===== loop ===== */
@@ -532,13 +547,14 @@ function loop(now){const dt=Math.min(.05,(now-last)/1000);last=now;
     if(ok(me.x+dx,me.y+dy)){me.x+=dx;me.y+=dy}else if(ok(me.x+dx,me.y))me.x+=dx;else if(ok(me.x,me.y+dy))me.y+=dy;
     me.f=Math.abs(dx)>Math.abs(dy)?(dx>0?'right':'left'):(dy>0?'down':'up')}
   me.vx=dt>0?(me.x-ox0)/dt:0;me.vy=dt>0?(me.y-oy0)/dt:0;
+  if(started){const w0=wet(me.x,me.y);if(w0!==wasWet){sfx('splash');wasWet=w0}if(me.mv){stepD+=Math.hypot(me.x-ox0,me.y-oy0);if(stepD>38){stepD=0;sfx('step',{s:surfAt(me.x,me.y)})}}else stepD=30}
   if(started&&(ch||!modal)){vitTick(dt);S.t+=dt;if(S.t>=DAY){if(isHost()){nextDay();bcast(1)}else S.t=DAY}}
-  toastT-=dt;for(const k in remote){const o=remote[k];if(o.tx==null)continue;const el=Math.min(.2,(now-o.seen)/1000),px=o.tx+(o.vx||0)*el,py=o.ty+(o.vy||0)*el,mx=px-o.x,my=py-o.y,dd=Math.hypot(mx,my);if(dd>260){o.x=px;o.y=py}else{const f=Math.min(1,dt*22);o.x+=mx*f;o.y+=my*f}o.mv=Math.hypot(o.vx||0,o.vy||0)>12||dd>4;if(o.mv)o.ph+=dt*12}
+  toastT-=dt;for(const k in remote){const o=remote[k];if(o.tx==null)continue;const el=Math.min(.2,(now-o.seen)/1000),px=o.tx+(o.vx||0)*el,py=o.ty+(o.vy||0)*el,mx=px-o.x,my=py-o.y,dd=Math.hypot(mx,my);if(dd>260){o.x=px;o.y=py}else{const f=Math.min(1,dt*22);o.x+=mx*f;o.y+=my*f}o.mv=Math.hypot(o.vx||0,o.vy||0)>12||dd>4;if(o.mv){o.ph+=dt*12;o.sd=(o.sd||0)+Math.hypot(o.vx||0,o.vy||0)*dt;if(o.sd>38){o.sd=0;const d2=Math.hypot(o.x-me.x,o.y-me.y);if(d2<420)sfx('step',{s:surfAt(o.x,o.y),v:.7*(1-d2/420)})}}}
   pAcc+=dt;if(pAcc>.055&&ch&&started){pAcc=0;const k=[Math.round(me.x),Math.round(me.y),me.f,me.mv,Math.round(vit.hp/4)].join();if(k!==lastP||now-lastPT>1500){lastP=k;lastPT=now;send('pos',{id:myId,x:me.x,y:me.y,vx:Math.round(me.vx||0),vy:Math.round(me.vy||0),f:me.f,col:me.col,n:me.n,g:me.g,hp:Math.round(vit.hp)})}}
-  hAcc+=dt;if(hAcc>1){hAcc=0;hud();if(ch&&isHost()){syncN++;if(syncN%12===0)send('state',{h:myId,s:S});else send('sync',{h:myId,d:S.d,t:S.t,g:S.gold})}}
+  hAcc+=dt;if(hAcc>1){hAcc=0;hud();if(ch&&isHost()){syncN++;if(syncN%12===0)send('state',{h:myId,s:S});else send('sync',{h:myId,d:S.d,t:S.t,g:S.gold,pv:S.pvp})}}
   {const vw=VW/Z,vh=VH/Z,tx=Math.max(0,Math.min(W*T-vw,me.x-vw/2)),ty=Math.max(0,Math.min(H*T-vh,me.y-vh/2-20)),k=cam.s?1:1-Math.exp(-dt*9);cam.s=0;cam.x+=(tx-cam.x)*k;cam.y+=(ty-cam.y)*k}
-  if(fishing){if(me.mv||modal)fishing=null;else if(fishing.st==='wait'&&now>=fishing.at){fishing.st='bite';fishing.until=now+1300;navigator.vibrate&&navigator.vibrate(30);say('❗ Ikan menyambar! Tekan Pakai!')}else if(fishing.st==='bite'&&now>fishing.until){fishing=null;say('Ikan lepas…')}}
-  cAcc+=dt;if(cAcc>.12){cAcc=0;ctxUpdate();if(started)vitUI()}
+  if(fishing){if(me.mv||modal)fishing=null;else if(fishing.st==='wait'&&now>=fishing.at){fishing.st='bite';fishing.until=now+1300;navigator.vibrate&&navigator.vibrate(30);say('❗ Ikan menyambar! Tekan Pakai!');sfx('bite')}else if(fishing.st==='bite'&&now>fishing.until){fishing=null;say('Ikan lepas…');sfx('miss')}}
+  cAcc+=dt;if(cAcc>.12){cAcc=0;ctxUpdate();if(started){vitUI();ambUpdate(performance.now())}}
   draw(now,now);if(started)minimap(now);requestAnimationFrame(loop)}
 
 /* ===== v2: layar penuh + kamera ===== */
@@ -557,7 +573,7 @@ joy.onpointerdown=e=>{if(!started||modal)return;jid=e.pointerId;joy.setPointerCa
 joy.onpointermove=e=>{if(e.pointerId===jid)joyMove(e)};
 joy.onpointerup=joy.onpointercancel=e=>{if(e.pointerId===jid)resetJoy()};
 let rep_;document.querySelectorAll('#acts button').forEach(b=>{const a=b.dataset.a;
-  b.onpointerdown=e=>{e.preventDefault();if(!started||modal)return;if(a==='use'){use();clearInterval(rep_);if(tool!==4)rep_=setInterval(()=>{if(!modal)use()},280)}else inter()};
+  b.onpointerdown=e=>{e.preventDefault();if(!started||modal)return;if(a==='use'){use();clearInterval(rep_);if(tool!==4)rep_=setInterval(()=>{if(!modal)use()},280)}else if(a==='atk')attack();else inter()};
   b.onpointerup=b.onpointerleave=b.onpointercancel=()=>clearInterval(rep_)});
 /* ===== prompt aksi kontekstual ===== */
 function near(){const now=Date.now();
@@ -608,11 +624,11 @@ function renderShop(){if(modal!=='shop')return;let tot=0,cnt=0;for(const k in in
   let h=`<div class="tst">Kas bersama: <b>🪙 ${S.gold}</b> · Biji kamu dibeli dari kas ini</div>`+[1,2,3,4,5].map(c=>{const o=CROPS[c];
     return `<div class="srow"><span class="se">${o.e}</span><div class="si"><b>Biji ${o.n}</b><small>Tumbuh ${o.g} hari · panen ${o.s}g (⭐${Math.round(o.s*1.5)}g · 🌟${Math.round(o.s*2.2)}g) · punya ${sd[c]|0}</small></div><button class="mb sm" ${S.gold<o.c?'disabled':''} onclick="buy(${c},1)">🪙${o.c}</button><button class="mb sm" ${S.gold<o.c*5?'disabled':''} onclick="buy(${c},5)">×5</button></div>`}).join('')
   +`<button class="mb" ${cnt?'':'disabled'} onclick="sellAll()">💰 Jual semua panen (${cnt} item · 🪙${tot})</button>`;put('sb',h)}
-function buy(c,n){const o=CROPS[c];if(S.gold<o.c*n){say('Kas bersama tidak cukup');return}dispatch({t:'buy',c,n});renderShop()}
-function sellAll(){let v=0,n=0;for(const k in inv){v+=inv[k]*IT(k).s;n+=inv[k]}if(!n){say('Belum ada hasil panen');return}dispatch({t:'sell',v});inv={};say('Terjual '+n+' item +'+v+'g');hud()}
+function buy(c,n){const o=CROPS[c];if(S.gold<o.c*n){say('Kas bersama tidak cukup');return}dispatch({t:'buy',c,n});sfx('coin');renderShop()}
+function sellAll(){let v=0,n=0;for(const k in inv){v+=inv[k]*IT(k).s;n+=inv[k]}if(!n){say('Belum ada hasil panen');return}dispatch({t:'sell',v});sfx('coin');inv={};say('Terjual '+n+' item +'+v+'g');hud()}
 /* partikel */
 const parts=[];
-function puff(x,y,k){const cols={dirt:['#6e4a2a','#3f2a19','#9a6d40'],water:['#8fd4f4','#cfeeff'],seed:['#6fc04e','#fff'],star:['#ffd24a','#fff3a0']}[k],n=k==='water'?12:9;
+function puff(x,y,k){const cols={dirt:['#6e4a2a','#3f2a19','#9a6d40'],water:['#8fd4f4','#cfeeff'],seed:['#6fc04e','#fff'],star:['#ffd24a','#fff3a0'],hit:['#ff5a4a','#ffd24a','#ffffff']}[k],n=k==='water'?12:9;
   for(let i=0;i<n;i++){const a=Math.random()*6.28,sp=40+Math.random()*60;parts.push({x:x*T+T/2,y:y*T+T/2,vx:Math.cos(a)*sp,vy:-60-Math.random()*60+Math.sin(a)*20,c:cols[i%cols.length],t:performance.now(),w:k==='water'?2.5:3.5})}}
 function drawParts(now){for(let i=parts.length-1;i>=0;i--){const p=parts[i],a=(now-p.t)/1000;if(a>.7){parts.splice(i,1);continue}g.globalAlpha=1-a/.7;g.fillStyle=p.c;g.fillRect(p.x+p.vx*a,p.y+p.vy*a+260*a*a,p.w,p.w)}g.globalAlpha=1}
 /* tampilan tanaman */
@@ -638,25 +654,25 @@ function flies(time,h){const a=Math.max(0,Math.min(1,(h-18.2)/1.6));if(a<=0)retu
     const al=Math.max(0,a*(.45+.55*Math.sin(time/420+i*3))),q=g.createRadialGradient(x,y,0,x,y,13);
     q.addColorStop(0,'rgba(220,255,140,'+(.95*al).toFixed(3)+')');q.addColorStop(1,'rgba(220,255,140,0)');g.fillStyle=q;g.fillRect(x-13,y-13,26,26)}g.restore()}
 function hpBar(x,y,v){v=Math.max(0,Math.min(100,v));g.fillStyle='rgba(0,0,0,.6)';g.fillRect(x-19,y,38,6);g.fillStyle=v>50?'#6fd04a':v>25?'#ffb84a':'#e5484d';g.fillRect(x-18,y+1,36*v/100,4)}
-function vitTick(dt){const run=me.mv?1.6:1;
+function vitTick(dt){const run=me.mv?1.6:1;if(vit.hp<30&&vit.hp>0){hbT-=dt;if(hbT<=0){hbT=.9;sfx('beat')}}
   vit.food=Math.max(0,vit.food-dt*.16*run);vit.water=Math.max(0,vit.water-dt*.24*run);
   const starve=(vit.food<=0?1:0)+(vit.water<=0?1:0);
   if(starve)vit.hp=Math.max(0,vit.hp-dt*(starve>1?1.6:.8));else if(vit.food>40&&vit.water>40)vit.hp=Math.min(100,vit.hp+dt*.6);
   if(vit.food<25&&!vwarn.f){vwarn.f=1;say('🍗 Kamu lapar! Makan dari 🎒 Tas')}if(vit.food>35)vwarn.f=0;
   if(vit.water<25&&!vwarn.w){vwarn.w=1;say('💧 Kamu haus! Minum di air (tombol E)')}if(vit.water>35)vwarn.w=0;
   if(vit.hp<=0)faint()}
-function faint(){vit={hp:50,food:45,water:45};me.x=2.5*T;me.y=4*T;me.f='down';fishing=null;cam.s=1;lastP='';say('😵 Kamu pingsan dan dibawa pulang…');hud()}
+function faint(){vit={hp:50,food:45,water:45};me.x=2.5*T;me.y=4*T;me.f='down';fishing=null;cam.s=1;lastP='';say('😵 Kamu pingsan dan dibawa pulang…');sfx('faint');hud()}
 function vitUI(){[['vHp',vit.hp],['vFd',vit.food],['vWt',vit.water]].forEach(([id,v])=>{const e=$(id);if(!e)return;e.style.width=Math.max(0,Math.min(100,v))+'%';e.parentNode.classList.toggle('low',v<25);$(id+'N').textContent=Math.round(v)});
-  $('hurt').style.opacity=vit.hp<35?String(Math.min(.9,1-vit.hp/35)):'0'}
+  $('hurt').style.opacity=String(Math.max(vit.hp<35?Math.min(.9,1-vit.hp/35):0,performance.now()<hurtT?.85:0))}
 function eat(k){k=+k;if(!(inv[k]>0))return;const c=FD[k%100],q=k/100|0;if(!c)return;
   if(vit.food>=99&&vit.water>=99&&vit.hp>=99){say('Sudah kenyang 😋');return}
   const m=1+.25*q;inv[k]--;vit.food=Math.min(100,vit.food+c.f*m);vit.water=Math.min(100,vit.water+c.w*m);vit.hp=Math.min(100,vit.hp+c.f*m*.3);
-  say('🍴 Makan '+IT(k).n+' · +'+Math.round(c.f*m)+' lapar');hud();vitUI()}
+  say('🍴 Makan '+IT(k).n+' · +'+Math.round(c.f*m)+' lapar');sfx('eat');hud();vitUI()}
 const atFountain=()=>Math.hypot(me.x-17*T,me.y-17.5*T)<1.7*T;
 function waterAhead(){const d={up:[0,-1],down:[0,1],left:[-1,0],right:[1,0]}[me.f]||[0,1];return wet(me.x+d[0]*62,me.y+d[1]*62-8)||wet(me.x+d[0]*36,me.y+d[1]*36-8)}
 const drinkSpot=()=>atFountain()||wet(me.x,me.y)||waterAhead();
 function drink(s){const n=Date.now();if(n<drinkAt)return;drinkAt=n+450;if(vit.water>=99){say('Sudah tidak haus 😌');return}
-  const v=s==='f'?40:30;vit.water=Math.min(100,vit.water+v);puff(me.x/T,me.y/T-.6,'water');say('💧 Minum · +'+v+' haus');navigator.vibrate&&navigator.vibrate(10);vitUI()}
+  const v=s==='f'?40:30;vit.water=Math.min(100,vit.water+v);puff(me.x/T,me.y/T-.6,'water');say('💧 Minum · +'+v+' haus');sfx('drink');navigator.vibrate&&navigator.vibrate(10);vitUI()}
 
 /* ===== trade antar pemain ===== */
 let trade=null;
@@ -687,7 +703,7 @@ function tradeLock(){if(!trade||trade.st!=='on')return;if(trade.lk){trade.lk=0;t
 function tryDone(){if(trade&&trade.lk&&trade.plk&&trade.psig===sigOf()&&!trade.done){trade.done=1;tradeDone()}}
 function tradeDone(){for(const k in trade.off)if((inv[k]||0)<trade.off[k]){say('Item tidak cukup, trade batal');tsend('cancel');endTrade();return}
   for(const k in trade.off)inv[k]-=trade.off[k];for(const k in trade.toff)inv[k]=(inv[k]||0)+trade.toff[k];
-  addLog(0,0,'Trade dengan '+trade.n+' berhasil 🤝',0,1);say('Trade berhasil! 🤝');endTrade();hud()}
+  addLog(0,0,'Trade dengan '+trade.n+' berhasil 🤝',0,1);say('Trade berhasil! 🤝');sfx('coin');endTrade();hud()}
 function renderTrade(){if(modal!=='trade')return;let h='';
   if(!trade){const ids=Object.keys(pinfo).filter(k=>k!==myId);
     h=ch?(ids.length?'<div class="tst">Pilih pemain untuk diajak tukar item (gold tetap bersama):</div>'+ids.map(k=>`<div class="pl"><span>👤 ${esc((pinfo[k][0]&&pinfo[k][0].n)||'Teman')}</span><button class="mb sm" onclick="tradeReq('${esc(k)}')">🤝 Ajak</button></div>`).join(''):'<div class="tst">Belum ada pemain lain di room ini.</div>'):'<div class="tst">Trade hanya ada di mode Multiplayer.</div>'}
@@ -701,6 +717,136 @@ function renderTrade(){if(modal!=='trade')return;let h='';
 /* prompt dekat pemain lain */
 const _near=near;near=function(){const r=_near();if(r)return r;if(ch)for(const k in remote){const o=remote[k];if(Math.hypot(o.x-me.x,o.y-me.y)<90)return['🤝','Trade','Ajak trade '+(o.n||'Teman')]}if(started&&drinkSpot())return['💧','Minum','Minum air'];return null};
 
+/* ===== v5: audio, musik, friendly fire ===== */
+const MUSIC_URLS=[]; /* contoh: ['bgm.mp3'] — taruh file musik di folder yang sama dengan file html ini */
+let AC=null,aM,aS,aA,aMus,noiseB,sv=1,amb=null,nxBird=0,nxOwl=0,nxCl=0,hbT=0,wasWet=false,stepD=0,atkT=0,iFr=0,hurtT=0,musEl=null,musList=[],musI=0,musErr=0,AU={m:.5,s:.8,a:.6,mute:0};
+const swings=[];
+try{Object.assign(AU,JSON.parse(localStorage.getItem('pfc2_aud')||'{}'))}catch(e){}
+function audInit(){if(AC){if(AC.state==='suspended')AC.resume();return}
+  const C=window.AudioContext||window.webkitAudioContext;if(!C)return;
+  try{AC=new C()}catch(e){AC=null;return}
+  aM=AC.createGain();aM.connect(AC.destination);aS=AC.createGain();aA=AC.createGain();aMus=AC.createGain();[aS,aA,aMus].forEach(x=>x.connect(aM));
+  const n=AC.sampleRate*2,bf=AC.createBuffer(1,n,AC.sampleRate),d=bf.getChannelData(0);for(let i=0;i<n;i++)d[i]=Math.random()*2-1;noiseB=bf;
+  audVol();ambStart()}
+['pointerdown','keydown','touchend'].forEach(e=>addEventListener(e,()=>audInit(),{passive:true}));
+function audVol(){if(AC){aM.gain.value=AU.mute?0:1;aS.gain.value=AU.s;aA.gain.value=AU.a;aMus.gain.value=AU.m}
+  if(musEl&&!musEl._wa)musEl.volume=AU.mute?0:AU.m;try{localStorage.setItem('pfc2_aud',JSON.stringify(AU))}catch(e){}}
+/* --- primitif suara --- */
+function sfxTone(f,d,type,v,f2,delay){if(!AC)return;const t=AC.currentTime+(delay||0),o=AC.createOscillator(),g=AC.createGain();o.type=type||'sine';o.frequency.setValueAtTime(f,t);if(f2)o.frequency.exponentialRampToValueAtTime(f2,t+d);
+  g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(v*sv,t+.01);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(g);g.connect(aS);o.start(t);o.stop(t+d+.05)}
+function sfxNoise(d,type,f,q,v,delay,f2,dest){if(!AC||!noiseB)return;const t=AC.currentTime+(delay||0),s=AC.createBufferSource(),fl=AC.createBiquadFilter(),g=AC.createGain();s.buffer=noiseB;s.loop=true;fl.type=type;fl.frequency.setValueAtTime(f,t);if(f2)fl.frequency.exponentialRampToValueAtTime(f2,t+d);fl.Q.value=q||1;
+  g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(v*sv,t+Math.min(.02,d/3));g.gain.exponentialRampToValueAtTime(.0001,t+d);s.connect(fl);fl.connect(g);g.connect(dest||aS);s.start(t,Math.random()*1.5);s.stop(t+d+.05)}
+function sfx(k,o){if(!AC||AU.mute||AC.state!=='running')return;o=o||{};sv=o.v==null?1:Math.max(0,o.v);if(sv<.03)return;const r=Math.random(),tn=sfxTone,nn=sfxNoise;
+  switch(k){
+  case 'step':{const s=o.s;
+    if(s==='water'){nn(.22,'bandpass',1400+r*600,.8,.22);nn(.14,'lowpass',500,.7,.15)}
+    else if(s==='wood'){tn(130+r*30,.08,'triangle',.3,70);nn(.05,'bandpass',900,2,.1)}
+    else if(s==='stone'){nn(.04,'bandpass',2200+r*500,3,.12);tn(300+r*80,.04,'square',.03)}
+    else if(s==='dirt')nn(.09,'lowpass',500+r*150,.7,.25);
+    else nn(.08,'bandpass',1500+r*600,.5,.12);break}
+  case 'hoe':nn(.14,'lowpass',420,.8,.55);tn(120,.12,'sine',.4,60);break;
+  case 'water':nn(.5,'bandpass',2200,1.2,.35,0,900);break;
+  case 'seed':tn(520,.1,'sine',.3,280);nn(.06,'highpass',3000,.5,.1);break;
+  case 'harvest':tn(660,.12,'triangle',.3);tn(880,.18,'triangle',.3,0,.09);nn(.1,'bandpass',2500,1,.12);break;
+  case 'coin':tn(988,.08,'square',.12);tn(1319,.22,'square',.12,0,.07);break;
+  case 'eat':for(let i=0;i<3;i++)nn(.05,'bandpass',2400,2,.3,i*.11);break;
+  case 'drink':tn(320,.1,'sine',.3,180);tn(300,.1,'sine',.3,170,.14);nn(.3,'bandpass',1600,1,.12);break;
+  case 'cast':nn(.3,'bandpass',500,.8,.3,0,2500);break;
+  case 'splash':nn(.4,'bandpass',1800,.7,.4,0,700);nn(.25,'lowpass',600,.7,.25);break;
+  case 'bite':tn(880,.1,'square',.14);tn(1100,.12,'square',.14,0,.12);break;
+  case 'catch':nn(.35,'bandpass',1800,.7,.35,0,700);tn(784,.15,'triangle',.3,0,.12);tn(1047,.25,'triangle',.3,0,.24);break;
+  case 'miss':tn(260,.2,'sine',.2,160);break;
+  case 'swing':nn(.18,'bandpass',700,.8,.35,0,2200);break;
+  case 'hit':nn(.12,'lowpass',900,.8,.6);tn(150,.15,'square',.25,60);break;
+  case 'hurt':tn(220,.25,'sawtooth',.25,90);break;
+  case 'faint':tn(400,.7,'sine',.3,70);break;
+  case 'click':tn(900,.03,'square',.07);break;
+  case 'chime':tn(523,.5,'sine',.22);tn(659,.5,'sine',.22,0,.15);tn(784,.7,'sine',.22,0,.3);break;
+  case 'cluck':tn(500+r*100,.07,'square',.1,350);tn(540+r*60,.06,'square',.1,380,.1);break;
+  case 'meow':tn(650,.4,'triangle',.18,450);break;
+  case 'beat':tn(70,.14,'sine',.55,40);tn(60,.14,'sine',.45,35,.2);break}}
+function surfAt(x,y){const tx=x/T,ty=y/T;if(wet(x,y))return'water';if(tx>DOCK[0]&&tx<DOCK[2]&&ty>DOCK[1]&&ty<DOCK[3])return'wood';
+  if(tx>=12&&tx<=22&&ty>=14.8&&ty<=20)return'stone';
+  if(farm(tx|0,ty|0)){const t=S.tiles[(tx|0)+(ty|0)*W];if(t&&t[0])return'dirt'}
+  if((ty>3&&ty<4.1)||(tx>16.6&&tx<18.4&&ty<15)||(ty>12&&ty<13&&tx>17&&tx<23))return'dirt';return'grass'}
+function tileSfx(i,o,n){if(!AC)return;const k=!o[0]&&n[0]?'hoe':!o[1]&&n[1]?'seed':o[1]&&!n[1]?'harvest':!o[3]&&n[3]?'water':null;if(!k)return;
+  const d=Math.hypot((i%W+.5)*T-me.x,((i/W|0)+.5)*T-me.y);if(d<520)sfx(k,{v:1-d/520})}
+function actSfx(a){const k={hoe:'hoe',water:'water',seed:'seed',harvest:'harvest',buy:'coin',sell:'coin',sleep:'chime'}[a.t];if(!k)return;
+  let v=1;if(Number.isInteger(a.x)&&Number.isInteger(a.y))v=1-Math.hypot((a.x+.5)*T-me.x,(a.y+.5)*T-me.y)/520;if(v>.03)sfx(k,{v})}
+/* --- suasana (angin, air, jangkrik, burung, api unggun) --- */
+function loopNoise(ft,f,q){const s=AC.createBufferSource();s.buffer=noiseB;s.loop=true;const fl=AC.createBiquadFilter();fl.type=ft;fl.frequency.value=f;fl.Q.value=q;const g=AC.createGain();g.gain.value=0;s.connect(fl);fl.connect(g);g.connect(aA);s.start();return{g,fl}}
+function lfo(f,amt,param,type){const o=AC.createOscillator(),g=AC.createGain();o.type=type||'sine';o.frequency.value=f;g.gain.value=amt;o.connect(g);g.connect(param);o.start()}
+function cricket(f,rate,gate){const o=AC.createOscillator(),p=AC.createGain(),q=AC.createGain(),m=AC.createGain();o.frequency.value=f;p.gain.value=.5;q.gain.value=.5;m.gain.value=0;o.connect(p);p.connect(q);q.connect(m);m.connect(aA);o.start();lfo(rate,.5,p.gain,'square');lfo(gate,.5,q.gain,'square');return m}
+function ambStart(){if(amb||!AC)return;amb={};
+  const w=loopNoise('bandpass',420,.6);lfo(.13,200,w.fl.frequency);lfo(.21,.03,w.g.gain);amb.w=w;
+  const wt=loopNoise('bandpass',1100,.5);lfo(.7,250,wt.fl.frequency);amb.wt=wt;
+  amb.c1=cricket(4300,9,1.3);amb.c2=cricket(5100,11,.9)}
+function bird(v){const f=2200+Math.random()*1800,n=2+(Math.random()*3|0);for(let i=0;i<n;i++){const t=AC.currentTime+i*.11,o=AC.createOscillator(),g=AC.createGain();
+  o.frequency.setValueAtTime(f*(1+Math.random()*.15),t);o.frequency.exponentialRampToValueAtTime(f*(1.25+Math.random()*.3),t+.07);
+  g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(.06*v,t+.015);g.gain.exponentialRampToValueAtTime(.0001,t+.09);o.connect(g);g.connect(aA);o.start(t);o.stop(t+.12)}}
+function owl(){const t=AC.currentTime;for(let i=0;i<2;i++){const o=AC.createOscillator(),g=AC.createGain(),s=t+i*.55;o.frequency.setValueAtTime(380,s);o.frequency.exponentialRampToValueAtTime(300,s+.4);
+  g.gain.setValueAtTime(0,s);g.gain.linearRampToValueAtTime(.07,s+.08);g.gain.exponentialRampToValueAtTime(.0001,s+.45);o.connect(g);g.connect(aA);o.start(s);o.stop(s+.5)}}
+function crackle(v){sv=1;sfxNoise(.02+Math.random()*.03,'highpass',2500+Math.random()*2500,.7,.25*v,Math.random()*.1,0,aA)}
+function ambUpdate(now){if(!AC||!amb||AC.state!=='running')return;const t=AC.currentTime,h=6+Math.min(1,S.t/DAY)*18,tx=me.x/T,ty=me.y/T;
+  amb.w.g.gain.setTargetAtTime(.05+(h>16?.02:0),t,.6);
+  let dm=99;for(const[a,c,rx,ry]of WZ)dm=Math.min(dm,Math.hypot(tx-a,ty-c)-Math.max(rx,ry));dm=Math.min(dm,Math.hypot(tx-17,ty-17.5)-1);
+  amb.wt.g.gain.setTargetAtTime(Math.pow(Math.max(0,1-dm/7),2)*.22,t,.3);
+  const nf=Math.max(0,Math.min(1,(h-18.3)/1.5));amb.c1.gain.setTargetAtTime(nf*.035,t,1);amb.c2.gain.setTargetAtTime(nf*.03,t,1);
+  if(h<18.3&&now>nxBird){nxBird=now+(h<11?2200:4500)+Math.random()*5000;bird(.7+Math.random()*.6)}
+  if(h>20&&now>nxOwl){nxOwl=now+14000+Math.random()*16000;owl()}
+  const df=Math.hypot(tx-5.5,ty-18.5);if(df<10&&Math.random()<.35)crackle(1-df/10);
+  if(now>nxCl){nxCl=now+7000+Math.random()*9000;for(const n of NPC){if(n.k!=='c')continue;const p=npcPos(n,Date.now()),d=Math.hypot(p.x-me.x,p.y-me.y);if(d<300){sfx('cluck',{v:1-d/300});break}}}}
+/* --- pemutar musik (file dari perangkat disimpan di browser) --- */
+function idb(){return new Promise((res,rej)=>{const r=indexedDB.open('pfc_music',1);r.onupgradeneeded=()=>r.result.createObjectStore('t',{keyPath:'id',autoIncrement:true});r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)})}
+async function musDbAll(){try{const db=await idb();return await new Promise(res=>{const q=db.transaction('t').objectStore('t').getAll();q.onsuccess=()=>res(q.result||[]);q.onerror=()=>res([])})}catch(e){return[]}}
+async function musDbAdd(files){try{const db=await idb(),tx=db.transaction('t','readwrite'),s=tx.objectStore('t');for(const f of files)s.add({name:f.name,blob:f});await new Promise((res,rej)=>{tx.oncomplete=res;tx.onerror=rej})}catch(e){say('Gagal menyimpan musik di browser');return false}return true}
+async function musDbClear(){try{const db=await idb(),tx=db.transaction('t','readwrite');tx.objectStore('t').clear();await new Promise(res=>{tx.oncomplete=res;tx.onerror=res})}catch(e){}}
+async function musLoad(){const rows=await musDbAll();musList=MUSIC_URLS.map(u=>({name:String(u).split('/').pop(),url:u})).concat(rows.map(r=>({name:r.name,blob:r.blob})));if(musI>=musList.length)musI=0;musUI()}
+const musP=musLoad();
+function musStop(){if(musEl){musEl.pause();musEl.onended=musEl.onerror=null;musEl=null}}
+function musPlay(i){if(!musList.length){musUI();return}musStop();const n=musList.length;musI=(((i==null?musI:i)%n)+n)%n;const tr=musList[musI],el=new Audio();el.preload='auto';el.loop=n===1;
+  if(tr.blob){if(!tr.u)tr.u=URL.createObjectURL(tr.blob);el.src=tr.u;if(AC){try{AC.createMediaElementSource(el).connect(aMus);el._wa=1}catch(e){}}}
+  else{el.src=tr.url;el.volume=AU.mute?0:AU.m}
+  el.onplaying=()=>{musErr=0;musUI()};el.onended=()=>musPlay(musI+1);
+  el.onerror=()=>{say('Musik gagal diputar: '+tr.name);if(n>1&&++musErr<=n)setTimeout(()=>{if(musEl===el)musPlay(musI+1)},800)};
+  musEl=el;el.play().catch(()=>{});musUI()}
+function musUI(){const e=$('musNow');if(!e)return;e.textContent=musList.length&&musList[musI]?'🎵 '+musList[musI].name+' ('+(musI+1)+'/'+musList.length+')'+(musEl&&!musEl.paused?'':' · jeda'):'Belum ada musik. Pilih file MP3 dari perangkatmu.'}
+function audUI(){$('vM').value=Math.round(AU.m*100);$('vS').value=Math.round(AU.s*100);$('vA').value=Math.round(AU.a*100);$('muteB').textContent=AU.mute?'🔊 Nyalakan':'🔇 Bisu';musUI();pvpUI()}
+function pvpUI(){const b=$('pvpB');if(!b)return;b.style.display=ch?'':'none';b.textContent='⚔️ Friendly fire: '+(S.pvp===0?'MATI':'AKTIF')+(isHost()?'':' (diatur host)');b.disabled=!isHost()}
+$('vM').oninput=e=>{AU.m=e.target.value/100;audVol()};$('vS').oninput=e=>{AU.s=e.target.value/100;audVol()};$('vA').oninput=e=>{AU.a=e.target.value/100;audVol()};
+$('muteB').onclick=()=>{AU.mute=AU.mute?0:1;audVol();audUI()};
+$('musPP').onclick=()=>{audInit();if(!musList.length){$('musFile').click();return}if(musEl&&!musEl.paused)musEl.pause();else if(musEl)musEl.play().catch(()=>{});else musPlay(0);setTimeout(musUI,80)};
+$('musNext').onclick=()=>{audInit();musPlay(musI+1)};$('musPrev').onclick=()=>{audInit();musPlay(musI-1)};
+$('musPick').onclick=()=>{audInit();$('musFile').click()};
+$('musFile').onchange=async e=>{const fs=[...e.target.files].filter(f=>/^audio\//.test(f.type)||/\.(mp3|ogg|wav|m4a|aac|flac|opus)$/i.test(f.name));e.target.value='';if(!fs.length){say('Pilih file audio (MP3, OGG, WAV, M4A)');return}
+  if(await musDbAdd(fs)){const before=musList.length;await musLoad();musPlay(before);say('🎵 '+fs.length+' lagu ditambahkan')}};
+$('musClr').onclick=async()=>{musStop();await musDbClear();await musLoad();say('Musik dihapus');musUI()};
+$('pvpB').onclick=()=>{if(!isHost())return;S.pvp=S.pvp===0?1:0;bcast(1);pvpUI();say('Friendly fire '+(S.pvp===0?'dimatikan':'diaktifkan'))};
+/* --- friendly fire --- */
+const DIRS={up:[0,-1],down:[0,1],left:[-1,0],right:[1,0]};
+function attack(){const now=performance.now();if(now<atkT||!started)return;atkT=now+450;const d=DIRS[me.f]||[0,1];
+  swings.push({d,t:now});sfx('swing');navigator.vibrate&&navigator.vibrate(8);
+  const hits=[];if(ch&&S.pvp!==0){for(const k in remote){const o=remote[k],dx=o.x-me.x,dy=o.y-me.y,L=Math.hypot(dx,dy);if(L>0&&L<82&&(dx*d[0]+dy*d[1])/L>.25)hits.push(k)}}
+  if(ch)send('atk',{id:myId,f:me.f,x:me.x,y:me.y,hits,n:me.n});
+  if(hits.length){sfx('hit');hits.forEach(k=>puff(remote[k].x/T,remote[k].y/T-.9,'hit'))}
+  else if(!ch)say('Serangan hanya berguna di Multiplayer ⚔️');
+  else if(S.pvp===0)say('Friendly fire dimatikan host')}
+function onAtk(p){if(p.id===myId)return;const o=remote[p.id];swings.push({d:DIRS[p.f]||[0,1],t:performance.now(),id:p.id,x:p.x,y:p.y});
+  const dist=o?Math.hypot(o.x-me.x,o.y-me.y):300;sfx('swing',{v:Math.max(.15,1-dist/500)});
+  (p.hits||[]).forEach(k=>{if(k===myId)gotHit(p,o);else if(remote[k]){puff(remote[k].x/T,remote[k].y/T-.9,'hit');sfx('hit',{v:Math.max(.15,1-Math.hypot(remote[k].x-me.x,remote[k].y-me.y)/500)})}})}
+function kb(dx,dy){const ok=(x,y)=>!solid(x-10,y)&&!solid(x+10,y)&&!solid(x-10,y-10)&&!solid(x+10,y-10);if(ok(me.x+dx,me.y+dy)){me.x+=dx;me.y+=dy}else if(ok(me.x+dx,me.y))me.x+=dx;else if(ok(me.x,me.y+dy))me.y+=dy}
+function gotHit(p,o){const now=performance.now();if(!started||S.pvp===0||now<iFr)return;if(o&&Math.hypot(o.x-me.x,o.y-me.y)>170)return;
+  iFr=now+500;vit.hp=Math.max(0,vit.hp-(8+(Math.random()*4|0)));hurtT=now+350;sfx('hurt');sfx('hit');navigator.vibrate&&navigator.vibrate(40);
+  const ax=o?o.x:p.x,ay=o?o.y:p.y,dx=me.x-ax,dy=me.y-ay,L=Math.hypot(dx,dy)||1;kb(dx/L*34,dy/L*34);puff(me.x/T,me.y/T-.9,'hit');
+  say('💥 '+(p.n||'Teman')+' memukulmu!');
+  if(vit.hp<=0){send('chat',{id:myId,n:'⚔️',col:'#e5484d',text:me.n+' dikalahkan '+(p.n||'Teman')});addLog(0,0,'Kamu dikalahkan '+(p.n||'Teman'),0,1);faint()}
+  vitUI()}
+function drawSwings(now){for(let i=swings.length-1;i>=0;i--){const s=swings[i],a=(now-s.t)/220;if(a>1){swings.splice(i,1);continue}
+  const src=s.id?(remote[s.id]||s):me;const ang=Math.atan2(s.d[1],s.d[0]);
+  g.save();g.translate(src.x,src.y-24);g.rotate(ang);g.lineCap='round';
+  g.strokeStyle='rgba(255,255,255,'+(.85*(1-a)).toFixed(2)+')';g.lineWidth=5*(1-a)+1;g.beginPath();g.arc(0,0,38,-.9+a*.5,.7+a*.5);g.stroke();
+  g.strokeStyle='rgba(255,200,80,'+(.5*(1-a)).toFixed(2)+')';g.lineWidth=2;g.beginPath();g.arc(0,0,46,-.8+a*.5,.7+a*.5);g.stroke();g.restore()}}
+
 const COLS=['#d9534f','#3b82d9','#e0a526','#9b59d0','#2fa58a','#e0689c'];
 let pick={g:'m',col:COLS[1]};
 function prev(c,fem){const x=c.getContext('2d'),gs=g;g=x;x.clearRect(0,0,c.width,c.height);person(40,88,'down',pick.col,0,0,{fem});g=gs}
@@ -709,7 +855,7 @@ function renderPick(){['pk1','pk2'].forEach(id=>{const e=$(id);
   e.querySelectorAll('.gb').forEach(b=>{const k=b.dataset.g;b.onclick=()=>{pick.g=k;renderPick()};prev(b.querySelector('canvas'),k==='f')});
   e.querySelectorAll('.swb').forEach(b=>b.onclick=()=>{pick.col=b.dataset.c;renderPick()})})}
 function show(id){document.querySelectorAll('.mp').forEach(e=>e.style.display=e.id===id?'flex':'none')}
-function begin(){started=true;loadInv();cam.s=1;resize();$('chatb').style.display=$('tradeb').style.display=ch?'':'none';if(ch)addLog(0,0,'Terhubung ke room '+code+' · tekan Enter untuk chat',0,1);$('menu').style.display='none';$('ui').style.display='block';hud()}
+function begin(){started=true;loadInv();cam.s=1;resize();audInit();musP.then(()=>{if(musList.length&&!musEl)musPlay(0)});$('chatb').style.display=$('tradeb').style.display=ch?'':'none';$('bAtk').style.display=ch?'':'none';if(ch)addLog(0,0,'Terhubung ke room '+code+' · tekan Enter untuk chat',0,1);$('menu').style.display='none';$('ui').style.display='block';hud()}
 function setup(mp){me.n=($(mp?'nm2':'nm1').value.trim()||'Petani').slice(0,12);me.g=pick.g;me.col=pick.col;try{localStorage.setItem('pfc2_char',JSON.stringify({g:pick.g,col:pick.col,n:me.n}))}catch(e){}}
 $('cont').onclick=()=>{setup(0);code='SOLO';try{const sv=JSON.parse(localStorage.getItem('pfc2_SOLO')||'null');if(sv&&sv.tiles)S=fixS(sv)}catch(e){}begin()};
 $('newg').onclick=()=>{setup(0);code='SOLO';try{localStorage.removeItem('pfc2_SOLO');localStorage.removeItem('pfc2_inv_SOLO')}catch(e){}begin()};
