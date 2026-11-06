@@ -64,6 +64,16 @@ kbd{font:inherit;font-size:.75em;background:rgba(0,0,0,.4);border-radius:4px;pad
 .mb.sm{padding:8px 12px}.row{display:flex;gap:8px}
 #menu input{background:rgba(255,255,255,.92);color:#222;border:2px solid #c99a4a}
 .mp ul{margin:0;padding-left:18px;line-height:1.7;font-size:13px}.mp small{text-align:center;color:#ffd24a}
+
+.pk{display:flex;flex-direction:column;gap:8px;align-items:center}
+.gs{display:flex;gap:10px}
+.gb{background:rgba(0,0,0,.35);border:2px solid #6b4a28;border-radius:12px;padding:4px 8px;color:#fff;cursor:pointer;display:flex;flex-direction:column;align-items:center;font:600 13px system-ui}
+.gb.on{border-color:#ffd24a;box-shadow:0 0 10px #ffd24a;background:rgba(255,210,74,.18)}
+.gb canvas{width:64px;height:77px}
+.sw{display:flex;gap:8px}
+.swb{width:26px;height:26px;border-radius:50%;border:3px solid rgba(255,255,255,.3);cursor:pointer;padding:0}
+.swb.on{border-color:#fff;transform:scale(1.15)}
+#menu{overflow:auto;padding:10px}#mbox{margin:auto}
 </style></head><body>
 <div id="wrap"><canvas id="c" width="960" height="672"></canvas>
 <div id="ui" style="display:none">
@@ -79,8 +89,8 @@ kbd{font:inherit;font-size:.75em;background:rgba(0,0,0,.4);border-radius:4px;pad
 <div id="menu"><div id="mbox">
 <div id="logo"><span>🌾</span><h1>PIXEL FARM</h1><p>Co-op Valley</p></div>
 <div id="m0" class="mp"><button class="mb" onclick="show('sp')">▶ Single Player</button><button class="mb" onclick="show('mp')">👥 Multiplayer</button><button class="mb sec" onclick="show('how')">❓ Cara Main</button></div>
-<div id="sp" class="mp"><h2>Single Player</h2><input id="nm1" placeholder="Nama kamu" maxlength="12"><button class="mb" id="cont">Lanjutkan</button><button class="mb" id="newg">Game Baru</button><button class="mb sec" onclick="show('m0')">← Kembali</button></div>
-<div id="mp" class="mp"><h2>Multiplayer</h2><input id="nm2" placeholder="Nama kamu" maxlength="12"><div class="row"><input id="rm" placeholder="Kode room" maxlength="12"><button class="mb sm" id="rnd">Acak</button></div><button class="mb" id="join">Gabung / Buat Room</button><small id="st"></small><button class="mb sec" onclick="show('m0')">← Kembali</button></div>
+<div id="sp" class="mp"><h2>Single Player</h2><input id="nm1" placeholder="Nama kamu" maxlength="12"><div id="pk1" class="pk"></div><button class="mb" id="cont">Lanjutkan</button><button class="mb" id="newg">Game Baru</button><button class="mb sec" onclick="show('m0')">← Kembali</button></div>
+<div id="mp" class="mp"><h2>Multiplayer</h2><input id="nm2" placeholder="Nama kamu" maxlength="12"><div id="pk2" class="pk"></div><div class="row"><input id="rm" placeholder="Kode room" maxlength="12"><button class="mb sm" id="rnd">Acak</button></div><button class="mb" id="join">Gabung / Buat Room</button><small id="st"></small><button class="mb sec" onclick="show('m0')">← Kembali</button></div>
 <div id="how" class="mp"><h2>Cara Main</h2><ul><li>WASD / panah: jalan</li><li>1-8: pilih alat &amp; bibit · Q/Z/scroll: ganti slot</li><li>Spasi: pakai alat di tile depan</li><li>E: bicara NPC, tidur di rumah, jual di toko</li><li>I: buka tas · Enter: chat · Esc: jeda</li></ul><button class="mb sec" onclick="show('m0')">← Kembali</button></div>
 </div></div>
 </div>
@@ -97,12 +107,12 @@ const $=id=>document.getElementById(id);
 const T=48,W=20,H=14,DAY=150,FX0=4,FX1=15,FY0=4,FY1=10;
 const CROPS=[0,{n:'Wortel',c:3,s:10,g:2,e:'🥕'},{n:'Tomat',c:6,s:20,g:3,e:'🍅'},{n:'Jagung',c:10,s:34,g:4,e:'🌽'},{n:'Labu',c:15,s:52,g:5,e:'🎃'},{n:'Bunga Matahari',c:8,s:26,g:3,e:'🌻'}];
 const TOOLS=['Cangkul','Siram','Tanam','Panen'];
-const cv=$('c'),g=cv.getContext('2d');
+const cv=$('c');let g=cv.getContext('2d');
 const rng=s=>()=>(s=(s*16807)%2147483647)/2147483647;
 const hash=s=>{let h=1;for(const c of String(s))h=(h*31+c.charCodeAt(0))%2147483000;return h+1};
 let S={d:1,gold:60,t:0,tiles:Array.from({length:W*H},()=>[0,0,0,0])};
 const myId=(crypto.randomUUID?crypto.randomUUID():String(Math.random()).slice(2));
-let me={x:9.5*T,y:5.5*T,f:'down',n:'Petani',col:'#d9534f',ph:0,mv:0},tool=0,sel=1,hot=0,modal='',pinfo={},lastGold=60,inv={},keys={},remote={},bub={},toast='',toastT=0,sb=null,ch=null,roster=[],code='solo',started=false;
+let me={x:9.5*T,y:5.5*T,f:'down',n:'Petani',g:'m',col:'#d9534f',ph:0,mv:0},tool=0,sel=1,hot=0,modal='',pinfo={},lastGold=60,inv={},keys={},remote={},bub={},toast='',toastT=0,sb=null,ch=null,roster=[],code='solo',started=false;
 const say=m=>{toast=m;toastT=2.5};
 const farm=(x,y)=>x>=FX0&&x<=FX1&&y>=FY0&&y<=FY1;
 const solid=(px,py)=>{const x=Math.floor(px/T),y=Math.floor(py/T);
@@ -135,14 +145,14 @@ async function connect(){
     ch=sb.channel('farm:'+code,{config:{broadcast:{self:false},presence:{key:myId}}});
     ch.on('presence',{event:'sync'},()=>{const st=ch.presenceState();roster=Object.keys(st).sort();
       for(const k in remote)if(!st[k])delete remote[k];
-      for(const k in st){if(k!==myId&&remote[k]){remote[k].n=st[k][0].n;remote[k].col=st[k][0].col}}pinfo=st;hud()});
+      for(const k in st){if(k!==myId&&remote[k]){remote[k].n=st[k][0].n;remote[k].col=st[k][0].col;remote[k].g=st[k][0].g}}pinfo=st;hud()});
     ch.on('presence',{event:'join'},()=>{if(isHost())setTimeout(bcast,400)});
-    ch.on('broadcast',{event:'pos'},({payload:p})=>{if(p.id===myId)return;const o=remote[p.id]||(remote[p.id]={x:p.x,y:p.y,ph:0});o.tx=p.x;o.ty=p.y;o.f=p.f;o.col=p.col;o.n=p.n;o.seen=performance.now()});
+    ch.on('broadcast',{event:'pos'},({payload:p})=>{if(p.id===myId)return;const o=remote[p.id]||(remote[p.id]={x:p.x,y:p.y,ph:0});o.tx=p.x;o.ty=p.y;o.f=p.f;o.col=p.col;o.n=p.n;o.g=p.g;o.seen=performance.now()});
     ch.on('broadcast',{event:'state'},({payload:p})=>{if(p.h!==roster[0]||p.h===myId)return;const t=S.t;S=p.s;if(Math.abs(S.t-t)<4)S.t=t;hud()});
     ch.on('broadcast',{event:'act'},({payload:p})=>{if(isHost()&&apply(p.a,p.by))bcast()});
     ch.on('broadcast',{event:'got'},({payload:p})=>{if(p.to===myId)inv[p.id]=(inv[p.id]||0)+1});
     ch.on('broadcast',{event:'chat'},({payload:p})=>{bub[p.id]={text:p.text,until:performance.now()+4500}});
-    await new Promise((res,rej)=>ch.subscribe(async s=>{if(s==='SUBSCRIBED'){await ch.track({n:me.n,col:me.col});res()}else if(s==='CHANNEL_ERROR'||s==='TIMED_OUT')rej(new Error('Realtime '+s))}));
+    await new Promise((res,rej)=>ch.subscribe(async s=>{if(s==='SUBSCRIBED'){await ch.track({n:me.n,col:me.col,g:me.g});res()}else if(s==='CHANNEL_ERROR'||s==='TIMED_OUT')rej(new Error('Realtime '+s))}));
     say('Terhubung ke room '+code);return true}
   catch(e){console.warn(e);sb=ch=null;$('st').textContent='Gagal terhubung: '+(e.message||e);return false}}
 
@@ -260,11 +270,13 @@ function crop(id,st,px,py,time){const sw=Math.sin(time/700+px)*2.2*(st+1)/4,h=[1
 function person(x,y,f,col,ph,mv,o){o=o||{};const sw=mv?Math.sin(ph)*5:0;g.save();g.translate(x,y);
   g.fillStyle='rgba(0,0,0,.28)';g.beginPath();g.ellipse(0,0,15,6,0,0,7);g.fill();
   g.fillStyle='#34344d';g.fillRect(-8,-14,6,14-Math.max(0,sw));g.fillRect(2,-14,6,14-Math.max(0,-sw));g.fillStyle='#2a1c10';g.fillRect(-9,-3-Math.max(0,sw),8,3);g.fillRect(1,-3-Math.max(0,-sw),8,3);
+  if(o.fem){g.fillStyle=o.hair||'#3a2216';g.beginPath();g.roundRect(-12,-53,24,32,10);g.fill();g.fillStyle=col;g.beginPath();g.moveTo(-11,-20);g.lineTo(11,-20);g.lineTo(16,-6);g.lineTo(-16,-6);g.closePath();g.fill()}
   g.fillStyle=col;g.beginPath();g.roundRect(-11,-36,22,24,7);g.fill();g.fillStyle='rgba(255,255,255,.18)';g.fillRect(-9,-34,5,18);
   g.fillStyle='#f0c59b';g.fillRect(-15,-34+sw/2,5,15);g.fillRect(10,-34-sw/2,5,15);
   g.beginPath();g.arc(0,-44,10,0,7);g.fill();
-  g.fillStyle=o.hair||'#6a3f1f';g.beginPath();g.arc(0,-46,10.5,Math.PI,0);g.fill();if(f==='up'){g.beginPath();g.arc(0,-44,10,0,7);g.fill()}
+  g.fillStyle=o.hair||(o.fem?'#3a2216':'#6a3f1f');g.beginPath();g.arc(0,-46,10.5,Math.PI,0);g.fill();if(f==='up'){g.beginPath();g.arc(0,-44,10,0,7);g.fill();if(o.fem){g.beginPath();g.roundRect(-12,-53,24,30,10);g.fill()}}
   else{const ox=f==='left'?-3:f==='right'?3:0;g.fillStyle='#222';g.fillRect(-5+ox,-44,2.5,3);g.fillRect(3+ox,-44,2.5,3)}
+  if(o.fem&&!o.hat){g.fillStyle='#ff6fa0';g.beginPath();g.arc(8,-53,3.5,0,7);g.arc(13,-52,3,0,7);g.fill()}
   if(o.hat){g.fillStyle=o.hat;g.beginPath();g.ellipse(0,-49,17,5,0,0,7);g.fill();g.beginPath();g.arc(0,-50,9,Math.PI,0);g.fill()}
   g.restore()}
 function chicken(x,y,f,ph,mv){g.save();g.translate(x,y);g.scale(f==='left'?-1:1,1);const hop=mv?Math.abs(Math.sin(ph))*3:0;
@@ -283,7 +295,7 @@ function label(x,y,t){g.font='600 12px sans-serif';g.textAlign='center';g.lineWi
 /* ===== NPC (gerak deterministik dari jam, sama di semua klien) ===== */
 const NPC=[
  {id:'joko',k:'h',n:'Pak Joko',home:[10,2.6],r:8,col:'#3f6fc0',hat:'#e2c26a',L:['Wortel paling cepat panen!','Siram tiap hari biar tumbuh.','Jagung mahal, tapi sabar ya.','Labu itu juara harganya!']},
- {id:'sari',k:'h',n:'Bu Sari',home:[12,7],r:6,col:'#c94f86',hair:'#24150e',L:['Kerja bareng lebih cepat, lho.','Jual panen di toko ya.','Bunga matahari cantik sekali.']},
+ {id:'sari',k:'h',fem:1,n:'Bu Sari',home:[12,7],r:6,col:'#c94f86',hair:'#24150e',L:['Kerja bareng lebih cepat, lho.','Jual panen di toko ya.','Bunga matahari cantik sekali.']},
  {id:'ayam1',k:'c',home:[8,12],r:2.5},{id:'ayam2',k:'c',home:[10,12],r:2.5},{id:'ayam3',k:'c',home:[7,2.5],r:2},
  {id:'kucing',k:'k',home:[15,12],r:3}];
 function npcPos(n,now){const seg=n.k==='h'?14000:6000,k=Math.floor(now/seg),ph=now%seg,hs=hash(n.id);
@@ -299,8 +311,8 @@ function draw(now,time){
     if(t[1]){const c=CROPS[t[1]],st=t[2]>=c.g?3:Math.min(2,Math.floor(t[2]/c.g*3));crop(t[1],st,x*T,y*T,time)}}
   const[tx,ty]=target();if(farm(tx,ty)){g.strokeStyle='rgba(255,255,255,.9)';g.lineWidth=2;g.setLineDash([6,4]);g.beginPath();g.roundRect(tx*T+3,ty*T+3,T-6,T-6,7);g.stroke();g.setLineDash([])}
   const E=[];
-  E.push({y:me.y,d:()=>{person(me.x,me.y,me.f,me.col,me.ph,me.mv);label(me.x,me.y-66,me.n);const q=bub[myId];if(q&&performance.now()<q.until)say2(me.x,me.y-72,q.text)}});
-  for(const id in remote){const o=remote[id];E.push({y:o.y,d:()=>{person(o.x,o.y,o.f||'down',o.col||'#3b82d9',o.ph,o.mv);label(o.x,o.y-66,o.n||'Teman');const q=bub[id];if(q&&performance.now()<q.until)say2(o.x,o.y-72,q.text)}})}
+  E.push({y:me.y,d:()=>{person(me.x,me.y,me.f,me.col,me.ph,me.mv,{fem:me.g==='f'});label(me.x,me.y-66,me.n);const q=bub[myId];if(q&&performance.now()<q.until)say2(me.x,me.y-72,q.text)}});
+  for(const id in remote){const o=remote[id];E.push({y:o.y,d:()=>{person(o.x,o.y,o.f||'down',o.col||'#3b82d9',o.ph,o.mv,{fem:o.g==='f'});label(o.x,o.y-66,o.n||'Teman');const q=bub[id];if(q&&performance.now()<q.until)say2(o.x,o.y-72,q.text)}})}
   const nw=Date.now();
   for(const n of NPC){const p=npcPos(n,nw);E.push({y:p.y,d:()=>{
     if(n.k==='h'){person(p.x,p.y,p.f,n.col,time/110,p.mv,n);label(p.x,p.y-66,n.n)}else if(n.k==='c')chicken(p.x,p.y,p.f,time/80,p.mv);else cat(p.x,p.y,p.f,time/200,p.mv);
@@ -320,13 +332,20 @@ function loop(now){const dt=Math.min(.05,(now-last)/1000);last=now;
     me.f=Math.abs(dx)>Math.abs(dy)?(dx>0?'right':'left'):(dy>0?'down':'up')}
   if(started&&(ch||!modal)){S.t+=dt;if(S.t>=DAY){if(isHost()){nextDay();bcast()}else S.t=DAY}}
   toastT-=dt;for(const k in remote){const o=remote[k];if(o.tx==null)continue;const mx=o.tx-o.x,my=o.ty-o.y;o.mv=Math.hypot(mx,my)>2;if(o.mv)o.ph+=dt*12;o.x+=mx*Math.min(1,dt*12);o.y+=my*Math.min(1,dt*12)}
-  pAcc+=dt;if(pAcc>.1&&ch&&started){pAcc=0;const k=[Math.round(me.x),Math.round(me.y),me.f].join();if(k!==lastP){lastP=k;send('pos',{id:myId,x:me.x,y:me.y,f:me.f,col:me.col,n:me.n})}}
+  pAcc+=dt;if(pAcc>.1&&ch&&started){pAcc=0;const k=[Math.round(me.x),Math.round(me.y),me.f].join();if(k!==lastP){lastP=k;send('pos',{id:myId,x:me.x,y:me.y,f:me.f,col:me.col,n:me.n,g:me.g})}}
   hAcc+=dt;if(hAcc>1){hAcc=0;hud();if(ch&&isHost()&&Math.floor(S.t)%4===0)send('state',{h:myId,s:S})}
   draw(now,now);if(started)minimap(now);requestAnimationFrame(loop)}
 
+const COLS=['#d9534f','#3b82d9','#e0a526','#9b59d0','#2fa58a','#e0689c'];
+let pick={g:'m',col:COLS[1]};
+function prev(c,fem){const x=c.getContext('2d'),gs=g;g=x;x.clearRect(0,0,c.width,c.height);person(40,88,'down',pick.col,0,0,{fem});g=gs}
+function renderPick(){['pk1','pk2'].forEach(id=>{const e=$(id);
+  e.innerHTML=`<div class="gs">${['m','f'].map(k=>`<button class="gb ${pick.g===k?'on':''}" data-g="${k}"><canvas width="80" height="96"></canvas><span>${k==='m'?'Cowo':'Cewe'}</span></button>`).join('')}</div><div class="sw">${COLS.map(c=>`<button class="swb ${pick.col===c?'on':''}" data-c="${c}" style="background:${c}"></button>`).join('')}</div>`;
+  e.querySelectorAll('.gb').forEach(b=>{const k=b.dataset.g;b.onclick=()=>{pick.g=k;renderPick()};prev(b.querySelector('canvas'),k==='f')});
+  e.querySelectorAll('.swb').forEach(b=>b.onclick=()=>{pick.col=b.dataset.c;renderPick()})})}
 function show(id){document.querySelectorAll('.mp').forEach(e=>e.style.display=e.id===id?'flex':'none')}
 function begin(){started=true;$('menu').style.display='none';$('ui').style.display='block';hud()}
-function setup(mp){me.n=($(mp?'nm2':'nm1').value.trim()||'Petani').slice(0,12);me.col=['#d9534f','#3b82d9','#e0a526','#9b59d0','#2fa58a','#e0689c'][hash(me.n+myId)%6]}
+function setup(mp){me.n=($(mp?'nm2':'nm1').value.trim()||'Petani').slice(0,12);me.g=pick.g;me.col=pick.col;try{localStorage.setItem('pfc2_char',JSON.stringify({g:pick.g,col:pick.col,n:me.n}))}catch(e){}}
 $('cont').onclick=()=>{setup(0);code='SOLO';try{const sv=JSON.parse(localStorage.getItem('pfc2_SOLO')||'null');if(sv&&sv.tiles)S=sv}catch(e){}begin()};
 $('newg').onclick=()=>{setup(0);code='SOLO';try{localStorage.removeItem('pfc2_SOLO')}catch(e){}begin()};
 $('rnd').onclick=()=>{$('rm').value=Math.random().toString(36).slice(2,7).toUpperCase()};
@@ -336,5 +355,7 @@ $('join').onclick=async()=>{setup(1);code=$('rm').value.trim().toUpperCase().rep
 try{if(!localStorage.getItem('pfc2_SOLO'))$('cont').disabled=true}catch(e){}
 if(!/^https?:/.test(SB_URL))$('st').textContent='⚠ Supabase belum diisi di file ini.';
 show('m0');
+try{const sv=JSON.parse(localStorage.getItem('pfc2_char')||'null');if(sv){pick.g=sv.g==='f'?'f':'m';if(COLS.includes(sv.col))pick.col=sv.col;if(sv.n)$('nm1').value=$('nm2').value=sv.n}}catch(e){}
+renderPick();
 buildBG();hud();requestAnimationFrame(loop);
 </script></body></html>
