@@ -274,21 +274,157 @@ button .ic,.cell .ic,.slot .ic{vertical-align:middle}
 .mcard{padding:10px;gap:8px}
 }
 
+/* ===== v11: HUD rapi, hotbar lega + tombol ⋯, tas game, absen harian, gacha ===== */
+:root{--r0:#9aa3ad;--r1:#6fd07a;--r2:#5aa8f0;--r3:#b58af0;--r4:#ffc83a}
+@keyframes v11spin{to{transform:rotate(360deg)}}
+@keyframes v11float{50%{transform:translateY(-8px)}}
+@keyframes v11shine{from{transform:translateX(-140%) skewX(-20deg)}to{transform:translateX(340%) skewX(-20deg)}}
+@keyframes v11glow{50%{box-shadow:0 0 22px 4px color-mix(in srgb,var(--rc,#ffd24a) 70%,transparent)}}
+@keyframes v11pop{0%{opacity:0;transform:scale(.3) rotate(-8deg)}60%{transform:scale(1.15) rotate(2deg)}100%{opacity:1;transform:none}}
+@keyframes v11shake{0%,100%{transform:translate(0,0) rotate(0)}15%{transform:translate(-5px,2px) rotate(-5deg)}30%{transform:translate(5px,-2px) rotate(5deg)}45%{transform:translate(-4px,1px) rotate(-4deg)}60%{transform:translate(4px,-1px) rotate(4deg)}75%{transform:translate(-2px,0) rotate(-2deg)}}
+@keyframes v11flash{0%{opacity:0}30%{opacity:1}100%{opacity:0}}
+@keyframes v11rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+@keyframes v11ray{to{transform:translate(-50%,-50%) rotate(360deg)}}
+@keyframes v11fall{0%{transform:translateY(-10vh) rotate(0);opacity:1}100%{transform:translateY(110vh) rotate(720deg);opacity:.9}}
+
+/* --- kanan atas: tombol tidak saling menimpa --- */
+#side{display:grid;grid-template-columns:repeat(3,auto);gap:6px;justify-content:end;align-self:flex-end}
+#side .ib{width:38px;height:38px;padding:0;margin:0}
+#bagb{display:none}
+
+/* --- hotbar: slot lega + ⋯ di pojok --- */
+#hot{display:flex;align-items:center;gap:6px;padding:7px 8px 7px 10px;max-width:min(94vw,680px)}
+#hs{display:flex;gap:10px;align-items:center;overflow-x:auto;padding:7px 4px 4px;margin-top:-3px;min-width:0;scrollbar-width:none;touch-action:pan-x}
+#hs::-webkit-scrollbar{display:none}
+#hs .slot{flex:none;width:clamp(38px,4.6vw,50px);height:clamp(38px,4.6vw,50px)}
+#hs .slot.on{transform:translateY(-4px)}
+.more{flex:none;position:relative;width:42px;height:42px;margin-left:6px;border-radius:12px;border:2px solid var(--gold);background:linear-gradient(180deg,#6b4c28,#2f2012);cursor:pointer;display:grid;place-items:center;box-shadow:0 3px 0 #140c06,inset 0 1px 0 rgba(255,235,190,.3);transition:transform .1s,filter .15s}
+.more::before{content:'';position:absolute;left:-8px;top:8px;bottom:8px;width:2px;border-radius:2px;background:rgba(232,190,104,.35)}
+.more:hover{filter:brightness(1.2)}.more:active{transform:translateY(2px);box-shadow:0 1px 0 #140c06}
+.dots{display:flex;gap:3.5px}.dots i{width:6px;height:6px;border-radius:50%;background:#ffe08a;box-shadow:0 1px 0 rgba(0,0,0,.5)}
+.more .nb{position:absolute;top:-5px;right:-5px;min-width:17px;height:17px;border-radius:9px;background:#e5484d;color:#fff;font:700 10px/17px system-ui;text-align:center;border:1.5px solid #2a1c10;display:none;padding:0 3px}
+.more.has .nb{display:block;animation:v11glow 1.3s infinite;--rc:#e5484d}
+/* HP: hotbar hanya di antara joystick dan tombol aksi */
+@media (pointer:coarse) and (orientation:landscape){
+  #hot{left:calc(150px + var(--sl));right:calc(210px + var(--sr));transform:none;max-width:none;justify-content:space-between}
+  #hs{flex:1}
+}
+@media (pointer:coarse) and (orientation:portrait){
+  #hot{left:calc(8px + var(--sl));right:calc(8px + var(--sr));transform:none;max-width:none;justify-content:space-between}
+  #hs{flex:1}
+}
+@media (max-height:480px) and (orientation:landscape){
+  #hs{gap:8px}#hs .slot{width:34px;height:34px}.more{width:36px;height:36px}
+}
+
+/* --- tombol Hari / Absen di kiri bawah HUD kanan --- */
+#dayb{position:relative}
+#dayb.has{animation:v11glow 1.6s infinite;--rc:#ffd24a;border-color:#ffd24a}
+#dayb .nb{position:absolute;top:-5px;right:-5px;width:14px;height:14px;border-radius:50%;background:#e5484d;border:1.5px solid #2a1c10;display:none}
+#dayb.has .nb{display:block}
+
+/* --- modal: tema game --- */
+.modal{background:radial-gradient(ellipse at 50% 35%,rgba(40,26,60,.5),rgba(0,0,0,.82));-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px)}
+.mcard{position:relative;border-radius:18px;border:2px solid var(--gold);box-shadow:0 12px 44px rgba(0,0,0,.65),inset 0 0 0 3px rgba(0,0,0,.35),inset 0 2px 0 rgba(255,235,190,.3)}
+.mcard.big{width:min(96%,700px)}
+.mh{padding-bottom:8px;border-bottom:2px solid rgba(232,190,104,.3);font-size:1.22em}
+.mh b{background:linear-gradient(180deg,#fff4c8,#e8be68 60%,#b8862e);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 2px 0 rgba(0,0,0,.55))}
+.mh .meta{margin-left:auto;margin-right:8px;font-size:.62em;color:#ffe08a;background:rgba(0,0,0,.4);padding:3px 10px;border-radius:999px;border:1px solid rgba(232,190,104,.35)}
+.mb{position:relative;overflow:hidden}
+.mb::after{content:'';position:absolute;top:0;left:0;width:35%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.4),transparent);transform:translateX(-140%) skewX(-20deg);pointer-events:none}
+.mb:not(:disabled):hover::after{animation:v11shine .7s}
+.mb.gold{background:linear-gradient(180deg,#ffe58a,#e0a526 60%,#b8790e);color:#3a2412;border-color:#7a4a08;box-shadow:0 4px 0 #7a4a08;text-shadow:0 1px 0 rgba(255,255,255,.4)}
+
+/* --- tas --- */
+.bagtop{display:flex;gap:6px;overflow-x:auto;padding:2px 2px 6px;touch-action:pan-x;scrollbar-width:none}
+.bagtop::-webkit-scrollbar{display:none}
+.tab{flex:none;display:flex;align-items:center;gap:5px;padding:6px 12px;border-radius:999px;border:1.5px solid rgba(232,190,104,.35);background:rgba(0,0,0,.35);color:#ffeccc;font:inherit;font-size:12.5px;cursor:pointer;transition:filter .15s}
+.tab:hover{filter:brightness(1.25)}
+.tab.on{background:linear-gradient(180deg,#ffe08a,#e0a526);color:#3a2412;border-color:#fff3c0;box-shadow:0 0 12px rgba(255,210,74,.55)}
+.tab em{font-style:normal;font-size:10.5px;opacity:.75}
+.bw{align-items:flex-start}
+#grid{grid-template-columns:repeat(5,clamp(46px,8.4vw,62px));gap:7px;max-height:min(340px,48dvh);overflow-y:auto;padding:4px;align-content:start;touch-action:pan-y;scrollbar-width:thin;scrollbar-color:#c99a4a rgba(0,0,0,.3)}
+.cell{--rc:rgba(232,190,104,.3);border-radius:12px;border:2px solid var(--rc);background:radial-gradient(circle at 50% 30%,rgba(255,255,255,.09),rgba(0,0,0,.5));transition:transform .12s}
+.cell:not(.empty):hover{transform:translateY(-2px)}
+.cell.r0{--rc:#6f7882}.cell.r1{--rc:var(--r1)}.cell.r2{--rc:var(--r2)}.cell.r3{--rc:var(--r3)}.cell.r4{--rc:var(--r4)}
+.cell.r1,.cell.r2,.cell.r3,.cell.r4{box-shadow:inset 0 0 12px color-mix(in srgb,var(--rc) 40%,transparent),0 0 7px color-mix(in srgb,var(--rc) 35%,transparent)}
+.cell.r4{animation:v11glow 2.4s infinite}
+.cell.on{border-color:#fff3c0;box-shadow:0 0 0 2px #ffd24a,0 0 14px #ffd24a;transform:scale(1.06)}
+.cell.lim::after{content:'LTD';position:absolute;top:2px;right:3px;font:700 8px system-ui;color:#fff;background:#e5484d;border-radius:4px;padding:0 3px}
+#info{min-width:170px;border:1.5px solid rgba(232,190,104,.3);border-radius:14px;max-height:min(340px,48dvh);overflow:auto;touch-action:pan-y}
+.ihead{display:flex;gap:10px;align-items:center;padding:8px;border-radius:12px;border:1.5px solid var(--rc,#6b4a28);background:linear-gradient(135deg,color-mix(in srgb,var(--rc,#6b4a28) 30%,#1a110a),#1a110a);box-shadow:0 0 14px color-mix(in srgb,var(--rc,#6b4a28) 45%,transparent)}
+.ihead .big{font-size:42px;line-height:1;filter:drop-shadow(0 0 8px var(--rc,transparent))}
+.ihead h3{margin:0;font-size:15px}
+.rtag{font-style:normal;font-size:10.5px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--rc,#ccc)}
+.iact{display:flex;flex-direction:column;gap:7px;margin:8px 0}
+.iempty{display:flex;flex-direction:column;align-items:center;gap:6px;padding:22px 6px;text-align:center;opacity:.75}
+.iempty .big{font-size:42px;opacity:.6}
+.bfoot{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:12px}
+.bfoot .mb{flex:1;min-width:120px}
+
+/* --- absen harian --- */
+#daily .mcard{overflow-x:hidden;overflow-y:auto;background:radial-gradient(ellipse at 50% -10%,#6b4a8a 0%,#3a2a52 30%,#241a14 75%)}
+#daily .mcard::before{content:'';position:absolute;left:50%;top:-40%;width:160%;aspect-ratio:1;background:repeating-conic-gradient(from 0deg,rgba(255,224,138,.12) 0 8deg,transparent 8deg 20deg);transform:translate(-50%,-50%);animation:v11ray 40s linear infinite;pointer-events:none}
+#daily .mcard>*{position:relative}
+.dtop{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.strk{display:flex;align-items:center;gap:6px;padding:4px 12px;border-radius:999px;background:rgba(0,0,0,.4);border:1px solid rgba(255,200,80,.5);color:#ffe08a;font-weight:600;font-size:13px}
+.strk b{color:#fff}
+.dgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.dc{--rc:#6f7882;position:relative;display:flex;flex-direction:column;align-items:center;gap:2px;padding:20px 4px 7px;border-radius:14px;border:2px solid var(--rc);background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(0,0,0,.45));text-align:center;overflow:hidden;font:inherit;color:#ffeccc;cursor:default;animation:v11rise .45s both}
+.dc.r1{--rc:var(--r1)}.dc.r2{--rc:var(--r2)}.dc.r3{--rc:var(--r3)}.dc.r4{--rc:var(--r4)}
+.dc .dn{font-size:10.5px;opacity:.8;letter-spacing:.5px;text-transform:uppercase}
+.dc .de{font-size:clamp(26px,5.5vw,36px);line-height:1.1;filter:drop-shadow(0 2px 4px rgba(0,0,0,.5))}
+.dc .dl{font-size:10.5px;line-height:1.2;min-height:25px;display:flex;align-items:center}
+.dc .ds{position:absolute;top:4px;left:5px;font:700 8.5px system-ui;padding:1px 5px;border-radius:5px;background:var(--rc);color:#1a110a;letter-spacing:.5px}
+.dc.today{border-color:#fff3c0;box-shadow:0 0 0 2px #ffd24a,0 0 22px rgba(255,210,74,.7);cursor:pointer;animation:v11rise .45s both,v11glow 1.6s infinite .5s;--rc2:#ffd24a}
+.dc.today::after{content:'';position:absolute;top:0;left:0;width:40%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.35),transparent);animation:v11shine 2.2s infinite}
+.dc.done{opacity:.55}.dc.done::before{content:'✔';position:absolute;inset:0;display:grid;place-items:center;font-size:34px;color:#8fe06a;background:rgba(0,0,0,.45);text-shadow:0 2px 0 #1f4a17;z-index:2}
+.dc.miss{opacity:.4;filter:grayscale(.8)}
+.dc.lock{opacity:.8}
+.dc.wide{grid-column:span 2}
+.dnote{font-size:11.5px;text-align:center;opacity:.8}
+.drule{font-size:11px;opacity:.65;text-align:center}
+
+/* --- layar hadiah / gacha --- */
+#gacha{z-index:20;background:radial-gradient(ellipse at 50% 45%,rgba(40,20,70,.75),rgba(0,0,0,.94))}
+.gstage{position:relative;width:min(92%,420px);min-height:min(78dvh,520px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;color:#ffeccc;text-align:center;overflow:visible}
+.grays{position:absolute;left:50%;top:44%;width:150%;aspect-ratio:1;transform:translate(-50%,-50%);background:repeating-conic-gradient(from 0deg,color-mix(in srgb,var(--rc,#ffd24a) 40%,transparent) 0 7deg,transparent 7deg 18deg);animation:v11ray 14s linear infinite;opacity:0;transition:opacity .6s;-webkit-mask-image:radial-gradient(circle,#000 0,transparent 62%);mask-image:radial-gradient(circle,#000 0,transparent 62%);pointer-events:none}
+.gstage.rev .grays{opacity:1}
+.gbox{position:relative;font-size:clamp(90px,26vw,130px);line-height:1;filter:drop-shadow(0 0 26px var(--rc,#ffd24a));animation:v11float 2.2s ease-in-out infinite;cursor:pointer;background:none;border:0;padding:0}
+.gbox.shake{animation:v11shake .6s infinite}
+.gtap{font-size:13px;letter-spacing:2px;opacity:.85;animation:v11glow 1.4s infinite}
+.gflash{position:fixed;inset:0;background:#fff;opacity:0;pointer-events:none;z-index:25}
+.gflash.on{animation:v11flash .9s}
+.gitems{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;position:relative;z-index:2}
+.gi{--rc:#6f7882;width:92px;padding:10px 6px 8px;border-radius:16px;border:2px solid var(--rc);background:linear-gradient(180deg,color-mix(in srgb,var(--rc) 28%,#1a110a),#150d07);box-shadow:0 0 24px color-mix(in srgb,var(--rc) 60%,transparent);animation:v11pop .55s both;display:flex;flex-direction:column;align-items:center;gap:3px}
+.gi.r1{--rc:var(--r1)}.gi.r2{--rc:var(--r2)}.gi.r3{--rc:var(--r3)}.gi.r4{--rc:var(--r4)}
+.gi .ge{font-size:44px;line-height:1.1;filter:drop-shadow(0 0 10px var(--rc))}
+.gi b{font-size:12.5px;line-height:1.15}.gi small{font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--rc);opacity:1}
+.gi.big{width:150px;padding:16px 10px}.gi.big .ge{font-size:76px}.gi.big b{font-size:15px}
+.gtitle{font:700 clamp(22px,6vw,32px)/1.1 'Fredoka',system-ui;letter-spacing:3px;color:var(--rc,#ffe08a);text-shadow:0 3px 0 rgba(0,0,0,.6),0 0 22px var(--rc,#ffd24a);position:relative;z-index:2;animation:v11pop .5s both}
+.gcon{position:fixed;left:0;top:0;width:100%;height:100%;pointer-events:none;overflow:hidden;z-index:21}
+.gcon i{position:absolute;top:-6vh;font-style:normal;animation:v11fall linear forwards}
+.gbtn{position:relative;z-index:2;display:flex;gap:8px;width:100%;max-width:300px}.gbtn .mb{flex:1}
+@media (max-height:480px){.gstage{min-height:0;gap:6px}.gbox{font-size:84px}.gi{width:78px}.gi .ge{font-size:34px}.gi.big{width:110px}.gi.big .ge{font-size:48px}.dgrid{grid-template-columns:repeat(8,1fr);gap:5px}.dc{padding:18px 2px 5px}.dc .de{font-size:22px}.dc .dl{font-size:9px}.dc.wide{grid-column:span 1}#daily .mcard{padding:8px 10px}}
+@media (max-width:480px){#side{gap:5px}#side .ib{width:34px;height:34px;font-size:17px}}
+
 </style></head><body>
 <div id="fade"></div><div id="wrap"><canvas id="c" width="960" height="672"></canvas>
 <div id="ui" style="display:none"><div id="hurt"></div>
 <div id="tlc"><div id="tl" class="panel"><div id="av"></div><div><b id="pn"></b><div id="dt"></div></div><div id="gold"></div></div>
 <div id="vit" class="panel"><div class="vr"><span>❤️</span><i class="vb"><u id="vHp"></u></i><em id="vHpN"></em></div><div class="vr"><span>🍗</span><i class="vb"><u id="vFd"></u></i><em id="vFdN"></em></div><div class="vr"><span>💧</span><i class="vb"><u id="vWt"></u></i><em id="vWtN"></em></div></div><div id="roster"></div></div>
 <div id="rt"><div id="tr" class="panel"><canvas id="mm" width="192" height="132"></canvas><div id="mmcap"></div></div>
-<div id="side"><button class="panel ib" id="bagb" onclick="openModal('bag')" title="Tas (I)">🎒</button><button class="panel ib" id="chatb" onclick="toggleChat()" title="Chat (Enter)" style="display:none">💬<i id="unread"></i></button><button class="panel ib" id="tradeb" onclick="openModal('trade')" title="Trade" style="display:none">🤝</button><button class="panel ib" onclick="openModal('pause')" title="Jeda (Esc)">⏸</button><button class="panel ib" id="fsb" title="Layar penuh">⛶</button></div><div id="dl" class="panel"></div></div>
-<div id="hot" class="panel"></div>
+<div id="side"><button class="panel ib" id="dayb" onclick="openModal('daily')" title="Absen Harian">📅<i class="nb"></i></button><button class="panel ib" id="chatb" onclick="toggleChat()" title="Chat (Enter)" style="display:none">💬<i id="unread"></i></button><button class="panel ib" id="tradeb" onclick="openModal('trade')" title="Trade" style="display:none">🤝</button><button class="panel ib" onclick="openModal('pause')" title="Jeda (Esc)">⏸</button><button class="panel ib" id="fsb" title="Layar penuh">⛶</button></div><div id="dl" class="panel"></div></div>
+<div id="hot" class="panel"><div id="hs"></div><button class="more" id="moreB" onclick="openModal('bag')" title="Semua inventori (I)" aria-label="Inventori"><span class="dots"><i></i><i></i><i></i></span><em class="nb" id="moreN"></em></button></div>
 <div id="hint"></div><div id="toast"></div><div id="pops"></div>
 <div id="chatw" class="panel"><div class="mh"><b>💬 Chat</b><span id="cmeta"></span><button class="x" onclick="toggleChat(0)">✕</button></div>
 <div id="clog"></div><div id="quick"></div>
 <div id="cform"><input id="ci" placeholder="Ketik pesan…" maxlength="80" autocomplete="off" enterkeyhint="send"><button class="mb sm" id="csend">➤</button></div></div>
 <div id="ctl"><div id="joy"><div id="knob"></div></div><div id="acts"><button id="bUse" data-a="use"><span id="bUseI">⛏️</span><small id="bUseL">Pakai</small></button><button id="bE" data-a="e"><span id="eI">✋</span><small id="eL">Aksi</small></button><button id="bAtk" data-a="atk" style="display:none"><span>⚔️</span><small>Serang</small></button></div></div>
 </div>
-<div id="bag" class="modal"><div class="panel mcard"><div class="mh"><b>🎒 Tas</b><button class="x" onclick="closeModal()">✕</button></div><div class="bw"><div id="grid"></div><div id="info"></div></div></div></div>
+<div id="bag" class="modal"><div class="panel mcard big"><div class="mh"><b>🎒 Tas</b><span class="meta" id="bagMeta"></span><button class="x" onclick="closeModal()">✕</button></div><div class="bagtop" id="btabs"></div><div class="bw"><div id="grid"></div><div id="info"></div></div><div class="bfoot"><button class="mb sec sm" onclick="openModal('daily')">📅 Absen Harian</button><button class="mb sec sm" onclick="quickEat()">🍴 Makan cepat</button></div></div></div>
+<div id="daily" class="modal"><div class="panel mcard big"><div class="mh"><b>📅 Absen Harian</b><span class="meta">Reset 00:00</span><button class="x" onclick="closeModal()">✕</button></div><div id="dbody" style="display:flex;flex-direction:column;gap:10px"></div></div></div>
+<div id="gacha" class="modal"><div class="gstage" id="gst"></div></div>
 <div id="pause" class="modal"><div class="panel mcard" style="max-width:340px"><div class="mh"><b>⏸ Jeda &amp; Pengaturan</b></div><button class="mb" onclick="closeModal()">▶ Lanjutkan</button>
 <div class="aset"><label>🎵 Musik<input type="range" id="vM" min="0" max="100"></label><label>🔊 Efek suara<input type="range" id="vS" min="0" max="100"></label><label>🍃 Suasana<input type="range" id="vA" min="0" max="100"></label>
 <div id="musNow" class="mut"></div><div id="musLs"></div>
@@ -351,6 +487,7 @@ function apply(a,by){
   if(a.t==='sell'){S.gold+=Math.max(0,Math.min(99999,a.v|0));return 1}
   if(a.t==='sleep'){nextDay();return 1}
   if(a.t==='buy'){const n=Math.max(1,Math.min(10,a.n|0)),c=CROPS[a.c];if(!c||!(a.c>=1&&a.c<=5)||S.gold<c.c*n)return 0;S.gold-=c.c*n;lootTo(by,{},{[a.c]:n},'Beli');return 1}
+  if(a.t==='fert'){let n=0;S.tiles.forEach(t=>{if(t[0]&&t[1]&&!t[3]&&t[2]<CROPS[t[1]].g){t[3]=1;n++}});return n?1:0}
   if(!farm(a.x,a.y))return 0;const t=S.tiles[a.x+a.y*W];
   if(a.t==='hoe'&&!t[0]){t[0]=1;return 1}
   if(a.t==='water'&&t[0]&&t[1]&&!t[3]&&t[2]<CROPS[t[1]].g){t[3]=1;return 1}
@@ -369,7 +506,7 @@ let syncN=0,lastPT=0,drinkAt=0,vit={hp:100,food:85,water:85},vwarn={f:0,w:0};
 const dirty=new Set();
 const FD={1:{f:14,w:2},2:{f:10,w:12},3:{f:22,w:0},4:{f:30,w:4},5:{f:8,w:0},6:{f:20,w:0},7:{f:26,w:0},8:{f:14,w:0},9:{f:10,w:0,h:-5},10:{f:38,w:0},11:{f:34,w:0,h:6},12:{f:26,w:0},13:{f:32,w:24,h:8}};
 const TK=[[6,255,170,110,.24],[8,255,225,170,.06],[11,255,255,240,0],[14,255,250,225,0],[16,255,200,110,.12],[17.7,255,130,60,.26],[19,95,60,125,.42],[20.5,16,26,78,.48],[24,12,20,70,.52]];
-const snapInv=()=>JSON.stringify({inv,sd,st:stash,vit:{hp:Math.round(vit.hp),food:Math.round(vit.food),water:Math.round(vit.water)}});
+const snapInv=()=>JSON.stringify({inv,sd,xi,st:stash,vit:{hp:Math.round(vit.hp),food:Math.round(vit.food),water:Math.round(vit.water)}});
 function applyA(a,by){const ok=apply(a,by);if(ok&&Number.isInteger(a.x)&&Number.isInteger(a.y))dirty.add(a.x+a.y*W);return ok}
 function bdelta(){if(!ch)return;const tl=[];dirty.forEach(i=>tl.push([i,S.tiles[i]]));dirty.clear();send('delta',{h:myId,tl,gold:S.gold,d:S.d,t:S.t})}
 const bcast=full=>{if(isHost()){if(ch){if(full===1)send('state',{h:myId,s:S});else bdelta()}save()}};
@@ -379,7 +516,7 @@ function predict(a){if(!farm(a.x,a.y))return;const t=S.tiles[a.x+a.y*W];
   else if(a.t==='water'&&t[0]&&t[1]&&!t[3]&&t[2]<CROPS[t[1]].g)t[3]=1;
   else if(a.t==='seed'&&a.c>=1&&a.c<=5&&t[0]&&!t[1]){t[1]=a.c|0;t[2]=t[3]=t[4]=t[5]=0}
   else if(a.t==='harvest'&&t[1]&&t[2]>=CROPS[t[1]].g){t[1]=t[2]=t[3]=t[4]=t[5]=0}}
-function dispatch(a){if(isHost()){if(applyA(a,myId))bcast(a.t==='sleep'?1:0);else if(a.t==='seed'){sd[a.c]=(sd[a.c]||0)+1;say('Gagal menanam, biji dikembalikan');hud()}}else{predict(a);send('act',{a,by:myId})}}
+function dispatch(a){if(isHost()){if(applyA(a,myId))bcast(a.t==='sleep'||a.t==='fert'?1:0);else if(a.t==='seed'){sd[a.c]=(sd[a.c]||0)+1;say('Gagal menanam, biji dikembalikan');hud()}}else{predict(a);send('act',{a,by:myId})}}
 async function connect(){
   if(!/^https?:/.test(SB_URL)||!window.supabase){$('st').textContent='⚠ Supabase belum diisi (SB_URL & SB_KEY) / jalankan supabase_setup.sql.';return false}
   try{sb=supabase.createClient(SB_URL,SB_KEY,{realtime:{params:{eventsPerSecond:40}}});
@@ -394,7 +531,7 @@ async function connect(){
     ch.on('broadcast',{event:'state'},({payload:p})=>{if(p.h!==roster[0]||p.h===myId)return;const t=S.t;S=fixS(p.s);if(Math.abs(S.t-t)<.6)S.t=t;hud()});
     ch.on('broadcast',{event:'sync'},({payload:p})=>{if(p.h!==roster[0]||p.h===myId)return;tSync(p);S.gold=p.g;if(p.pv!=null)S.pvp=p.pv;hud()});
     ch.on('broadcast',{event:'delta'},({payload:p})=>{if(p.h!==roster[0]||p.h===myId)return;(p.tl||[]).forEach(([i,t])=>{if(S.tiles[i]&&Array.isArray(t)){tileSfx(i,S.tiles[i],t);S.tiles[i]=t}});S.gold=p.gold;tSync(p);hud()});
-    ch.on('broadcast',{event:'act'},({payload:p})=>{if(!isHost())return;const a=p.a||{};if(applyA(a,p.by)){actSfx(a);bcast(a.t==='sleep'?1:0)}else{if(a.t==='seed')lootTo(p.by,{},{[a.c]:1},'Biji dikembalikan');if(Number.isInteger(a.x)&&Number.isInteger(a.y)&&farm(a.x,a.y)){dirty.add(a.x+a.y*W);bdelta()}}});
+    ch.on('broadcast',{event:'act'},({payload:p})=>{if(!isHost())return;const a=p.a||{};if(applyA(a,p.by)){actSfx(a);bcast(a.t==='sleep'||a.t==='fert'?1:0)}else{if(a.t==='seed')lootTo(p.by,{},{[a.c]:1},'Biji dikembalikan');if(Number.isInteger(a.x)&&Number.isInteger(a.y)&&farm(a.x,a.y)){dirty.add(a.x+a.y*W);bdelta()}}});
     ch.on('broadcast',{event:'loot'},({payload:p})=>{if(p.to===myId)addLoot(p.items||{},p.seeds||{},p.msg)});
     ch.on('broadcast',{event:'atk'},({payload:p})=>onAtk(p));
     ch.on('broadcast',{event:'ck'},({payload:p})=>onCk(p));
@@ -449,21 +586,14 @@ function hud(){if(started){const j=snapInv();if(j!==lastInv){lastInv=j;try{local
   put('dt',`${phase()[0]} ${phase()[1]} · Hari ${S.d} · ${clock()}<i class="bar"><u style="width:${Math.round(p*100)}%"></u></i>`);
   const gd=$('gold');gd.textContent='🪙 '+S.gold;if(S.gold!==lastGold){gd.classList.remove('pop');void gd.offsetWidth;gd.classList.add('pop');lastGold=S.gold}
   {if(HOT[hot].p&&!(sd[hot-2]|0)){let nx=0;for(let q=3;q<=7;q++)if(sd[q-2]>0){nx=q;break}hot=nx;tool=nx?2:0;if(nx)sel=nx-2;fishing=null}
-  put('hot',HOT.map((h,i)=>h.p&&!(sd[i-2]|0)?'':`<button class="slot ${i===hot?'on':''}" onclick="setHot(${i})" title="${h.n}"><kbd>${i+1}</kbd><span>${h.p?'🌱':h.i}</span>${h.p?`<i class="sub">${h.i}</i><em>×${sd[i-2]|0}</em>`:''}</button>`).join(''))}
+  put('hs',HOT.map((h,i)=>h.p&&!(sd[i-2]|0)?'':`<button class="slot ${i===hot?'on':''}" onclick="setHot(${i})" title="${h.n}"><kbd>${i+1}</kbd><span>${h.p?'🌱':h.i}</span>${h.p?`<i class="sub">${h.i}</i><em>×${sd[i-2]|0}</em>`:''}</button>`).join(''))}
   const rs=ch?[{n:me.n,col:me.col,me:1}].concat(Object.keys(remote).map(k=>remote[k])):[];
   put('roster',rs.map(r=>`<div><i style="background:${esc(r.col||'#888')}"></i>${esc(r.n||'Teman')}${r.me&&isHost()?' ★':''}</div>`).join(''));
   if(ch)$('cmeta').textContent=(1+Object.keys(remote).length)+' online';$('mmcap').textContent=ch?'Room '+code+' · '+(1+Object.keys(remote).length)+' pemain':'Single Player';
   if(modal==='bag')renderBag();if(modal==='trade')renderTrade();if(modal==='shop')renderShop();if(modal==='chest')renderChest();if(modal==='cook')renderCook()}
 let bagSel=null;
-function renderBag(){const ids=Object.keys(inv).filter(k=>inv[k]>0).sort((a,b)=>a-b),sk=Object.keys(sd).filter(k=>sd[k]>0);let tot=0,cnt=0;ids.forEach(k=>{tot+=inv[k]*IT(k).s;cnt+=inv[k]});
-  const cells=ids.map(k=>({k,e:IT(k).e,n:inv[k],q:IT(k).q})).concat(sk.map(k=>({k:'s'+k,e:CROPS[k].e,n:sd[k],seed:1})));
-  let h='';for(let i=0;i<25;i++){const c=cells[i];h+=c?`<button class="cell ${bagSel===c.k?'on':''} ${c.q?'q'+c.q:''} ${c.seed?'seed':''}" onclick="bagSel='${c.k}';renderBag()"><span>${c.seed?'🌱':c.e}</span>${c.seed?`<i class="sub">${c.e}</i>`:''}<b>${c.n}</b></button>`:'<div class="cell empty"></div>'}
-  put('grid',h);let inf='<span class="mut">Pilih item untuk melihat detail.</span>';const bs=String(bagSel);
-  if(bs[0]==='s'&&sd[bs.slice(1)]>0){const c=CROPS[bs.slice(1)];inf=`<div class="big">🌱<small>${c.e}</small></div><h3>Biji ${c.n}</h3><span class="mut">🌱 Biji · untuk ditanam, bukan makanan</span><br>Jumlah: ${sd[bs.slice(1)]}<br>Tumbuh: ${c.g} hari<br>Harga beli: ${c.c}g<br><span class="mut">Panen: ${c.n} + peluang biji</span>`}
-  else if(inv[bs]>0){const i=IT(bs);inf=`<div class="big">${i.e}</div><h3>${i.n}</h3><span class="mut">Hasil panen / tangkapan · bisa dimakan 🍴 atau dijual</span><br>Jumlah: ${inv[bs]}<br>Harga jual: ${i.s}g / buah<br>Nilai: ${i.s*inv[bs]}g${FD[bs%100]?`<br><button class="mb sm" onclick="eat('${bs}')">🍴 Makan · +${Math.round(FD[bs%100].f*(1+.25*i.q))} lapar</button>`:''}`}
-  put('info',inf+`<hr>Total panen: ${cnt}<br>Nilai panen: <b>${tot}g</b><br><span class="mut">Beli biji & jual panen di Toko (E di depan toko).</span>`)}
-function openModal(m){sfx('click');if(m==='pause')audUI();modal=m;keys={};resetJoy();fishing=null;['bag','pause','trade','shop','chest','cook'].forEach(i=>$(i).style.display=m===i?'flex':'none');if(m==='bag')renderBag();if(m==='trade')renderTrade();if(m==='shop')renderShop();if(m==='chest')renderChest();if(m==='cook')renderCook()}
-function closeModal(){if(modal==='trade'&&trade){tsend('cancel');trade=null}modal='';['bag','pause','trade','shop','chest','cook'].forEach(i=>$(i).style.display='none')}
+function openModal(m){sfx('click');if(m==='pause')audUI();modal=m;keys={};resetJoy();fishing=null;['bag','pause','trade','shop','chest','cook','daily','gacha'].forEach(i=>$(i).style.display=m===i?'flex':'none');if(m==='bag')renderBag();if(m==='daily')renderDaily();if(m==='trade')renderTrade();if(m==='shop')renderShop();if(m==='chest')renderChest();if(m==='cook')renderCook()}
+function closeModal(){if(modal==='trade'&&trade){tsend('cancel');trade=null}modal='';['bag','pause','trade','shop','chest','cook','daily','gacha'].forEach(i=>$(i).style.display='none');gClean()}
 const mm=$('mm'),mc=mm.getContext('2d');
 function minimap(time){const mX=scene?outPos.x:me.x,mY=scene?outPos.y:me.y;mc.clearRect(0,0,192,132);mc.drawImage(bg,0,0,192,132);const s=6;
   for(let y=FY0;y<=FY1;y++)for(let x=FX0;x<=FX1;x++){const t=S.tiles[x+y*W];if(!t[0])continue;mc.fillStyle=t[1]&&t[2]>=CROPS[t[1]].g?'#ffd24a':t[1]?'#6fd04a':'#8a5a35';mc.fillRect(x*s+1,y*s+1,s-2,s-2)}
@@ -749,8 +879,8 @@ $('quick').querySelectorAll('button').forEach(b=>b.onclick=()=>sendChat(b.datase
 const QN=['','⭐ Bagus','🌟 Prima'],QM=[1,1.5,2.2];
 function IT(k){k=+k;const c=CROPS[k%100];if(!c||!(k>0))return null;const q=k/100|0;return{n:c.n+(q?' '+QN[q]:''),e:c.e,s:Math.round(c.s*QM[q]),q}}
 function qOf(t){const g=CROPS[t[1]].g,d=t[5]|0;return d===0?2:d<=(g>=5?2:1)?1:0}
-let sd={1:5,2:3},lastInv='';
-function loadInv(){stash={};vit={hp:100,food:85,water:85};try{const v=JSON.parse(localStorage.getItem('pfc2_inv_'+code)||'null');if(v&&v.inv){inv=v.inv;sd=v.sd||{};stash=v.st||{};if(v.vit)Object.assign(vit,v.vit);if(vit.hp<20)vit.hp=20}else{inv={};sd={1:5,2:3}}}catch(e){}lastInv=snapInv()}
+let sd={1:5,2:3},lastInv='',xi={};
+function loadInv(){stash={};xi={};vit={hp:100,food:85,water:85};try{const v=JSON.parse(localStorage.getItem('pfc2_inv_'+code)||'null');if(v&&v.inv){inv=v.inv;sd=v.sd||{};xi=v.xi||{};stash=v.st||{};if(v.vit)Object.assign(vit,v.vit);if(vit.hp<20)vit.hp=20}else{inv={};sd={1:5,2:3}}}catch(e){}lastInv=snapInv()}
 function addLoot(items,seeds,msg){const p=[];for(const k in items){const n=items[k]|0,i=IT(k);if(!i||n<1)continue;inv[k]=(inv[k]||0)+n;p.push(i.e+' '+i.n+' ×'+n)}
   for(const k in seeds){const n=seeds[k]|0;if(!CROPS[k]||n<1)continue;sd[k]=(sd[k]||0)+n;p.push('🌱 Biji '+CROPS[k].n+' ×'+n)}
   if(p.length)say((msg||'Dapat')+': '+p.join(' · '));hud()}
@@ -1280,5 +1410,175 @@ window.icImg=icImg;window.icName=icName;
 const TOOLB={0:['⛏️','Cangkul'],1:['💧','Siram'],2:['🌱','Tanam'],3:['🧺','Panen'],4:['🎣','Pancing']};let _ub='';
 function bUseUpd(){const r=scene?['✋','Pakai']:(TOOLB[tool]||TOOLB[0]),k=r.join();if(k===_ub)return;_ub=k;$('bUseI').textContent=r[0];$('bUseL').textContent=r[1]}
 const _hud10=hud;hud=function(){_hud10.apply(this,arguments);bUseUpd()};
+/* ===================== v11: tas game, absen harian, gacha ===================== */
+const RC=['#9aa3ad','#6fd07a','#5aa8f0','#b58af0','#ffc83a'];
+const RN=['Biasa','Umum','Langka','Epik','Legendaris'];
+const MON=['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+const DAYN=['Senin','Selasa','Rabu','Kamis','Jumat','Sabtu','Minggu'];
+const limKey=()=>{const d=new Date();return 'L'+d.getFullYear()+String(d.getMonth()+1).padStart(2,'0')};
+const SPD={
+ x1:{n:'Ramuan Penuh',e:'🧪',r:2,s:70,u:'Pulihkan ❤️ 🍗 💧 sampai penuh.'},
+ x2:{n:'Pupuk Ajaib',e:'✨',r:2,s:90,u:'Menyiram semua tanaman di kebun sekaligus.'},
+ x3:{n:'Piala Panen Emas',e:'🏆',r:3,s:320,u:'Barang koleksi langka. Bisa dijual mahal.'},
+ x4:{n:'Permata Pelangi',e:'💎',r:4,s:900,u:'Permata legendaris. Nilainya sangat tinggi.'},
+ x5:{n:'Kristal Fajar',e:'🔮',r:3,s:380,u:'Kristal berkilau dari kotak langka.'},
+ b1:{n:'Kotak Kayu',e:'📦',r:1,box:1,u:'Isi: emas, biji, ramuan, atau pupuk.'},
+ b2:{n:'Kotak Perak',e:'🎁',r:2,box:2,u:'Isi: hasil panen Prima, ramuan, kristal, peluang piala & permata.'},
+ b3:{n:'Kotak Emas',e:'👑',r:4,box:3,u:'Isi: minimal Epik! Peluang Permata Pelangi & item LIMITED bulan ini. Ada pity tiap 8 pembukaan.'}
+};
+function spi(k){if(SPD[k])return SPD[k];const m=/^L(\d{4})(\d{2})$/.exec(k);if(m)return{n:'Lentera Panen '+MON[+m[2]-1]+' '+m[1],e:'🏮',r:4,s:750,lim:1,u:'ITEM LIMITED edisi '+MON[+m[2]-1]+' '+m[1]+'. Hanya bisa didapat bulan itu.'};return null}
+const boxCount=()=>['b1','b2','b3'].reduce((a,k)=>a+(xi[k]|0),0);
+const tn=(f,d,t,v,f2,dl)=>{try{if(AC&&!AU.mute)sfxTone(f,d,t,v,f2,dl)}catch(e){}};
+
+/* ---------- data absen harian (per perangkat) ---------- */
+const dkey=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+let DL={last:'',streak:0,c:{},pity:0};
+try{const v=JSON.parse(localStorage.getItem('pfc2_daily')||'null');if(v&&typeof v==='object')DL=Object.assign(DL,v);if(!DL.c)DL.c={}}catch(e){}
+const saveDL=()=>{try{const ks=Object.keys(DL.c).sort();while(ks.length>21)delete DL.c[ks.shift()];localStorage.setItem('pfc2_daily',JSON.stringify(DL))}catch(e){}};
+const todayD=()=>{const d=new Date();d.setHours(12,0,0,0);return d};
+const claimedToday=()=>!!DL.c[dkey(todayD())];
+function streakNow(){const t=todayD(),y=new Date(t);y.setDate(t.getDate()-1);return DL.last===dkey(t)||DL.last===dkey(y)?DL.streak|0:0}
+function weekDates(){const n=todayD(),dow=(n.getDay()+6)%7;return Array.from({length:7},(_,i)=>{const d=new Date(n);d.setDate(n.getDate()-dow+i);return d})}
+/* hadiah per hari: 0=Senin ... 6=Minggu */
+const WK=[
+ {r:0,e:'🥕',l:'Biji Wortel ×5 + 80 emas',g:80,seeds:{1:5}},
+ {r:0,e:'🍅',l:'Biji Tomat ×4 + 100 emas',g:100,seeds:{2:4}},
+ {r:2,e:'🎁',l:'Kotak Perak',g:60,xi:{b2:1},tag:'LANGKA'},
+ {r:2,e:'🌽',l:'Jagung Prima ×3 + Ramuan',g:120,items:{203:3},xi:{x1:1},tag:'LANGKA'},
+ {r:4,e:'🏮',l:'ITEM LIMITED bulan ini + 200 emas',g:200,xi:{LIM:1},tag:'LIMITED',lim:1},
+ {r:3,e:'✨',l:'Pupuk Ajaib ×2 + Kotak Kayu',g:150,xi:{x2:2,b1:1},tag:'EPIK'},
+ {r:4,e:'👑',l:'KOTAK EMAS + 300 emas',g:300,xi:{b3:1},tag:'LEGENDARIS'}
+];
+const BONUS7={r:3,e:'🎀',l:'Bonus streak 7 hari: Kotak Perak + 250 emas',g:250,xi:{b2:1}};
+
+/* ---------- beri hadiah & tampilkan ---------- */
+function gSeedName(k){return 'Biji '+CROPS[k].n}
+function grant(p){ // p: {g}|{seed,n}|{item,n}|{xi,n}  -> data tampilan
+  const n=p.n|0||1;
+  if(p.g){dispatch({t:'sell',v:Math.min(99999,p.g|0)});return{e:'🪙',nm:'Emas +'+p.g,r:p.g>=400?3:p.g>=200?2:p.g>=100?1:0}}
+  if(p.seed){sd[p.seed]=(sd[p.seed]||0)+n;return{e:'🌱',nm:gSeedName(p.seed)+' ×'+n,r:0}}
+  if(p.item){const i=IT(p.item);inv[p.item]=(inv[p.item]||0)+n;return{e:i.e,nm:i.n+' ×'+n,r:i.q===2?3:i.q===1?2:0}}
+  if(p.xi){const k=p.xi==='LIM'?limKey():p.xi,d=spi(k);xi[k]=(xi[k]||0)+n;return{e:d.e,nm:d.n+(n>1?' ×'+n:''),r:d.r,lim:d.lim,box:d.box}}
+  return null}
+function grantReward(rw){const out=[];
+  if(rw.g)out.push(grant({g:rw.g}));
+  for(const k in (rw.seeds||{}))out.push(grant({seed:+k,n:rw.seeds[k]}));
+  for(const k in (rw.items||{}))out.push(grant({item:+k,n:rw.items[k]}));
+  for(const k in (rw.xi||{}))out.push(grant({xi:k,n:rw.xi[k]}));
+  hud();return out}
+
+/* ---------- tabel gacha ---------- */
+const rnd=(a,b)=>a+Math.floor(Math.random()*(b-a+1));
+function pickW(t){let s=0;t.forEach(x=>s+=x.w);let r=Math.random()*s;for(const x of t){if((r-=x.w)<0)return x}return t[0]}
+const TB={
+ 1:[{w:55,p:()=>({g:rnd(40,120)})},{w:25,p:()=>({seed:rnd(1,5),n:rnd(2,4)})},{w:12,p:()=>({xi:'x1'})},{w:6,p:()=>({xi:'x2'})},{w:2,p:()=>({xi:'x5'})}],
+ 2:[{w:34,p:()=>({g:rnd(120,320)})},{w:20,p:()=>({item:200+rnd(1,5),n:rnd(2,3)})},{w:14,p:()=>({xi:'x1'})},{w:12,p:()=>({xi:'x2'})},{w:11,p:()=>({xi:'x5'})},{w:6,p:()=>({xi:'x3'})},{w:3,p:()=>({xi:'x4'})}],
+ 3:[{w:26,p:()=>({g:rnd(400,900)})},{w:20,p:()=>({xi:'x5'})},{w:18,p:()=>({xi:'x3'})},{w:14,p:()=>({xi:'LIM'})},{w:10,p:()=>({xi:'x4'})},{w:7,p:()=>({xi:'b2'})},{w:5,p:()=>({xi:'x2',n:3})}]
+};
+function rollBox(t){const out=[];
+  if(t===3){DL.pity=(DL.pity|0)+1;let p=pickW(TB[3]).p();
+    if(DL.pity>=8){p=Math.random()<.45?{xi:'LIM'}:{xi:'x4'};DL.pity=0}
+    else if(p.xi==='x4'||p.xi==='LIM')DL.pity=0;
+    out.push(p);out.push(pickW(TB[2]).p());out.push({g:rnd(100,200)})}
+  else if(t===2){out.push(pickW(TB[2]).p());out.push({g:rnd(30,80)})}
+  else out.push(pickW(TB[1]).p());
+  saveDL();return out}
+function openBox(k){const d=spi(k);if(!d||!d.box||!(xi[k]>0))return;xi[k]--;
+  const res=rollBox(d.box).map(grant).filter(Boolean);hud();
+  const best=res.reduce((a,x)=>Math.max(a,x.r),d.r>1?1:0);
+  reveal({box:d.e,r:Math.max(best,d.box===3?3:0),title:d.n.toUpperCase(),items:res,again:xi[k]>0?k:null,sub:d.n})}
+
+/* ---------- layar reveal mewah ---------- */
+function gClean(){const g=$('gacha');if(!g)return;g.querySelectorAll('.gcon,.gflash').forEach(e=>e.remove())}
+function confetti(r){const g=$('gacha'),c=document.createElement('div');c.className='gcon';const em=r>=4?['✨','⭐','🪙','💎','🎉']:r>=3?['✨','⭐','🪙','🎉']:['✨','🪙','⭐'];
+  const n=10+r*10;let h='';for(let i=0;i<n;i++)h+=`<i style="left:${Math.random()*100}%;font-size:${14+Math.random()*16}px;animation-duration:${2.2+Math.random()*2.2}s;animation-delay:${Math.random()*.9}s">${em[i%em.length]}</i>`;
+  c.innerHTML=h;g.appendChild(c);setTimeout(()=>c.remove(),6500)}
+function reveal(o){openModal('gacha');gClean();const st=$('gst');st.className='gstage';st.style.setProperty('--rc',RC[o.r]);
+  st.innerHTML=`<div class="grays"></div><button class="gbox" id="gbx">${o.box}</button><div class="gtap">KETUK UNTUK MEMBUKA</div>`;
+  tn(330,.35,'sine',.18,440);tn(500,.4,'sine',.14,660,.18);
+  let done=0;const go=()=>{if(done)return;done=1;
+    st.querySelector('.gtap').remove();const bx=$('gbx');bx.classList.add('shake');
+    for(let i=0;i<9;i++)tn(260+i*55,.1,'square',.1,0,i*.11);
+    setTimeout(()=>{if(modal!=='gacha')return;
+      const fl=document.createElement('div');fl.className='gflash on';$('gacha').appendChild(fl);setTimeout(()=>fl.remove(),1000);
+      const top=o.items.reduce((a,x)=>Math.max(a,x.r),0);
+      [523,659,784,1047].forEach((f,i)=>tn(f,.35,'triangle',.2,0,i*.09));
+      if(o.r>=3||top>=3){[1319,1568,2093].forEach((f,i)=>tn(f,.5,'sine',.18,0,.4+i*.1))}
+      st.classList.add('rev');bx.remove();
+      const hl=o.items.length===1;
+      const T=['HADIAH!','LUMAYAN!','LANGKA!','EPIK!!','LEGENDARIS!!!'];
+      st.insertAdjacentHTML('beforeend',`<div class="gtitle">${o.daily?o.title:T[top]}</div>${o.sub?`<div style="position:relative;z-index:2;font-size:12px;opacity:.8;letter-spacing:1px">${esc(o.sub)}</div>`:''}<div class="gitems">${o.items.map((x,i)=>`<div class="gi r${x.r} ${hl?'big':''}" style="animation-delay:${.15+i*.22}s"><span class="ge">${x.e}</span><b>${esc(x.nm)}</b><small>${x.lim?'LIMITED · ':''}${RN[x.r]}</small></div>`).join('')}</div>
+        <div class="gbtn"><button class="mb gold" id="gok">Ambil ✓</button>${o.again?`<button class="mb" id="gag">Buka lagi (${xi[o.again]|0})</button>`:''}</div>`);
+      $('gok').onclick=()=>{closeModal();if(o.after)o.after();else openModal('bag')};
+      if(o.again)$('gag').onclick=()=>openBox(o.again);
+      confetti(Math.max(top,o.r));hud()},1250)};
+  $('gbx').onclick=go;setTimeout(()=>{if(!done&&modal==='gacha')go()},9000)}
+
+/* ---------- modal absen harian ---------- */
+function renderDaily(){if(modal!=='daily')return;
+  const wk=weekDates(),tk=dkey(todayD()),ti=(todayD().getDay()+6)%7,st=streakNow(),cl=claimedToday(),m7=st%7;
+  const cards=wk.map((d,i)=>{const r=WK[i],k=dkey(d),done=!!DL.c[k],isT=k===tk;
+    const cls=isT?(done?'done':'today'):done?'done':i<ti?'miss':'lock';
+    const lab=r.lim?spi(limKey()).n:r.l;
+    return `<div class="dc r${r.r} ${cls}" style="animation-delay:${i*.05}s" ${isT&&!done?'onclick="claimDaily()"':''}>${r.tag?`<span class="ds">${r.tag}</span>`:''}<span class="dn">${DAYN[i]}</span><span class="de">${r.e}</span><span class="dl">${esc(r.lim?lab+' + '+r.g+' emas':r.l)}</span></div>`}).join('');
+  const b7=`<div class="dc r3 ${m7===0&&st>0?'done':'lock'}" style="animation-delay:.35s"><span class="ds">BONUS</span><span class="dn">Streak 7</span><span class="de">${BONUS7.e}</span><span class="dl">Kotak Perak + 250 emas · ${m7}/7</span></div>`;
+  put('dbody',`<div class="dtop"><div class="strk">🔥 Streak <b>${st}</b> hari</div><div class="strk">🎀 Bonus 7 hari <b>${m7}/7</b></div></div>
+  <div class="dgrid">${cards}${b7}</div>
+  ${cl?`<button class="mb sec big" disabled>✔ Sudah diklaim · kembali besok</button>`:`<button class="mb gold big" onclick="claimDaily()">🎁 Klaim Hadiah ${DAYN[ti]}</button>`}
+  <div class="dnote">Hadiah mengikuti hari nyata. Jumat = item LIMITED bulan ini, Minggu = Kotak Emas.</div>
+  <div class="drule">Absen berurutan tiap hari untuk menjaga streak. Lewat sehari, streak mulai dari 1 lagi.</div>`)}
+function claimDaily(){if(claimedToday()){say('Hari ini sudah absen ✔');return}
+  const t=todayD(),y=new Date(t);y.setDate(t.getDate()-1);
+  const ns=DL.last===dkey(y)?(DL.streak|0)+1:1,ti=(t.getDay()+6)%7;
+  DL.c[dkey(t)]=1;DL.last=dkey(t);DL.streak=ns;
+  const rw=WK[ti];let items=grantReward(rw);
+  if(ns%7===0)items=items.concat(grantReward(BONUS7));
+  saveDL();
+  const r=Math.max(rw.r,ns%7===0?3:0);
+  reveal({daily:1,box:rw.e==='👑'?'👑':'🎁',r,title:'ABSEN HARI KE-'+ns,sub:DAYN[ti]+' · Streak '+ns+' hari 🔥',items,after:()=>openModal('daily')})}
+
+/* ---------- tas: tab, rarity, item spesial ---------- */
+let bagTab='all';
+const TABS=[['all','🎒','Semua'],['sp','✨','Spesial'],['crop','🌾','Panen'],['fish','🐟','Ikan & Telur'],['cook','🍲','Masakan'],['seed','🌱','Biji']];
+function bagEntries(){const out=[];
+  Object.keys(xi).filter(k=>xi[k]>0&&spi(k)).sort((a,b)=>(spi(b).box?1:0)-(spi(a).box?1:0)||spi(b).r-spi(a).r).forEach(k=>{const d=spi(k);out.push({k,cat:'sp',e:d.e,n:xi[k],r:d.r,lim:d.lim})});
+  Object.keys(inv).filter(k=>inv[k]>0&&IT(k)).sort((a,b)=>a-b).forEach(k=>{const i=IT(k),b=k%100,cat=b<=5?'crop':b<=9?'fish':'cook';
+    const r=cat==='crop'?[0,2,3][i.q]:b===7||b===13?(b===13?2:1):b>=10?1:0;out.push({k,cat,e:i.e,n:inv[k],r})});
+  Object.keys(sd).filter(k=>sd[k]>0&&CROPS[k]).forEach(k=>out.push({k:'s'+k,cat:'seed',e:CROPS[k].e,n:sd[k],r:0,seed:1}));
+  return out}
+function renderBag(){const all=bagEntries(),cnt=c=>c==='all'?all.length:all.filter(x=>x.cat===c).length;
+  const list=bagTab==='all'?all:all.filter(x=>x.cat===bagTab);
+  put('btabs',TABS.map(t=>`<button class="tab ${bagTab===t[0]?'on':''}" onclick="bagTab='${t[0]}';renderBag()">${t[1]} <b>${t[2]}</b> <em>${cnt(t[0])}</em></button>`).join(''));
+  const tot=Object.keys(inv).reduce((a,k)=>a+(inv[k]>0&&IT(k)?inv[k]*IT(k).s:0),0);
+  $('bagMeta').textContent='🪙 '+S.gold+' · '+all.length+' jenis';
+  const cells=Math.max(25,Math.ceil(list.length/5)*5);let h='';
+  for(let i=0;i<cells;i++){const c=list[i];h+=c?`<button class="cell r${c.r} ${bagSel===c.k?'on':''} ${c.lim?'lim':''} ${c.seed?'seed':''}" onclick="bagSel='${c.k}';renderBag()"><span>${c.seed?'🌱':c.e}</span>${c.seed?`<i class="sub">${c.e}</i>`:''}<b>${c.n}</b></button>`:'<div class="cell empty"></div>'}
+  put('grid',h);
+  const bs=String(bagSel);let inf=`<div class="iempty"><span class="big">🎒</span><span>Pilih item untuk melihat detail.</span></div>`;
+  if(bs[0]==='s'&&sd[bs.slice(1)]>0){const c=CROPS[bs.slice(1)];
+    inf=`<div class="ihead" style="--rc:${RC[0]}"><span class="big">🌱</span><div><h3>Biji ${c.n}</h3><i class="rtag">Biji</i></div></div><p>Jumlah: <b>${sd[bs.slice(1)]}</b><br>Tumbuh: ${c.g} hari<br>Harga beli: ${c.c} emas<br><span class="mut">Panen: ${c.n} + peluang biji</span></p>`}
+  else if(spi(bs)&&xi[bs]>0){const d=spi(bs);
+    inf=`<div class="ihead" style="--rc:${RC[d.r]}"><span class="big">${d.e}</span><div><h3>${d.n}</h3><i class="rtag">${d.lim?'LIMITED · ':''}${RN[d.r]}</i></div></div><p>Jumlah: <b>${xi[bs]}</b><br><span class="mut">${d.u}</span>${d.s?`<br>Harga jual: ${d.s} emas`:''}</p><div class="iact">
+      ${d.box?`<button class="mb gold" onclick="useSp('${bs}')">🎁 Buka Kotak</button>`:''}
+      ${bs==='x1'||bs==='x2'?`<button class="mb" onclick="useSp('${bs}')">⚡ Pakai</button>`:''}
+      ${d.s?`<button class="mb sec sm" onclick="sellSp('${bs}')">💰 Jual 1 · +${d.s} emas</button>`:''}</div>`}
+  else if(inv[bs]>0&&IT(bs)){const i=IT(bs),b=bs%100,rr=list.find(x=>x.k===bs);const r=rr?rr.r:0;
+    inf=`<div class="ihead" style="--rc:${RC[r]}"><span class="big">${i.e}</span><div><h3>${i.n}</h3><i class="rtag">${RN[r]}</i></div></div><p>Jumlah: <b>${inv[bs]}</b><br>Harga jual: ${i.s} emas / buah<br>Nilai: ${i.s*inv[bs]} emas<br><span class="mut">Jual di Toko, atau makan.</span></p>${FD[b]?`<div class="iact"><button class="mb" onclick="eat('${bs}')">🍴 Makan · +${Math.round(FD[b].f*(1+.25*i.q))} lapar</button></div>`:''}`}
+  put('info',inf+`<hr><span class="mut">Nilai semua panen: <b>${tot}</b> emas</span>`)}
+function useSp(k){const d=spi(k);if(!d||!(xi[k]>0))return;
+  if(d.box){closeModal();openBox(k);return}
+  if(k==='x1'){if(vit.hp>=99&&vit.food>=99&&vit.water>=99){say('Sudah penuh 😋');return}xi[k]--;vit.hp=vit.food=vit.water=100;vitUI();say('🧪 Segar kembali! ❤️🍗💧 penuh');sfx('chime')}
+  else if(k==='x2'){const n=S.tiles.filter(t=>t[0]&&t[1]&&!t[3]&&t[2]<CROPS[t[1]].g).length;if(!n){say('Tidak ada tanaman yang perlu disiram');return}xi[k]--;dispatch({t:'fert'});sfx('water');say('✨ '+n+' tanaman langsung disiram!')}
+  hud()}
+function sellSp(k){const d=spi(k);if(!d||!d.s||!(xi[k]>0))return;xi[k]--;dispatch({t:'sell',v:d.s});sfx('coin');say('Terjual '+d.n+' +'+d.s+' emas');hud()}
+
+/* ---------- HUD tambahan ---------- */
+function v11hud(){const bx=boxCount(),m=$('moreB');if(m){m.classList.toggle('has',bx>0);$('moreN').textContent=bx}
+  const d=$('dayb');if(d)d.classList.toggle('has',!claimedToday());
+  const hs=$('hs'),on=hs&&hs.querySelector('.on');if(on)hs.scrollLeft=on.getBoundingClientRect().left-hs.getBoundingClientRect().left+hs.scrollLeft-hs.clientWidth/2+on.offsetWidth/2;
+  if(modal==='daily')renderDaily()}
+const _hud11=hud;hud=function(){_hud11.apply(this,arguments);v11hud()};
+const _begin11=begin;begin=function(){_begin11.apply(this,arguments);setTimeout(()=>{if(started&&!modal&&!claimedToday())openModal('daily')},1200)};
+
 resize();buildBG();hud();requestAnimationFrame(loop);
 </script></body></html>
