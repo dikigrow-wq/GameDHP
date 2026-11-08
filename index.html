@@ -902,7 +902,25 @@ function tree(x,y,s,R,c){c=c||b;c.fillStyle='rgba(0,0,0,.25)';c.beginPath();c.el
   for(let i=0;i<5;i++){const cx=x+(R()-.5)*26*s,cy=y-34*s-R()*20*s,r=(16+R()*8)*s,gr=c.createRadialGradient(cx-4,cy-6,2,cx,cy,r);
     gr.addColorStop(0,'#6fc04e');gr.addColorStop(1,'#2a6a2c');c.fillStyle=gr;c.beginPath();c.arc(cx,cy,r,0,7);c.fill()}}
 function treeSprite(s,R){const w=100*s,h=110*s,c=document.createElement('canvas');c.width=Math.ceil(w*Q);c.height=Math.ceil(h*Q);const x=c.getContext('2d');x.scale(Q,Q);tree(w/2,h-14*s,s,R,x);return{c,w,h,ox:w/2,oy:h-14*s}}
-function edgeTree(L,x,y,s){L.push({x,y,e:1,sp:treeSprite(s,rng((x*7+y*13)|0))})}
+/* Pohon tepi peta: acak alami (geser, ukuran, celah) + lapis belakang yang lebih gelap */
+function edgeTree(L,x,y,s){
+  const r=rng((x*7+y*13)|0),side=x<T?1:x>W*T-T?-1:0;
+  if(r()<.1)return;
+  const mk=(px,py,sc,dk)=>L.push({x:px,y:py,e:1,dk,sp:treeSprite(sc,rng((px*3+py*11)|0))});
+  mk(x+(r()-.5)*30+side*r()*14,y-r()*10,s*(.88+r()*.4),side&&r()<.3?1:0);
+  if(r()<.8)mk(x+(r()-.5)*44,y-24-r()*18,s*(.82+r()*.3),1);
+}
+/* Jalan bertekstur (roads.png: atas = batu, bawah = tanah). Bila gagal dimuat, jalan lama dipakai. */
+const ROADS_URL='https://zvsvftphialhaolinldx.supabase.co/storage/v1/object/public/sprites/roads.png';
+let ROADPAT=null;
+function mkRoadPats(im){const w=im.width,h2=im.height/2,o={};['stone','dirt'].forEach((k,i)=>{const c=document.createElement('canvas');c.width=w;c.height=h2;c.getContext('2d').drawImage(im,0,i*h2,w,h2,0,0,w,h2);o[k]=c});ROADPAT=o}
+function roadStroke(X,pts,w,kind,c0,c1,c2){
+  X.lineCap=X.lineJoin='round';X.beginPath();pts.forEach(([x,y],i)=>i?X.lineTo(x*T,y*T):X.moveTo(x*T,y*T));
+  if(!ROADPAT){X.strokeStyle=c0;X.lineWidth=w+8;X.stroke();X.strokeStyle=c1;X.lineWidth=w;X.stroke();X.strokeStyle=c2;X.lineWidth=Math.max(2,w-14);X.stroke();return}
+  const p=X.createPattern(ROADPAT[kind],'repeat');if(p.setTransform)p.setTransform(new DOMMatrix().scale(.5));
+  X.strokeStyle='rgba(48,32,16,.75)';X.lineWidth=w+8;X.stroke();
+  X.strokeStyle='rgba(120,88,48,.55)';X.lineWidth=w+3;X.stroke();
+  X.strokeStyle=p;X.lineWidth=w;X.stroke()}
 function buildBG(){const R=rng(7),WW=W*T,HH=H*T,ell=(x,y,rx,ry,f)=>{b.fillStyle=f;b.beginPath();b.ellipse(x,y,rx,ry,0,0,7);b.fill()};
   let gr=b.createLinearGradient(0,0,0,HH);gr.addColorStop(0,'#6aae4a');gr.addColorStop(.55,'#58993f');gr.addColorStop(1,'#4a8a38');b.fillStyle=gr;b.fillRect(0,0,WW,HH);
   for(let i=0;i<520;i++)ell(R()*WW,R()*HH,12+R()*30,8+R()*16,`rgba(${30+R()*40|0},${90+R()*50|0},${30+R()*30|0},.28)`);
@@ -910,8 +928,8 @@ function buildBG(){const R=rng(7),WW=W*T,HH=H*T,ell=(x,y,rx,ry,f)=>{b.fillStyle=
   for(let i=0;i<12500;i++){const x=R()*WW,y=R()*HH;b.strokeStyle=R()<.5?'#78bd58':'#3a7a2d';b.beginPath();b.moveTo(x,y);b.lineTo(x+(R()-.5)*3,y-3-R()*5);b.stroke()}
   for(let i=0;i<340;i++){const m=i<160,x=m?(1+R()*11)*T:R()*WW,y=m?(14+R()*7)*T:R()*HH;if(farm(x/T|0,y/T|0)||y<3*T)continue;ell(x,y,2.4,2.4,['#fff','#ffd84a','#ff8fb1','#b48cff'][i%4]);ell(x,y,.9,.9,'#e8a020')}
   // jalan
-  const pth=(pts,w)=>{b.lineCap=b.lineJoin='round';b.beginPath();pts.forEach(([x,y],i)=>i?b.lineTo(x*T,y*T):b.moveTo(x*T,y*T));b.strokeStyle='#86693f';b.lineWidth=w+8;b.stroke();b.strokeStyle='#ad935f';b.lineWidth=w;b.stroke();b.strokeStyle='rgba(255,235,190,.16)';b.lineWidth=w-14;b.stroke()};
-  pth([[.5,3.5],[31.5,3.5]],T-8);pth([[17.5,3.5],[17.5,15]],T-14);pth([[17.5,12.5],[23,12.5]],T-16);pth([[2.5,3.5],[2.5,8]],T-18);pth([[12,17.5],[5.5,17.5],[5.5,18.5]],T-16);pth([[24.5,7.7],[24.5,8.4],[17.5,8.4]],T-18);
+  const pth=(pts,w,kind)=>roadStroke(b,pts,w,kind||'dirt','#86693f','#ad935f','rgba(255,235,190,.16)');
+  pth([[.5,3.5],[31.5,3.5]],T-8,'stone');pth([[17.5,3.5],[17.5,15]],T-14,'stone');pth([[17.5,12.5],[23,12.5]],T-16);pth([[2.5,3.5],[2.5,8]],T-18);pth([[12,17.5],[5.5,17.5],[5.5,18.5]],T-16);pth([[24.5,7.7],[24.5,8.4],[17.5,8.4]],T-18);
   for(let i=0;i<1500;i++){const v=i%3===0,x=v?(17+R())*T:(.6+R()*30.8)*T,y=v?(3.5+R()*11.5)*T:(3+R()*.9)*T;b.fillStyle=R()<.5?'rgba(0,0,0,.14)':'rgba(255,255,255,.16)';b.fillRect(x,y,2,2)}
   // plaza pasar
   const px0=12*T,py0=14.8*T,pw=10*T,ph=5.2*T;b.fillStyle='#8b8577';b.beginPath();b.roundRect(px0-5,py0-5,pw+10,ph+10,22);b.fill();b.fillStyle='#bdb6a4';b.beginPath();b.roundRect(px0,py0,pw,ph,18);b.fill();
@@ -2084,7 +2102,7 @@ function changeZone(nz,dir){goScene(()=>{setZone(nz);me.x=dir>0?1.7*T:(W-1.7)*T;
 /* ---------- pembantu gambar ---------- */
 function mkZ(q){const c=document.createElement('canvas');c.width=Math.round(W*T*q);c.height=Math.round(H*T*q);const x=c.getContext('2d');x.scale(q,q);return{c,x}}
 function zEll(X,x,y,rx,ry,f){X.fillStyle=f;X.beginPath();X.ellipse(x,y,rx,ry,0,0,7);X.fill()}
-function zPath(X,pts,w,c0,c1,c2){X.lineCap=X.lineJoin='round';X.beginPath();pts.forEach(([x,y],i)=>i?X.lineTo(x*T,y*T):X.moveTo(x*T,y*T));X.strokeStyle=c0;X.lineWidth=w+8;X.stroke();X.strokeStyle=c1;X.lineWidth=w;X.stroke();X.strokeStyle=c2;X.lineWidth=Math.max(2,w-14);X.stroke()}
+function zPath(X,pts,w,c0,c1,c2){if(c0==='#86693f')return roadStroke(X,pts,w,'dirt',c0,c1,c2);X.lineCap=X.lineJoin='round';X.beginPath();pts.forEach(([x,y],i)=>i?X.lineTo(x*T,y*T):X.moveTo(x*T,y*T));X.strokeStyle=c0;X.lineWidth=w+8;X.stroke();X.strokeStyle=c1;X.lineWidth=w;X.stroke();X.strokeStyle=c2;X.lineWidth=Math.max(2,w-14);X.stroke()}
 function zSign(X,x,y,t){x*=T;y*=T;X.fillStyle='#5a3a22';X.fillRect(x-3,y-24,6,28);X.fillStyle='#b98a4e';X.beginPath();X.roundRect(x-36,y-40,72,22,5);X.fill();X.strokeStyle='#6b4a28';X.lineWidth=2;X.stroke();X.fillStyle='#3a2412';X.font='bold 11px sans-serif';X.textAlign='center';X.fillText(t,x,y-25);X.textAlign='left'}
 function zWater(X,a,c,rx,ry,k,R){const x=a*T,y=c*T,Xr=rx*T,Yr=ry*T;zEll(X,x,y+5,Xr+16,Yr+16,'rgba(0,0,0,.2)');zEll(X,x,y,Xr+13,Yr+13,k.r0);zEll(X,x,y,Xr+7,Yr+7,k.r1);
   for(let i=0;i<46;i++){const q=i/46*6.283;zEll(X,x+Math.cos(q)*(Xr+9),y+Math.sin(q)*(Yr+9),5+R()*4,3.5+R()*3,R()<.5?k.s0:k.s1)}
@@ -3012,7 +3030,7 @@ soil=function(x,y,t){const im=IMG.soil;if(!im||!im.width)return _soil(x,y,t);
    Gagal dimuat -> pohon bawaan game. Ubah TREE_SWAY=0 untuk mematikan goyangan. */
 const TREES_URL='https://zvsvftphialhaolinldx.supabase.co/storage/v1/object/public/sprites/trees.png';
 const TREE_SWAY=1,TREE_W=[240,187,193,122,200,103];
-loadImg('trees',TREES_URL);
+loadImg('trees',TREES_URL,im=>{try{const c=document.createElement('canvas');c.width=im.width;c.height=im.height;const x=c.getContext('2d');x.drawImage(im,0,0);x.globalCompositeOperation='source-atop';x.fillStyle='rgba(22,44,70,.42)';x.fillRect(0,0,c.width,c.height);IMG.treesDark=c}catch(e){}});
 const _treeSprite=treeSprite;
 treeSprite=function(s,R){const sp=_treeSprite(s,R);sp.k=R?Math.floor(R()*1000):0;sp.sc=s;return sp};
 const treeVar=k=>k<260?0:k<500?1:k<650?2:k<800?3:k<900?4:5;
@@ -3033,11 +3051,11 @@ function drawProp(t){
   g.restore()}
 window.__drawTree=function(t){
   if(t.pr!=null)return drawProp(t);
-  const sp=t.sp,im=IMG.trees;
+  const sp=t.sp,im=(t.dk&&IMG.treesDark)||IMG.trees;
   if(!im||!im.width||sp.k==null){g.drawImage(sp.c,t.x-sp.ox,t.y-sp.oy,sp.w,sp.h);return}
   const v=treeVar(sp.k),cw=im.width/3,ch=im.height/2,sx=(v%3)*cw,sy=((v/3)|0)*ch;
   const ws=.5*(sp.sc||1)/1.07,dw=cw*ws,dh=ch*ws,x0=t.x-dw/2,y0=t.y-(ch-6)*ws;
-  g.save();
+  g.save();if(t.dk)g.globalAlpha=.9;
   g.fillStyle='rgba(0,0,0,.24)';g.beginPath();g.ellipse(t.x+dw*.05,t.y+3,TREE_W[v]*ws*.34,TREE_W[v]*ws*.1,0,0,7);g.fill();
   g.imageSmoothingEnabled=true;g.imageSmoothingQuality='high';
   if(!TREE_SWAY){g.drawImage(im,sx,sy,cw,ch,x0,y0,dw,dh);g.restore();return}
@@ -3202,6 +3220,8 @@ window.addEventListener('load',injectUI);setTimeout(injectUI,600);setTimeout(inj
 window.__pf24={setQ:q=>{QL=q;lsSet('pf_q',q);syncSel()},exportGuide,SHEET,IMG};
 })();
 
-resize();buildBG();initZones();hud();requestAnimationFrame(loop);
+(function(){const go=()=>{resize();buildBG();initZones();hud();requestAnimationFrame(loop)};
+  let done=false;const fin=()=>{if(done)return;done=true;go()};
+  const im=new Image();im.crossOrigin='anonymous';im.onload=()=>{try{mkRoadPats(im)}catch(e){}fin()};im.onerror=fin;setTimeout(fin,3000);im.src=ROADS_URL})();
 
 </script></body></html>
