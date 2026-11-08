@@ -589,6 +589,56 @@ button .ic,.cell .ic,.slot .ic{vertical-align:middle}
 @keyframes mshine{to{background-position:300% 0}}
 #modb{position:fixed;right:10px;top:150px;z-index:40;display:none;border:2px solid #ffd24a;border-radius:12px;background:linear-gradient(#3a2a5a,#1a1030);color:#ffe58a;padding:8px 10px;font:700 13px system-ui;cursor:pointer;box-shadow:0 0 14px rgba(255,210,74,.5)}
 #modl{display:flex;flex-direction:column;gap:6px;max-height:60vh;overflow:auto}
+/* ===== v19: desain mewah modern, pion karakter, dadu popup, kartu ===== */
+.mbd{position:relative;background:linear-gradient(145deg,#0b1210,#16231c);border:1.5px solid #c9a24a;border-radius:18px;padding:6px;gap:3px;box-shadow:0 0 0 6px #0a100d,0 0 0 7px #c9a24a55,0 30px 70px #000c,inset 0 0 40px #000a}
+.mc{border-radius:7px;background:linear-gradient(165deg,#fffaf0,#efe4c8);box-shadow:inset 0 0 0 1px rgba(120,90,30,.28),0 1px 2px #0006;color:#2a2012}
+.mc.own{box-shadow:inset 0 0 0 2.5px var(--o),0 0 10px -2px var(--o)}
+.mc.cor{background:linear-gradient(135deg,#ffeaa0,#c99a30 55%,#8f6a14);color:#2a1a04}
+.mc.t-chance{background:linear-gradient(165deg,#ffe3b0,#f0a23a)}.mc.t-chest{background:linear-gradient(165deg,#d8f1ff,#65b0e6)}.mc.t-tax{background:linear-gradient(165deg,#efe0e0,#cfa0a0)}.mc.t-rail,.mc.t-util{background:linear-gradient(165deg,#f1f4f8,#b9c4d4)}
+.mg{height:24%;background:linear-gradient(180deg,var(--g),color-mix(in srgb,var(--g) 70%,#000))}
+.mc .me{filter:drop-shadow(0 2px 2px #0004)}
+.mctr{background:radial-gradient(circle at 50% 45%,#1f4a36 0,#102a1f 55%,#08130e 100%);border:1px solid #c9a24a99;border-radius:14px;gap:2px;justify-content:space-evenly;box-shadow:inset 0 0 50px #000a}
+.mctr:after{content:'';position:absolute;inset:0;border-radius:14px;background:repeating-radial-gradient(circle at 50% 50%,#ffffff06 0 2px,transparent 2px 38px);pointer-events:none}
+.orn{font:700 clamp(14px,calc(var(--bs)/22),30px) Georgia,serif;letter-spacing:6px;background:linear-gradient(180deg,#fff2b0,#d4a935 55%,#8a6414);-webkit-background-clip:text;background-clip:text;color:transparent}
+.msub{font-size:calc(var(--bs)/80);letter-spacing:5px;color:#e8d28a;opacity:.85}
+.crow{display:flex;align-items:center;justify-content:center;gap:6%;width:100%;position:relative;z-index:2}
+.dtray{height:calc(var(--bs)/8);gap:calc(var(--bs)/22);margin:0}
+.die{width:calc(var(--bs)/16);height:calc(var(--bs)/16)}.fc{padding:6%}.fc i{width:calc(var(--bs)/90);height:calc(var(--bs)/90);min-width:5px;min-height:5px}
+.f1{transform:translateZ(calc(var(--bs)/32))}.f2{transform:rotateY(90deg) translateZ(calc(var(--bs)/32))}.f5{transform:rotateY(-90deg) translateZ(calc(var(--bs)/32))}.f6{transform:rotateY(180deg) translateZ(calc(var(--bs)/32))}.f3{transform:rotateX(90deg) translateZ(calc(var(--bs)/32))}.f4{transform:rotateX(-90deg) translateZ(calc(var(--bs)/32))}
+.mlast{font-size:calc(var(--bs)/62);min-height:2.6em;color:#ffe9a8;z-index:2}
+.deck{position:relative;width:calc(var(--bs)/8.5);height:calc(var(--bs)/6.2);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;z-index:2}
+.deck i{position:absolute;inset:0;border-radius:9px;border:1.5px solid #ffffff55;box-shadow:0 3px 8px #0008}.deck i:nth-child(1){transform:rotate(-7deg) translate(-4px,3px)}.deck i:nth-child(2){transform:rotate(4deg) translate(3px,1px)}
+.deck.chance i{background:linear-gradient(145deg,#ffb347,#c8661a)}.deck.chest i{background:linear-gradient(145deg,#5ec1ff,#2766b8)}
+.deck span{position:relative;font-size:calc(var(--bs)/26);filter:drop-shadow(0 2px 2px #0006)}.deck small{position:relative;font:700 calc(var(--bs)/110) system-ui;letter-spacing:1px;color:#fff;text-align:center;line-height:1.1}
+.dpop{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:11;padding:14px 26px;border-radius:22px;background:linear-gradient(160deg,#20143ae6,#0b0818ee);border:2px solid #ffd24a;box-shadow:0 0 0 6px #ffd24a22,0 20px 60px #000c,0 0 60px #ffd24a55;display:flex;flex-direction:column;align-items:center;gap:6px;backdrop-filter:blur(6px);animation:dpin .5s cubic-bezier(.2,1.4,.4,1) both;text-align:center}
+.dpop small{color:#ffe9a8;font-size:calc(var(--bs)/62)}
+.dfl{display:flex;gap:12px}.ff{display:grid;grid-template:repeat(3,1fr)/repeat(3,1fr);width:calc(var(--bs)/11);height:calc(var(--bs)/11);padding:8%;background:linear-gradient(145deg,#fff,#e8dec2);border-radius:14%;box-shadow:0 4px 10px #0008,inset 0 -3px 0 #0002}
+.ff i{width:62%;height:62%;border-radius:50%;place-self:center}.ff i.on{background:radial-gradient(circle at 35% 30%,#555,#111)}.ff i.on.r{background:radial-gradient(circle at 35% 30%,#ff7b7b,#b00)}
+.dsum{font:700 calc(var(--bs)/9) Georgia,serif;line-height:1;background:linear-gradient(180deg,#fff7c8,#ffc83a 60%,#b3801a);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 3px 6px #0008);animation:dnum .6s .15s cubic-bezier(.2,1.6,.4,1) both}
+@keyframes dpin{from{transform:translate(-50%,-50%) scale(.3) rotate(-12deg);opacity:0}to{transform:translate(-50%,-50%) scale(1);opacity:1}}@keyframes dnum{from{transform:scale(.2);opacity:0}to{transform:none;opacity:1}}
+.lbd .dpop{z-index:12}
+.cfx{position:absolute;left:50%;top:50%;width:min(44%,calc(var(--bs)/3));aspect-ratio:3/4;margin:calc(var(--bs)/-5.2) 0 0 calc(var(--bs)/-6.8);perspective:1000px;z-index:12;animation:cfin 4.3s both;pointer-events:none}
+.cin{position:absolute;inset:0;transform-style:preserve-3d;animation:cdraw 1.8s cubic-bezier(.3,.8,.3,1) both}
+.cb,.cf{position:absolute;inset:0;border-radius:16px;backface-visibility:hidden;-webkit-backface-visibility:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:10px;text-align:center;box-shadow:0 20px 50px #000b,inset 0 0 0 3px #ffffff55}
+.cb.chance{background:repeating-linear-gradient(45deg,#d9741c 0 10px,#f0a23a 10px 20px)}.cb.chest{background:repeating-linear-gradient(45deg,#2766b8 0 10px,#5ec1ff 10px 20px)}.cb span{font-size:calc(var(--bs)/10)}.cb small{font:700 calc(var(--bs)/70) system-ui;letter-spacing:2px;color:#fff}
+.cf{transform:rotateY(180deg);color:#2a1a0a}.cf.chance{background:linear-gradient(165deg,#fff1d0,#ffc46a)}.cf.chest{background:linear-gradient(165deg,#e8f7ff,#8fcaf2)}
+.ck{font:700 calc(var(--bs)/75) Georgia,serif;letter-spacing:3px}.ce{font-size:calc(var(--bs)/13);filter:drop-shadow(0 3px 3px #0004)}.cx{font-weight:700;font-size:calc(var(--bs)/62);line-height:1.3}.cf small{opacity:.65;font-size:calc(var(--bs)/90)}
+.cl{font-style:normal;font-weight:800;font-size:calc(var(--bs)/58);padding:3px 12px;border-radius:99px;background:#fff9;border:1.5px solid currentColor}.cl.q1{color:#0d7a2e}.cl.q0{color:#b3201a}.cl.q2{color:#7a5a0a}
+@keyframes cdraw{0%{transform:translate(var(--fx),65%) scale(.3) rotateZ(-16deg)}38%{transform:translate(0,0) scale(1.03) rotateZ(0)}52%{transform:translate(0,-3%) scale(1.06) rotateY(0)}82%,100%{transform:translate(0,0) scale(1) rotateY(180deg)}}
+@keyframes cfin{0%{opacity:0}5%{opacity:1}88%{opacity:1}100%{opacity:0;transform:scale(.92)}}
+/* pion karakter */
+.pwl{position:absolute;inset:6px;pointer-events:none;z-index:6}
+.pw{position:absolute;display:flex;flex-direction:column;align-items:center;will-change:left,top,transform}
+.pw img{height:calc(var(--bs)/9.2);width:auto;filter:drop-shadow(0 4px 3px #0007);image-rendering:auto}
+.pw.cur img{animation:bob 1.3s ease-in-out infinite}.pw .pb{position:absolute;left:50%;bottom:calc(var(--bs)/90);width:calc(var(--bs)/16);height:calc(var(--bs)/40);transform:translateX(-50%);border-radius:50%;background:radial-gradient(ellipse,#0009,#0000 70%);box-shadow:0 0 0 2px var(--c) inset;opacity:.9}
+.pw b{margin-top:-2px;font:700 calc(var(--bs)/110) system-ui;padding:1px 6px;border-radius:99px;background:var(--c);color:#fff;text-shadow:0 1px 2px #0008;border:1px solid #fff9;white-space:nowrap}
+@keyframes bob{50%{transform:translateY(-4px)}}
+.lbd{position:relative}
+.lbd .pwl{inset:3px}.lbd .pw img{height:calc(var(--bs)/8)}
+/* panel samping */
+.tgside .prow{background:linear-gradient(90deg,#ffffff12,#ffffff05);border:1px solid #ffffff18;backdrop-filter:blur(4px)}
+.tbody .ti,.tbody .buyc,.arow,.bk2>div,.inv{border:1px solid #ffffff18;background:linear-gradient(160deg,#ffffff10,#ffffff04)}
+#tgame .mh b{font:700 18px Georgia,serif;letter-spacing:1px;color:#ffe08a}
 </style></head><body>
 <div id="fade"></div><div id="wrap"><canvas id="c" width="960" height="672"></canvas>
 <div id="ui" style="display:none"><div id="hurt"></div>
@@ -2280,7 +2330,7 @@ function renderArcade(){if(modal!=='arcade'||!AG)return;const m=AG.mode,T3={slot
 /* Host meja = pemain yang membuat meja: dia mengocok dadu, menjalankan bot, lalu menyiarkan state lewat event 'tg'. */
 const TGS={},TGR={},DGP={},TGO={};let TGV=null,TGI=0;
 const TGN={mono:'Monopoli World Tour',ladder:'Ular Tangga'},TGE={mono:'🎲',ladder:'🐍'},TGW={mono:300,ladder:120},MAXR=30;
-const NPCS=[{id:'npc_arka',n:'Bot Arka',col:'#e0409a'},{id:'npc_es',n:'Bot Sakura',col:'#3f6fc0'},{id:'npc_nenek',n:'Bot Lotus',col:'#7a5ab0'}];
+const NPCS=[{id:'npc_arka',n:'Bot Arka',col:'#e0409a',g:'m'},{id:'npc_es',n:'Bot Sakura',col:'#3f6fc0',g:'f'},{id:'npc_nenek',n:'Bot Lotus',col:'#7a5ab0',g:'f'}];
 const GC={br:'#8a5a30',lb:'#6fc8f0',pk:'#e0709a',or:'#f08a24',rd:'#d93434',yl:'#f0d030',gr:'#3fa04a',bl:'#2f5bd0'},GH={br:50,lb:50,pk:100,or:100,rd:150,yl:150,gr:200,bl:200};
 const GRD={D:'#9aa3ad',C:'#5fb0ff',B:'#59d38c',A:'#ffb43a',S:'#ff5fa8'},GMU={D:1,C:1,B:1,A:1.1,S:1.25},RGN={as:'Asia',af:'Afrika',la:'Amerika Latin',na:'Amerika Utara',eu:'Eropa'};
 const P=(n,e,cc,p,g,gr,rg)=>({t:'prop',n,e,cc,p,g,gr,rg,r:Math.max(2,Math.round(p/10*GMU[gr]))}),AP=(n,cc)=>({t:'rail',n,e:'✈️',cc,p:200}),UT=(n,e)=>({t:'util',n,e,p:150});
@@ -2293,12 +2343,12 @@ const RM=[1,5,12,28,40];
 /* kartu: g=gain p=pay go=maju ke petak (collect lewat START) mv=geser j=penjara jf=kartu bebas ea=terima dari tiap pemain ep=bayar ke tiap pemain rp=renovasi ap=bandara terdekat */
 const CCH=[{e:'🏁',x:'Maju ke START dan terima 🪙200',a:'go',v:0},{e:'🎡',x:'Tur wisata ke London! Maju ke London',a:'go',v:39},{e:'🏯',x:'Festival K-Pop! Maju ke Seoul',a:'go',v:27},{e:'🏢',x:'Konferensi bisnis di Kuala Lumpur',a:'go',v:19},{e:'🦁',x:'Wisata kuliner ke Singapura',a:'go',v:29},
  {e:'✈️',x:'Maju ke bandara terdekat. Bayar sewa 2× jika ada pemiliknya',a:'ap'},{e:'📈',x:'Dividen saham Nikkei, terima 🪙150',a:'g',v:150},{e:'🎟️',x:'Menang lotre pesawat, terima 🪙100',a:'g',v:100},{e:'🚓',x:'Denda parkir sembarangan, bayar 🪙50',a:'p',v:50},
- {e:'↩️',x:'Taksi salah arah, mundur 3 langkah',a:'mv',v:-3},{e:'👮',x:'Tertangkap razia! Langsung ke Penjara',a:'j'},{e:'🎫',x:'Kartu Bebas dari Penjara — simpan dan pakai kapan saja',a:'jf'},{e:'🔧',x:'Renovasi properti: 🪙25 per rumah, 🪙100 per hotel',a:'rp',v:25,w:100},{e:'🥂',x:'Traktir semua pemain, bayar 🪙40 ke tiap pemain',a:'ep',v:40}];
+ {e:'↩️',x:'Taksi salah arah, mundur 3 langkah',a:'mv',v:-3},{e:'👮',x:'Tertangkap razia! Langsung ke Penjara',a:'j'},{e:'🎫',x:'Kartu Bebas dari Penjara — simpan dan pakai kapan saja',a:'jf'},{e:'🔧',x:'Renovasi properti: 🪙25 per rumah, 🪙100 per hotel',a:'rp',v:25,w:100},{e:'🥂',x:'Traktir semua pemain, bayar 🪙40 ke tiap pemain',a:'ep',v:40},{e:'🚄',x:'Naik kereta cepat, maju ke Hong Kong',a:'go',v:26},{e:'💼',x:'Bonus proyek besar, terima 🪙80',a:'g',v:80},{e:'🌧️',x:'Banjir merusak gudang, bayar 🪙80',a:'p',v:80}];
 const CCC=[{e:'🏦',x:'Kesalahan bank menguntungkanmu, terima 🪙200',a:'g',v:200},{e:'🏥',x:'Biaya rumah sakit, bayar 🪙100',a:'p',v:100},{e:'📜',x:'Warisan keluarga, terima 🪙100',a:'g',v:100},{e:'🎂',x:'Ulang tahunmu! Terima 🪙25 dari tiap pemain',a:'ea',v:25},{e:'📊',x:'Jual saham, terima 🪙50',a:'g',v:50},
  {e:'🚔',x:'Kena kasus pajak! Langsung ke Penjara',a:'j'},{e:'🎫',x:'Kartu Bebas dari Penjara — simpan dan pakai kapan saja',a:'jf'},{e:'🎓',x:'Uang sekolah, bayar 🪙60',a:'p',v:60},{e:'💵',x:'Pengembalian pajak, terima 🪙120',a:'g',v:120},{e:'🏁',x:'Kembali ke START, terima 🪙200',a:'go',v:0},
- {e:'🛠️',x:'Perbaikan atap: 🪙40 per rumah, 🪙115 per hotel',a:'rp',v:40,w:115},{e:'🙏',x:'Donasi kuil, bayar 🪙40',a:'p',v:40},{e:'🏆',x:'Juara kontes kuliner, terima 🪙75',a:'g',v:75}];
+ {e:'🛠️',x:'Perbaikan atap: 🪙40 per rumah, 🪙115 per hotel',a:'rp',v:40,w:115},{e:'🙏',x:'Donasi kuil, bayar 🪙40',a:'p',v:40},{e:'🏆',x:'Juara kontes kuliner, terima 🪙75',a:'g',v:75},{e:'🎁',x:'Hadiah dari sahabat, terima 🪙60',a:'g',v:60},{e:'🔌',x:'Tagihan listrik membengkak, bayar 🪙45',a:'p',v:45},{e:'🤝',x:'Patungan teman, terima 🪙30 dari tiap pemain',a:'ea',v:30}];
 const LAD={4:25,9:31,21:42,28:84,36:44,51:67,71:91,80:100},SNK={17:7,54:34,62:19,64:60,87:24,93:73,95:75,98:78};
-const tgLog=(s,t)=>{s.log.push(t);if(s.log.length>16)s.log.shift()};
+const tgLog=(s,t)=>{s.lc=(s.lc|0)+1;s.log.push(t);if(s.log.length>16)s.log.shift()};
 const d6=()=>1+(Math.random()*6|0);
 const shuf=n=>{const a=[...Array(n).keys()];for(let i=n-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]]}return a};
 
@@ -2310,9 +2360,9 @@ function onTg(p){if(!p||!p.table||!TGN[p.table])return;
   if(p.k==='gone'){const o=TGS[p.table];if(o&&o.host===p.id){delete TGS[p.table];if(TGV===p.table&&modal==='tgame')tgRender()}return}
   if(p.k==='inv'){if(p.to===myId)tgInvBanner(p);return}
   const s=TGS[p.table];if(!s||s.host!==myId)return;tgHost(s,p.id,p.a,p)}
-function tgDo(a){const t=TGV,s=TGS[t];if(!s)return;if(s.host===myId)tgHost(s,myId,a,{n:me.n,col:me.col});else send('tg',{k:'act',table:t,id:myId,a,n:me.n,col:me.col})}
+function tgDo(a){const t=TGV,s=TGS[t];if(!s)return;if(s.host===myId)tgHost(s,myId,a,{n:me.n,col:me.col});else send('tg',{k:'act',table:t,id:myId,a,n:me.n,col:me.col,g:me.g})}
 function tgCreate(t){const o=TGS[t];if(o&&o.status!=='over'){say('Meja sedang dipakai');return}
-  const s={table:t,gid:myId.slice(0,6)+Date.now().toString(36),v:0,host:myId,status:'lobby',seats:[{id:myId,n:me.n,col:me.col,npc:0,rdy:0}],turn:0,round:1,log:[]};TGI=0;tgCommit(s)}
+  const s={table:t,gid:myId.slice(0,6)+Date.now().toString(36),v:0,host:myId,status:'lobby',seats:[{id:myId,n:me.n,col:me.col,g:me.g==='f'?'f':'m',npc:0,rdy:0}],turn:0,round:1,log:[]};TGI=0;tgCommit(s)}
 function tgClose(){const t=TGV,s=TGS[t];if(!s||s.host!==myId)return;delete TGS[t];if(ch)send('tg',{k:'gone',table:t,id:myId});tgRender()}
 function openTable(t){TGV=t;TGI=0;openModal('tgame');tgRender()}
 function tgInv(id){const s=TGS[TGV];if(!s||s.host!==myId||!ch)return;send('tg',{k:'inv',table:s.table,id:myId,to:id,n:me.n});say('Undangan dikirim 📨')}
@@ -2327,10 +2377,10 @@ const _hudG=hud;hud=function(){_hudG.apply(this,arguments);if(modal==='tgame'&&T
 function tgHost(s,id,a,x){a=String(a);const si=s.seats.findIndex(q=>q.id===id),isH=id===s.host;
   if(s.status==='over'){if(isH&&a==='rematch'){s.status='lobby';s.gid=myId.slice(0,6)+Date.now().toString(36);s.log=[];s.card=null;s.seats=s.seats.filter(q=>q.npc||q.id===myId||(ch&&pinfo[q.id]));s.seats.forEach(q=>q.rdy=q.npc?1:0);tgCommit(s)}else if(isH&&a==='close')tgClose();else if(a==='leave'&&!isH&&si>=0){s.seats.splice(si,1);tgCommit(s)}return}
   if(s.status==='lobby'){const hum=s.seats.filter(q=>!q.npc);
-    if(a==='join'&&si<0&&s.seats.length<4)s.seats.push({id,n:String(x.n||'Teman').slice(0,12),col:/^#[0-9a-f]{3,6}$/i.test(x.col||'')?x.col:'#888',npc:0,rdy:0});
+    if(a==='join'&&si<0&&s.seats.length<4)s.seats.push({id,n:String(x.n||'Teman').slice(0,12),col:/^#[0-9a-f]{3,6}$/i.test(x.col||'')?x.col:'#888',g:x.g==='f'?'f':'m',npc:0,rdy:0});
     else if(a==='ready'&&si>=0&&!s.seats[si].npc)s.seats[si].rdy=s.seats[si].rdy?0:1;
     else if(a==='leave'&&si>=0&&!isH)s.seats.splice(si,1);
-    else if(isH&&a==='addnpc'&&s.seats.length<4){const u=NPCS.find(n=>!s.seats.some(q=>q.id===n.id));if(u)s.seats.push({id:u.id,n:u.n,col:u.col,npc:1,rdy:1})}
+    else if(isH&&a==='addnpc'&&s.seats.length<4){const u=NPCS.find(n=>!s.seats.some(q=>q.id===n.id));if(u)s.seats.push({id:u.id,n:u.n,col:u.col,g:u.g,npc:1,rdy:1})}
     else if(isH&&a==='delnpc'){for(let i=s.seats.length-1;i>=0;i--)if(s.seats[i].npc){s.seats.splice(i,1);break}}
     else if(isH&&a==='start'&&s.seats.length>=2&&hum.every(q=>q.rdy))tgStart(s);
     else if(isH&&a==='close'){tgClose();return}
@@ -2387,10 +2437,10 @@ function wealth(s,i){const q=s.seats[i];let w=q.cash-(q.debt|0);for(const k in s
 function monoCanBuild(s,pi,i){const t=MT[i];if(!t||t.t!=='prop'||s.owner[i]!==pi)return false;const g=grpOf(t.g);if(!g.every(k=>s.owner[k]===pi&&!s.mg[k]))return false;const h=s.hs[i]|0;return h<4&&g.every(k=>(s.hs[k]|0)>=h)&&s.seats[pi].cash>=t.hc}
 function monoJail(s,pi){const p=s.seats[pi];p.pos=10;p.jail=3;s.extra=0;s.dbl=0}
 function passGo(s,pi){const p=s.seats[pi];p.cash+=200;bk(s,-200);tgLog(s,p.n+' lewat START, gaji dari bank 🪙200');if((p.debt|0)>0){const i=Math.ceil(p.debt*.1);tgLog(s,p.n+' bayar bunga pinjaman 🪙'+i);monoPay(s,pi,-1,i)}}
-function monoRoll(s){const pi=s.turn,p=s.seats[pi],a=d6(),b=d6(),dbl=a===b;s.dice=[a,b];s.rid=(s.rid|0)+1;s.hold=1200;s.extra=0;
+function monoRoll(s){const pi=s.turn,p=s.seats[pi],a=d6(),b=d6(),dbl=a===b;s.dice=[a,b];s.rid=(s.rid|0)+1;s.hold=2500;s.extra=0;s.mv={id:p.id,from:p.pos,n:0};
   if(p.jail>0){if(dbl){p.jail=0;tgLog(s,p.n+' lempar kembar '+a+' — bebas dari penjara!')}else{p.jail--;if(p.jail>0){tgLog(s,p.n+' lempar '+a+'+'+b+', masih di penjara ('+p.jail+' giliran lagi)');return monoEnd(s)}tgLog(s,p.n+' gagal 3 kali, bayar 🪙50 untuk keluar');if(!monoPay(s,pi,-1,50))return monoEnd(s)}}
   else if(dbl){s.dbl=(s.dbl|0)+1;if(s.dbl>=3){tgLog(s,p.n+' kembar 3 kali berturut-turut — masuk penjara!');monoJail(s,pi);return monoEnd(s)}s.extra=1}
-  tgLog(s,p.n+' lempar '+a+'+'+b+(dbl?' (kembar)':''));monoMove(s,pi,a+b)}
+  tgLog(s,p.n+' lempar '+a+'+'+b+(dbl?' (kembar)':''));s.mv.n=a+b;s.hold=1750+(a+b)*300+700;monoMove(s,pi,a+b)}
 function monoMove(s,pi,n,nocollect){const p=s.seats[pi],raw=p.pos+n;if(raw>=40&&!nocollect)passGo(s,pi);p.pos=((raw%40)+40)%40;monoLand(s,pi)}
 function monoLand(s,pi){const p=s.seats[pi],t=MT[p.pos];
   if(t.t==='gojail'){tgLog(s,p.n+' masuk penjara!');monoJail(s,pi);return monoEnd(s)}
@@ -2415,9 +2465,10 @@ function monoPay(s,pi,to,amt){const p=s.seats[pi];
   if(to>=0)s.seats[to].cash+=p.cash;else bk(s,p.cash);p.cash=0;p.out=1;p.debt=0;
   for(const k in s.owner)if(s.owner[k]===pi){if(to>=0)s.owner[k]=to;else{delete s.owner[k];delete s.mg[k]}delete s.hs[k]}
   tgLog(s,'💥 '+p.n+' bangkrut! Aset '+(to>=0?'diserahkan ke '+s.seats[to].n:'kembali ke bank'));return false}
+function cardLQ(c){switch(c.a){case'g':return['+🪙'+c.v,1];case'p':return['−🪙'+c.v,0];case'go':return['Maju ke '+(c.v?MT[c.v].n:'START'),1];case'ap':return['Bandara terdekat',2];case'mv':return['Mundur 3 langkah',0];case'j':return['Masuk Penjara',0];case'jf':return['Kartu Bebas Penjara',1];case'rp':return['Biaya renovasi',0];case'ea':return['+🪙'+c.v+' dari tiap pemain',1];case'ep':return['−🪙'+c.v+' ke tiap pemain',0]}return['',2]}
 function monoCard(s,pi,k){const p=s.seats[pi],ch2=k==='chance',D=ch2?CCH:CCC,dk=s.dk;let ix;
   if(ch2){ix=dk.c[dk.ci%D.length];dk.ci++}else{ix=dk.h[dk.hi%D.length];dk.hi++}
-  const c=D[ix];s.cn=(s.cn|0)+1;s.card={k,e:c.e,x:c.x,id:s.cn,who:p.n};tgLog(s,(ch2?'❓ ':'💰 ')+p.n+': '+c.x);
+  const c=D[ix],lq=cardLQ(c);s.cn=(s.cn|0)+1;s.card={k,e:c.e,x:c.x,id:s.cn,who:p.n,l:lq[0],q:lq[1]};s.hold=(s.hold|0)+4500;tgLog(s,(ch2?'❓ ':'💰 ')+p.n+': '+c.x);
   switch(c.a){
    case'g':p.cash+=c.v;bk(s,-c.v);break;
    case'p':monoPay(s,pi,-1,c.v);break;
@@ -2436,7 +2487,7 @@ function monoEnd(s){s.phase='roll';s.m2=0;const alive=s.seats.filter(q=>!q.out);
   s.extra=0;s.dbl=0;let n=s.turn;do{n=(n+1)%s.seats.length;if(n===0)s.round++}while(s.seats[n].out);s.turn=n;if(s.round>MAXR)monoOver(s)}
 function monoOver(s){let best=-1,bw=-1e9;s.seats.forEach((q,i)=>{if(!q.out){const w=wealth(s,i);if(w>bw){bw=w;best=i}}});s.status='over';s.winner=best>=0?s.seats[best].id:null;s.wn=best>=0?s.seats[best].n:'';tgLog(s,'🏆 '+s.wn+' menang dengan kekayaan bersih 🪙'+bw)}
 /* ---------- Ular Tangga ---------- */
-function ladRoll(s){const p=s.seats[s.turn],d=d6();s.die=d;s.rid=(s.rid|0)+1;s.hold=1200;const np=p.pos+d;
+function ladRoll(s){const p=s.seats[s.turn],d=d6();s.die=d;s.rid=(s.rid|0)+1;const np=p.pos+d;s.hold=1750+d*300+700;s.mv={id:p.id,from:p.pos,n:np>100?0:d};
   if(np>100){tgLog(s,p.n+' lempar '+d+' — butuh angka pas ke 100');return ladNext(s,0)}
   p.pos=np;let m=p.n+' lempar '+d+' → '+np;if(LAD[np]){p.pos=LAD[np];m+=' · tangga naik ke '+p.pos}else if(SNK[np]){p.pos=SNK[np];m+=' · ular turun ke '+p.pos}
   tgLog(s,m);if(p.pos===100){s.status='over';s.winner=p.id;s.wn=p.n;tgLog(s,'🏆 '+p.n+' sampai di 100!');return}ladNext(s,d===6)}
@@ -2446,20 +2497,6 @@ function ladNext(s,extra){if(extra){tgLog(s,'Angka 6! '+s.seats[s.turn].n+' lemp
 const PIPS={1:[5],2:[1,9],3:[1,5,9],4:[1,3,7,9],5:[1,3,5,7,9],6:[1,3,4,6,7,9]},DR={1:[0,0],2:[0,-90],3:[-90,0],4:[90,0],5:[0,90],6:[0,180]};
 function dieH(v,anim,i){const r=DR[v||1];let f='';for(let n=1;n<=6;n++){f+=`<u class="fc f${n}">`;for(let c=1;c<=9;c++)f+=`<i${PIPS[n].includes(c)?' class="on'+(n===1?' r':'')+'"':''}></i>`;f+='</u>'}
   return `<div class="dw"><div class="die${anim?' roll':''}" style="--rx:${r[0]}deg;--ry:${r[1]}deg;--d:${i}"><div class="cube">${f}</div></div></div>`}
-function posMap(s){const m={};s.seats.forEach(q=>m[q.id]=q.pos|0);return m}
-function tgSync(s){const now=Date.now();let o=TGO[s.table];
-  if(!o||o.gid!==s.gid){o=TGO[s.table]={gid:s.gid,rid:s.rid|0,until:0,cur:posMap(s),prev:posMap(s),pl:s.log.slice(),cid:s.card?s.card.id:0,cs:0,cu:0,sg:'',su:0}}
-  if(s.status==='play'&&o.sg!==s.gid){o.sg=s.gid;if(s.log.length<=1&&(s.rid|0)===0){o.su=now+3600;setTimeout(tgRender,3650)}}
-  if((s.rid|0)!==o.rid){o.rid=s.rid|0;o.prev=o.cur;o.until=Math.max(now+1750,o.until);setTimeout(tgRender,1800);try{sfx('seed')}catch(e){}}
-  o.cur=posMap(s);const anim=now<o.until;if(!anim){o.prev=o.cur;o.pl=s.log.slice()}
-  if(s.card&&s.card.id!==o.cid){o.cid=s.card.id;o.cs=Math.max(now,o.until);o.cu=o.cs+3600;setTimeout(tgRender,o.cs-now+60);setTimeout(tgRender,o.cu-now+60)}
-  o.anim=anim;o.splash=now<o.su;o.card=s.card&&now>=o.cs&&now<o.cu&&!o.splash?s.card:null;return o}
-const posOf=(s,q,o)=>(o.anim?o.prev[q.id]:q.pos)|0;
-const dots=(s,o,fn)=>s.seats.map((q,k)=>fn(posOf(s,q,o))&&!q.out?`<b class="mtk${k===s.turn&&s.status==='play'?' cur':''}" style="background:${esc(q.col)}">${esc((q.n||'?')[0])}</b>`:'').join('');
-function ladBoard(s,o){let h='<div class="lbd">';
-  for(let n=1;n<=100;n++){const r0=(n-1)/10|0,c0=(n-1)%10,col=r0%2?9-c0:c0,up=LAD[n],dn=SNK[n];
-    h+=`<div class="lc${up?' up':dn?' dn':''}${(r0+col)%2?' alt':''}" style="grid-area:${10-r0}/${col+1}"><small>${n}</small>${up?`<em>↑${up}</em>`:dn?`<em>↓${dn}</em>`:''}<span class="mdt">${dots(s,o,p=>p===n)}</span></div>`}
-  return h+'</div>'}
 function tgSeats(s,o,extra){return s.seats.map((q,k)=>{
   return `<div class="prow${s.status==='play'&&k===s.turn?' cur':''}${q.out?' out':''}"><i style="background:${esc(q.col)}"></i><b>${esc(q.n)}${q.id===myId?' (kamu)':''}${q.npc?' 🤖':''}${q.id===s.host?' 👑':''}</b>${extra(q,k)}</div>`}).join('')}
 function tgLobby(s){const mi=s.seats.findIndex(q=>q.id===myId),isH=s.host===myId,h=[],hum=s.seats.filter(q=>!q.npc),nr=hum.filter(q=>q.rdy).length,allR=nr===hum.length,hostR=isH&&s.seats[mi].rdy;
@@ -2478,14 +2515,6 @@ let TGSEL=-1,TGT='main';
 function tgSel(i){TGSEL=TGSEL===i?-1:i;TGT='main';tgRender()}
 function tgTab(t){TGT=t;tgRender()}
 function tgFS(){try{if(document.fullscreenElement)document.exitFullscreen();else document.documentElement.requestFullscreen()}catch(e){}}
-function monoBoard(s,o){let h='<div class="mbd">';
-  for(let i=0;i<40;i++){const t=MT[i],[r,c]=mpos(i),ow=s.owner[i],col=ow!=null&&s.seats[ow]?s.seats[ow].col:'',cor=i%10===0?' cor':'',hh=s.hs[i]|0,mg=s.mg[i];
-    const bld=hh?`<span class="mhs">${hh>=4?'<b class="ht"></b>':'<b></b>'.repeat(hh)}</span>`:'';
-    h+=`<div class="mc${cor} t-${t.t}${TGSEL===i?' sel':''}${mg?' mgd':''}" onclick="tgSel(${i})" style="grid-area:${r}/${c};${t.g?'--g:'+GC[t.g]+';':''}${col?'--o:'+esc(col)+';':''}">${t.g?`<i class="mg"></i><b class="gp" style="background:${GRD[t.gr]}">${t.gr}</b>`:''}${bld}<span class="me">${t.e}</span><span class="mn">${esc(t.n)}</span>${t.p?`<span class="mpr">${t.p}</span>`:''}${mg?'<u class="gd">GADAI</u>':''}<span class="mdt">${dots(s,o,p=>p===i)}</span></div>`}
-  const cur=s.seats[s.turn],cd=o.card,last=o.pl[o.pl.length-1]||'';
-  h+=`<div class="mctr"><div class="orn">✦ ✦ ✦</div><b class="mttl">MONOPOLI</b><b class="msub">W O R L D &nbsp; T O U R</b><div class="dtray">${dieH(s.dice[0],o.anim,0)}${dieH(s.dice[1],o.anim,1)}</div>`+
-   `<div class="mlast">${o.anim?'🎲 Mengocok dadu…':esc(last)}</div><small>Ronde ${s.round}/${MAXR}${s.status==='play'&&cur?' · giliran '+esc(cur.n):''}</small>`+
-   (cd?`<div class="cardpop ${cd.k}"><div class="ck">${cd.k==='chance'?'KESEMPATAN':'DANA UMUM'}</div><div class="ce">${cd.e}</div><div class="cx">${esc(cd.x)}</div><small>${esc(cd.who)}</small></div>`:'')+`</div></div>`;return h}
 function tileInfo(s,i){const t=MT[i],ow=s.owner[i],oN=ow!=null&&s.seats[ow]?s.seats[ow].n:null,hh=s.hs[i]|0;
   let h=`<div class="ti"><div class="tih"><span class="me">${t.e}</span><b>${esc(t.n)}</b>${t.gr?`<em class="gp" style="background:${GRD[t.gr]}">Grade ${t.gr}</em>`:''}</div>`;
   if(t.t==='prop')h+=`<small>${RGN[t.rg]} (${t.cc}) · harga 🪙${t.p} · rumah/hotel 🪙${t.hc} · gadai 🪙${Math.floor(t.p/2)}</small><table class="rt">${['Sewa dasar','1 rumah','2 rumah','3 rumah','Hotel'].map((l,k)=>`<tr${k===hh?' class="on"':''}><td>${l}</td><td>🪙${t.r*RM[k]}</td></tr>`).join('')}</table><small>Satu grup warna lengkap = sewa dasar ×2 dan boleh dibangun.</small>`;
@@ -2516,13 +2545,76 @@ function tgPlay(s){const t=s.table,o=tgSync(s),mi=s.seats.findIndex(q=>q.id===my
   else if(s.status==='play')act=`<div class="tst">${mi<0?'👀 Menonton · ':''}Menunggu ${esc(cur?cur.n:'')}${cur&&cur.npc?' 🤖':''}…</div>`;
   if(mi>=0&&s.status==='play'&&!o.anim)act+=`<button class="mb sec sm" onclick="if(confirm('Menyerah? Posisimu diganti bot.'))tgDo('quit')">Menyerah</button>`;
   const log=`<div class="tlog">${o.pl.slice(-9).reverse().map(l=>`<div>${esc(l)}</div>`).join('')}</div>`;
-  if(t==='ladder'){const side=`<div class="pl2">${tgSeats(s,o,q=>`<span>petak ${posOf(s,q,o)}</span>`)}</div>${act}<div class="dtray">${dieH(s.die,o.anim,0)}</div>${log}`;return `<div class="tgx"><div class="tgbd">${ladBoard(s,o)}</div><div class="tgside">${side}</div></div>`}
+  if(t==='ladder'){const side=`<div class="pl2">${tgSeats(s,o,q=>`<span>petak ${q.pos}</span>`)}</div>${act}<div class="dtray">${dieH(s.die,o.roll,0)}</div>${log}`;return `<div class="tgx"><div class="tgbd">${ladBoard(s,o)}</div><div class="tgside">${side}</div></div>`}
   const pl=`<div class="pl2">${tgSeats(s,o,(q,k)=>{const n=Object.keys(s.owner).filter(i=>s.owner[i]===k).length;return `<span>🪙${q.cash}${q.out?' ✖':''}</span><small>${n} properti · 💎${wealth(s,k)}${q.debt?' · 💳'+q.debt:''}${q.jail>0?' · 🔒':''}${q.jf?' · 🎫':''}</small>`})}</div>`;
   const tabs=`<div class="tabs3">${[['main','🎮 Main'],['assets','🏠 Aset'],['bank','🏦 Bank']].map(([k,l])=>`<button class="${TGT===k?'on':''}" onclick="tgTab('${k}')">${l}</button>`).join('')}</div>`;
   let body;if(TGT==='assets')body=mi>=0?assetsH(s,mi,can):'<div class="tst">Kamu hanya menonton.</div>';else if(TGT==='bank')body=bankH(s,mi,can);else body=act+(TGSEL>=0?tileInfo(s,TGSEL):'<div class="tst hint">Ketuk petak mana saja di papan untuk melihat harga, sewa, dan pemiliknya.</div>')+log;
   return `<div class="tgx"><div class="tgbd">${monoBoard(s,o)}</div><div class="tgside">${pl}${tabs}<div class="tbody">${body}</div></div></div>`}
 function tgRender(){if(modal!=='tgame'||!TGV)return;const t=TGV,s=TGS[t];$('tgt').textContent=TGE[t]+' '+TGN[t];$('tgm').innerHTML=(ch?(1+Object.keys(remote).length)+' online':'Solo')+' <button class="fsb" onclick="tgFS()">⛶</button>';
   put('tgb',!s?tgIntro(t):s.status==='lobby'?tgLobby(s):tgPlay(s))}
+
+/* ---------- v19: suara, pion karakter, langkah, kartu, popup dadu ---------- */
+const SD=300,DICE_MS=1750;
+function tgSnd(k,i){try{if(typeof AC==='undefined'||!AC||AU.mute||AC.state!=='running')return;const T=sfxTone,N=sfxNoise;
+  if(k==='dice'){for(let j=0;j<10;j++)N(.06,'bandpass',1500+Math.random()*2200,2.5,.32,j*.1);[.5,.82,1.1,1.32,1.5].forEach((d,j)=>T(170-j*22,.13,'sine',.5-j*.07,60,d))}
+  else if(k==='step')T(430+(i||0)*26,.09,'triangle',.3,560+(i||0)*26);
+  else if(k==='pop'){T(660,.1,'sine',.3,990);T(990,.2,'sine',.25,1320,.09)}
+  else if(k==='card'){N(.4,'highpass',2600,1,.3,0,7000);T(500,.1,'triangle',.22,0,.3)}
+  else if(k==='good')[523,659,784,1047].forEach((f,j)=>T(f,.18,'triangle',.3,0,j*.09));
+  else if(k==='bad')[392,349,294,208].forEach((f,j)=>T(f,.2,'sawtooth',.16,0,j*.11));
+  else if(k==='coin'){T(988,.07,'square',.16);T(1319,.18,'square',.16,0,.07)}
+  else if(k==='pay'){T(520,.1,'triangle',.25,300);T(300,.18,'triangle',.22,180,.1)}
+  else if(k==='jail'){T(140,.35,'sawtooth',.2,70);N(.3,'lowpass',400,1,.3,0)}
+  else if(k==='win')[523,659,784,1047,1319].forEach((f,j)=>T(f,.3,'triangle',.3,0,j*.12))}catch(e){}}
+function newLogSnd(s,o){const n=Math.min((s.lc|0)-(o.lc|0),s.log.length);if(n<=0||n>6)return;s.log.slice(-n).forEach((l,j)=>{let k=/menang|sampai di 100/.test(l)?'win':/bangkrut/.test(l)?'bad':/penjara!?$|masuk penjara/.test(l)?'jail':/membeli|gaji|menjual|meminjam|menggadaikan/.test(l)?'coin':/sewa|bayar|denda|pajak|bunga/.test(l)?'pay':'';if(k)setTimeout(()=>tgSnd(k),j*260)})}
+const PWC={};
+function pawnImg(col,fem){const key=col+'|'+(fem?1:0);if(PWC[key])return PWC[key];let url='';
+  try{const c=document.createElement('canvas');c.width=150;c.height=216;const cx=c.getContext('2d'),og=g;g=cx;try{cx.scale(2.3,2.3);person(33,88,'down',col,0,0,{fem:!!fem})}finally{g=og}url=c.toDataURL()}catch(e){}
+  return PWC[key]=url}
+const monoXY=t=>{const[r,c]=mpos(((t%40)+40)%40);return[(c-.5)/11,(r-.5)/11]};
+const ladXY=n=>{n=Math.max(1,n);const r0=(n-1)/10|0,c0=(n-1)%10,col=r0%2?9-c0:c0;return[(col+.5)/10,(10-r0-.5)/10]};
+const HOP=()=>{const b=document.querySelector('#tgb .mbd,#tgb .lbd');return b?b.clientWidth/22:20};
+function pawnXY(s,o,q,now){const mono=s.table==='mono',XY=mono?monoXY:ladXY,m=o.mv,mov=m&&q.id===m.id&&now<o.until+40&&o.mvp.length>0;
+  if(mov){const P=o.mvp,k=(now-o.st0)/SD;let a,b,f=0,jump=0;
+    if(k<=0)a=b=P[0];else if(k>=P.length-1)a=b=P[P.length-1];else{const i=Math.floor(k);f=k-i;a=P[i];b=P[i+1];jump=(mono?((b-a+40)%40!==1):Math.abs(b-a)!==1)?1:0}
+    const A=XY(a),B=XY(b),e=jump?f*f*(3-2*f):f;return{x:A[0]+(B[0]-A[0])*e,y:A[1]+(B[1]-A[1])*e,h:Math.sin(f*Math.PI)*(jump?2.6:1),mv:1}}
+  const t=q.pos|0,same=s.seats.filter(z=>!z.out&&!(m&&z.id===m.id&&now<o.until+40&&o.mvp.length>0)&&(z.pos|0)===t),A=XY(t),tw=mono?1/11:1/10;
+  return{x:A[0]+(same.length>1?(same.indexOf(q)-(same.length-1)/2)*.26*tw:0),y:A[1],h:0,mv:0}}
+const pwStyle=(p,k)=>`left:${(p.x*100).toFixed(3)}%;top:${(p.y*100+1.6).toFixed(3)}%;z-index:${p.mv?9:5+k}`;
+function pawnsH(s,o){const now=Date.now(),H=HOP();return '<div class="pwl">'+s.seats.map((q,k)=>{if(q.out)return'';const p=pawnXY(s,o,q,now);
+  return `<div class="pw${k===s.turn&&s.status==='play'?' cur':''}" data-k="${k}" style="${pwStyle(p,k)};--c:${esc(q.col)};transform:translate(-50%,calc(-80% - ${(p.h*H).toFixed(1)}px))"><i class="pb"></i><img src="${pawnImg(q.col,q.g==='f')}" alt=""><b>${esc((q.n||'?').slice(0,9))}</b></div>`}).join('')+'</div>'}
+function tgFrame(){requestAnimationFrame(tgFrame);if(modal!=='tgame'||!TGV)return;const s=TGS[TGV],o=s&&TGO[TGV];if(!s||!o||s.status==='lobby'||!o.mvp)return;const L=document.querySelector('#tgb .pwl');if(!L)return;const now=Date.now(),H=HOP();
+  s.seats.forEach((q,k)=>{if(q.out)return;const e=L.querySelector('[data-k="'+k+'"]');if(!e)return;const p=pawnXY(s,o,q,now);e.style.left=(p.x*100)+'%';e.style.top=(p.y*100+1.6)+'%';e.style.transform='translate(-50%,calc(-80% - '+(p.h*H)+'px))';e.style.zIndex=p.mv?9:5+k})}
+requestAnimationFrame(tgFrame);
+function tgSync(s){const now=Date.now();let o=TGO[s.table];
+  if(!o||o.gid!==s.gid)o=TGO[s.table]={gid:s.gid,rid:s.rid|0,until:0,dEnd:0,pop0:0,pop1:0,st0:0,mv:null,mvp:[],pl:s.log.slice(),lc:s.lc|0,cid:s.card?s.card.id:0,cs:0,cu:0,sg:'',su:0};
+  if(s.status==='play'&&o.sg!==s.gid){o.sg=s.gid;if(s.log.length<=1&&(s.rid|0)===0){o.su=now+3600;setTimeout(tgRender,3650)}}
+  if((s.rid|0)!==o.rid){o.rid=s.rid|0;const m=s.mv;o.dEnd=now+DICE_MS;o.pop0=now+1450;o.pop1=now+3300;o.st0=now+DICE_MS+50;let P=[];o.mv=null;
+    if(m){o.mv=m;const md=s.table==='mono'?40:1e9;P=[m.from%md];for(let i=1;i<=m.n;i++)P.push((m.from+i)%md);const q=s.seats.find(z=>z.id===m.id);if(q&&q.pos!==P[P.length-1])P.push(q.pos)}
+    o.mvp=P;o.until=Math.max(o.pop1,P.length>1?o.st0+(P.length-1)*SD+350:0);
+    [o.dEnd+30,o.pop0,o.pop1+30,o.until+60].forEach(t=>setTimeout(tgRender,Math.max(0,t-now)));
+    tgSnd('dice');setTimeout(()=>tgSnd('pop'),1450);for(let i=1;i<P.length;i++)setTimeout(()=>tgSnd('step',i),DICE_MS+50+i*SD)}
+  if(s.card&&s.card.id!==o.cid){o.cid=s.card.id;o.cs=Math.max(now,o.until);o.cu=o.cs+4300;o.until=o.cu;const c=s.card;
+    setTimeout(tgRender,o.cs-now+30);setTimeout(()=>tgSnd('card'),o.cs-now+100);setTimeout(()=>tgSnd(c.q===0?'bad':c.q===1?'good':'pop'),o.cs-now+1150);setTimeout(tgRender,o.cu-now+60)}
+  const anim=now<o.until;o.anim=anim;o.roll=now<o.dEnd;
+  if(!anim){newLogSnd(s,o);o.pl=s.log.slice();o.lc=s.lc|0}
+  o.splash=now<o.su;o.card=s.card&&now>=o.cs&&now<o.cu&&!o.splash?s.card:null;o.pop=!!(s.rid|0)&&now>=o.pop0&&now<o.pop1;return o}
+const flatFace=n=>`<span class="ff">${[1,2,3,4,5,6,7,8,9].map(c=>`<i${PIPS[n].includes(c)?' class="on'+(n===1?' r':'')+'"':''}></i>`).join('')}</span>`;
+function dpopH(s,o){if(!o.pop)return'';const d=s.table==='mono'?s.dice:[s.die],sum=d.reduce((a,b)=>a+b,0),dbl=s.table==='mono'&&d[0]===d[1],q=o.mv&&s.seats.find(z=>z.id===o.mv.id);
+  return `<div class="dpop"><div class="dfl">${d.map(flatFace).join('')}</div><b class="dsum">${sum}</b><small>${q?esc(q.n)+' maju '+sum+' langkah':''}${dbl?' · 🎉 KEMBAR!':''}</small></div>`}
+const deckH=(k)=>`<div class="deck ${k}"><i></i><i></i><i></i><span>${k==='chance'?'❓':'💰'}</span><small>${k==='chance'?'KESEMPATAN':'DANA UMUM'}</small></div>`;
+function cardFxH(cd){if(!cd)return'';const k=cd.k;return `<div class="cfx ${k}" style="--fx:${k==='chance'?'-185%':'185%'}"><div class="cin"><div class="cb ${k}"><span>${k==='chance'?'❓':'💰'}</span><small>${k==='chance'?'KESEMPATAN':'DANA UMUM'}</small></div><div class="cf ${k}"><div class="ck">${k==='chance'?'KESEMPATAN':'DANA UMUM'}</div><div class="ce">${cd.e}</div><div class="cx">${esc(cd.x)}</div>${cd.l?`<em class="cl q${cd.q}">${esc(cd.l)}</em>`:''}<small>${esc(cd.who)}</small></div></div></div>`}
+function monoBoard(s,o){let h='<div class="mbd">';
+  for(let i=0;i<40;i++){const t=MT[i],[r,c]=mpos(i),ow=s.owner[i],col=ow!=null&&s.seats[ow]?s.seats[ow].col:'',cor=i%10===0?' cor':'',hh=s.hs[i]|0,mg=s.mg[i];
+    const bld=hh?`<span class="mhs">${hh>=4?'<b class="ht"></b>':'<b></b>'.repeat(hh)}</span>`:'';
+    h+=`<div class="mc${cor} t-${t.t}${TGSEL===i?' sel':''}${mg?' mgd':''}${col?' own':''}" onclick="tgSel(${i})" style="grid-area:${r}/${c};${t.g?'--g:'+GC[t.g]+';':''}${col?'--o:'+esc(col)+';':''}">${t.g?`<i class="mg"></i><b class="gp" style="background:${GRD[t.gr]}">${t.gr}</b>`:''}${bld}<span class="me">${t.e}</span><span class="mn">${esc(t.n)}</span>${t.p?`<span class="mpr">${t.p}</span>`:''}${mg?'<u class="gd">GADAI</u>':''}</div>`}
+  const cur=s.seats[s.turn],last=o.pl[o.pl.length-1]||'';
+  h+=`<div class="mctr"><div class="orn">✦ &nbsp; MONOPOLI &nbsp; ✦</div><b class="msub">W O R L D &nbsp; T O U R</b><div class="crow">${deckH('chance')}<div class="dtray">${dieH(s.dice[0],o.roll,0)}${dieH(s.dice[1],o.roll,1)}</div>${deckH('chest')}</div>`+
+   `<div class="mlast">${o.anim&&o.roll?'🎲 Mengocok dadu…':esc(last)}</div><small>Ronde ${s.round}/${MAXR}${s.status==='play'&&cur?' · giliran '+esc(cur.n):''}</small>${dpopH(s,o)}${cardFxH(o.card)}</div>${pawnsH(s,o)}</div>`;return h}
+function ladBoard(s,o){let h='<div class="lbd">';
+  for(let n=1;n<=100;n++){const r0=(n-1)/10|0,c0=(n-1)%10,col=r0%2?9-c0:c0,up=LAD[n],dn=SNK[n];
+    h+=`<div class="lc${up?' up':dn?' dn':''}${(r0+col)%2?' alt':''}" style="grid-area:${10-r0}/${col+1}"><small>${n}</small>${up?`<em>↑${up}</em>`:dn?`<em>↓${dn}</em>`:''}</div>`}
+  return h+pawnsH(s,o)+dpopH(s,o)+'</div>'}
 
 /* ---------- sinkronisasi node & titik gali antar pemain ---------- */
 const _nodeAct=nodeAct;nodeAct=function(nd){const b=nd.u;_nodeAct(nd);if(ch&&nd.u!==b){const i=NODES.indexOf(nd);if(i>=0)send('nd',{z:zone,i,ms:Math.max(0,nd.u-Date.now())})}};
