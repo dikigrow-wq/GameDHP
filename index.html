@@ -639,6 +639,7 @@ button .ic,.cell .ic,.slot .ic{vertical-align:middle}
 .tgside .prow{background:linear-gradient(90deg,#ffffff12,#ffffff05);border:1px solid #ffffff18;backdrop-filter:blur(4px)}
 .tbody .ti,.tbody .buyc,.arow,.bk2>div,.inv{border:1px solid #ffffff18;background:linear-gradient(160deg,#ffffff10,#ffffff04)}
 #tgame .mh b{font:700 18px Georgia,serif;letter-spacing:1px;color:#ffe08a}
+.mhs{font-size:clamp(8px,1.15vw,15px);line-height:1;letter-spacing:-2px;height:26%;z-index:3;filter:drop-shadow(0 1px 1px #000a);display:flex;align-items:center;justify-content:center;background:none!important}.mhs b{display:none}
 </style></head><body>
 <div id="fade"></div><div id="wrap"><canvas id="c" width="960" height="672"></canvas>
 <div id="ui" style="display:none"><div id="hurt"></div>
@@ -2384,10 +2385,10 @@ const RM=[1,5,12,28,40];
 /* kartu: g=gain p=pay go=maju ke petak (collect lewat START) mv=geser j=penjara jf=kartu bebas ea=terima dari tiap pemain ep=bayar ke tiap pemain rp=renovasi ap=bandara terdekat */
 const CCH=[{e:'🏁',x:'Maju ke START dan terima 🪙200',a:'go',v:0},{e:'🎡',x:'Tur wisata ke London! Maju ke London',a:'go',v:39},{e:'🏯',x:'Festival K-Pop! Maju ke Seoul',a:'go',v:27},{e:'🏢',x:'Konferensi bisnis di Kuala Lumpur',a:'go',v:19},{e:'🦁',x:'Wisata kuliner ke Singapura',a:'go',v:29},
  {e:'✈️',x:'Maju ke bandara terdekat. Bayar sewa 2× jika ada pemiliknya',a:'ap'},{e:'📈',x:'Dividen saham Nikkei, terima 🪙150',a:'g',v:150},{e:'🎟️',x:'Menang lotre pesawat, terima 🪙100',a:'g',v:100},{e:'🚓',x:'Denda parkir sembarangan, bayar 🪙50',a:'p',v:50},
- {e:'↩️',x:'Taksi salah arah, mundur 3 langkah',a:'mv',v:-3},{e:'👮',x:'Tertangkap razia! Langsung ke Penjara',a:'j'},{e:'🎫',x:'Kartu Bebas dari Penjara — simpan dan pakai kapan saja',a:'jf'},{e:'🔧',x:'Renovasi properti: 🪙25 per rumah, 🪙100 per hotel',a:'rp',v:25,w:100},{e:'🥂',x:'Traktir semua pemain, bayar 🪙40 ke tiap pemain',a:'ep',v:40},{e:'🚄',x:'Naik kereta cepat, maju ke Hong Kong',a:'go',v:26},{e:'💼',x:'Bonus proyek besar, terima 🪙80',a:'g',v:80},{e:'🌧️',x:'Banjir merusak gudang, bayar 🪙80',a:'p',v:80}];
+ {e:'↩️',x:'Taksi salah arah, mundur 3 langkah',a:'mv',v:-3},{e:'👮',x:'Tertangkap razia! Langsung ke Penjara',a:'j'},{e:'🎫',x:'Kartu Bebas dari Penjara — simpan dan pakai kapan saja',a:'jf'},{e:'🔧',x:'Renovasi properti: 🪙25 per gedung, 🪙100 per hotel',a:'rp',v:25,w:100},{e:'🥂',x:'Traktir semua pemain, bayar 🪙40 ke tiap pemain',a:'ep',v:40},{e:'🚄',x:'Naik kereta cepat, maju ke Hong Kong',a:'go',v:26},{e:'💼',x:'Bonus proyek besar, terima 🪙80',a:'g',v:80},{e:'🌧️',x:'Banjir merusak gudang, bayar 🪙80',a:'p',v:80}];
 const CCC=[{e:'🏦',x:'Kesalahan bank menguntungkanmu, terima 🪙200',a:'g',v:200},{e:'🏥',x:'Biaya rumah sakit, bayar 🪙100',a:'p',v:100},{e:'📜',x:'Warisan keluarga, terima 🪙100',a:'g',v:100},{e:'🎂',x:'Ulang tahunmu! Terima 🪙25 dari tiap pemain',a:'ea',v:25},{e:'📊',x:'Jual saham, terima 🪙50',a:'g',v:50},
  {e:'🚔',x:'Kena kasus pajak! Langsung ke Penjara',a:'j'},{e:'🎫',x:'Kartu Bebas dari Penjara — simpan dan pakai kapan saja',a:'jf'},{e:'🎓',x:'Uang sekolah, bayar 🪙60',a:'p',v:60},{e:'💵',x:'Pengembalian pajak, terima 🪙120',a:'g',v:120},{e:'🏁',x:'Kembali ke START, terima 🪙200',a:'go',v:0},
- {e:'🛠️',x:'Perbaikan atap: 🪙40 per rumah, 🪙115 per hotel',a:'rp',v:40,w:115},{e:'🙏',x:'Donasi kuil, bayar 🪙40',a:'p',v:40},{e:'🏆',x:'Juara kontes kuliner, terima 🪙75',a:'g',v:75},{e:'🎁',x:'Hadiah dari sahabat, terima 🪙60',a:'g',v:60},{e:'🔌',x:'Tagihan listrik membengkak, bayar 🪙45',a:'p',v:45},{e:'🤝',x:'Patungan teman, terima 🪙30 dari tiap pemain',a:'ea',v:30}];
+ {e:'🛠️',x:'Perbaikan atap: 🪙40 per gedung, 🪙115 per hotel',a:'rp',v:40,w:115},{e:'🙏',x:'Donasi kuil, bayar 🪙40',a:'p',v:40},{e:'🏆',x:'Juara kontes kuliner, terima 🪙75',a:'g',v:75},{e:'🎁',x:'Hadiah dari sahabat, terima 🪙60',a:'g',v:60},{e:'🔌',x:'Tagihan listrik membengkak, bayar 🪙45',a:'p',v:45},{e:'🤝',x:'Patungan teman, terima 🪙30 dari tiap pemain',a:'ea',v:30}];
 const LAD={4:25,9:31,21:42,28:84,36:44,51:67,71:91,80:100},SNK={17:7,54:34,62:19,64:60,87:24,93:73,95:75,98:78};
 const tgLog=(s,t)=>{s.lc=(s.lc|0)+1;s.log.push(t);if(s.log.length>16)s.log.shift()};
 const d6=()=>1+(Math.random()*6|0);
@@ -2438,16 +2439,20 @@ function tgAct(s,a){if(s.table!=='mono'){if(a==='roll')ladRoll(s);return}const p
   if(a==='roll'&&s.phase==='roll')monoRoll(s);
   else if(a==='pay'&&s.phase==='roll'&&p.jail>0&&p.cash>=50){p.cash-=50;bk(s,50);p.jail=0;tgLog(s,p.n+' bayar 🪙50, bebas dari penjara');monoRoll(s)}
   else if(a==='jcard'&&s.phase==='roll'&&p.jail>0&&p.jf>0){p.jf--;p.jail=0;tgLog(s,p.n+' pakai Kartu Bebas dari Penjara');monoRoll(s)}
-  else if(a==='buy'&&s.phase==='buy')monoBuy(s);
-  else if(a==='skip'&&s.phase==='buy'){tgLog(s,p.n+' melewatkan pembelian');monoEnd(s)}
+  else if(a==='buy'&&s.phase==='buy')monoBuy(s,0);
+  else if(a==='buyb'&&s.phase==='buy')monoBuy(s,1);
+  else if(a==='bld'&&s.phase==='build'){const i=p.pos,h=s.hs[i]|0;if(monoCanBuild(s,pi,i)){const c=bcost(i,h);p.cash-=c;bk(s,c);s.hs[i]=h+1;tgLog(s,p.n+' membangun '+LVN[h+1]+' di '+MT[i].n+' (−🪙'+c+')')}monoEnd(s)}
+  else if(a==='take'&&s.phase==='take')monoTake(s);
+  else if(a==='skip'&&(s.phase==='buy'||s.phase==='build'||s.phase==='take')){tgLog(s,p.n+(s.phase==='take'?' tidak mengambil alih':s.phase==='build'?' tidak membangun':' melewatkan pembelian'));monoEnd(s)}
   else if(a==='loan'||a==='repay'||MANA.test(a))monoMgmt(s,pi,a)}
-const hasHouse=(s,t)=>t.g&&grpOf(t.g).some(z=>(s.hs[z]|0)>0);
+const LVN=['Tanah','Gedung 1','Gedung 2','Gedung 3','Hotel'],bcost=(i,l)=>l>=3?MT[i].hc*2:MT[i].hc,bval=(s,i)=>{const t=MT[i],l=s.hs[i]|0;return t.p+t.hc*(l>=4?5:l)},tkPrice=(s,i)=>bval(s,i)*2;
+const hasHouse=(s,t)=>(s.hs[MT.indexOf(t)]|0)>0;
 function monoMgmt(s,pi,a){const p=s.seats[pi];if(s.phase!=='roll'&&s.phase!=='buy')return;
   if(a==='loan'){if((p.debt|0)<=1000){p.cash+=500;p.debt=(p.debt|0)+500;bk(s,-500);tgLog(s,p.n+' meminjam 🪙500 dari bank')}return}
   if(a==='repay'){const v=Math.min(500,p.debt|0,p.cash);if(v>0){p.cash-=v;p.debt-=v;bk(s,v);tgLog(s,p.n+' melunasi 🪙'+v+' ke bank')}return}
   const[k,x]=a.split(':'),i=+x,t=MT[i];if(!t||s.owner[i]!==pi)return;
-  if(k==='build'){if(s.phase==='roll'&&monoCanBuild(s,pi,i)){p.cash-=t.hc;bk(s,t.hc);s.hs[i]=(s.hs[i]|0)+1;tgLog(s,p.n+' membangun '+(s.hs[i]>=4?'hotel':'rumah')+' di '+t.n)}}
-  else if(k==='sell'){const h=s.hs[i]|0;if(h>0&&grpOf(t.g).every(z=>(s.hs[z]|0)<=h)){s.hs[i]=h-1;const v=Math.floor(t.hc/2);p.cash+=v;bk(s,-v);tgLog(s,p.n+' menjual bangunan di '+t.n+' (+🪙'+v+')')}}
+  if(k==='build'){if(s.phase==='roll'&&monoCanBuild(s,pi,i)){const h=s.hs[i]|0,c=bcost(i,h);p.cash-=c;bk(s,c);s.hs[i]=h+1;tgLog(s,p.n+' membangun '+LVN[h+1]+' di '+t.n+' (−🪙'+c+')')}}
+  else if(k==='sell'){const h=s.hs[i]|0;if(h>0){s.hs[i]=h-1;const v=Math.floor(bcost(i,h-1)/2);p.cash+=v;bk(s,-v);tgLog(s,p.n+' menjual '+LVN[h]+' di '+t.n+' (+🪙'+v+')')}}
   else if(k==='mort'){if(!s.mg[i]&&!hasHouse(s,t)){const v=Math.floor(t.p/2);s.mg[i]=1;p.cash+=v;bk(s,-v);tgLog(s,p.n+' menggadaikan '+t.n+' (+🪙'+v+')')}}
   else if(k==='unm'){const v=Math.ceil(t.p/2*1.1);if(s.mg[i]&&p.cash>=v){p.cash-=v;delete s.mg[i];bk(s,v);tgLog(s,p.n+' menebus '+t.n+' (−🪙'+v+')')}}}
 function tgNpc(s){const q=s.seats[s.turn],pi=s.turn;if(s.table!=='mono')return ladRoll(s);
@@ -2456,9 +2461,10 @@ function tgNpc(s){const q=s.seats[s.turn],pi=s.turn;if(s.table!=='mono')return l
     if((q.debt|0)>0&&q.cash>900)return tgAct(s,'repay');
     if(q.cash<120)for(const k in s.owner)if(s.owner[k]===pi&&!s.mg[k]&&!hasHouse(s,MT[k]))return tgAct(s,'mort:'+k);
     if(q.cash>700)for(const k in s.mg)if(s.owner[k]===pi&&q.cash-Math.ceil(MT[k].p*.55)>500)return tgAct(s,'unm:'+k);
-    let best=-1;for(let i=0;i<40;i++)if(monoCanBuild(s,pi,i)&&q.cash-MT[i].hc>=250&&(best<0||MT[i].hc<MT[best].hc))best=i;
-    if(best>=0)return tgAct(s,'build:'+best);monoRoll(s)}
-  else{const t=MT[q.pos],grp=MT.filter((z,i)=>z.g&&z.g===t.g&&s.owner[i]===pi).length;if(q.cash-t.p>=200||(grp>0&&q.cash-t.p>=40)||(t.gr&&'AS'.includes(t.gr)&&q.cash-t.p>=120))monoBuy(s);else{tgLog(s,q.n+' melewatkan pembelian');monoEnd(s)}}}
+    monoRoll(s)}
+  else if(s.phase==='buy'){const t=MT[q.pos],grp=MT.filter((z,i)=>z.g&&z.g===t.g&&s.owner[i]===pi).length,good=q.cash-t.p>=200||(grp>0&&q.cash-t.p>=40)||(t.gr&&'AS'.includes(t.gr)&&q.cash-t.p>=120);if(t.t==='prop'&&good&&q.cash-t.p-t.hc>=300)tgAct(s,'buyb');else if(good)tgAct(s,'buy');else tgAct(s,'skip')}
+  else if(s.phase==='build'){const i=q.pos;if(q.cash-bcost(i,s.hs[i]|0)>=250)tgAct(s,'bld');else tgAct(s,'skip')}
+  else if(s.phase==='take'){const i=q.pos,t=MT[i],pr=tkPrice(s,i),part=MT.filter((z,k)=>z.g&&z.g===t.g&&s.owner[k]===pi).length;if(q.cash-pr>=300&&((t.gr&&'AS'.includes(t.gr))||part>0))tgAct(s,'take');else tgAct(s,'skip')}}
 function tgTick(){const now=Date.now();
   for(const t in TGS){const s=TGS[t];
     if(s.host!==myId){if(ch&&Object.keys(pinfo).length&&!pinfo[s.host]&&now-(s.rx||0)>4000){delete TGS[t];if(TGV===t&&modal==='tgame')tgRender()}continue}
@@ -2466,7 +2472,7 @@ function tgTick(){const now=Date.now();
     if(ch&&Object.keys(pinfo).length)for(let i=s.seats.length-1;i>=0;i--){const q=s.seats[i];if(!q.npc&&q.id!==myId&&!pinfo[q.id]){if(s.status==='lobby')s.seats.splice(i,1);else if(s.status==='play'){q.npc=1;tgLog(s,q.n+' keluar — digantikan bot')}dirty=1}}
     if(s.status==='play'){const cur=s.seats[s.turn];
       if(cur&&cur.npc&&now-(s.tAct||0)>1300){tgNpc(s);dirty=1}
-      else if(cur&&!cur.npc&&now-(s.tAct||0)>45000){tgLog(s,cur.n+' kelamaan — jalan otomatis');if(s.table==='mono'&&s.phase==='buy'){tgLog(s,cur.n+' melewatkan pembelian');monoEnd(s)}else tgAct(s,'roll');dirty=1}}
+      else if(cur&&!cur.npc&&now-(s.tAct||0)>45000){tgLog(s,cur.n+' kelamaan — jalan otomatis');if(s.table==='mono'&&s.phase!=='roll')tgAct(s,'skip');else tgAct(s,'roll');dirty=1}}
     if(dirty)tgCommit(s);else if(ch&&now-(s.hb||0)>2500){s.hb=now;send('tg',{k:'state',table:s.table,id:myId,s})}}}
 setInterval(tgTick,600);
 function tgReward(s){if(s.winner!==myId)return;const hum=s.seats.filter(q=>!q.npc).length,v=hum>1?TGW[s.table]:Math.round(TGW[s.table]/2);if(!isHost())S.gold+=v;dispatch({t:'sell',v});sfx('chime');say('🏆 Kamu menang '+TGN[s.table]+'! +'+v+' gold'+(hum>1?'':' (lawan bot, hadiah separuh)'));hud()}
@@ -2475,13 +2481,13 @@ function tgReward(s){if(s.winner!==myId)return;const hum=s.seats.filter(q=>!q.np
 const bk=(s,v)=>{s.bank=(s.bank|0)+v};
 const grpOf=g=>{const r=[];MT.forEach((z,i)=>{if(z.g===g)r.push(i)});return r};
 function wealth(s,i){const q=s.seats[i];let w=q.cash-(q.debt|0);for(const k in s.owner)if(s.owner[k]===i)w+=(s.mg[k]?MT[k].p/2:MT[k].p)+(s.hs[k]|0)*(MT[k].hc||0);return Math.round(w)}
-function monoCanBuild(s,pi,i){const t=MT[i];if(!t||t.t!=='prop'||s.owner[i]!==pi)return false;const g=grpOf(t.g);if(!g.every(k=>s.owner[k]===pi&&!s.mg[k]))return false;const h=s.hs[i]|0;return h<4&&g.every(k=>(s.hs[k]|0)>=h)&&s.seats[pi].cash>=t.hc}
+function monoCanBuild(s,pi,i){const t=MT[i];if(!t||t.t!=='prop'||s.owner[i]!==pi||s.mg[i])return false;const h=s.hs[i]|0;return h<4&&s.seats[pi].cash>=bcost(i,h)}
 function monoJail(s,pi){const p=s.seats[pi];p.pos=10;p.jail=3;s.extra=0;s.dbl=0}
 function passGo(s,pi){const p=s.seats[pi];p.cash+=200;bk(s,-200);tgLog(s,p.n+' lewat START, gaji dari bank 🪙200');if((p.debt|0)>0){const i=Math.ceil(p.debt*.1);tgLog(s,p.n+' bayar bunga pinjaman 🪙'+i);monoPay(s,pi,-1,i)}}
-function monoRoll(s){const pi=s.turn,p=s.seats[pi],a=d6(),b=d6(),dbl=a===b;s.dice=[a,b];s.rid=(s.rid|0)+1;s.hold=2500;s.extra=0;s.mv={id:p.id,from:p.pos,n:0};
+function monoRoll(s){const pi=s.turn,p=s.seats[pi],a=d6(),b=d6(),dbl=a===b;s.dice=[a,b];s.rid=(s.rid|0)+1;s.hold=3600;s.extra=0;s.mv={id:p.id,from:p.pos,n:0};
   if(p.jail>0){if(dbl){p.jail=0;tgLog(s,p.n+' lempar kembar '+a+' — bebas dari penjara!')}else{p.jail--;if(p.jail>0){tgLog(s,p.n+' lempar '+a+'+'+b+', masih di penjara ('+p.jail+' giliran lagi)');return monoEnd(s)}tgLog(s,p.n+' gagal 3 kali, bayar 🪙50 untuk keluar');if(!monoPay(s,pi,-1,50))return monoEnd(s)}}
   else if(dbl){s.dbl=(s.dbl|0)+1;if(s.dbl>=3){tgLog(s,p.n+' kembar 3 kali berturut-turut — masuk penjara!');monoJail(s,pi);return monoEnd(s)}s.extra=1}
-  tgLog(s,p.n+' lempar '+a+'+'+b+(dbl?' (kembar)':''));s.mv.n=a+b;s.hold=1750+(a+b)*300+700;monoMove(s,pi,a+b)}
+  tgLog(s,p.n+' lempar '+a+'+'+b+(dbl?' (kembar)':''));s.mv.n=a+b;s.hold=3250+(a+b)*300+700;monoMove(s,pi,a+b)}
 function monoMove(s,pi,n,nocollect){const p=s.seats[pi],raw=p.pos+n;if(raw>=40&&!nocollect)passGo(s,pi);p.pos=((raw%40)+40)%40;monoLand(s,pi)}
 function monoLand(s,pi){const p=s.seats[pi],t=MT[p.pos];
   if(t.t==='gojail'){tgLog(s,p.n+' masuk penjara!');monoJail(s,pi);return monoEnd(s)}
@@ -2489,17 +2495,19 @@ function monoLand(s,pi){const p=s.seats[pi],t=MT[p.pos];
   if(t.t==='chance'||t.t==='chest')return monoCard(s,pi,t.t);
   if(t.p&&(t.t==='prop'||t.t==='rail'||t.t==='util')){const o=s.owner[p.pos];
     if(o==null){if(p.cash>=t.p){s.phase='buy';s.m2=0;tgLog(s,p.n+' tiba di '+t.n+(t.gr?' (Grade '+t.gr+')':'')+' — 🪙'+t.p);return}tgLog(s,p.n+' di '+t.n+', uang kurang untuk membeli (bisa gadai/pinjam di giliran berikutnya)');s.m2=0;return monoEnd(s)}
-    if(o===pi){tgLog(s,p.n+' singgah di properti sendiri');s.m2=0;return monoEnd(s)}
+    if(o===pi){s.m2=0;const h=s.hs[p.pos]|0;if(t.t==='prop'&&!s.mg[p.pos]&&h<4&&p.cash>=bcost(p.pos,h)){s.phase='build';tgLog(s,p.n+' tiba di properti sendiri — bisa naik ke '+LVN[h+1]);return}tgLog(s,p.n+' singgah di properti sendiri');return monoEnd(s)}
     if(s.mg[p.pos]){tgLog(s,t.n+' sedang digadai — bebas sewa');s.m2=0;return monoEnd(s)}
-    const r=monoRent(s,p.pos,o)*(s.m2||1);s.m2=0;tgLog(s,p.n+' bayar sewa 🪙'+r+' ke '+s.seats[o].n);monoPay(s,pi,o,r);return monoEnd(s)}
+    const r=monoRent(s,p.pos,o)*(s.m2||1);s.m2=0;tgLog(s,p.n+' bayar sewa 🪙'+r+' ke '+s.seats[o].n);const ok=monoPay(s,pi,o,r);
+    if(ok&&t.t==='prop'&&(s.hs[p.pos]|0)<4){const pr=tkPrice(s,p.pos);if(p.cash>=pr){s.phase='take';s.tk=pr;tgLog(s,p.n+' bisa mengambil alih '+t.n+' (🪙'+pr+')');return}}
+    return monoEnd(s)}
   monoEnd(s)}
 function monoRent(s,tile,o){const t=MT[tile];
-  if(t.t==='prop'){const h=s.hs[tile]|0;let r=t.r*RM[h];if(h===0&&grpOf(t.g).every(i=>s.owner[i]===o))r*=2;return r}
+  if(t.t==='prop'){const h=s.hs[tile]|0;let r=t.r*RM[h];if(grpOf(t.g).every(i=>s.owner[i]===o))r=Math.round(r*1.5);return r}
   let n=0;MT.forEach((z,i)=>{if(z.t===t.t&&s.owner[i]===o)n++});
   if(t.t==='rail')return 25*Math.pow(2,n-1);return(s.dice[0]+s.dice[1])*(n>1?10:4)}
 function monoPay(s,pi,to,amt){const p=s.seats[pi];
   while(p.cash<amt){let b=-1;for(const k in s.owner)if(s.owner[k]===pi&&(s.hs[k]|0)>0&&(b<0||s.hs[k]>s.hs[b]))b=k;
-    if(b>=0){s.hs[b]--;const v=Math.floor(MT[b].hc/2);p.cash+=v;bk(s,-v);tgLog(s,p.n+' menjual bangunan di '+MT[b].n);continue}
+    if(b>=0){s.hs[b]--;const v=Math.floor(bcost(b,s.hs[b])/2);p.cash+=v;bk(s,-v);tgLog(s,p.n+' menjual bangunan di '+MT[b].n);continue}
     let q=-1;for(const k in s.owner)if(s.owner[k]===pi&&!s.mg[k]){q=k;break}
     if(q>=0){const v=Math.floor(MT[q].p/2);s.mg[q]=1;p.cash+=v;bk(s,-v);tgLog(s,p.n+' menggadaikan '+MT[q].n+' demi bayar');continue}break}
   if(p.cash>=amt){p.cash-=amt;if(to>=0)s.seats[to].cash+=amt;else bk(s,amt);return true}
@@ -2522,13 +2530,15 @@ function monoCard(s,pi,k){const p=s.seats[pi],ch2=k==='chance',D=ch2?CCH:CCC,dk=
    case'ea':s.seats.forEach((q,i)=>{if(i!==pi&&!q.out){const v=Math.min(c.v,q.cash);q.cash-=v;p.cash+=v}});break;
    case'ep':for(let i=0;i<s.seats.length&&!p.out;i++)if(i!==pi&&!s.seats[i].out)monoPay(s,pi,i,c.v);break}
   monoEnd(s)}
-function monoBuy(s){const p=s.seats[s.turn],t=MT[p.pos];if(p.cash>=t.p){p.cash-=t.p;bk(s,t.p);s.owner[p.pos]=s.turn;tgLog(s,p.n+' membeli '+t.n+' 🪙'+t.p)}monoEnd(s)}
+function monoBuy(s,wb){const p=s.seats[s.turn],t=MT[p.pos];if(p.cash>=t.p){p.cash-=t.p;bk(s,t.p);s.owner[p.pos]=s.turn;tgLog(s,p.n+' membeli '+t.n+' 🪙'+t.p);
+  if(wb&&t.t==='prop'&&p.cash>=t.hc){p.cash-=t.hc;bk(s,t.hc);s.hs[p.pos]=1;tgLog(s,p.n+' langsung membangun Gedung 1 (−🪙'+t.hc+')')}}monoEnd(s)}
+function monoTake(s){const p=s.seats[s.turn],i=p.pos,o=s.owner[i],pr=tkPrice(s,i);if(o!=null&&o!==s.turn&&(s.hs[i]|0)<4&&!s.mg[i]&&p.cash>=pr){p.cash-=pr;s.seats[o].cash+=pr;s.owner[i]=s.turn;tgLog(s,p.n+' MENGAMBIL ALIH '+MT[i].n+' ('+LVN[s.hs[i]|0]+') dari '+s.seats[o].n+' 🪙'+pr)}monoEnd(s)}
 function monoEnd(s){s.phase='roll';s.m2=0;const alive=s.seats.filter(q=>!q.out);if(alive.length<=1)return monoOver(s);
   const p=s.seats[s.turn];if(s.extra&&!p.out&&p.jail===0){s.extra=0;tgLog(s,p.n+' dapat giliran lagi (kembar)!');return}
   s.extra=0;s.dbl=0;let n=s.turn;do{n=(n+1)%s.seats.length;if(n===0)s.round++}while(s.seats[n].out);s.turn=n;if(s.round>MAXR)monoOver(s)}
 function monoOver(s){let best=-1,bw=-1e9;s.seats.forEach((q,i)=>{if(!q.out){const w=wealth(s,i);if(w>bw){bw=w;best=i}}});s.status='over';s.winner=best>=0?s.seats[best].id:null;s.wn=best>=0?s.seats[best].n:'';tgLog(s,'🏆 '+s.wn+' menang dengan kekayaan bersih 🪙'+bw)}
 /* ---------- Ular Tangga ---------- */
-function ladRoll(s){const p=s.seats[s.turn],d=d6();s.die=d;s.rid=(s.rid|0)+1;const np=p.pos+d;s.hold=1750+d*300+700;s.mv={id:p.id,from:p.pos,n:np>100?0:d};
+function ladRoll(s){const p=s.seats[s.turn],d=d6();s.die=d;s.rid=(s.rid|0)+1;const np=p.pos+d;s.hold=3250+d*300+700;s.mv={id:p.id,from:p.pos,n:np>100?0:d};
   if(np>100){tgLog(s,p.n+' lempar '+d+' — butuh angka pas ke 100');return ladNext(s,0)}
   p.pos=np;let m=p.n+' lempar '+d+' → '+np;if(LAD[np]){p.pos=LAD[np];m+=' · tangga naik ke '+p.pos}else if(SNK[np]){p.pos=SNK[np];m+=' · ular turun ke '+p.pos}
   tgLog(s,m);if(p.pos===100){s.status='over';s.winner=p.id;s.wn=p.n;tgLog(s,'🏆 '+p.n+' sampai di 100!');return}ladNext(s,d===6)}
@@ -2558,21 +2568,22 @@ function tgTab(t){TGT=t;tgRender()}
 function tgFS(){try{if(document.fullscreenElement)document.exitFullscreen();else document.documentElement.requestFullscreen()}catch(e){}}
 function tileInfo(s,i){const t=MT[i],ow=s.owner[i],oN=ow!=null&&s.seats[ow]?s.seats[ow].n:null,hh=s.hs[i]|0;
   let h=`<div class="ti"><div class="tih"><span class="me">${t.e}</span><b>${esc(t.n)}</b>${t.gr?`<em class="gp" style="background:${GRD[t.gr]}">Grade ${t.gr}</em>`:''}</div>`;
-  if(t.t==='prop')h+=`<small>${RGN[t.rg]} (${t.cc}) · harga 🪙${t.p} · rumah/hotel 🪙${t.hc} · gadai 🪙${Math.floor(t.p/2)}</small><table class="rt">${['Sewa dasar','1 rumah','2 rumah','3 rumah','Hotel'].map((l,k)=>`<tr${k===hh?' class="on"':''}><td>${l}</td><td>🪙${t.r*RM[k]}</td></tr>`).join('')}</table><small>Satu grup warna lengkap = sewa dasar ×2 dan boleh dibangun.</small>`;
+  if(t.t==='prop')h+=`<small>${RGN[t.rg]} (${t.cc}) · harga 🪙${t.p} · gedung 🪙${t.hc} · hotel 🪙${t.hc*2} · gadai 🪙${Math.floor(t.p/2)}</small><table class="rt">${['Tanah (dasar)','Gedung 1','Gedung 2','Gedung 3','Hotel'].map((l,k)=>`<tr${k===hh?' class="on"':''}><td>${l}</td><td>🪙${t.r*RM[k]}</td></tr>`).join('')}</table><small>Punya satu grup warna lengkap = semua sewa ×1,5. Hotel tidak bisa diambil alih pemain lain.</small>`;
   else if(t.p&&t.t!=='tax')h+=`<small>Harga 🪙${t.p}${t.t==='rail'?' · sewa 25 / 50 / 100 / 200 sesuai jumlah bandara milikmu':' · sewa = angka dadu × 4 (× 10 jika punya 2)'}</small>`;
   else h+=`<small>${{start:'Lewati START: gaji 🪙200 dari bank.',tax:'Bayar 🪙'+t.p+' ke bank.',chance:'Ambil kartu Kesempatan.',chest:'Ambil kartu Dana Umum.',jailv:'Hanya berkunjung — kecuali kamu dipenjara.',park:'Istirahat, tidak terjadi apa-apa.',gojail:'Langsung masuk penjara!'}[t.t]||''}</small>`;
-  if(t.p&&t.t!=='tax')h+=`<small>${oN?'Pemilik: <b>'+esc(oN)+'</b>'+(s.mg[i]?' · 🔒 digadai':'')+(t.g?' · '+(hh>=4?'🏨 hotel':hh?'🏠×'+hh:'tanah kosong'):''):'🏦 Milik bank — belum terjual'}</small>`;
+  if(t.t==='prop'&&oN&&ow!==undefined&&!s.mg[i])h+=`<small>${hh>=4?'🏨 Hotel — <b>tidak bisa diambil alih</b>':'⚔️ Harga ambil alih: 🪙'+tkPrice(s,i)+' (2× nilai aset)'}</small>`;
+  if(t.p&&t.t!=='tax')h+=`<small>${oN?'Pemilik: <b>'+esc(oN)+'</b>'+(s.mg[i]?' · 🔒 digadai':'')+(t.g?' · '+(hh>=4?'🏨 Hotel':hh?'🏢 '+LVN[hh]:'Tanah kosong'):''):'🏦 Milik bank — belum terjual'}</small>`;
   return h+'</div>'}
 function assetsH(s,mi,can){const rows=[];for(let i=0;i<40;i++)if(s.owner[i]===mi){const t=MT[i],h=s.hs[i]|0,mg=s.mg[i],b=[];
-    if(can){if(monoCanBuild(s,mi,i))b.push(`<button class="mb gold sm" onclick="tgDo('build:${i}')">🏗️ Bangun 🪙${t.hc}</button>`);if(h>0&&grpOf(t.g).every(z=>(s.hs[z]|0)<=h))b.push(`<button class="mb sec sm" onclick="tgDo('sell:${i}')">Jual bangunan</button>`);
-      if(!mg&&!hasHouse(s,t))b.push(`<button class="mb sec sm" onclick="tgDo('mort:${i}')">Gadai +🪙${Math.floor(t.p/2)}</button>`);if(mg)b.push(`<button class="mb gold sm" onclick="tgDo('unm:${i}')">Tebus −🪙${Math.ceil(t.p/2*1.1)}</button>`)}
-    rows.push(`<div class="arow" style="--g:${GC[t.g]||'#8a96a8'}"><i></i><div class="ar1"><b>${t.e} ${esc(t.n)}</b>${t.gr?`<em class="gp" style="background:${GRD[t.gr]}">${t.gr}</em>`:''}</div><small>${mg?'🔒 digadai':h>=4?'🏨 hotel':h?'🏠×'+h:'tanah kosong'} · sewa 🪙${monoRent(s,i,mi)}</small>${b.length?`<div class="ab">${b.join('')}</div>`:''}</div>`)}
+    if(can){if(t.t==='prop'&&monoCanBuild(s,mi,i)&&s.phase==='roll')b.push(`<button class="mb gold sm" onclick="tgDo('build:${i}')">🏗️ ${LVN[h+1]} 🪙${bcost(i,h)}</button>`);if(h>0)b.push(`<button class="mb sec sm" onclick="tgDo('sell:${i}')">Jual ${LVN[h]} +🪙${Math.floor(bcost(i,h-1)/2)}</button>`);
+      if(!mg&&!h)b.push(`<button class="mb sec sm" onclick="tgDo('mort:${i}')">Gadai +🪙${Math.floor(t.p/2)}</button>`);if(mg)b.push(`<button class="mb gold sm" onclick="tgDo('unm:${i}')">Tebus −🪙${Math.ceil(t.p/2*1.1)}</button>`)}
+    rows.push(`<div class="arow" style="--g:${GC[t.g]||'#8a96a8'}"><i></i><div class="ar1"><b>${t.e} ${esc(t.n)}</b>${t.gr?`<em class="gp" style="background:${GRD[t.gr]}">${t.gr}</em>`:''}</div><small>${mg?'🔒 digadai':h>=4?'🏨 Hotel':h?'🏢 '+LVN[h]:'Tanah kosong'} · sewa 🪙${monoRent(s,i,mi)}</small>${b.length?`<div class="ab">${b.join('')}</div>`:''}</div>`)}
   return rows.length?rows.join(''):'<div class="tst">Belum punya aset. Beli properti saat mendarat di petak yang belum bertuan.</div>'}
 function bankH(s,mi,can){const q=mi>=0?s.seats[mi]:null,rank=s.seats.map((z,i)=>[i,wealth(s,i)]).sort((a,b)=>b[1]-a[1]);
   return `<div class="bank"><div class="bk1"><span>🏦 BANK DUNIA</span><b>🪙${(s.bank|0).toLocaleString('id-ID')}</b></div><small>Bank menerima pajak, pembelian properti & bunga; membayar gaji START, hadiah kartu, dan pinjaman.</small>`+
    (q?`<div class="bk2"><div>Pinjamanmu<b>🪙${q.debt|0}</b></div><div>Uang tunai<b>🪙${q.cash}</b></div></div><div class="row"><button class="mb gold" style="flex:1" ${can&&(q.debt|0)<=1000?'':'disabled'} onclick="tgDo('loan')">+ Pinjam 🪙500</button><button class="mb sec" style="flex:1" ${can&&(q.debt|0)>0&&q.cash>0?'':'disabled'} onclick="tgDo('repay')">Bayar 🪙500</button></div><small>Bunga 10% dari sisa pinjaman dibayar tiap kamu lewat START. Maks pinjaman 🪙1500. Properti bisa digadai 50% harga (tab Aset).</small>`:'')+
    `<div class="lb"><b>Peringkat kekayaan bersih</b>${rank.map(([i,w],k)=>`<div class="prow${s.seats[i].out?' out':''}"><i style="background:${esc(s.seats[i].col)}"></i><b>${k+1}. ${esc(s.seats[i].n)}</b><span>💎${w}</span></div>`).join('')}</div></div>`}
-function tgIntro(t){return `<div class="intro"><div class="tst">${t==='mono'?'Keliling dunia: 40 petak di 5 kawasan — Asia, Afrika, Amerika Latin, Amerika Utara, dan Eropa. Setiap properti punya <b>grade D–S</b> (Eropa = grade S termahal, Asia & Amerika Utara = grade A). Beli aset, bangun rumah & hotel, gadai, pinjam ke bank, ambil kartu Kesempatan / Dana Umum. Bangkrut = tersingkir; setelah '+MAXR+' ronde yang kekayaan bersihnya terbesar menang.':'Lempar dadu, naik tangga, hindari ular. Siapa pertama sampai petak 100 menang. Angka 6 dapat giliran lagi.'}<br><br>Main bersama pemain lain di room (semua harus Ready), atau tambah bot. Hadiah menang: 🪙${TGW[t]} (lawan bot saja: separuh).</div><button class="mb gold big" onclick="tgCreate('${t}');">${TGE[t]} Buat room ${TGN[t]}</button></div>`}
+function tgIntro(t){return `<div class="intro"><div class="tst">${t==='mono'?'Keliling dunia: 40 petak di 5 kawasan — Asia, Afrika, Amerika Latin, Amerika Utara, dan Eropa. Setiap properti punya <b>grade D–S</b> (Eropa = grade S termahal, Asia & Amerika Utara = grade A). Beli tanah, bangun Gedung 1–3 lalu Hotel, ambil alih properti lawan (kecuali Hotel), gadai, pinjam ke bank, ambil kartu Kesempatan / Dana Umum. Bangkrut = tersingkir; setelah '+MAXR+' ronde yang kekayaan bersihnya terbesar menang.':'Lempar dadu, naik tangga, hindari ular. Siapa pertama sampai petak 100 menang. Angka 6 dapat giliran lagi.'}<br><br>Main bersama pemain lain di room (semua harus Ready), atau tambah bot. Hadiah menang: 🪙${TGW[t]} (lawan bot saja: separuh).</div><button class="mb gold big" onclick="tgCreate('${t}');">${TGE[t]} Buat room ${TGN[t]}</button></div>`}
 function tgSplash(t){const m=t==='mono';return `<div class="tgspl ${t}"><div class="sk"></div><div class="sc"><div class="orn">✦ ✦ ✦</div><b class="sl">${m?'MONOPOLI':'ULAR TANGGA'}</b><b class="ss">${m?'W O R L D &nbsp; T O U R':'P E T U A L A N G A N'}</b><div class="sbar"><i></i></div><div class="stip">${m?'Membuka bank & memuat papan dunia…<br>Tokyo · Singapura · Dubai · Paris · London · New York':'Menyiapkan papan…'}</div></div></div>`}
 function tgPlay(s){const t=s.table,o=tgSync(s),mi=s.seats.findIndex(q=>q.id===myId),my=mi>=0&&s.status==='play'&&s.turn===mi,cur=s.seats[s.turn],isH=s.host===myId;let act='';
   if(o.splash)return tgSplash(t);
@@ -2580,7 +2591,9 @@ function tgPlay(s){const t=s.table,o=tgSync(s),mi=s.seats.findIndex(q=>q.id===my
   if(s.status==='over'&&!o.anim)act=`<div class="winb">🏆 ${esc(s.wn||'Tidak ada pemenang')} menang!</div>`+(isH?`<div class="row"><button class="mb gold" style="flex:1" onclick="tgDo('rematch')">🔁 Main lagi</button><button class="mb sec" style="flex:1" onclick="tgDo('close')">Tutup</button></div>`:mi>=0?`<button class="mb sec sm" onclick="tgDo('leave')">Keluar</button>`:'');
   else if(o.anim)act='<div class="tst">🎲 Dadu bergulir…</div>';
   else if(my){const q=s.seats[mi];
-    if(t==='mono'&&s.phase==='buy'){const z=MT[q.pos];act=`<div class="buyc"><div class="tst">Beli <b>${esc(z.n)}</b>${z.gr?' <em class="gp" style="background:'+GRD[z.gr]+'">Grade '+z.gr+'</em>':''} seharga 🪙${z.p}?</div><div class="row"><button class="mb gold" style="flex:1" onclick="tgDo('buy')">🛒 Beli</button><button class="mb sec" style="flex:1" onclick="tgDo('skip')">Lewati</button></div></div>`}
+    if(t==='mono'&&s.phase==='buy'){const z=MT[q.pos],wb=z.t==='prop'&&q.cash>=z.p+z.hc;act=`<div class="buyc"><div class="tst">Beli <b>${esc(z.n)}</b>${z.gr?' <em class="gp" style="background:'+GRD[z.gr]+'">Grade '+z.gr+'</em>':''}?</div><div class="row"><button class="mb gold" style="flex:1" onclick="tgDo('buy')">🛒 Beli Tanah 🪙${z.p}</button>${wb?`<button class="mb gold" style="flex:1" onclick="tgDo('buyb')">🏗️ Beli + Gedung 1 🪙${z.p+z.hc}</button>`:''}<button class="mb sec" style="flex:1" onclick="tgDo('skip')">Lewati</button></div></div>`}
+    else if(t==='mono'&&s.phase==='build'){const z=MT[q.pos],h=s.hs[q.pos]|0;act=`<div class="buyc"><div class="tst">Properti milikmu: <b>${esc(z.n)}</b> (${LVN[h]}). Naikkan ke <b>${LVN[h+1]}</b> seharga 🪙${bcost(q.pos,h)}?${h===3?' <i>Hotel tidak bisa diambil alih lawan.</i>':''}</div><div class="row"><button class="mb gold" style="flex:1" onclick="tgDo('bld')">🏗️ Bangun ${LVN[h+1]}</button><button class="mb sec" style="flex:1" onclick="tgDo('skip')">Lewati</button></div></div>`}
+    else if(t==='mono'&&s.phase==='take'){const z=MT[q.pos],ow=s.seats[s.owner[q.pos]];act=`<div class="buyc"><div class="tst">⚔️ Ambil alih <b>${esc(z.n)}</b> (${LVN[s.hs[q.pos]|0]}) dari ${esc(ow?ow.n:'')}? Harga <b>🪙${s.tk}</b> (2× nilai aset), dibayar ke pemilik.</div><div class="row"><button class="mb gold" style="flex:1" onclick="tgDo('take')">⚔️ Ambil Alih</button><button class="mb sec" style="flex:1" onclick="tgDo('skip')">Lewati</button></div></div>`}
     else if(t==='mono'){if(q.jail>0)act=`<div class="tst">🔒 Kamu di penjara (${q.jail} giliran lagi)</div><button class="mb gold big" onclick="tgDo('roll')">🎲 Lempar (butuh kembar)</button>${q.cash>=50?`<button class="mb sec" onclick="tgDo('pay')">💰 Bayar 🪙50</button>`:''}${q.jf?`<button class="mb sec" onclick="tgDo('jcard')">🎫 Pakai Kartu Bebas</button>`:''}`;else act=`<button class="mb gold big pulse" onclick="tgDo('roll')">🎲 KOCOK DADU</button>`}
     else act=`<button class="mb gold big pulse" onclick="tgDo('roll')">🎲 LEMPAR DADU</button>`}
   else if(s.status==='play')act=`<div class="tst">${mi<0?'👀 Menonton · ':''}Menunggu ${esc(cur?cur.n:'')}${cur&&cur.npc?' 🤖':''}…</div>`;
@@ -2607,7 +2620,7 @@ function tgSnd(k,i){try{if(typeof AC==='undefined'||!AC||AU.mute||AC.state!=='ru
   else if(k==='pay'){T(520,.1,'triangle',.25,300);T(300,.18,'triangle',.22,180,.1)}
   else if(k==='jail'){T(140,.35,'sawtooth',.2,70);N(.3,'lowpass',400,1,.3,0)}
   else if(k==='win')[523,659,784,1047,1319].forEach((f,j)=>T(f,.3,'triangle',.3,0,j*.12))}catch(e){}}
-function newLogSnd(s,o){const n=Math.min((s.lc|0)-(o.lc|0),s.log.length);if(n<=0||n>6)return;s.log.slice(-n).forEach((l,j)=>{let k=/menang|sampai di 100/.test(l)?'win':/bangkrut/.test(l)?'bad':/penjara!?$|masuk penjara/.test(l)?'jail':/membeli|gaji|menjual|meminjam|menggadaikan/.test(l)?'coin':/sewa|bayar|denda|pajak|bunga/.test(l)?'pay':'';if(k)setTimeout(()=>tgSnd(k),j*260)})}
+function newLogSnd(s,o){const n=Math.min((s.lc|0)-(o.lc|0),s.log.length);if(n<=0||n>6)return;s.log.slice(-n).forEach((l,j)=>{let k=/menang|sampai di 100/.test(l)?'win':/MENGAMBIL ALIH/.test(l)?'good':/bangkrut/.test(l)?'bad':/penjara!?$|masuk penjara/.test(l)?'jail':/membeli|gaji|menjual|meminjam|menggadaikan/.test(l)?'coin':/sewa|bayar|denda|pajak|bunga/.test(l)?'pay':'';if(k)setTimeout(()=>tgSnd(k),j*260)})}
 const PWC={};
 function pawnImg(col,fem){const key=col+'|'+(fem?1:0);if(PWC[key])return PWC[key];let url='';
   try{const c=document.createElement('canvas');c.width=150;c.height=216;const cx=c.getContext('2d'),og=g;g=cx;try{cx.scale(2.3,2.3);person(33,88,'down',col,0,0,{fem:!!fem})}finally{g=og}url=c.toDataURL()}catch(e){}
@@ -2630,11 +2643,11 @@ requestAnimationFrame(tgFrame);
 function tgSync(s){const now=Date.now();let o=TGO[s.table];
   if(!o||o.gid!==s.gid)o=TGO[s.table]={gid:s.gid,rid:s.rid|0,until:0,dEnd:0,pop0:0,pop1:0,st0:0,mv:null,mvp:[],pl:s.log.slice(),lc:s.lc|0,cid:s.card?s.card.id:0,cs:0,cu:0,sg:'',su:0};
   if(s.status==='play'&&o.sg!==s.gid){o.sg=s.gid;if(s.log.length<=1&&(s.rid|0)===0){o.su=now+3600;setTimeout(tgRender,3650)}}
-  if((s.rid|0)!==o.rid){o.rid=s.rid|0;const m=s.mv;o.dEnd=now+DICE_MS;o.pop0=now+1450;o.pop1=now+3300;o.st0=now+DICE_MS+50;let P=[];o.mv=null;
+  if((s.rid|0)!==o.rid){o.rid=s.rid|0;const m=s.mv;o.dEnd=now+DICE_MS;o.pop0=now+1950;o.pop1=now+3150;o.st0=now+3250;let P=[];o.mv=null;
     if(m){o.mv=m;const md=s.table==='mono'?40:1e9;P=[m.from%md];for(let i=1;i<=m.n;i++)P.push((m.from+i)%md);const q=s.seats.find(z=>z.id===m.id);if(q&&q.pos!==P[P.length-1])P.push(q.pos)}
     o.mvp=P;o.until=Math.max(o.pop1,P.length>1?o.st0+(P.length-1)*SD+350:0);
     [o.dEnd+30,o.pop0,o.pop1+30,o.until+60].forEach(t=>setTimeout(tgRender,Math.max(0,t-now)));
-    tgSnd('dice');setTimeout(()=>tgSnd('pop'),1450);for(let i=1;i<P.length;i++)setTimeout(()=>tgSnd('step',i),DICE_MS+50+i*SD)}
+    tgSnd('dice');setTimeout(()=>tgSnd('pop'),1950);for(let i=1;i<P.length;i++)setTimeout(()=>tgSnd('step',i),3250+i*SD)}
   if(s.card&&s.card.id!==o.cid){o.cid=s.card.id;o.cs=Math.max(now,o.until);o.cu=o.cs+4300;o.until=o.cu;const c=s.card;
     setTimeout(tgRender,o.cs-now+30);setTimeout(()=>tgSnd('card'),o.cs-now+100);setTimeout(()=>tgSnd(c.q===0?'bad':c.q===1?'good':'pop'),o.cs-now+1150);setTimeout(tgRender,o.cu-now+60)}
   const anim=now<o.until;o.anim=anim;o.roll=now<o.dEnd;
@@ -2647,7 +2660,7 @@ const deckH=(k)=>`<div class="deck ${k}"><i></i><i></i><i></i><span>${k==='chanc
 function cardFxH(cd){if(!cd)return'';const k=cd.k;return `<div class="cfx ${k}" style="--fx:${k==='chance'?'-185%':'185%'}"><div class="cin"><div class="cb ${k}"><span>${k==='chance'?'❓':'💰'}</span><small>${k==='chance'?'KESEMPATAN':'DANA UMUM'}</small></div><div class="cf ${k}"><div class="ck">${k==='chance'?'KESEMPATAN':'DANA UMUM'}</div><div class="ce">${cd.e}</div><div class="cx">${esc(cd.x)}</div>${cd.l?`<em class="cl q${cd.q}">${esc(cd.l)}</em>`:''}<small>${esc(cd.who)}</small></div></div></div>`}
 function monoBoard(s,o){let h='<div class="mbd">';
   for(let i=0;i<40;i++){const t=MT[i],[r,c]=mpos(i),ow=s.owner[i],col=ow!=null&&s.seats[ow]?s.seats[ow].col:'',cor=i%10===0?' cor':'',hh=s.hs[i]|0,mg=s.mg[i];
-    const bld=hh?`<span class="mhs">${hh>=4?'<b class="ht"></b>':'<b></b>'.repeat(hh)}</span>`:'';
+    const bld=hh?`<span class="mhs">${hh>=4?'🏨':'🏢'.repeat(hh)}</span>`:'';
     h+=`<div class="mc${cor} t-${t.t}${TGSEL===i?' sel':''}${mg?' mgd':''}${col?' own':''}" onclick="tgSel(${i})" style="grid-area:${r}/${c};${t.g?'--g:'+GC[t.g]+';':''}${col?'--o:'+esc(col)+';':''}">${t.g?`<i class="mg"></i><b class="gp" style="background:${GRD[t.gr]}">${t.gr}</b>`:''}${bld}<span class="me">${t.e}</span><span class="mn">${esc(t.n)}</span>${t.p?`<span class="mpr">${t.p}</span>`:''}${mg?'<u class="gd">GADAI</u>':''}</div>`}
   const cur=s.seats[s.turn],last=o.pl[o.pl.length-1]||'';
   h+=`<div class="mctr"><div class="orn">✦ &nbsp; MONOPOLI &nbsp; ✦</div><b class="msub">W O R L D &nbsp; T O U R</b><div class="crow">${deckH('chance')}<div class="dtray">${dieH(s.dice[0],o.roll,0)}${dieH(s.dice[1],o.roll,1)}</div>${deckH('chest')}</div>`+
