@@ -496,23 +496,63 @@ button .ic,.cell .ic,.slot .ic{vertical-align:middle}
 .vs{font-weight:700;color:#ffd24a}
 .amsg{text-align:center;font-weight:600;min-height:20px;color:#ffe08a}
 #ab .mb.big{font-size:17px;padding:12px 18px}
-/* ===== v14: meja game ===== */
-#tgame .mcard{max-height:94vh;overflow:auto}
-.tgw{display:flex;gap:10px;flex-wrap:wrap;align-items:flex-start}.tgbd{flex:1 1 300px;min-width:260px}.tgside{flex:1 1 180px;display:flex;flex-direction:column;gap:8px;min-width:170px}
-.tst{font-size:13px;line-height:1.4;opacity:.92}
-.mbd{display:grid;grid-template:repeat(8,1fr)/repeat(8,1fr);aspect-ratio:1;gap:2px;background:#3a2412;padding:3px;border-radius:10px}
-.mc{position:relative;background:#f3ead0;color:#2b1a0f;border-radius:3px;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;font-size:clamp(6px,1.5vw,9px);line-height:1.05;text-align:center;box-shadow:inset 0 0 0 2px var(--o,transparent)}
-.mc.cor{background:#e0d0a0}.mg{position:absolute;top:0;left:0;right:0;height:22%;background:var(--g)}.mc .me{font-size:clamp(10px,2.4vw,16px);margin-top:14%}.mn{font-weight:600}.mpr{opacity:.7}
+/* ===== v15: meja game ===== */
+#tgame .mcard{width:min(98%,1020px);max-height:95vh;overflow:auto;position:relative}
+.tgw{display:flex;gap:12px;flex-wrap:wrap;align-items:flex-start}.tgbd{flex:2 1 460px;min-width:280px}.tgside{flex:1 1 220px;display:flex;flex-direction:column;gap:8px;min-width:200px}
+.tst{font-size:13px;line-height:1.45;opacity:.92}
+.mbd{display:grid;grid-template:repeat(10,1fr)/repeat(10,1fr);aspect-ratio:1;gap:2px;background:linear-gradient(135deg,#1a1408,#3a2a0e);padding:5px;border-radius:14px;border:3px solid #d4a935;box-shadow:0 0 0 2px #5a3f0a,0 10px 30px rgba(0,0,0,.6),inset 0 0 20px rgba(0,0,0,.6)}
+.mc{position:relative;background:linear-gradient(180deg,#fbf3dc,#ead9a8);color:#2b1a0f;border-radius:4px;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;font-size:clamp(5px,1.1vw,9px);line-height:1.05;text-align:center;box-shadow:inset 0 0 0 2px var(--o,transparent)}
+.mc.cor{background:linear-gradient(135deg,#ffe58a,#c9972a);font-weight:700}.mc.t-chance{background:linear-gradient(180deg,#ffd9a0,#f2a03d)}.mc.t-chest{background:linear-gradient(180deg,#bfe9ff,#6fb6e8)}.mc.t-tax{background:linear-gradient(180deg,#e8d8d8,#c99)}.mc.t-rail,.mc.t-util{background:linear-gradient(180deg,#e8ecf2,#b6c0d0)}
+.mg{position:absolute;top:0;left:0;right:0;height:20%;background:var(--g)}.mc .me{font-size:clamp(9px,1.9vw,17px);margin-top:16%}.mn{font-weight:700}.mpr{opacity:.75;font-size:.9em}
+.mhs{position:absolute;top:0;left:0;right:0;height:20%;display:flex;gap:1px;justify-content:center;align-items:center}.mhs b{width:5px;height:5px;background:#2fa34a;border:1px solid #0d4a1c}.mhs b.ht{width:10px;height:6px;background:#d93434;border-color:#5a0e0e}
 .mdt{position:absolute;bottom:1px;left:0;right:0;display:flex;justify-content:center;gap:1px;flex-wrap:wrap}
-.mtk{display:inline-grid;place-items:center;width:14px;height:14px;border-radius:50%;font:700 9px sans-serif;color:#fff;border:1.5px solid #fff;font-style:normal;box-shadow:0 1px 3px rgba(0,0,0,.5)}.mtk.cur{animation:tkb .7s infinite alternate}@keyframes tkb{to{transform:translateY(-3px)}}
-.mctr{grid-area:2/2/8/8;background:linear-gradient(160deg,#2f6a3a,#1f4a2a);border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:#fff;padding:6px;text-align:center}
-.mttl{font-size:clamp(12px,3vw,20px);color:#ffd24a;letter-spacing:1px}.mlast{font-size:12px;min-height:30px}
-.mdice{display:flex;gap:8px;justify-content:center}.mdice i{width:34px;height:34px;border-radius:8px;background:#fff;color:#222;display:grid;place-items:center;font:700 20px Fredoka,sans-serif;font-style:normal;box-shadow:0 3px 6px rgba(0,0,0,.4)}
+.mtk{display:inline-grid;place-items:center;width:16px;height:16px;border-radius:50%;font:700 9px sans-serif;color:#fff;border:1.5px solid #fff;font-style:normal;box-shadow:0 2px 4px rgba(0,0,0,.6);animation:hop .45s ease-out}.mtk.cur{outline:2px solid #ffd24a}@keyframes hop{0%{transform:translateY(-12px) scale(1.3)}60%{transform:translateY(0) scale(.9)}100%{transform:none}}
+.mctr{grid-area:2/2/10/10;position:relative;background:radial-gradient(circle at 50% 30%,#1d3b2c,#0d1a14 70%);border-radius:10px;border:2px solid #b8902a;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;color:#fff;padding:6px;text-align:center;overflow:hidden}
+.mctr:before{content:'';position:absolute;inset:6px;border:1px solid rgba(212,169,53,.4);border-radius:8px;pointer-events:none}
+.orn{color:#d4a935;letter-spacing:6px;font-size:11px}.mttl{font:700 clamp(18px,4.4vw,38px) Georgia,serif;letter-spacing:5px;background:linear-gradient(180deg,#fff2b0,#d4a935 55%,#8a6414);-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:0 0 18px rgba(212,169,53,.3)}.msub{font-size:clamp(6px,1.2vw,10px);color:#e8d28a;letter-spacing:2px}
+.mlast{font-size:clamp(10px,1.5vw,13px);min-height:30px;max-width:90%;color:#ffe9a8}.mctr small{opacity:.75}
+.dtray{display:flex;gap:30px;justify-content:center;align-items:center;perspective:600px;height:84px;margin:4px 0}
+.dw{filter:drop-shadow(0 9px 5px rgba(0,0,0,.55))}
+.die{position:relative;width:46px;height:46px;transform-style:preserve-3d;transform:rotateX(-22deg) rotateY(-28deg)}
+.cube{position:absolute;inset:0;transform-style:preserve-3d;transform:rotateX(var(--rx)) rotateY(var(--ry)) rotateZ(0deg)}
+.fc{position:absolute;inset:0;background:linear-gradient(145deg,#fffdf4,#e9dfc4);border:1px solid #bfb08a;border-radius:8px;display:grid;grid-template:repeat(3,1fr)/repeat(3,1fr);padding:6px;gap:0;text-decoration:none}
+.fc i{width:8px;height:8px;border-radius:50%;place-self:center}.fc i.on{background:radial-gradient(circle at 35% 30%,#555,#111)}.fc i.on.r{background:radial-gradient(circle at 35% 30%,#f66,#a00)}
+.f1{transform:translateZ(23px)}.f2{transform:rotateY(90deg) translateZ(23px)}.f5{transform:rotateY(-90deg) translateZ(23px)}.f6{transform:rotateY(180deg) translateZ(23px)}.f3{transform:rotateX(90deg) translateZ(23px)}.f4{transform:rotateX(-90deg) translateZ(23px)}
+.die.roll{animation:toss 1.6s linear both;animation-delay:calc(var(--d)*.14s)}
+.die.roll .cube{animation:spin 1.5s cubic-bezier(.15,.55,.3,1) both;animation-delay:calc(var(--d)*.14s)}
+@keyframes spin{from{transform:rotateX(calc(var(--rx) + 1260deg)) rotateY(calc(var(--ry) + 1000deg)) rotateZ(300deg)}to{transform:rotateX(var(--rx)) rotateY(var(--ry)) rotateZ(0deg)}}
+@keyframes toss{0%{transform:translate3d(-110px,-170px,120px) rotateX(-22deg) rotateY(-28deg) scale(1.7);opacity:0}12%{opacity:1}
+ 42%{transform:translate3d(-10px,0,0) rotateX(-22deg) rotateY(-28deg) scale(1)}54%{transform:translate3d(8px,-44px,30px) rotateX(-22deg) rotateY(-28deg) scale(1.1)}
+ 68%{transform:translate3d(12px,0,0) rotateX(-22deg) rotateY(-28deg) scale(1)}80%{transform:translate3d(12px,-14px,10px) rotateX(-22deg) rotateY(-28deg) scale(1.03)}90%{transform:translate3d(12px,0,0) rotateX(-22deg) rotateY(-28deg) scale(1)}100%{transform:translate3d(0,0,0) rotateX(-22deg) rotateY(-28deg) scale(1)}}
+.cardpop{position:absolute;left:12%;right:12%;top:18%;bottom:14%;border-radius:14px;padding:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:#2b1a0f;box-shadow:0 12px 40px rgba(0,0,0,.8),0 0 0 3px #fff6;animation:cflip .6s cubic-bezier(.2,.9,.3,1.2);z-index:5}
+.cardpop.chance{background:linear-gradient(160deg,#ffe0a6,#f29a2e)}.cardpop.chest{background:linear-gradient(160deg,#d6f1ff,#5aa9e0)}
+.cardpop .ck{font:700 13px Georgia,serif;letter-spacing:3px}.cardpop .ce{font-size:38px}.cardpop .cx{font-weight:700;font-size:clamp(11px,1.7vw,15px);line-height:1.3}.cardpop small{opacity:.7}
+@keyframes cflip{from{transform:perspective(500px) rotateY(100deg) scale(.5);opacity:0}to{transform:none;opacity:1}}
 .lbd{display:grid;grid-template:repeat(10,1fr)/repeat(10,1fr);aspect-ratio:1;gap:1px;background:#3a2412;padding:3px;border-radius:10px}
-.lc{position:relative;background:#f4e6a8;color:#2b1a0f;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;font-size:clamp(6px,1.4vw,9px);overflow:hidden}.lc.alt{background:#cfe8b0}.lc.up{background:#9fe39f}.lc.dn{background:#f2a0a0}.lc em{font-style:normal;font-weight:700}.lc .mdt{bottom:0}.lc .mtk{width:11px;height:11px;font-size:7px}
-.pl2{display:flex;flex-direction:column;gap:4px}.prow{display:flex;align-items:center;gap:6px;padding:4px 6px;border-radius:8px;background:rgba(0,0,0,.2);font-size:12px;flex-wrap:wrap}.prow.cur{outline:2px solid #ffd24a;background:rgba(255,210,74,.18)}.prow.out{opacity:.4}.prow i{width:12px;height:12px;border-radius:50%;flex:none}.prow b{flex:1}.prow small{opacity:.7}
+.lc{position:relative;background:#f4e6a8;color:#2b1a0f;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;font-size:clamp(6px,1.3vw,9px);overflow:hidden}.lc.alt{background:#cfe8b0}.lc.up{background:#9fe39f}.lc.dn{background:#f2a0a0}.lc em{font-style:normal;font-weight:700}.lc .mdt{bottom:0}.lc .mtk{width:11px;height:11px;font-size:7px}
+.pl2{display:flex;flex-direction:column;gap:4px}.prow{display:flex;align-items:center;gap:6px;padding:5px 8px;border-radius:8px;background:rgba(0,0,0,.25);font-size:12px;flex-wrap:wrap}.prow.cur{outline:2px solid #ffd24a;background:rgba(255,210,74,.18)}.prow.out{opacity:.4}.prow i{width:12px;height:12px;border-radius:50%;flex:none}.prow b{flex:1}.prow small{opacity:.75;width:100%}
+.rdy{font-size:12px;opacity:.8}.rdy.ok{color:#8ff08f;opacity:1}
+.inv{display:flex;flex-direction:column;gap:4px;max-height:140px;overflow:auto;padding:6px;border-radius:8px;background:rgba(0,0,0,.25)}
+.bl{display:flex;flex-wrap:wrap;gap:4px}
 .winb{text-align:center;font:700 18px Fredoka,sans-serif;color:#ffd24a;padding:8px}
-.tlog{font-size:11px;opacity:.85;display:flex;flex-direction:column;gap:2px;max-height:130px;overflow:auto}.tlog div:first-child{font-weight:700;opacity:1}
+.tlog{font-size:11px;opacity:.85;display:flex;flex-direction:column;gap:2px;max-height:150px;overflow:auto}.tlog div:first-child{font-weight:700;opacity:1}
+.pulse{animation:pls 1.2s infinite}@keyframes pls{50%{transform:scale(1.03);filter:brightness(1.15)}}
+.tgspl{position:relative;min-height:380px;border-radius:14px;overflow:hidden;display:grid;place-items:center;background:radial-gradient(circle at 50% 40%,#2b1d46,#0a0614 75%);animation:fin .5s}
+.tgspl.ladder{background:radial-gradient(circle at 50% 40%,#2d5a2e,#0c1c10 75%)}
+.tgspl .sk{position:absolute;left:0;right:0;bottom:0;height:42%;background:
+ linear-gradient(#0000,#0a0614 95%),repeating-linear-gradient(90deg,#1d1236 0 26px,#2a1a4d 26px 44px,#16102a 44px 70px,#241646 70px 84px);clip-path:polygon(0 60%,6% 40%,9% 62%,15% 25%,19% 55%,24% 35%,30% 70%,36% 20%,41% 50%,47% 30%,52% 66%,58% 38%,64% 58%,70% 22%,76% 52%,82% 34%,88% 62%,94% 30%,100% 55%,100% 100%,0 100%);opacity:.9}
+.tgspl .sc{position:relative;display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center;padding:20px}
+.tgspl .sl{font:700 clamp(30px,7vw,60px) Georgia,serif;letter-spacing:8px;background:linear-gradient(180deg,#fff2b0,#d4a935 55%,#8a6414);-webkit-background-clip:text;background-clip:text;color:transparent;animation:zin 1s both}
+.tgspl .ss{color:#e8d28a;letter-spacing:3px;font-size:clamp(9px,1.8vw,14px)}
+.sbar{width:min(300px,70vw);height:10px;border-radius:6px;background:#0008;border:1px solid #d4a935;overflow:hidden}.sbar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#8a6414,#ffe58a);animation:ld 3.4s cubic-bezier(.4,.1,.3,1) forwards}
+.stip{font-size:12px;opacity:.8;line-height:1.6;color:#ddd}
+@keyframes ld{to{width:100%}}@keyframes zin{from{transform:scale(1.6);opacity:0;letter-spacing:30px}to{transform:none;opacity:1}}@keyframes fin{from{opacity:0}}
+#tginv{position:fixed;top:12px;left:50%;transform:translateX(-50%);z-index:9999;background:#2a1a0a;color:#fff;border:2px solid #ffd24a;border-radius:14px;padding:12px 16px;box-shadow:0 8px 30px rgba(0,0,0,.6);display:flex;flex-direction:column;gap:8px;align-items:center;text-align:center;animation:fin .3s}#tginv div{display:flex;gap:8px}
+/* ===== v16: login ===== */
+.atab{display:flex;gap:6px;background:rgba(0,0,0,.35);padding:4px;border-radius:12px}.atab button{flex:1;border:0;border-radius:9px;padding:9px;font:700 14px system-ui;background:transparent;color:#fff;cursor:pointer;opacity:.7}.atab button.on{background:linear-gradient(#ffe58a,#e0a526);color:#3a2412;opacity:1}
+#aerr{min-height:16px;text-align:center;color:#ffb0a0}#aerr.ok{color:#9cf09c}.amut{opacity:.7;text-align:center;line-height:1.4}
+.aor{display:flex;align-items:center;gap:8px;opacity:.7;font-size:12px}.aor:before,.aor:after{content:'';flex:1;height:1px;background:#fff6}
+#ubar{display:flex;align-items:center;gap:8px;justify-content:space-between;background:rgba(0,0,0,.35);border:1px solid #fff3;border-radius:12px;padding:8px 10px;font-size:13px;width:100%;box-sizing:border-box}#ubar b{color:#ffe08a}#ubar button{border:0;border-radius:8px;padding:6px 10px;background:#6b4a28;color:#fff;cursor:pointer;font:600 12px system-ui}
 </style></head><body>
 <div id="fade"></div><div id="wrap"><canvas id="c" width="960" height="672"></canvas>
 <div id="ui" style="display:none"><div id="hurt"></div>
@@ -547,7 +587,10 @@ button .ic,.cell .ic,.slot .ic{vertical-align:middle}
 <div id="tgame" class="modal"><div class="panel mcard big"><div class="mh"><b id="tgt"></b><span class="meta" id="tgm"></span><button class="x" onclick="closeModal()">✕</button></div><div id="tgb"></div></div></div><div id="load"><div class="lcard"><h1>🌾 PIXEL FARM</h1><div id="ltitle">Memuat…</div><div class="lbar"><u id="lb1"></u></div><div id="ldet"></div><ul id="lsteps"></ul><button class="mb sec sm" id="lskip" style="display:none">Lewati unduhan →</button></div></div>
 <div id="menu"><div id="mbox">
 <div id="logo"><span>🌾</span><h1>PIXEL FARM</h1><p>Co-op Valley</p></div>
-<div id="m0" class="mp"><button class="mb" onclick="show('sp')">▶ Single Player</button><button class="mb" onclick="show('mp')">👥 Multiplayer</button><button class="mb sec" onclick="show('how')">❓ Cara Main</button></div>
+<div id="auth" class="mp"><div class="atab"><button id="at1" class="on" onclick="authTab('in')">Masuk</button><button id="at2" onclick="authTab('up')">Daftar</button></div>
+<input id="au" placeholder="Username atau email" autocomplete="username" maxlength="60" autocapitalize="off"><input id="ap" type="password" placeholder="Password" autocomplete="current-password" maxlength="72"><input id="ap2" type="password" placeholder="Ulangi password" autocomplete="new-password" maxlength="72" style="display:none">
+<button class="mb" id="abtn" onclick="authSubmit()">Masuk</button><small id="aerr"></small><div class="aor"><span>atau</span></div><button class="mb sec" onclick="authGuest()">👤 Main sebagai Tamu</button><small class="amut">Akun menyimpan progres &amp; karaktermu di cloud (bisa main dari perangkat lain). Tamu hanya tersimpan di perangkat ini.</small></div>
+<div id="m0" class="mp"><div id="ubar"></div><button class="mb" onclick="show('sp')">▶ Single Player</button><button class="mb" onclick="show('mp')">👥 Multiplayer</button><button class="mb sec" onclick="show('how')">❓ Cara Main</button></div>
 <div id="sp" class="mp"><h2>Single Player</h2><input id="nm1" placeholder="Nama kamu" maxlength="12"><div id="pk1" class="pk"></div><button class="mb" id="cont">Lanjutkan</button><button class="mb" id="newg">Game Baru</button><button class="mb sec" onclick="show('m0')">← Kembali</button></div>
 <div id="mp" class="mp"><h2>Multiplayer</h2><input id="nm2" placeholder="Nama kamu" maxlength="12"><div id="pk2" class="pk"></div><div class="row"><input id="rm" placeholder="Kode room" maxlength="12"><button class="mb sm" id="rnd">Acak</button></div><button class="mb" id="join">Gabung / Buat Room</button><small id="st"></small><button class="mb sec" onclick="show('m0')">← Kembali</button></div>
 <div id="how" class="mp"><h2>Cara Main</h2><ul><li>🏠 Rumah: dekati pintu lalu tekan E. Di dalam ada 🛏️ kasur (tidur setelah 18:00), 📦 peti, 🍳 kompor, 🚿 kamar mandi, dan 🚪 pintu keluar.</li><li>🌱 Bertani: ⛏️ gali tanah → pilih biji (slot 4-8) → Pakai buat tanam → 💧 siram TIAP HARI → 🧺 panen. Makin rajin disiram, makin bagus grade (Biasa / ⭐ Bagus / 🌟 Prima). Biji dibeli di Toko, dan panen bisa ngasih biji lagi.</li><li>HP: joystick kiri untuk jalan, tombol ⛏️ pakai alat (tahan = ulang), tombol kanan = aksi (bicara/tidur/jual)</li><li>WASD / panah: jalan</li><li>1-8: pilih alat &amp; bibit · Q/Z/scroll: ganti slot</li><li>Spasi: pakai alat di tile depan</li><li>E: bicara NPC, tidur di rumah, jual di toko</li><li>🎣 (slot 9): hadap air, Pakai, tunggu ❗ lalu Pakai lagi · berenang di kolam/danau · E dekat ayam = telur</li><li>Trade: dekati pemain lain lalu E, atau tombol 🤝</li><li>⚔️ F / tombol Serang: pukul pemain lain (friendly fire, host bisa mematikannya di menu ⏸). 🎵 Musik latar diunduh otomatis saat masuk game. Atur volume atau ganti lagu di menu ⏸.</li><li>❤️ Darah · 🍗 Lapar · 💧 Haus: makan panen/ikan/telur dari 🎒 Tas (pilih item → Makan), minum dengan E di dekat air / air mancur. Kalau lapar atau haus habis, darah berkurang. Tidur di rumah memulihkan darah.</li><li>Waktu: Pagi 06-11 · Siang 11-15 · Sore 15-18 · Malam 18-24 (lampu menyala, kunang-kunang muncul)</li><li>🗺️ Jelajah: jalan ke tepi kiri/kanan peta (jalan setapak) untuk pindah map. Kebun ← → ❄️ Salju → ⛰️ Bukit, dan 🏜️ Gurun di sebelah barat Kebun. Tiap map punya NPC dan fitur sendiri: Salju = mancing es, Kedai Hangat &amp; 🎮 Rumah Game (hanya ada di Salju); Bukit = tambang, beri liar, susu kambing; Gurun = gali harta, kaktus, oasis, Kafilah. Salju bikin cepat lapar, Gurun bikin cepat haus.</li><li>I: buka tas · Enter / 💬: chat (multiplayer) · Esc: jeda</li></ul><button class="mb sec" onclick="show('m0')">← Kembali</button></div>
@@ -1319,9 +1362,51 @@ $('join').onclick=async()=>{setup(1);code=$('rm').value.trim().toUpperCase().rep
   $('join').disabled=true;const ok=await enterRoom();$('join').disabled=false;if(ok)begin()};
 try{if(!localStorage.getItem('pfc2_SOLO'))$('cont').disabled=true}catch(e){}
 if(!/^https?:/.test(SB_URL))$('st').textContent='⚠ Supabase belum diisi di file ini.';
-show('m0');
 try{const sv=JSON.parse(localStorage.getItem('pfc2_char')||'null');if(sv){pick.g=sv.g==='f'?'f':'m';if(COLS.includes(sv.col))pick.col=sv.col;if(sv.n)$('nm1').value=$('nm2').value=sv.n}}catch(e){}
 renderPick();
+/* ===== v16: sistem akun (Supabase Auth) + mode tamu + sinkron cloud ===== */
+let sba=null;const AUTH={mode:'',name:'',uid:'',last:'',tab:'in'},SYNC_RE=/^pfc2_(char|SOLO|daily|cal30|inv_.+)$/;
+try{if(window.supabase&&/^https?:/.test(SB_URL))sba=supabase.createClient(SB_URL,SB_KEY,{auth:{persistSession:true,autoRefreshToken:true}})}catch(e){sba=null}
+const uMail=u=>u.includes('@')?u:u.toLowerCase()+'@pixelfarm.game';
+function authErr(e){const m=((e&&e.message)||'').toLowerCase();
+  if(m.includes('invalid login'))return'Username/email atau password salah';if(m.includes('already')||m.includes('registered'))return'Username sudah dipakai, coba yang lain';
+  if(m.includes('confirm'))return'Akun butuh konfirmasi email (atau matikan "Confirm email" di Supabase)';if(m.includes('rate')||m.includes('seconds'))return'Terlalu sering mencoba, tunggu sebentar';
+  if(m.includes('password'))return'Password minimal 6 karakter';if(m.includes('email')||m.includes('invalid'))return'Format username/email tidak valid';if(m.includes('fetch')||m.includes('network'))return'Tidak ada koneksi internet';
+  return'Gagal: '+((e&&e.message)||'coba lagi')}
+function aMsg(t,ok){const e=$('aerr');e.textContent=t||'';e.className=ok?'ok':''}
+function authTab(t){AUTH.tab=t;$('at1').className=t==='in'?'on':'';$('at2').className=t==='up'?'on':'';$('ap2').style.display=t==='up'?'':'none';$('abtn').textContent=t==='in'?'Masuk':'Buat Akun';$('ap').autocomplete=t==='in'?'current-password':'new-password';aMsg('')}
+function localData(){const d={};try{for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(SYNC_RE.test(k))d[k]=localStorage.getItem(k)}}catch(e){}return d}
+function wipeLocal(){try{Object.keys(localData()).forEach(k=>localStorage.removeItem(k))}catch(e){}}
+async function pushCloud(force){if(!sba||AUTH.mode!=='acct'||!AUTH.uid)return;const d=localData(),j=JSON.stringify(d);if(!force&&j===AUTH.last)return;
+  try{const{error}=await sba.from('profiles').upsert({id:AUTH.uid,username:AUTH.name,data:d,updated_at:new Date().toISOString()});if(!error)AUTH.last=j}catch(e){}}
+async function pullCloud(){if(!sba)return;try{const{data,error}=await sba.from('profiles').select('data').eq('id',AUTH.uid).maybeSingle();
+    if(!error&&data&&data.data&&Object.keys(data.data).length){wipeLocal();for(const k in data.data)if(SYNC_RE.test(k)&&typeof data.data[k]==='string')try{localStorage.setItem(k,data.data[k])}catch(e){}AUTH.last=JSON.stringify(localData())}
+    else await pushCloud(true)}catch(e){}}
+function applyChar(){try{const sv=JSON.parse(localStorage.getItem('pfc2_char')||'null');if(sv){pick.g=sv.g==='f'?'f':'m';if(COLS.includes(sv.col))pick.col=sv.col;if(sv.n)$('nm1').value=$('nm2').value=sv.n}}catch(e){}
+  if(!$('nm1').value)$('nm1').value=$('nm2').value=AUTH.name.slice(0,12);renderPick();try{$('cont').disabled=!localStorage.getItem('pfc2_SOLO')}catch(e){}}
+function updUbar(){$('ubar').innerHTML=AUTH.mode==='acct'?`<span>👤 <b>${esc(AUTH.name)}</b> · akun</span><button onclick="authOut()">Keluar</button>`:`<span>👤 <b>${esc(AUTH.name)}</b> · tamu</span><button onclick="authOut()">Ganti</button>`}
+async function authSubmit(){if(!sba){aMsg('Server belum terhubung. Main sebagai Tamu dulu.');return}
+  const u=$('au').value.trim(),p=$('ap').value,up=AUTH.tab==='up';
+  if(!u.includes('@')&&!/^[A-Za-z0-9_]{3,16}$/.test(u)){aMsg('Username 3–16 karakter: huruf, angka, underscore');return}
+  if(u.includes('@')&&!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(u)){aMsg('Format email tidak valid');return}
+  if(p.length<6){aMsg('Password minimal 6 karakter');return}if(up&&p!==$('ap2').value){aMsg('Password tidak sama');return}
+  $('abtn').disabled=true;aMsg(up?'Membuat akun…':'Masuk…',1);
+  try{let r;const nm=u.includes('@')?u.split('@')[0]:u;
+    if(up){r=await sba.auth.signUp({email:uMail(u),password:p,options:{data:{username:nm}}});if(!r.error&&!r.data.session){const l=await sba.auth.signInWithPassword({email:uMail(u),password:p});if(l.error){aMsg('Akun dibuat. Cek email untuk konfirmasi, lalu masuk.',1);$('abtn').disabled=false;return}r=l}}
+    else r=await sba.auth.signInWithPassword({email:uMail(u),password:p});
+    if(r.error){aMsg(authErr(r.error));$('abtn').disabled=false;return}
+    const us=r.data.user;AUTH.mode='acct';AUTH.uid=us.id;AUTH.name=((us.user_metadata&&us.user_metadata.username)||nm).slice(0,16);
+    if(up)AUTH.last='';await pullCloud();$('ap').value=$('ap2').value='';aMsg('');applyChar();updUbar();show('m0')}
+  catch(e){aMsg(authErr(e))}$('abtn').disabled=false}
+function authGuest(){AUTH.mode='guest';AUTH.uid='';AUTH.name='Tamu'+(1000+Math.random()*9000|0);if(!$('nm1').value)$('nm1').value=$('nm2').value=AUTH.name;updUbar();show('m0')}
+async function authOut(){if(AUTH.mode==='acct'){await pushCloud(true);try{await sba.auth.signOut()}catch(e){}wipeLocal();$('nm1').value=$('nm2').value='';try{$('cont').disabled=true}catch(e){}}
+  AUTH.mode='';AUTH.uid='';AUTH.last='';authTab('in');show('auth')}
+['au','ap','ap2'].forEach(id=>$(id).addEventListener('keydown',e=>{if(e.key==='Enter')authSubmit()}));
+setInterval(()=>{if(AUTH.mode==='acct')pushCloud(false)},25000);
+document.addEventListener('visibilitychange',()=>{if(document.hidden&&AUTH.mode==='acct')pushCloud(false)});addEventListener('pagehide',()=>{if(AUTH.mode==='acct')pushCloud(false)});
+(async()=>{show('auth');if(!sba){aMsg('Server tidak terjangkau — kamu masih bisa main sebagai Tamu.');return}
+  try{const{data}=await sba.auth.getSession(),se=data&&data.session;if(se){const us=se.user;AUTH.mode='acct';AUTH.uid=us.id;AUTH.name=((us.user_metadata&&us.user_metadata.username)||(us.email||'').split('@')[0]||'Pemain').slice(0,16);await pullCloud();applyChar();updUbar();show('m0')}}catch(e){}})();
+
 
 /* ===== v9: rumah, interior, peti, kompor ===== */
 function applyZ(){Z=scene?Math.min(VW/(IW*T+70),VH/(IH*T+90)):ZO}
@@ -2129,160 +2214,212 @@ function renderArcade(){if(modal!=='arcade'||!AG)return;const m=AG.mode,T3={slot
       ${c.n?`<button class="mb gold big" onclick="AG.card=null;AG.msg='';renderArcade()">🃏 Main lagi</button>`:''}`
     :`<div class="pcs">${cardH({c:0,s:''},1)}<span class="vs">VS</span>${cardH({c:0,s:''},1)}</div><button class="mb gold big" onclick="cardStart()">🃏 BAGI KARTU · 🪙${AG.bet}</button>`;body+=`<div class="drule">Tebak kartu berikutnya lebih tinggi atau lebih rendah. Makin kecil peluang, makin besar hadiah. Sama = uang kembali.</div>`}
   put('ab',tabs+bets+body+`<div class="amsg">${esc(AG.msg||'Semua taruhan memakai kas bersama (🪙 yang sama dengan Toko)')}</div>`)}
-/* ===================== v14: MEJA GAME di Rumah Game — Monopoli Kebun & Ular Tangga ===================== */
-/* Satu pemain jadi "host meja": dia yang mengocok dadu, menjalankan NPC, dan menyiarkan state penuh lewat event 'tg'.  */
-/* Pemain lain mengirim aksi ('join','roll','buy','skip','leave'). Tanpa multiplayer, host = kamu sendiri + NPC.      */
-const TGS={},TGR={},DGP={};let TGV=null;
-const TGN={mono:'Monopoli Kebun',ladder:'Ular Tangga'},TGE={mono:'🎲',ladder:'🐍'},TGW={mono:250,ladder:120},MAXR=24;
-const NPCS=[{id:'npc_arka',n:'Kak Arka',col:'#e0409a'},{id:'npc_es',n:'Pak Es',col:'#3f6fc0'},{id:'npc_nenek',n:'Nenek Salju',col:'#7a5ab0'}];
-const MT=[
- {t:'start',n:'START',e:'🏁'},
- {t:'prop',n:'Kebun Wortel',e:'🥕',p:60,r:4,g:'#8a5a30'},
- {t:'chance',n:'Kesempatan',e:'❓'},
- {t:'prop',n:'Kebun Tomat',e:'🍅',p:60,r:6,g:'#8a5a30'},
- {t:'tax',n:'Pajak Lahan',e:'💸',p:100},
- {t:'rail',n:'Stasiun Utara',e:'🚂',p:150},
- {t:'prop',n:'Kolam Ikan',e:'🐟',p:100,r:8,g:'#6fc8f0'},
- {t:'jailv',n:'Penjara',e:'🔒'},
- {t:'prop',n:'Danau',e:'🎣',p:120,r:10,g:'#6fc8f0'},
- {t:'chance',n:'Kesempatan',e:'❓'},
- {t:'prop',n:'Ladang Jagung',e:'🌽',p:140,r:12,g:'#e0709a'},
- {t:'util',n:'Sumur',e:'💧',p:150},
- {t:'prop',n:'Kebun Labu',e:'🎃',p:160,r:14,g:'#e0709a'},
- {t:'rail',n:'Stasiun Timur',e:'🚂',p:150},
- {t:'park',n:'Istirahat',e:'🛏️'},
- {t:'prop',n:'Rumah Salju',e:'🏠',p:180,r:16,g:'#f08a24'},
- {t:'chance',n:'Kesempatan',e:'❓'},
- {t:'prop',n:'Kedai Hangat',e:'☕',p:200,r:18,g:'#f08a24'},
- {t:'prop',n:'Pos Tambang',e:'⛏️',p:220,r:20,g:'#d93434'},
- {t:'tax',n:'Pajak Mewah',e:'💸',p:75},
- {t:'prop',n:'Tambang Emas',e:'🥇',p:240,r:22,g:'#d93434'},
- {t:'gojail',n:'Masuk Penjara',e:'👮'},
- {t:'prop',n:'Oasis',e:'🌴',p:260,r:24,g:'#3fa04a'},
- {t:'util',n:'Kincir Angin',e:'🌾',p:150},
- {t:'prop',n:'Kafilah',e:'🐪',p:280,r:26,g:'#3fa04a'},
- {t:'chance',n:'Kesempatan',e:'❓'},
- {t:'prop',n:'Rumah Game',e:'🎮',p:350,r:35,g:'#2f5bd0'},
- {t:'prop',n:'Istana Panen',e:'🏰',p:400,r:50,g:'#2f5bd0'}];
+/* ===================== v15: MEJA GAME — Monopoli Asia Grand Tour & Ular Tangga ===================== */
+/* Host meja = pemain yang membuat meja: dia mengocok dadu, menjalankan bot, lalu menyiarkan state lewat event 'tg'. */
+const TGS={},TGR={},DGP={},TGO={};let TGV=null,TGI=0;
+const TGN={mono:'Monopoli Asia',ladder:'Ular Tangga'},TGE={mono:'🎲',ladder:'🐍'},TGW={mono:300,ladder:120},MAXR=30;
+const NPCS=[{id:'npc_arka',n:'Bot Arka',col:'#e0409a'},{id:'npc_es',n:'Bot Sakura',col:'#3f6fc0'},{id:'npc_nenek',n:'Bot Lotus',col:'#7a5ab0'}];
+const GC={br:'#8a5a30',lb:'#6fc8f0',pk:'#e0709a',or:'#f08a24',rd:'#d93434',yl:'#f0d030',gr:'#3fa04a',bl:'#2f5bd0'},GH={br:50,lb:50,pk:100,or:100,rd:150,yl:150,gr:200,bl:200};
+const P=(n,e,cc,p,g)=>({t:'prop',n,e,cc,p,g,r:Math.round(p/10)}),AP=(n,cc)=>({t:'rail',n,e:'✈️',cc,p:200}),UT=(n,e)=>({t:'util',n,e,p:150});
+const MT=[{t:'start',n:'START',e:'🏁'},P('Kathmandu','🏔️','NP',60,'br'),{t:'chest',n:'Dana Umum',e:'💰'},P('Dhaka','🛺','BD',60,'br'),{t:'tax',n:'Pajak Penghasilan',e:'💸',p:100},AP('Soekarno-Hatta','ID'),P('Colombo','🌴','LK',100,'lb'),{t:'chance',n:'Kesempatan',e:'❓'},P('Hanoi','🏮','VN',100,'lb'),{t:'jailv',n:'Penjara',e:'🔒'},
+ P('Manila','🌺','PH',140,'pk'),UT('PLN Listrik','⚡'),P('Phnom Penh','🛕','KH',140,'pk'),P('Bangkok','🐘','TH',160,'pk'),AP('Changi','SG'),P('Jakarta','🏙️','ID',180,'or'),{t:'chest',n:'Dana Umum',e:'💰'},P('Bali','🏝️','ID',180,'or'),{t:'park',n:'Bebas Parkir',e:'🅿️'},
+ P('Kuala Lumpur','🏢','MY',220,'rd'),{t:'chance',n:'Kesempatan',e:'❓'},P('Mumbai','🎬','IN',220,'rd'),P('Dubai','🏜️','AE',240,'rd'),AP('Haneda','JP'),P('Taipei','🏮','TW',260,'yl'),P('Hong Kong','🌆','HK',260,'yl'),UT('PDAM Air','💧'),{t:'gojail',n:'Masuk Penjara',e:'👮'},
+ P('Seoul','🏯','KR',300,'gr'),P('Shanghai','🌃','CN',300,'gr'),{t:'chest',n:'Dana Umum',e:'💰'},P('Beijing','🐼','CN',320,'gr'),AP('Incheon','KR'),{t:'chance',n:'Kesempatan',e:'❓'},P('Singapura','🦁','SG',350,'bl'),P('Tokyo','🗼','JP',400,'bl')];
+MT.forEach(t=>{if(t.g)t.hc=GH[t.g]});
+const RM=[1,5,12,28,40];
+/* kartu: g=gain p=pay go=maju ke petak (collect lewat START) mv=geser j=penjara jf=kartu bebas ea=terima dari tiap pemain ep=bayar ke tiap pemain rp=renovasi ap=bandara terdekat */
+const CCH=[{e:'🏁',x:'Maju ke START dan terima 🪙200',a:'go',v:0},{e:'🗼',x:'Tur wisata ke Tokyo! Maju ke Tokyo',a:'go',v:35},{e:'🏯',x:'Festival K-Pop! Maju ke Seoul',a:'go',v:28},{e:'🏢',x:'Konferensi bisnis di Kuala Lumpur',a:'go',v:19},{e:'🦁',x:'Wisata kuliner ke Singapura',a:'go',v:34},
+ {e:'✈️',x:'Maju ke bandara terdekat. Bayar sewa 2× jika ada pemiliknya',a:'ap'},{e:'📈',x:'Dividen saham Nikkei, terima 🪙150',a:'g',v:150},{e:'🎟️',x:'Menang lotre pesawat, terima 🪙100',a:'g',v:100},{e:'🚓',x:'Denda parkir sembarangan, bayar 🪙50',a:'p',v:50},
+ {e:'↩️',x:'Taksi salah arah, mundur 3 langkah',a:'mv',v:-3},{e:'👮',x:'Tertangkap razia! Langsung ke Penjara',a:'j'},{e:'🎫',x:'Kartu Bebas dari Penjara — simpan dan pakai kapan saja',a:'jf'},{e:'🔧',x:'Renovasi properti: 🪙25 per rumah, 🪙100 per hotel',a:'rp',v:25,w:100},{e:'🥂',x:'Traktir semua pemain, bayar 🪙40 ke tiap pemain',a:'ep',v:40}];
+const CCC=[{e:'🏦',x:'Kesalahan bank menguntungkanmu, terima 🪙200',a:'g',v:200},{e:'🏥',x:'Biaya rumah sakit, bayar 🪙100',a:'p',v:100},{e:'📜',x:'Warisan keluarga, terima 🪙100',a:'g',v:100},{e:'🎂',x:'Ulang tahunmu! Terima 🪙25 dari tiap pemain',a:'ea',v:25},{e:'📊',x:'Jual saham, terima 🪙50',a:'g',v:50},
+ {e:'🚔',x:'Kena kasus pajak! Langsung ke Penjara',a:'j'},{e:'🎫',x:'Kartu Bebas dari Penjara — simpan dan pakai kapan saja',a:'jf'},{e:'🎓',x:'Uang sekolah, bayar 🪙60',a:'p',v:60},{e:'💵',x:'Pengembalian pajak, terima 🪙120',a:'g',v:120},{e:'🏁',x:'Kembali ke START, terima 🪙200',a:'go',v:0},
+ {e:'🛠️',x:'Perbaikan atap: 🪙40 per rumah, 🪙115 per hotel',a:'rp',v:40,w:115},{e:'🙏',x:'Donasi kuil, bayar 🪙40',a:'p',v:40},{e:'🏆',x:'Juara kontes kuliner, terima 🪙75',a:'g',v:75}];
 const LAD={4:25,9:31,21:42,28:84,36:44,51:67,71:91,80:100},SNK={17:7,54:34,62:19,64:60,87:24,93:73,95:75,98:78};
-const tgLog=(s,t)=>{s.log.push(t);if(s.log.length>14)s.log.shift()};
+const tgLog=(s,t)=>{s.log.push(t);if(s.log.length>16)s.log.shift()};
 const d6=()=>1+(Math.random()*6|0);
+const shuf=n=>{const a=[...Array(n).keys()];for(let i=n-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]]}return a};
 
 /* ---------- jaringan ---------- */
-function tgCommit(s){s.v=(s.v|0)+1;s.tAct=Date.now();s.hb=Date.now();TGS[s.table]=s;if(ch)send('tg',{k:'state',table:s.table,id:myId,s});tgOnState(s)}
+function tgCommit(s){s.v=(s.v|0)+1;s.tAct=Date.now()+(s.hold|0);s.hold=0;s.hb=Date.now();TGS[s.table]=s;if(ch)send('tg',{k:'state',table:s.table,id:myId,s});tgOnState(s)}
 function tgOnState(s){if(TGV===s.table&&modal==='tgame')tgRender();if(s.status==='over'&&s.gid&&!TGR[s.gid]){TGR[s.gid]=1;tgReward(s)}}
 function onTg(p){if(!p||!p.table||!TGN[p.table])return;
-  if(p.k==='state'){if(p.id===myId||!p.s)return;const o=TGS[p.table];if(o&&o.host===myId&&o.status!=='over'&&p.s.host!==myId)return;if(o&&o.host===p.s.host&&o.v>p.s.v)return;p.s.rx=Date.now();TGS[p.table]=p.s;tgOnState(p.s);return}
+  if(p.k==='state'){if(p.id===myId||!p.s)return;const o=TGS[p.table];if(o&&o.host===myId&&o.status!=='over'&&p.s.host!==myId)return;if(o&&o.host===p.s.host&&o.gid===p.s.gid&&o.v>p.s.v)return;p.s.rx=Date.now();TGS[p.table]=p.s;tgOnState(p.s);return}
   if(p.k==='gone'){const o=TGS[p.table];if(o&&o.host===p.id){delete TGS[p.table];if(TGV===p.table&&modal==='tgame')tgRender()}return}
+  if(p.k==='inv'){if(p.to===myId)tgInvBanner(p);return}
   const s=TGS[p.table];if(!s||s.host!==myId)return;tgHost(s,p.id,p.a,p)}
 function tgDo(a){const t=TGV,s=TGS[t];if(!s)return;if(s.host===myId)tgHost(s,myId,a,{n:me.n,col:me.col});else send('tg',{k:'act',table:t,id:myId,a,n:me.n,col:me.col})}
 function tgCreate(t){const o=TGS[t];if(o&&o.status!=='over'){say('Meja sedang dipakai');return}
-  const s={table:t,gid:myId.slice(0,6)+Date.now().toString(36),v:0,host:myId,status:'lobby',seats:[{id:myId,n:me.n,col:me.col,npc:0}],turn:0,round:1,log:[]};tgCommit(s)}
+  const s={table:t,gid:myId.slice(0,6)+Date.now().toString(36),v:0,host:myId,status:'lobby',seats:[{id:myId,n:me.n,col:me.col,npc:0,rdy:0}],turn:0,round:1,log:[]};TGI=0;tgCommit(s)}
 function tgClose(){const t=TGV,s=TGS[t];if(!s||s.host!==myId)return;delete TGS[t];if(ch)send('tg',{k:'gone',table:t,id:myId});tgRender()}
-function openTable(t){TGV=t;openModal('tgame');tgRender()}
+function openTable(t){TGV=t;TGI=0;openModal('tgame');tgRender()}
+function tgInv(id){const s=TGS[TGV];if(!s||s.host!==myId||!ch)return;send('tg',{k:'inv',table:s.table,id:myId,to:id,n:me.n});say('Undangan dikirim 📨')}
+function tgInvBanner(p){const old=document.getElementById('tginv');if(old)old.remove();const d=document.createElement('div');d.id='tginv';
+  d.innerHTML='<b>'+esc(String(p.n||'Teman').slice(0,14))+'</b> mengundangmu main <b>'+esc(TGN[p.table])+'</b> '+TGE[p.table]+'<div><button class="mb gold sm" id="tgiy">Gabung</button><button class="mb sec sm" id="tgin">Tolak</button></div>';
+  document.body.appendChild(d);d.querySelector('#tgin').onclick=()=>d.remove();
+  d.querySelector('#tgiy').onclick=()=>{d.remove();TGV=p.table;TGI=0;if(modal!=='tgame')openModal('tgame');const s=TGS[p.table];if(s&&s.status==='lobby'&&!s.seats.some(q=>q.id===myId))tgDo('join');else if(!s)setTimeout(()=>{if(TGV===p.table)tgDo('join')},1500);tgRender()};
+  setTimeout(()=>{if(d.parentNode)d.remove()},20000);sfx('chime')}
+const _hudG=hud;hud=function(){_hudG.apply(this,arguments);if(modal==='tgame'&&TGI)tgRender()};
 
 /* ---------- logika host ---------- */
-function tgHost(s,id,a,x){const si=s.seats.findIndex(q=>q.id===id),isH=id===s.host;
-  if(s.status==='over'){if(isH&&a==='rematch'){s.status='lobby';s.gid=myId.slice(0,6)+Date.now().toString(36);s.log=[];s.seats=s.seats.filter(q=>q.npc||q.id===myId||(ch&&pinfo[q.id]));s.seats.forEach(q=>{if(!q.npc&&q.id!==myId)q.npc=0});tgCommit(s)}else if(isH&&a==='close')tgClose();else if(a==='leave'&&!isH&&si>=0){s.seats.splice(si,1);tgCommit(s)}return}
-  if(s.status==='lobby'){
-    if(a==='join'&&si<0&&s.seats.length<4)s.seats.push({id,n:String(x.n||'Teman').slice(0,12),col:/^#[0-9a-f]{3,6}$/i.test(x.col||'')?x.col:'#888',npc:0});
+function tgHost(s,id,a,x){a=String(a);const si=s.seats.findIndex(q=>q.id===id),isH=id===s.host;
+  if(s.status==='over'){if(isH&&a==='rematch'){s.status='lobby';s.gid=myId.slice(0,6)+Date.now().toString(36);s.log=[];s.card=null;s.seats=s.seats.filter(q=>q.npc||q.id===myId||(ch&&pinfo[q.id]));s.seats.forEach(q=>q.rdy=q.npc?1:0);tgCommit(s)}else if(isH&&a==='close')tgClose();else if(a==='leave'&&!isH&&si>=0){s.seats.splice(si,1);tgCommit(s)}return}
+  if(s.status==='lobby'){const hum=s.seats.filter(q=>!q.npc);
+    if(a==='join'&&si<0&&s.seats.length<4)s.seats.push({id,n:String(x.n||'Teman').slice(0,12),col:/^#[0-9a-f]{3,6}$/i.test(x.col||'')?x.col:'#888',npc:0,rdy:0});
+    else if(a==='ready'&&si>=0&&!s.seats[si].npc)s.seats[si].rdy=s.seats[si].rdy?0:1;
     else if(a==='leave'&&si>=0&&!isH)s.seats.splice(si,1);
-    else if(isH&&a==='addnpc'&&s.seats.length<4){const u=NPCS.find(n=>!s.seats.some(q=>q.id===n.id));if(u)s.seats.push({id:u.id,n:u.n,col:u.col,npc:1})}
+    else if(isH&&a==='addnpc'&&s.seats.length<4){const u=NPCS.find(n=>!s.seats.some(q=>q.id===n.id));if(u)s.seats.push({id:u.id,n:u.n,col:u.col,npc:1,rdy:1})}
     else if(isH&&a==='delnpc'){for(let i=s.seats.length-1;i>=0;i--)if(s.seats[i].npc){s.seats.splice(i,1);break}}
-    else if(isH&&a==='start'&&s.seats.length>=2)tgStart(s);
+    else if(isH&&a==='start'&&s.seats.length>=2&&hum.every(q=>q.rdy))tgStart(s);
     else if(isH&&a==='close'){tgClose();return}
     else return;
     tgCommit(s);return}
   if(si<0)return;
-  if(a==='quit'){const q=s.seats[si];q.npc=1;tgLog(s,q.n+' menyerah — digantikan NPC');if(!s.seats.some(z=>!z.npc)){s.status='over';s.winner=null;s.wn='';tgLog(s,'Semua pemain pergi')}tgCommit(s);return}
+  if(a==='quit'){const q=s.seats[si];q.npc=1;tgLog(s,q.n+' menyerah — digantikan bot');if(!s.seats.some(z=>!z.npc)){s.status='over';s.winner=null;s.wn='';tgLog(s,'Semua pemain pergi')}tgCommit(s);return}
   if(si!==s.turn)return;tgAct(s,a);tgCommit(s)}
-function tgStart(s){s.status='play';s.turn=0;s.round=1;s.phase='roll';s.log=[];s.winner=null;
-  if(s.table==='mono'){s.seats.forEach(q=>{q.cash=1500;q.pos=0;q.jail=0;q.out=0});s.owner={};s.dice=[0,0];tgLog(s,'Permainan dimulai! Modal 🪙1500 tiap pemain')}
+function tgStart(s){s.status='play';s.turn=0;s.round=1;s.phase='roll';s.log=[];s.winner=null;s.card=null;s.rid=0;s.extra=0;s.dbl=0;s.hold=3800;
+  if(s.table==='mono'){s.seats.forEach(q=>{q.cash=1500;q.pos=0;q.jail=0;q.out=0;q.jf=0});s.owner={};s.hs={};s.dice=[0,0];s.dk={c:shuf(CCH.length),h:shuf(CCC.length),ci:0,hi:0};s.cn=0;tgLog(s,'Selamat datang di Monopoli Asia! Modal 🪙1500 tiap pemain')}
   else{s.seats.forEach(q=>{q.pos=0});s.die=0;tgLog(s,'Siapa cepat sampai petak 100 menang!')}}
-function tgAct(s,a){if(s.table==='mono'){if(a==='roll'&&s.phase==='roll')monoRoll(s);else if(a==='buy'&&s.phase==='buy')monoBuy(s);else if(a==='skip'&&s.phase==='buy'){tgLog(s,s.seats[s.turn].n+' melewatkan pembelian');monoEnd(s)}}
+function tgAct(s,a){if(s.table==='mono'){const p=s.seats[s.turn];
+    if(a==='roll'&&s.phase==='roll')monoRoll(s);
+    else if(a==='pay'&&s.phase==='roll'&&p.jail>0&&p.cash>=50){p.cash-=50;p.jail=0;tgLog(s,p.n+' bayar 🪙50, bebas dari penjara');monoRoll(s)}
+    else if(a==='jcard'&&s.phase==='roll'&&p.jail>0&&p.jf>0){p.jf--;p.jail=0;tgLog(s,p.n+' pakai Kartu Bebas dari Penjara');monoRoll(s)}
+    else if(a.startsWith('build:')&&s.phase==='roll'&&monoCanBuild(s,s.turn,+a.slice(6))){const i=+a.slice(6);p.cash-=MT[i].hc;s.hs[i]=(s.hs[i]|0)+1;tgLog(s,p.n+' membangun '+(s.hs[i]>=4?'hotel':'rumah')+' di '+MT[i].n)}
+    else if(a==='buy'&&s.phase==='buy')monoBuy(s);
+    else if(a==='skip'&&s.phase==='buy'){tgLog(s,p.n+' melewatkan pembelian');monoEnd(s)}}
   else if(a==='roll')ladRoll(s)}
 function tgNpc(s){const q=s.seats[s.turn];
-  if(s.table==='mono'){if(s.phase==='roll')monoRoll(s);else{const t=MT[q.pos],grp=MT.filter((z,i)=>z.g&&z.g===t.g&&s.owner[i]===s.turn).length;if(q.cash-t.p>=150||grp>0)monoBuy(s);else{tgLog(s,q.n+' melewatkan pembelian');monoEnd(s)}}}
+  if(s.table==='mono'){
+    if(s.phase==='roll'){if(q.jail>0){if(q.jf>0)return tgAct(s,'jcard');if(q.cash>300)return tgAct(s,'pay')}
+      let best=-1;for(let i=0;i<36;i++)if(monoCanBuild(s,s.turn,i)&&q.cash-MT[i].hc>=250&&(best<0||MT[i].hc<MT[best].hc))best=i;
+      if(best>=0)return tgAct(s,'build:'+best);monoRoll(s)}
+    else{const t=MT[q.pos],grp=MT.filter((z,i)=>z.g&&z.g===t.g&&s.owner[i]===s.turn).length;if(q.cash-t.p>=200||(grp>0&&q.cash-t.p>=40))monoBuy(s);else{tgLog(s,q.n+' melewatkan pembelian');monoEnd(s)}}}
   else ladRoll(s)}
 function tgTick(){const now=Date.now();
   for(const t in TGS){const s=TGS[t];
     if(s.host!==myId){if(ch&&Object.keys(pinfo).length&&!pinfo[s.host]&&now-(s.rx||0)>4000){delete TGS[t];if(TGV===t&&modal==='tgame')tgRender()}continue}
     let dirty=0;
-    if(ch&&Object.keys(pinfo).length)for(let i=s.seats.length-1;i>=0;i--){const q=s.seats[i];if(!q.npc&&q.id!==myId&&!pinfo[q.id]){if(s.status==='lobby')s.seats.splice(i,1);else if(s.status==='play'){q.npc=1;tgLog(s,q.n+' keluar — digantikan NPC')}dirty=1}}
+    if(ch&&Object.keys(pinfo).length)for(let i=s.seats.length-1;i>=0;i--){const q=s.seats[i];if(!q.npc&&q.id!==myId&&!pinfo[q.id]){if(s.status==='lobby')s.seats.splice(i,1);else if(s.status==='play'){q.npc=1;tgLog(s,q.n+' keluar — digantikan bot')}dirty=1}}
     if(s.status==='play'){const cur=s.seats[s.turn];
       if(cur&&cur.npc&&now-(s.tAct||0)>1300){tgNpc(s);dirty=1}
       else if(cur&&!cur.npc&&now-(s.tAct||0)>45000){tgLog(s,cur.n+' kelamaan — jalan otomatis');if(s.table==='mono'&&s.phase==='buy'){tgLog(s,cur.n+' melewatkan pembelian');monoEnd(s)}else tgAct(s,'roll');dirty=1}}
     if(dirty)tgCommit(s);else if(ch&&now-(s.hb||0)>2500){s.hb=now;send('tg',{k:'state',table:s.table,id:myId,s})}}}
 setInterval(tgTick,600);
-function tgReward(s){if(s.winner!==myId)return;const hum=s.seats.filter(q=>!q.npc).length,v=hum>1?TGW[s.table]:Math.round(TGW[s.table]/2);if(!isHost())S.gold+=v;dispatch({t:'sell',v});sfx('chime');say('🏆 Kamu menang '+TGN[s.table]+'! +'+v+' gold'+(hum>1?'':' (lawan NPC, hadiah separuh)'));hud()}
+function tgReward(s){if(s.winner!==myId)return;const hum=s.seats.filter(q=>!q.npc).length,v=hum>1?TGW[s.table]:Math.round(TGW[s.table]/2);if(!isHost())S.gold+=v;dispatch({t:'sell',v});sfx('chime');say('🏆 Kamu menang '+TGN[s.table]+'! +'+v+' gold'+(hum>1?'':' (lawan bot, hadiah separuh)'));hud()}
 
-/* ---------- Monopoli ---------- */
-function wealth(s,i){let w=s.seats[i].cash;for(const k in s.owner)if(s.owner[k]===i)w+=MT[k].p;return w}
-function monoRoll(s){const pi=s.turn,p=s.seats[pi],a=d6(),b=d6();s.dice=[a,b];
-  if(p.jail>0){if(a===b){p.jail=0;tgLog(s,p.n+' lempar kembar '+a+' — bebas dari penjara!')}else{p.jail--;if(p.jail>0){tgLog(s,p.n+' lempar '+a+'+'+b+', masih di penjara');return monoEnd(s)}tgLog(s,p.n+' bayar 50 untuk keluar penjara');if(!monoPay(s,pi,-1,50))return monoEnd(s)}}
-  tgLog(s,p.n+' lempar '+a+'+'+b+(a===b?' (kembar)':''));monoMove(s,pi,a+b)}
-function monoMove(s,pi,n){const p=s.seats[pi],raw=p.pos+n;if(raw>=28){p.cash+=200;tgLog(s,p.n+' lewat START +200')}p.pos=raw%28;monoLand(s,pi)}
+/* ---------- Monopoli Asia ---------- */
+const grpOf=g=>{const r=[];MT.forEach((z,i)=>{if(z.g===g)r.push(i)});return r};
+function wealth(s,i){let w=s.seats[i].cash;for(const k in s.owner)if(s.owner[k]===i)w+=MT[k].p+(s.hs[k]|0)*(MT[k].hc||0);return w}
+function monoCanBuild(s,pi,i){const t=MT[i];if(!t||t.t!=='prop'||s.owner[i]!==pi)return false;const g=grpOf(t.g);if(!g.every(k=>s.owner[k]===pi))return false;const h=s.hs[i]|0;return h<4&&g.every(k=>(s.hs[k]|0)>=h)&&s.seats[pi].cash>=t.hc}
+function monoJail(s,pi){const p=s.seats[pi];p.pos=9;p.jail=3;s.extra=0;s.dbl=0}
+function monoRoll(s){const pi=s.turn,p=s.seats[pi],a=d6(),b=d6(),dbl=a===b;s.dice=[a,b];s.rid=(s.rid|0)+1;s.hold=1200;s.extra=0;
+  if(p.jail>0){if(dbl){p.jail=0;tgLog(s,p.n+' lempar kembar '+a+' — bebas dari penjara!')}else{p.jail--;if(p.jail>0){tgLog(s,p.n+' lempar '+a+'+'+b+', masih di penjara ('+p.jail+' giliran lagi)');return monoEnd(s)}tgLog(s,p.n+' gagal 3 kali, bayar 🪙50 untuk keluar');if(!monoPay(s,pi,-1,50))return monoEnd(s)}}
+  else if(dbl){s.dbl=(s.dbl|0)+1;if(s.dbl>=3){tgLog(s,p.n+' kembar 3 kali berturut-turut — masuk penjara!');monoJail(s,pi);return monoEnd(s)}s.extra=1}
+  tgLog(s,p.n+' lempar '+a+'+'+b+(dbl?' (kembar)':''));monoMove(s,pi,a+b)}
+function monoMove(s,pi,n,nocollect){const p=s.seats[pi],raw=p.pos+n;if(raw>=36&&!nocollect){p.cash+=200;tgLog(s,p.n+' lewat START, terima 🪙200')}p.pos=((raw%36)+36)%36;monoLand(s,pi)}
 function monoLand(s,pi){const p=s.seats[pi],t=MT[p.pos];
-  if(t.t==='gojail'){p.pos=7;p.jail=2;tgLog(s,p.n+' masuk penjara!');return monoEnd(s)}
+  if(t.t==='gojail'){tgLog(s,p.n+' masuk penjara!');monoJail(s,pi);return monoEnd(s)}
   if(t.t==='tax'){tgLog(s,p.n+' bayar '+t.n+' 🪙'+t.p);monoPay(s,pi,-1,t.p);return monoEnd(s)}
-  if(t.t==='chance')return monoChance(s,pi);
+  if(t.t==='chance'||t.t==='chest')return monoCard(s,pi,t.t);
   if(t.p&&(t.t==='prop'||t.t==='rail'||t.t==='util')){const o=s.owner[p.pos];
-    if(o==null){if(p.cash>=t.p){s.phase='buy';tgLog(s,p.n+' tiba di '+t.n+' (🪙'+t.p+')');return}tgLog(s,p.n+' di '+t.n+', uang kurang untuk membeli');return monoEnd(s)}
-    if(o===pi){tgLog(s,p.n+' singgah di tanah sendiri');return monoEnd(s)}
-    const r=monoRent(s,p.pos,o);tgLog(s,p.n+' bayar sewa 🪙'+r+' ke '+s.seats[o].n);monoPay(s,pi,o,r);return monoEnd(s)}
+    if(o==null){if(p.cash>=t.p){s.phase='buy';s.m2=0;tgLog(s,p.n+' tiba di '+t.n+' (🪙'+t.p+')');return}tgLog(s,p.n+' di '+t.n+', uang kurang untuk membeli');s.m2=0;return monoEnd(s)}
+    if(o===pi){tgLog(s,p.n+' singgah di properti sendiri');s.m2=0;return monoEnd(s)}
+    const r=monoRent(s,p.pos,o)*(s.m2||1);s.m2=0;tgLog(s,p.n+' bayar sewa 🪙'+r+' ke '+s.seats[o].n);monoPay(s,pi,o,r);return monoEnd(s)}
   monoEnd(s)}
 function monoRent(s,tile,o){const t=MT[tile];
-  if(t.t==='prop'){let r=t.r;if(MT.every((z,i)=>z.g!==t.g||s.owner[i]===o))r*=2;return r}
-  if(t.t==='rail'){let n=0;MT.forEach((z,i)=>{if(z.t==='rail'&&s.owner[i]===o)n++});return 25*n}
-  let n=0;MT.forEach((z,i)=>{if(z.t==='util'&&s.owner[i]===o)n++});return(s.dice[0]+s.dice[1])*(n>1?10:4)}
-function monoPay(s,pi,to,amt){const p=s.seats[pi];if(p.cash>=amt){p.cash-=amt;if(to>=0)s.seats[to].cash+=amt;return true}
-  if(to>=0)s.seats[to].cash+=p.cash;p.cash=0;p.out=1;for(const k in s.owner)if(s.owner[k]===pi)delete s.owner[k];tgLog(s,'💥 '+p.n+' bangkrut!');return false}
-function monoChance(s,pi){const p=s.seats[pi],c=Math.random()*8|0;let m;
-  if(c===0){p.cash+=100;m='Panen melimpah! +100'}else if(c===1){m='Beli pupuk, bayar 50';monoPay(s,pi,-1,50)}else if(c===2){p.cash+=150;m='Menang lomba labu! +150'}
-  else if(c===3){m='Ayam lepas merusak kebun, denda 75';monoPay(s,pi,-1,75)}else if(c===4){p.pos=0;p.cash+=200;m='Maju ke START! +200'}
-  else if(c===5){p.pos=7;p.jail=2;m='Kena razia, masuk penjara!'}else if(c===6){tgLog(s,'❓ '+p.n+': maju 3 langkah');return monoMove(s,pi,3)}
-  else{let g=0;s.seats.forEach((q,i)=>{if(i!==pi&&!q.out){const v=Math.min(20,q.cash);q.cash-=v;g+=v}});p.cash+=g;m='Hari ulang tahun! Terima 20 dari tiap pemain (+'+g+')'}
-  tgLog(s,'❓ '+p.n+': '+m);monoEnd(s)}
+  if(t.t==='prop'){const h=s.hs[tile]|0;let r=t.r*RM[h];if(h===0&&grpOf(t.g).every(i=>s.owner[i]===o))r*=2;return r}
+  let n=0;MT.forEach((z,i)=>{if(z.t===t.t&&s.owner[i]===o)n++});
+  if(t.t==='rail')return 25*Math.pow(2,n-1);return(s.dice[0]+s.dice[1])*(n>1?10:4)}
+function monoPay(s,pi,to,amt){const p=s.seats[pi];
+  while(p.cash<amt){let b=-1;for(const k in s.owner)if(s.owner[k]===pi&&(s.hs[k]|0)>0&&(b<0||s.hs[k]>s.hs[b]))b=k;
+    if(b>=0){s.hs[b]--;p.cash+=Math.floor(MT[b].hc/2);tgLog(s,p.n+' menjual bangunan di '+MT[b].n);continue}
+    let q=-1;for(const k in s.owner)if(s.owner[k]===pi){q=k;break}
+    if(q>=0){p.cash+=Math.floor(MT[q].p/2);delete s.owner[q];tgLog(s,p.n+' menjual '+MT[q].n+' ke bank');continue}break}
+  if(p.cash>=amt){p.cash-=amt;if(to>=0)s.seats[to].cash+=amt;return true}
+  if(to>=0)s.seats[to].cash+=p.cash;p.cash=0;p.out=1;for(const k in s.owner)if(s.owner[k]===pi){if(to>=0){s.owner[k]=to}else delete s.owner[k];delete s.hs[k]}
+  tgLog(s,'💥 '+p.n+' bangkrut!');return false}
+function monoCard(s,pi,k){const p=s.seats[pi],ch2=k==='chance',D=ch2?CCH:CCC,dk=s.dk;let ix;
+  if(ch2){ix=dk.c[dk.ci%D.length];dk.ci++}else{ix=dk.h[dk.hi%D.length];dk.hi++}
+  const c=D[ix];s.cn=(s.cn|0)+1;s.card={k,e:c.e,x:c.x,id:s.cn,who:p.n};tgLog(s,(ch2?'❓ ':'💰 ')+p.n+': '+c.x);
+  switch(c.a){
+   case'g':p.cash+=c.v;break;
+   case'p':monoPay(s,pi,-1,c.v);break;
+   case'go':{const to=c.v;if(to<=p.pos&&to!==p.pos){p.cash+=200;tgLog(s,p.n+' lewat START, terima 🪙200')}else if(to===0){p.cash+=200}p.pos=to;if(to===0)break;return monoLand(s,pi)}
+   case'ap':{let q=p.pos;do{q=(q+1)%36}while(MT[q].t!=='rail');if(q<p.pos){p.cash+=200;tgLog(s,p.n+' lewat START, terima 🪙200')}p.pos=q;s.m2=2;return monoLand(s,pi)}
+   case'mv':p.pos=((p.pos+c.v)%36+36)%36;return monoLand(s,pi);
+   case'j':monoJail(s,pi);break;
+   case'jf':p.jf=(p.jf|0)+1;break;
+   case'rp':{let h=0,H=0;for(const i in s.owner)if(s.owner[i]===pi){const n=s.hs[i]|0;if(n>=4)H++;else h+=n}const amt=h*c.v+H*c.w;if(amt)monoPay(s,pi,-1,amt);else tgLog(s,'(tidak punya bangunan, bebas biaya)');break}
+   case'ea':s.seats.forEach((q,i)=>{if(i!==pi&&!q.out){const v=Math.min(c.v,q.cash);q.cash-=v;p.cash+=v}});break;
+   case'ep':for(let i=0;i<s.seats.length&&!p.out;i++)if(i!==pi&&!s.seats[i].out)monoPay(s,pi,i,c.v);break}
+  monoEnd(s)}
 function monoBuy(s){const p=s.seats[s.turn],t=MT[p.pos];if(p.cash>=t.p){p.cash-=t.p;s.owner[p.pos]=s.turn;tgLog(s,p.n+' membeli '+t.n+' 🪙'+t.p)}monoEnd(s)}
-function monoEnd(s){s.phase='roll';const alive=s.seats.filter(q=>!q.out);if(alive.length<=1)return monoOver(s);
-  let n=s.turn;do{n=(n+1)%s.seats.length;if(n===0)s.round++}while(s.seats[n].out);s.turn=n;if(s.round>MAXR)monoOver(s)}
+function monoEnd(s){s.phase='roll';s.m2=0;const alive=s.seats.filter(q=>!q.out);if(alive.length<=1)return monoOver(s);
+  const p=s.seats[s.turn];if(s.extra&&!p.out&&p.jail===0){s.extra=0;tgLog(s,p.n+' dapat giliran lagi (kembar)!');return}
+  s.extra=0;s.dbl=0;let n=s.turn;do{n=(n+1)%s.seats.length;if(n===0)s.round++}while(s.seats[n].out);s.turn=n;if(s.round>MAXR)monoOver(s)}
 function monoOver(s){let best=-1,bw=-1;s.seats.forEach((q,i)=>{if(!q.out){const w=wealth(s,i);if(w>bw){bw=w;best=i}}});s.status='over';s.winner=best>=0?s.seats[best].id:null;s.wn=best>=0?s.seats[best].n:'';tgLog(s,'🏆 '+s.wn+' menang dengan kekayaan 🪙'+bw)}
 
 /* ---------- Ular Tangga ---------- */
-function ladRoll(s){const p=s.seats[s.turn],d=d6();s.die=d;const np=p.pos+d;
+function ladRoll(s){const p=s.seats[s.turn],d=d6();s.die=d;s.rid=(s.rid|0)+1;s.hold=1200;const np=p.pos+d;
   if(np>100){tgLog(s,p.n+' lempar '+d+' — butuh angka pas ke 100');return ladNext(s,0)}
   p.pos=np;let m=p.n+' lempar '+d+' → '+np;if(LAD[np]){p.pos=LAD[np];m+=' · tangga naik ke '+p.pos}else if(SNK[np]){p.pos=SNK[np];m+=' · ular turun ke '+p.pos}
   tgLog(s,m);if(p.pos===100){s.status='over';s.winner=p.id;s.wn=p.n;tgLog(s,'🏆 '+p.n+' sampai di 100!');return}ladNext(s,d===6)}
 function ladNext(s,extra){if(extra){tgLog(s,'Angka 6! '+s.seats[s.turn].n+' lempar lagi');return}s.turn=(s.turn+1)%s.seats.length}
 
 /* ---------- tampilan ---------- */
-const mpos=i=>i<=7?[8,8-i]:i<=14?[8-(i-7),1]:i<=21?[1,1+(i-14)]:[1+(i-21),8];
-const dots=(s,fn)=>s.seats.map((q,k)=>fn(q)&&!q.out?`<b class="mtk${k===s.turn&&s.status==='play'?' cur':''}" style="background:${esc(q.col)}">${esc((q.n||'?')[0])}</b>`:'').join('');
-function monoBoard(s){let h='<div class="mbd">';
-  for(let i=0;i<28;i++){const t=MT[i],[r,c]=mpos(i),o=s.owner[i],col=o!=null&&s.seats[o]?s.seats[o].col:'',cor=i%7===0?' cor':'';
-    h+=`<div class="mc${cor}" style="grid-area:${r}/${c};${t.g?'--g:'+t.g+';':''}${col?'--o:'+esc(col)+';':''}">${t.g?'<i class="mg"></i>':''}<span class="me">${t.e}</span><span class="mn">${esc(t.n)}</span>${t.p?`<span class="mpr">${t.p}</span>`:''}<span class="mdt">${dots(s,q=>q.pos===i)}</span></div>`}
-  const cur=s.seats[s.turn],last=s.log[s.log.length-1]||'';
-  h+=`<div class="mctr"><b class="mttl">MONOPOLI KEBUN</b><div class="mdice"><i>${s.dice?s.dice[0]||'·':'·'}</i><i>${s.dice?s.dice[1]||'·':'·'}</i></div><div class="mlast">${esc(last)}</div><small>Ronde ${s.round}/${MAXR}${s.status==='play'&&cur?' · giliran '+esc(cur.n):''}</small></div></div>`;return h}
-function ladBoard(s){let h='<div class="lbd">';
+const PIPS={1:[5],2:[1,9],3:[1,5,9],4:[1,3,7,9],5:[1,3,5,7,9],6:[1,3,4,6,7,9]},DR={1:[0,0],2:[0,-90],3:[-90,0],4:[90,0],5:[0,90],6:[0,180]};
+function dieH(v,anim,i){const r=DR[v||1];let f='';for(let n=1;n<=6;n++){f+=`<u class="fc f${n}">`;for(let c=1;c<=9;c++)f+=`<i${PIPS[n].includes(c)?' class="on'+(n===1?' r':'')+'"':''}></i>`;f+='</u>'}
+  return `<div class="dw"><div class="die${anim?' roll':''}" style="--rx:${r[0]}deg;--ry:${r[1]}deg;--d:${i}"><div class="cube">${f}</div></div></div>`}
+function posMap(s){const m={};s.seats.forEach(q=>m[q.id]=q.pos|0);return m}
+function tgSync(s){const now=Date.now();let o=TGO[s.table];
+  if(!o||o.gid!==s.gid){o=TGO[s.table]={gid:s.gid,rid:s.rid|0,until:0,cur:posMap(s),prev:posMap(s),pl:s.log.slice(),cid:s.card?s.card.id:0,cs:0,cu:0,sg:'',su:0}}
+  if(s.status==='play'&&o.sg!==s.gid){o.sg=s.gid;if(s.log.length<=1&&(s.rid|0)===0){o.su=now+3600;setTimeout(tgRender,3650)}}
+  if((s.rid|0)!==o.rid){o.rid=s.rid|0;o.prev=o.cur;o.until=Math.max(now+1750,o.until);setTimeout(tgRender,1800);try{sfx('seed')}catch(e){}}
+  o.cur=posMap(s);const anim=now<o.until;if(!anim){o.prev=o.cur;o.pl=s.log.slice()}
+  if(s.card&&s.card.id!==o.cid){o.cid=s.card.id;o.cs=Math.max(now,o.until);o.cu=o.cs+3600;setTimeout(tgRender,o.cs-now+60);setTimeout(tgRender,o.cu-now+60)}
+  o.anim=anim;o.splash=now<o.su;o.card=s.card&&now>=o.cs&&now<o.cu&&!o.splash?s.card:null;return o}
+const posOf=(s,q,o)=>(o.anim?o.prev[q.id]:q.pos)|0;
+const dots=(s,o,fn)=>s.seats.map((q,k)=>fn(posOf(s,q,o))&&!q.out?`<b class="mtk${k===s.turn&&s.status==='play'?' cur':''}" style="background:${esc(q.col)}">${esc((q.n||'?')[0])}</b>`:'').join('');
+const mpos=i=>i<=9?[10,10-i]:i<=18?[10-(i-9),1]:i<=27?[1,1+(i-18)]:[1+(i-27),10];
+function monoBoard(s,o){let h='<div class="mbd">';
+  for(let i=0;i<36;i++){const t=MT[i],[r,c]=mpos(i),ow=s.owner[i],col=ow!=null&&s.seats[ow]?s.seats[ow].col:'',cor=i%9===0?' cor':'',hh=s.hs[i]|0;
+    const bld=hh?`<span class="mhs">${hh>=4?'<b class="ht"></b>':'<b></b>'.repeat(hh)}</span>`:'';
+    h+=`<div class="mc${cor} t-${t.t}" style="grid-area:${r}/${c};${t.g?'--g:'+GC[t.g]+';':''}${col?'--o:'+esc(col)+';':''}">${t.g?'<i class="mg"></i>':''}${bld}<span class="me">${t.e}</span><span class="mn">${esc(t.n)}</span>${t.p?`<span class="mpr">${t.cc?t.cc+' · ':''}${t.p}</span>`:''}<span class="mdt">${dots(s,o,p=>p===i)}</span></div>`}
+  const cur=s.seats[s.turn],cd=o.card,last=o.pl[o.pl.length-1]||'';
+  h+=`<div class="mctr"><div class="orn">✦ ✦ ✦</div><b class="mttl">MONOPOLI</b><b class="msub">A S I A &nbsp; G R A N D &nbsp; T O U R</b><div class="dtray">${dieH(s.dice[0],o.anim,0)}${dieH(s.dice[1],o.anim,1)}</div>`+
+   `<div class="mlast">${o.anim?'🎲 Mengocok dadu…':esc(last)}</div><small>Ronde ${s.round}/${MAXR}${s.status==='play'&&cur?' · giliran '+esc(cur.n):''}</small>`+
+   (cd?`<div class="cardpop ${cd.k}"><div class="ck">${cd.k==='chance'?'KESEMPATAN':'DANA UMUM'}</div><div class="ce">${cd.e}</div><div class="cx">${esc(cd.x)}</div><small>${esc(cd.who)}</small></div>`:'')+`</div></div>`;return h}
+function ladBoard(s,o){let h='<div class="lbd">';
   for(let n=1;n<=100;n++){const r0=(n-1)/10|0,c0=(n-1)%10,col=r0%2?9-c0:c0,up=LAD[n],dn=SNK[n];
-    h+=`<div class="lc${up?' up':dn?' dn':''}${(r0+col)%2?' alt':''}" style="grid-area:${10-r0}/${col+1}"><small>${n}</small>${up?`<em>↑${up}</em>`:dn?`<em>↓${dn}</em>`:''}<span class="mdt">${dots(s,q=>q.pos===n)}</span></div>`}
+    h+=`<div class="lc${up?' up':dn?' dn':''}${(r0+col)%2?' alt':''}" style="grid-area:${10-r0}/${col+1}"><small>${n}</small>${up?`<em>↑${up}</em>`:dn?`<em>↓${dn}</em>`:''}<span class="mdt">${dots(s,o,p=>p===n)}</span></div>`}
   return h+'</div>'}
-function tgSeats(s,extra){return s.seats.map((q,k)=>{const props=s.owner?Object.keys(s.owner).filter(i=>s.owner[i]===k).length:0;
-  return `<div class="prow${s.status==='play'&&k===s.turn?' cur':''}${q.out?' out':''}"><i style="background:${esc(q.col)}"></i><b>${esc(q.n)}${q.id===myId?' (kamu)':''}${q.npc?' 🤖':''}${k===0?' ★':''}</b>${extra(q,props)}</div>`}).join('')}
-function tgIntro(t){return `<div class="tst">${t==='mono'?'Beli petak kebun, tarik sewa, dan bangkrutkan lawanmu. 28 petak, modal 🪙1500, maksimal '+MAXR+' ronde — yang paling kaya menang.':'Lempar dadu, naik tangga, hindari ular. Siapa pertama sampai petak 100 menang. Angka 6 dapat giliran lagi.'}<br>Main bersama pemain lain di room, atau lawan NPC. Hadiah menang: 🪙${TGW[t]} (lawan NPC saja: separuh).</div><button class="mb gold big" onclick="tgCreate('${t}');">${TGE[t]} Buat meja ${TGN[t]}</button>`}
-function tgLobby(s){const mi=s.seats.findIndex(q=>q.id===myId),isH=s.host===myId,h=[];
-  h.push(`<div class="tst"><b>Ruang tunggu</b> · ${s.seats.length}/4 pemain${ch?'':' · mode solo (lawan NPC)'}</div><div class="pl2">${tgSeats(s,()=> '')}</div>`);
-  if(mi<0)h.push(s.seats.length<4?`<button class="mb gold" onclick="tgDo('join')">✋ Gabung meja</button>`:'<div class="tst">Meja penuh.</div>');
-  if(isH)h.push(`<div class="row"><button class="mb sec" style="flex:1" ${s.seats.length>=4?'disabled':''} onclick="tgDo('addnpc')">🤖 + NPC</button><button class="mb sec" style="flex:1" ${s.seats.some(q=>q.npc)?'':'disabled'} onclick="tgDo('delnpc')">− NPC</button></div><button class="mb gold big" ${s.seats.length<2?'disabled':''} onclick="tgDo('start')">▶ MULAI (${s.seats.length} pemain)</button><button class="mb sec sm" onclick="tgDo('close')">Tutup meja</button>`);
-  else if(mi>=0)h.push(`<div class="tst">Menunggu ${esc(s.seats[0].n)} memulai…</div><button class="mb sec sm" onclick="tgDo('leave')">Keluar dari meja</button>`);
+function tgSeats(s,o,extra){return s.seats.map((q,k)=>{
+  return `<div class="prow${s.status==='play'&&k===s.turn?' cur':''}${q.out?' out':''}"><i style="background:${esc(q.col)}"></i><b>${esc(q.n)}${q.id===myId?' (kamu)':''}${q.npc?' 🤖':''}${q.id===s.host?' 👑':''}</b>${extra(q,k)}</div>`}).join('')}
+function tgIntro(t){return `<div class="tst">${t==='mono'?'Keliling 36 petak kota-kota Asia: beli properti, bangun rumah & hotel, tarik sewa, ambil kartu Kesempatan / Dana Umum. Kembar = jalan lagi, kembar 3× = penjara. Yang bangkrut tersingkir; setelah '+MAXR+' ronde, yang paling kaya menang.':'Lempar dadu, naik tangga, hindari ular. Siapa pertama sampai petak 100 menang. Angka 6 dapat giliran lagi.'}<br>Main bersama pemain lain di room (semua harus Ready), atau tambah bot. Hadiah menang: 🪙${TGW[t]} (lawan bot saja: separuh).</div><button class="mb gold big" onclick="tgCreate('${t}');">${TGE[t]} Buat room ${TGN[t]}</button>`}
+function tgLobby(s){const mi=s.seats.findIndex(q=>q.id===myId),isH=s.host===myId,h=[],hum=s.seats.filter(q=>!q.npc),nr=hum.filter(q=>q.rdy).length,allR=nr===hum.length,hostR=isH&&s.seats[mi].rdy;
+  h.push(`<div class="tst"><b>Ruang tunggu · ${esc(TGN[s.table])}</b> · ${s.seats.length}/4 pemain${ch?'':' · mode solo (lawan bot)'}</div><div class="pl2">${tgSeats(s,{},(q)=>`<span class="rdy ${q.npc||q.rdy?'ok':''}">${q.npc?'🤖 Siap':q.rdy?'✅ Siap':'⏳ Belum'}</span>`)}</div>`);
+  if(mi<0)h.push(s.seats.length<4?`<button class="mb gold" onclick="tgDo('join')">✋ Gabung room</button>`:'<div class="tst">Room penuh.</div>');
+  else if(!isH)h.push(`<button class="mb ${s.seats[mi].rdy?'sec':'gold'} big" onclick="tgDo('ready')">${s.seats[mi].rdy?'↩ Batal Ready':'✅ READY'}</button><div class="tst">Menunggu host memulai…</div><button class="mb sec sm" onclick="tgDo('leave')">Keluar dari room</button>`);
+  if(isH){h.push(`<div class="row"><button class="mb sec" style="flex:1" ${ch?'':'disabled'} onclick="TGI=!TGI;tgRender()">📨 Undang pemain</button><button class="mb sec" style="flex:1" ${s.seats.length>=4?'disabled':''} onclick="tgDo('addnpc')">🤖 + Bot</button><button class="mb sec" style="flex:1" ${s.seats.some(q=>q.npc)?'':'disabled'} onclick="tgDo('delnpc')">− Bot</button></div>`);
+    if(TGI){const L=Object.keys(pinfo).filter(k=>k!==myId&&!s.seats.some(q=>q.id===k));h.push(`<div class="inv">${L.length?L.map(k=>`<div class="prow"><b>${esc((pinfo[k][0]&&pinfo[k][0].n)||'Pemain')}</b><button class="mb gold sm" onclick="tgInv('${esc(k)}')">Undang</button></div>`).join(''):'<div class="tst">Belum ada pemain lain yang online.</div>'}</div>`)}
+    if(!hostR)h.push(`<button class="mb gold big" onclick="tgDo('ready')">✅ READY</button>`);
+    else if(allR&&s.seats.length>=2)h.push(`<button class="mb gold big pulse" onclick="tgDo('start')">▶ START</button><button class="mb sec sm" onclick="tgDo('ready')">↩ Batal Ready</button>`);
+    else h.push(`<button class="mb gold big" disabled>${s.seats.length<2?'Tambah pemain / bot dulu':'⏳ Menunggu pemain siap ('+nr+'/'+hum.length+')'}</button><button class="mb sec sm" onclick="tgDo('ready')">↩ Batal Ready</button>`);
+    h.push(`<button class="mb sec sm" onclick="tgDo('close')">Tutup room</button>`)}
   return h.join('')}
-function tgPlay(s){const t=s.table,mi=s.seats.findIndex(q=>q.id===myId),my=mi>=0&&s.status==='play'&&s.turn===mi,cur=s.seats[s.turn],isH=s.host===myId;let act='';
-  if(s.status==='over')act=`<div class="winb">🏆 ${esc(s.wn||'Tidak ada pemenang')} menang!</div>`+(isH?`<div class="row"><button class="mb gold" style="flex:1" onclick="tgDo('rematch')">🔁 Main lagi</button><button class="mb sec" style="flex:1" onclick="tgDo('close')">Tutup</button></div>`:mi>=0?`<button class="mb sec sm" onclick="tgDo('leave')">Keluar</button>`:'');
-  else if(my){if(t==='mono'&&s.phase==='buy'){const q=MT[cur.pos];act=`<div class="tst">Beli <b>${esc(q.n)}</b> seharga 🪙${q.p}?</div><div class="row"><button class="mb gold" style="flex:1" onclick="tgDo('buy')">🛒 Beli</button><button class="mb sec" style="flex:1" onclick="tgDo('skip')">Lewati</button></div>`}else act=`<button class="mb gold big" onclick="tgDo('roll')">🎲 LEMPAR DADU</button>`}
-  else act=`<div class="tst">${mi<0?'👀 Menonton · ':''}Menunggu ${esc(cur?cur.n:'')}${cur&&cur.npc?' 🤖':''}…</div>`;
-  if(mi>=0&&s.status==='play')act+=`<button class="mb sec sm" onclick="if(confirm('Menyerah? Seatmu diganti NPC.'))tgDo('quit')">Menyerah</button>`;
-  const side=`<div class="pl2">${tgSeats(s,t==='mono'?(q,p)=>`<span>🪙${q.cash}${q.out?' ✖':''}</span><small>${p} petak${q.jail>0?' 🔒':''}</small>`:q=>`<span>petak ${q.pos}</span>`)}</div>${act}${t==='ladder'?`<div class="mdice"><i>${s.die||'·'}</i></div>`:''}<div class="tlog">${s.log.slice(-7).reverse().map(l=>`<div>${esc(l)}</div>`).join('')}</div>`;
-  return `<div class="tgw"><div class="tgbd">${t==='mono'?monoBoard(s):ladBoard(s)}</div><div class="tgside">${side}</div></div>`}
+function tgSplash(t){const m=t==='mono';return `<div class="tgspl ${t}"><div class="sk"></div><div class="sc"><div class="orn">✦ ✦ ✦</div><b class="sl">${m?'MONOPOLI':'ULAR TANGGA'}</b><b class="ss">${m?'A S I A &nbsp; G R A N D &nbsp; T O U R':'P E T U A L A N G A N'}</b><div class="sbar"><i></i></div><div class="stip">${m?'Memuat papan permainan…<br>Tokyo · Seoul · Singapura · Jakarta · Dubai':'Menyiapkan papan…'}</div></div></div>`}
+function tgPlay(s){const t=s.table,o=tgSync(s),mi=s.seats.findIndex(q=>q.id===myId),my=mi>=0&&s.status==='play'&&s.turn===mi,cur=s.seats[s.turn],isH=s.host===myId;let act='';
+  if(o.splash)return tgSplash(t);
+  if(s.status==='over'&&!o.anim)act=`<div class="winb">🏆 ${esc(s.wn||'Tidak ada pemenang')} menang!</div>`+(isH?`<div class="row"><button class="mb gold" style="flex:1" onclick="tgDo('rematch')">🔁 Main lagi</button><button class="mb sec" style="flex:1" onclick="tgDo('close')">Tutup</button></div>`:mi>=0?`<button class="mb sec sm" onclick="tgDo('leave')">Keluar</button>`:'');
+  else if(o.anim)act='<div class="tst">🎲 Dadu bergulir…</div>';
+  else if(my){const q=s.seats[mi];
+    if(t==='mono'&&s.phase==='buy'){const z=MT[q.pos];act=`<div class="tst">Beli <b>${esc(z.n)}</b> seharga 🪙${z.p}?</div><div class="row"><button class="mb gold" style="flex:1" onclick="tgDo('buy')">🛒 Beli</button><button class="mb sec" style="flex:1" onclick="tgDo('skip')">Lewati</button></div>`}
+    else if(t==='mono'){if(q.jail>0)act=`<div class="tst">🔒 Kamu di penjara (${q.jail} giliran lagi)</div><button class="mb gold big" onclick="tgDo('roll')">🎲 Lempar (butuh kembar)</button>${q.cash>=50?`<button class="mb sec" onclick="tgDo('pay')">💰 Bayar 🪙50</button>`:''}${q.jf?`<button class="mb sec" onclick="tgDo('jcard')">🎫 Pakai Kartu Bebas</button>`:''}`;else act=`<button class="mb gold big pulse" onclick="tgDo('roll')">🎲 KOCOK DADU</button>`;
+      const B=[];for(let i=0;i<36;i++)if(monoCanBuild(s,mi,i))B.push(`<button class="mb sec sm" onclick="tgDo('build:${i}')">🏗️ ${esc(MT[i].n)} (🪙${MT[i].hc})</button>`);if(B.length)act+=`<div class="tst">Bangun properti:</div><div class="bl">${B.join('')}</div>`}
+    else act=`<button class="mb gold big pulse" onclick="tgDo('roll')">🎲 LEMPAR DADU</button>`}
+  else if(s.status==='play')act=`<div class="tst">${mi<0?'👀 Menonton · ':''}Menunggu ${esc(cur?cur.n:'')}${cur&&cur.npc?' 🤖':''}…</div>`;
+  if(mi>=0&&s.status==='play'&&!o.anim)act+=`<button class="mb sec sm" onclick="if(confirm('Menyerah? Posisimu diganti bot.'))tgDo('quit')">Menyerah</button>`;
+  const side=`<div class="pl2">${tgSeats(s,o,t==='mono'?(q,k)=>{const n=Object.keys(s.owner).filter(i=>s.owner[i]===k).length;return `<span>🪙${q.cash}${q.out?' ✖':''}</span><small>${n} properti · 💎${wealth(s,k)}${q.jail>0?' 🔒':''}${q.jf?' 🎫':''}</small>`}:q=>`<span>petak ${posOf(s,q,o)}</span>`)}</div>${act}${t==='ladder'?`<div class="dtray">${dieH(s.die,o.anim,0)}</div>`:''}<div class="tlog">${o.pl.slice(-8).reverse().map(l=>`<div>${esc(l)}</div>`).join('')}</div>`;
+  return `<div class="tgw"><div class="tgbd">${t==='mono'?monoBoard(s,o):ladBoard(s,o)}</div><div class="tgside">${side}</div></div>`}
 function tgRender(){if(modal!=='tgame'||!TGV)return;const t=TGV,s=TGS[t];$('tgt').textContent=TGE[t]+' '+TGN[t];$('tgm').textContent=ch?(1+Object.keys(remote).length)+' online':'Solo';
   put('tgb',!s?tgIntro(t):s.status==='lobby'?tgLobby(s):tgPlay(s))}
 
