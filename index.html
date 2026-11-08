@@ -548,6 +548,11 @@ button .ic,.cell .ic,.slot .ic{vertical-align:middle}
 .stip{font-size:12px;opacity:.8;line-height:1.6;color:#ddd}
 @keyframes ld{to{width:100%}}@keyframes zin{from{transform:scale(1.6);opacity:0;letter-spacing:30px}to{transform:none;opacity:1}}@keyframes fin{from{opacity:0}}
 #tginv{position:fixed;top:12px;left:50%;transform:translateX(-50%);z-index:9999;background:#2a1a0a;color:#fff;border:2px solid #ffd24a;border-radius:14px;padding:12px 16px;box-shadow:0 8px 30px rgba(0,0,0,.6);display:flex;flex-direction:column;gap:8px;align-items:center;text-align:center;animation:fin .3s}#tginv div{display:flex;gap:8px}
+/* ===== v16: login ===== */
+.atab{display:flex;gap:6px;background:rgba(0,0,0,.35);padding:4px;border-radius:12px}.atab button{flex:1;border:0;border-radius:9px;padding:9px;font:700 14px system-ui;background:transparent;color:#fff;cursor:pointer;opacity:.7}.atab button.on{background:linear-gradient(#ffe58a,#e0a526);color:#3a2412;opacity:1}
+#aerr{min-height:16px;text-align:center;color:#ffb0a0}#aerr.ok{color:#9cf09c}.amut{opacity:.7;text-align:center;line-height:1.4}
+.aor{display:flex;align-items:center;gap:8px;opacity:.7;font-size:12px}.aor:before,.aor:after{content:'';flex:1;height:1px;background:#fff6}
+#ubar{display:flex;align-items:center;gap:8px;justify-content:space-between;background:rgba(0,0,0,.35);border:1px solid #fff3;border-radius:12px;padding:8px 10px;font-size:13px;width:100%;box-sizing:border-box}#ubar b{color:#ffe08a}#ubar button{border:0;border-radius:8px;padding:6px 10px;background:#6b4a28;color:#fff;cursor:pointer;font:600 12px system-ui}
 </style></head><body>
 <div id="fade"></div><div id="wrap"><canvas id="c" width="960" height="672"></canvas>
 <div id="ui" style="display:none"><div id="hurt"></div>
@@ -582,7 +587,10 @@ button .ic,.cell .ic,.slot .ic{vertical-align:middle}
 <div id="tgame" class="modal"><div class="panel mcard big"><div class="mh"><b id="tgt"></b><span class="meta" id="tgm"></span><button class="x" onclick="closeModal()">✕</button></div><div id="tgb"></div></div></div><div id="load"><div class="lcard"><h1>🌾 PIXEL FARM</h1><div id="ltitle">Memuat…</div><div class="lbar"><u id="lb1"></u></div><div id="ldet"></div><ul id="lsteps"></ul><button class="mb sec sm" id="lskip" style="display:none">Lewati unduhan →</button></div></div>
 <div id="menu"><div id="mbox">
 <div id="logo"><span>🌾</span><h1>PIXEL FARM</h1><p>Co-op Valley</p></div>
-<div id="m0" class="mp"><button class="mb" onclick="show('sp')">▶ Single Player</button><button class="mb" onclick="show('mp')">👥 Multiplayer</button><button class="mb sec" onclick="show('how')">❓ Cara Main</button></div>
+<div id="auth" class="mp"><div class="atab"><button id="at1" class="on" onclick="authTab('in')">Masuk</button><button id="at2" onclick="authTab('up')">Daftar</button></div>
+<input id="au" placeholder="Username atau email" autocomplete="username" maxlength="60" autocapitalize="off"><input id="ap" type="password" placeholder="Password" autocomplete="current-password" maxlength="72"><input id="ap2" type="password" placeholder="Ulangi password" autocomplete="new-password" maxlength="72" style="display:none">
+<button class="mb" id="abtn" onclick="authSubmit()">Masuk</button><small id="aerr"></small><div class="aor"><span>atau</span></div><button class="mb sec" onclick="authGuest()">👤 Main sebagai Tamu</button><small class="amut">Akun menyimpan progres &amp; karaktermu di cloud (bisa main dari perangkat lain). Tamu hanya tersimpan di perangkat ini.</small></div>
+<div id="m0" class="mp"><div id="ubar"></div><button class="mb" onclick="show('sp')">▶ Single Player</button><button class="mb" onclick="show('mp')">👥 Multiplayer</button><button class="mb sec" onclick="show('how')">❓ Cara Main</button></div>
 <div id="sp" class="mp"><h2>Single Player</h2><input id="nm1" placeholder="Nama kamu" maxlength="12"><div id="pk1" class="pk"></div><button class="mb" id="cont">Lanjutkan</button><button class="mb" id="newg">Game Baru</button><button class="mb sec" onclick="show('m0')">← Kembali</button></div>
 <div id="mp" class="mp"><h2>Multiplayer</h2><input id="nm2" placeholder="Nama kamu" maxlength="12"><div id="pk2" class="pk"></div><div class="row"><input id="rm" placeholder="Kode room" maxlength="12"><button class="mb sm" id="rnd">Acak</button></div><button class="mb" id="join">Gabung / Buat Room</button><small id="st"></small><button class="mb sec" onclick="show('m0')">← Kembali</button></div>
 <div id="how" class="mp"><h2>Cara Main</h2><ul><li>🏠 Rumah: dekati pintu lalu tekan E. Di dalam ada 🛏️ kasur (tidur setelah 18:00), 📦 peti, 🍳 kompor, 🚿 kamar mandi, dan 🚪 pintu keluar.</li><li>🌱 Bertani: ⛏️ gali tanah → pilih biji (slot 4-8) → Pakai buat tanam → 💧 siram TIAP HARI → 🧺 panen. Makin rajin disiram, makin bagus grade (Biasa / ⭐ Bagus / 🌟 Prima). Biji dibeli di Toko, dan panen bisa ngasih biji lagi.</li><li>HP: joystick kiri untuk jalan, tombol ⛏️ pakai alat (tahan = ulang), tombol kanan = aksi (bicara/tidur/jual)</li><li>WASD / panah: jalan</li><li>1-8: pilih alat &amp; bibit · Q/Z/scroll: ganti slot</li><li>Spasi: pakai alat di tile depan</li><li>E: bicara NPC, tidur di rumah, jual di toko</li><li>🎣 (slot 9): hadap air, Pakai, tunggu ❗ lalu Pakai lagi · berenang di kolam/danau · E dekat ayam = telur</li><li>Trade: dekati pemain lain lalu E, atau tombol 🤝</li><li>⚔️ F / tombol Serang: pukul pemain lain (friendly fire, host bisa mematikannya di menu ⏸). 🎵 Musik latar diunduh otomatis saat masuk game. Atur volume atau ganti lagu di menu ⏸.</li><li>❤️ Darah · 🍗 Lapar · 💧 Haus: makan panen/ikan/telur dari 🎒 Tas (pilih item → Makan), minum dengan E di dekat air / air mancur. Kalau lapar atau haus habis, darah berkurang. Tidur di rumah memulihkan darah.</li><li>Waktu: Pagi 06-11 · Siang 11-15 · Sore 15-18 · Malam 18-24 (lampu menyala, kunang-kunang muncul)</li><li>🗺️ Jelajah: jalan ke tepi kiri/kanan peta (jalan setapak) untuk pindah map. Kebun ← → ❄️ Salju → ⛰️ Bukit, dan 🏜️ Gurun di sebelah barat Kebun. Tiap map punya NPC dan fitur sendiri: Salju = mancing es, Kedai Hangat &amp; 🎮 Rumah Game (hanya ada di Salju); Bukit = tambang, beri liar, susu kambing; Gurun = gali harta, kaktus, oasis, Kafilah. Salju bikin cepat lapar, Gurun bikin cepat haus.</li><li>I: buka tas · Enter / 💬: chat (multiplayer) · Esc: jeda</li></ul><button class="mb sec" onclick="show('m0')">← Kembali</button></div>
@@ -1354,9 +1362,51 @@ $('join').onclick=async()=>{setup(1);code=$('rm').value.trim().toUpperCase().rep
   $('join').disabled=true;const ok=await enterRoom();$('join').disabled=false;if(ok)begin()};
 try{if(!localStorage.getItem('pfc2_SOLO'))$('cont').disabled=true}catch(e){}
 if(!/^https?:/.test(SB_URL))$('st').textContent='⚠ Supabase belum diisi di file ini.';
-show('m0');
 try{const sv=JSON.parse(localStorage.getItem('pfc2_char')||'null');if(sv){pick.g=sv.g==='f'?'f':'m';if(COLS.includes(sv.col))pick.col=sv.col;if(sv.n)$('nm1').value=$('nm2').value=sv.n}}catch(e){}
 renderPick();
+/* ===== v16: sistem akun (Supabase Auth) + mode tamu + sinkron cloud ===== */
+let sba=null;const AUTH={mode:'',name:'',uid:'',last:'',tab:'in'},SYNC_RE=/^pfc2_(char|SOLO|daily|cal30|inv_.+)$/;
+try{if(window.supabase&&/^https?:/.test(SB_URL))sba=supabase.createClient(SB_URL,SB_KEY,{auth:{persistSession:true,autoRefreshToken:true}})}catch(e){sba=null}
+const uMail=u=>u.includes('@')?u:u.toLowerCase()+'@pixelfarm.game';
+function authErr(e){const m=((e&&e.message)||'').toLowerCase();
+  if(m.includes('invalid login'))return'Username/email atau password salah';if(m.includes('already')||m.includes('registered'))return'Username sudah dipakai, coba yang lain';
+  if(m.includes('confirm'))return'Akun butuh konfirmasi email (atau matikan "Confirm email" di Supabase)';if(m.includes('rate')||m.includes('seconds'))return'Terlalu sering mencoba, tunggu sebentar';
+  if(m.includes('password'))return'Password minimal 6 karakter';if(m.includes('email')||m.includes('invalid'))return'Format username/email tidak valid';if(m.includes('fetch')||m.includes('network'))return'Tidak ada koneksi internet';
+  return'Gagal: '+((e&&e.message)||'coba lagi')}
+function aMsg(t,ok){const e=$('aerr');e.textContent=t||'';e.className=ok?'ok':''}
+function authTab(t){AUTH.tab=t;$('at1').className=t==='in'?'on':'';$('at2').className=t==='up'?'on':'';$('ap2').style.display=t==='up'?'':'none';$('abtn').textContent=t==='in'?'Masuk':'Buat Akun';$('ap').autocomplete=t==='in'?'current-password':'new-password';aMsg('')}
+function localData(){const d={};try{for(let i=0;i<localStorage.length;i++){const k=localStorage.key(i);if(SYNC_RE.test(k))d[k]=localStorage.getItem(k)}}catch(e){}return d}
+function wipeLocal(){try{Object.keys(localData()).forEach(k=>localStorage.removeItem(k))}catch(e){}}
+async function pushCloud(force){if(!sba||AUTH.mode!=='acct'||!AUTH.uid)return;const d=localData(),j=JSON.stringify(d);if(!force&&j===AUTH.last)return;
+  try{const{error}=await sba.from('profiles').upsert({id:AUTH.uid,username:AUTH.name,data:d,updated_at:new Date().toISOString()});if(!error)AUTH.last=j}catch(e){}}
+async function pullCloud(){if(!sba)return;try{const{data,error}=await sba.from('profiles').select('data').eq('id',AUTH.uid).maybeSingle();
+    if(!error&&data&&data.data&&Object.keys(data.data).length){wipeLocal();for(const k in data.data)if(SYNC_RE.test(k)&&typeof data.data[k]==='string')try{localStorage.setItem(k,data.data[k])}catch(e){}AUTH.last=JSON.stringify(localData())}
+    else await pushCloud(true)}catch(e){}}
+function applyChar(){try{const sv=JSON.parse(localStorage.getItem('pfc2_char')||'null');if(sv){pick.g=sv.g==='f'?'f':'m';if(COLS.includes(sv.col))pick.col=sv.col;if(sv.n)$('nm1').value=$('nm2').value=sv.n}}catch(e){}
+  if(!$('nm1').value)$('nm1').value=$('nm2').value=AUTH.name.slice(0,12);renderPick();try{$('cont').disabled=!localStorage.getItem('pfc2_SOLO')}catch(e){}}
+function updUbar(){$('ubar').innerHTML=AUTH.mode==='acct'?`<span>👤 <b>${esc(AUTH.name)}</b> · akun</span><button onclick="authOut()">Keluar</button>`:`<span>👤 <b>${esc(AUTH.name)}</b> · tamu</span><button onclick="authOut()">Ganti</button>`}
+async function authSubmit(){if(!sba){aMsg('Server belum terhubung. Main sebagai Tamu dulu.');return}
+  const u=$('au').value.trim(),p=$('ap').value,up=AUTH.tab==='up';
+  if(!u.includes('@')&&!/^[A-Za-z0-9_]{3,16}$/.test(u)){aMsg('Username 3–16 karakter: huruf, angka, underscore');return}
+  if(u.includes('@')&&!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(u)){aMsg('Format email tidak valid');return}
+  if(p.length<6){aMsg('Password minimal 6 karakter');return}if(up&&p!==$('ap2').value){aMsg('Password tidak sama');return}
+  $('abtn').disabled=true;aMsg(up?'Membuat akun…':'Masuk…',1);
+  try{let r;const nm=u.includes('@')?u.split('@')[0]:u;
+    if(up){r=await sba.auth.signUp({email:uMail(u),password:p,options:{data:{username:nm}}});if(!r.error&&!r.data.session){const l=await sba.auth.signInWithPassword({email:uMail(u),password:p});if(l.error){aMsg('Akun dibuat. Cek email untuk konfirmasi, lalu masuk.',1);$('abtn').disabled=false;return}r=l}}
+    else r=await sba.auth.signInWithPassword({email:uMail(u),password:p});
+    if(r.error){aMsg(authErr(r.error));$('abtn').disabled=false;return}
+    const us=r.data.user;AUTH.mode='acct';AUTH.uid=us.id;AUTH.name=((us.user_metadata&&us.user_metadata.username)||nm).slice(0,16);
+    if(up)AUTH.last='';await pullCloud();$('ap').value=$('ap2').value='';aMsg('');applyChar();updUbar();show('m0')}
+  catch(e){aMsg(authErr(e))}$('abtn').disabled=false}
+function authGuest(){AUTH.mode='guest';AUTH.uid='';AUTH.name='Tamu'+(1000+Math.random()*9000|0);if(!$('nm1').value)$('nm1').value=$('nm2').value=AUTH.name;updUbar();show('m0')}
+async function authOut(){if(AUTH.mode==='acct'){await pushCloud(true);try{await sba.auth.signOut()}catch(e){}wipeLocal();$('nm1').value=$('nm2').value='';try{$('cont').disabled=true}catch(e){}}
+  AUTH.mode='';AUTH.uid='';AUTH.last='';authTab('in');show('auth')}
+['au','ap','ap2'].forEach(id=>$(id).addEventListener('keydown',e=>{if(e.key==='Enter')authSubmit()}));
+setInterval(()=>{if(AUTH.mode==='acct')pushCloud(false)},25000);
+document.addEventListener('visibilitychange',()=>{if(document.hidden&&AUTH.mode==='acct')pushCloud(false)});addEventListener('pagehide',()=>{if(AUTH.mode==='acct')pushCloud(false)});
+(async()=>{show('auth');if(!sba){aMsg('Server tidak terjangkau — kamu masih bisa main sebagai Tamu.');return}
+  try{const{data}=await sba.auth.getSession(),se=data&&data.session;if(se){const us=se.user;AUTH.mode='acct';AUTH.uid=us.id;AUTH.name=((us.user_metadata&&us.user_metadata.username)||(us.email||'').split('@')[0]||'Pemain').slice(0,16);await pullCloud();applyChar();updUbar();show('m0')}}catch(e){}})();
+
 
 /* ===== v9: rumah, interior, peti, kompor ===== */
 function applyZ(){Z=scene?Math.min(VW/(IW*T+70),VH/(IH*T+90)):ZO}
