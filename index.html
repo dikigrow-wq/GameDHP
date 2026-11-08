@@ -1133,7 +1133,7 @@ function draw(now,time){
     if(n.k==='h'){npcHuman(n,p,time)}else if(n.k==='c')chicken(p.x,p.y,p.f,time/80+hash(n.id),p.mv);else if(n.k==='k')cat(p.x,p.y,p.f,time/200,p.mv);else zanimal(n,p,time);
     const q=bub[n.id];if(q&&performance.now()<q.until)say2(p.x,p.y-72,q.text,n.n)}})}
   if(zone)zNodesDraw(E,time);
-  for(const t of TL)if(t.x>cam.x-70&&t.x<cam.x+VW/Z+70&&t.y>cam.y&&t.y<cam.y+VH/Z+120)E.push({y:t.y,d:()=>g.drawImage(t.sp.c,t.x-t.sp.ox,t.y-t.sp.oy,t.sp.w,t.sp.h)});
+  for(const t of TL)if(t.x>cam.x-70&&t.x<cam.x+VW/Z+70&&t.y>cam.y&&t.y<cam.y+VH/Z+120)E.push({y:t.y,d:()=>window.__drawTree?window.__drawTree(t):g.drawImage(t.sp.c,t.x-t.sp.ox,t.y-t.sp.oy,t.sp.w,t.sp.h)});
   if(zone===0)E.push({y:18.7*T,d:()=>fire(time)});
   E.sort((a,b)=>a.y-b.y).forEach(e=>e.d());drawParts(performance.now());drawSwings(performance.now());
   const p=S.t/DAY,hh=6+Math.min(1,p)*18;tint(hh);if(zone===0)lights(time,p);flies(time,hh);if(zone)zOver(time,hh)}
@@ -3005,6 +3005,33 @@ soil=function(x,y,t){const im=IMG.soil;if(!im||!im.width)return _soil(x,y,t);
   const f=im.width/4,v=(((x*73856093)^(y*19349663))>>>0)%4,row=t[3]?1:0;
   g.save();g.imageSmoothingEnabled=true;g.imageSmoothingQuality='high';
   g.drawImage(im,v*f,row*f,f,f,x*T-.5,y*T-.5,T+1,T+1);g.restore()};
+/* Pohon bergambar + goyang angin (trees.png: 3 kolom x 2 baris; pangkal batang di tengah-bawah tiap kotak).
+   Urutan: 1 rindang besar, 2 rindang sedang, 3 cemara besar, 4 cemara kecil, 5 berbunga, 6 anak pohon.
+   Gagal dimuat -> pohon bawaan game. Ubah TREE_SWAY=0 untuk mematikan goyangan. */
+const TREES_URL='https://zvsvftphialhaolinldx.supabase.co/storage/v1/object/public/sprites/trees.png';
+const TREE_SWAY=1,TREE_W=[240,187,193,122,200,103];
+loadImg('trees',TREES_URL);
+const _treeSprite=treeSprite;
+treeSprite=function(s,R){const sp=_treeSprite(s,R);sp.k=R?Math.floor(R()*1000):0;sp.sc=s;return sp};
+const treeVar=k=>k<260?0:k<500?1:k<650?2:k<800?3:k<900?4:5;
+window.__drawTree=function(t){
+  const sp=t.sp,im=IMG.trees;
+  if(!im||!im.width||sp.k==null){g.drawImage(sp.c,t.x-sp.ox,t.y-sp.oy,sp.w,sp.h);return}
+  const v=treeVar(sp.k),cw=im.width/3,ch=im.height/2,sx=(v%3)*cw,sy=((v/3)|0)*ch;
+  const ws=.5*(sp.sc||1)/1.07,dw=cw*ws,dh=ch*ws,x0=t.x-dw/2,y0=t.y-(ch-6)*ws;
+  g.save();
+  g.fillStyle='rgba(0,0,0,.24)';g.beginPath();g.ellipse(t.x+dw*.05,t.y+3,TREE_W[v]*ws*.34,TREE_W[v]*ws*.1,0,0,7);g.fill();
+  g.imageSmoothingEnabled=true;g.imageSmoothingQuality='high';
+  if(!TREE_SWAY){g.drawImage(im,sx,sy,cw,ch,x0,y0,dw,dh);g.restore();return}
+  const now=performance.now(),ph=t.x*.013+t.y*.007;
+  const wind=Math.sin(now/1700+ph*.5)*.55+Math.sin(now/520+ph)*.45;
+  const amp=3.4*ws/.5,N=18;
+  for(let i=0;i<N;i++){
+    const a=Math.floor(i*ch/N),b=Math.floor((i+1)*ch/N),sh=Math.min(b-a+1,ch-a);
+    const fr=1-(i+.5)/N,dx=amp*wind*Math.pow(fr,1.7);
+    g.drawImage(im,sx,sy+a,cw,sh,x0+dx,y0+a*ws,dw,sh*ws+.6);
+  }
+  g.restore()};
 function loadImg(key,path,cb){const im=new Image();im.crossOrigin='anonymous';im.onload=()=>{IMG[key]=im;cb&&cb(im)};im.onerror=()=>{};im.src=/^https?:|^data:/.test(path)?path:ASSET_BASE+path}
 fetch(ASSET_BASE+'manifest.json',{cache:'no-cache'}).then(r=>r.ok?r.json():null).then(m=>{
   if(!m)return;MAN=m;
