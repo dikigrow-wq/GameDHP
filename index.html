@@ -902,6 +902,7 @@ function tree(x,y,s,R,c){c=c||b;c.fillStyle='rgba(0,0,0,.25)';c.beginPath();c.el
   for(let i=0;i<5;i++){const cx=x+(R()-.5)*26*s,cy=y-34*s-R()*20*s,r=(16+R()*8)*s,gr=c.createRadialGradient(cx-4,cy-6,2,cx,cy,r);
     gr.addColorStop(0,'#6fc04e');gr.addColorStop(1,'#2a6a2c');c.fillStyle=gr;c.beginPath();c.arc(cx,cy,r,0,7);c.fill()}}
 function treeSprite(s,R){const w=100*s,h=110*s,c=document.createElement('canvas');c.width=Math.ceil(w*Q);c.height=Math.ceil(h*Q);const x=c.getContext('2d');x.scale(Q,Q);tree(w/2,h-14*s,s,R,x);return{c,w,h,ox:w/2,oy:h-14*s}}
+function edgeTree(L,x,y,s){L.push({x,y,e:1,sp:treeSprite(s,rng((x*7+y*13)|0))})}
 function buildBG(){const R=rng(7),WW=W*T,HH=H*T,ell=(x,y,rx,ry,f)=>{b.fillStyle=f;b.beginPath();b.ellipse(x,y,rx,ry,0,0,7);b.fill()};
   let gr=b.createLinearGradient(0,0,0,HH);gr.addColorStop(0,'#6aae4a');gr.addColorStop(.55,'#58993f');gr.addColorStop(1,'#4a8a38');b.fillStyle=gr;b.fillRect(0,0,WW,HH);
   for(let i=0;i<520;i++)ell(R()*WW,R()*HH,12+R()*30,8+R()*16,`rgba(${30+R()*40|0},${90+R()*50|0},${30+R()*30|0},.28)`);
@@ -980,11 +981,12 @@ function buildBG(){const R=rng(7),WW=W*T,HH=H*T,ell=(x,y,rx,ry,f)=>{b.fillStyle=
   for(let i=0;i<26;i++){const x=(R()<.5?1+R()*10:21+R()*9)*T,y=(R()<.5?5+R()*4:14+R()*6)*T;if(wetT(x,y)||(x/T>=11&&x/T<=22&&y/T>=14))continue;ell(x,y,12,8,'#2f7a30');ell(x-3,y-2,9,6,'#3f9a3a');for(let k=0;k<3;k++)ell(x-6+k*6,y-2+(k%2)*3,1.8,1.8,'#e04040')}
   for(let i=0;i<16;i++){const x=(R()<.5?22+R()*8:2+R()*8)*T,y=(R()<.5?5+R()*3:15+R()*5)*T;if(wetT(x,y))continue;ell(x+2,y+3,9,4,'rgba(0,0,0,.2)');ell(x,y,9,6.5,'#9a9a94');ell(x-2,y-2,5,3.5,'#b8b8b0')}
   // pohon batas (baked)
-  aulaGround();for(let x=0;x<W;x++){tree(x*T+T/2,H*T-4,1.1,R);if((x<1||x>3&&x<16||x>18)&&!(x>=24&&x<=30))tree(x*T+T/2,T+6,1,R)}
-  for(let y=2;y<H-1;y++){if(y>=5&&y<=7)continue;tree(T/2,y*T+T-6,1,R);tree(W*T-T/2,y*T+T-6,1,R)}
+  aulaGround();for(let x=0;x<W;x++){edgeTree(TL,x*T+T/2,H*T-4,1.1);if((x<1||x>3&&x<16||x>18)&&!(x>=24&&x<=30))edgeTree(TL,x*T+T/2,T+6,1)}
+  for(let y=2;y<H-1;y++){if(y>=5&&y<=7)continue;edgeTree(TL,T/2,y*T+T-6,1);edgeTree(TL,W*T-T/2,y*T+T-6,1)}
   // pohon sebar (sprite, ikut urutan kedalaman)
   const rr=rng(11),zn=[[21,30,5,8],[20,30,1,2],[1,10,14,20],[23,30,17,20],[18,30,5,8]],bad=(tx,ty)=>((ty>=4&&ty<=7)&&(tx<=3||tx>=27))||(tx>=24&&tx<=30&&ty>=3&&ty<=9)||TS.has(tx+ty*W)||ty===3||(ty<=3&&HOUSES.some(h=>!h.gh&&tx>=h.x-1&&tx<=h.x+3))||(tx>=21&&tx<=27&&ty>=4&&ty<=8)||(ty===8&&tx>=17&&tx<=25)||(tx===17&&ty>=3&&ty<=15)||(ty===12&&tx>=17&&tx<=23)||(ty===17&&tx>=5&&tx<=12)||(tx===2&&ty<=8)||(tx>=3&&tx<=16&&ty>=3&&ty<=11)||(tx>=1&&tx<=4&&ty>=8&&ty<=12)||(tx>=3&&tx<=8&&ty>=16&&ty<=19)||(tx>=11&&tx<=22&&ty>=14&&ty<=20)||(tx>=21&&tx<=31&&ty>=9&&ty<=16);
-  for(let i=0;i<260&&TL.length<75;i++){const z=zn[i%zn.length],tx=z[0]+(rr()*(z[1]-z[0]+1)|0),ty=z[2]+(rr()*(z[3]-z[2]+1)|0);if(bad(tx,ty))continue;TS.add(tx+ty*W);TL.push({x:tx*T+T/2+(rr()-.5)*14,y:ty*T+T-6,sp:treeSprite(.9+rr()*.35,rng(tx*31+ty*7))})}
+  for(let i=0;i<260&&TL.reduce((n,t)=>n+(t.e?0:1),0)<75;i++){const z=zn[i%zn.length],tx=z[0]+(rr()*(z[1]-z[0]+1)|0),ty=z[2]+(rr()*(z[3]-z[2]+1)|0);if(bad(tx,ty))continue;TS.add(tx+ty*W);TL.push({x:tx*T+T/2+(rr()-.5)*14,y:ty*T+T-6,sp:treeSprite(.9+rr()*.35,rng(tx*31+ty*7))})}
+  {const used=new Set();let pc=0;for(let i=0;i<900&&pc<150;i++){const tx=1+(rr()*(W-2)|0),ty=2+(rr()*(H-3)|0),kk=tx+ty*W;if(used.has(kk)||bad(tx,ty))continue;used.add(kk);pc++;const q=rr(),pr=q<.12?0:q<.24?1:q<.34?2:q<.44?3:q<.52?4:q<.60?5:q<.72?6:q<.84?7:q<.90?8:q<.94?9:q<.97?10:11;TL.push({x:tx*T+6+rr()*(T-12),y:ty*T+T*.45+rr()*T*.5,pr,ph:rr()*6.28,e:1,sp:{}})}}
   let vg=b.createRadialGradient(WW/2,HH/2,HH*.4,WW/2,HH/2,HH*.95);vg.addColorStop(0,'rgba(0,0,0,0)');vg.addColorStop(1,'rgba(0,0,0,.26)');b.fillStyle=vg;b.fillRect(0,0,WW,HH)}
 function wetT(x,y){return wet(x,y)||((x/T>20&&x/T<32&&y/T>8&&y/T<17))||(x/T<5&&x/T>1&&y/T>8&&y/T<13)}
 /* ===== efek dinamis ===== */
@@ -2103,7 +2105,7 @@ function cactus(X,x,y,s,dim,fruit){X.fillStyle='rgba(0,0,0,.22)';X.beginPath();X
   X.fillStyle='rgba(255,255,255,.7)';for(let i=0;i<9;i++)X.fillRect(x-5*s+(i%3)*5*s,y-44*s+(i/3|0)*14*s,1.4,2.4);
   if(fruit){X.fillStyle='#e5484d';[[-15,-38],[15,-42],[0,-52]].forEach(([a,b])=>{X.beginPath();X.arc(x+a*s,y+b*s,3.6*s,0,7);X.fill()})}}
 function cactusSp(s){const w=60*s,h=72*s,c=document.createElement('canvas');c.width=Math.ceil(w*Q);c.height=Math.ceil(h*Q);const X=c.getContext('2d');X.scale(Q,Q);cactus(X,w/2,h-8*s,s);return{c,w,h,ox:w/2,oy:h-8*s}}
-function placeTrees(d,cnt,seed,bad,mk){const rr=rng(seed);for(let i=0;i<cnt*6&&d.TL.length<cnt;i++){const tx=1+(rr()*(W-2)|0),ty=2+(rr()*(H-3)|0);if(bad(tx,ty)||d.TS.has(tx+ty*W))continue;d.TS.add(tx+ty*W);d.TL.push({x:tx*T+T/2+(rr()-.5)*14,y:ty*T+T-6,sp:mk(.9+rr()*.35,rng(tx*31+ty*7))})}}
+function placeTrees(d,cnt,seed,bad,mk){const rr=rng(seed);for(let i=0;i<cnt*6&&d.TL.reduce((n,t)=>n+(t.e?0:1),0)<cnt;i++){const tx=1+(rr()*(W-2)|0),ty=2+(rr()*(H-3)|0);if(bad(tx,ty)||d.TS.has(tx+ty*W))continue;d.TS.add(tx+ty*W);d.TL.push({x:tx*T+T/2+(rr()-.5)*14,y:ty*T+T-6,sp:mk(.9+rr()*.35,rng(tx*31+ty*7))})}}
 const gateBad=(tx,ty)=>ty>=4&&ty<=7&&(tx<=3||tx>=28);
 
 /* ====================== SALJU ====================== */
@@ -2191,8 +2193,8 @@ function buildHills(d){const{c,x:X}=mkZ(1.5),R=rng(33),WW=W*T,HH=H*T,el=(x,y,rx,
   /* tebing kanan (tidak ada jalan lanjut) */
   for(let y=4.2;y<H;y+=.55){const x=(31.15+R()*.5)*T;el(x+4,y*T+4,24,22,'rgba(0,0,0,.22)');el(x,y*T,22+R()*8,20+R()*6,R()<.5?'#7d8590':'#6a727c');el(x-6,y*T-6,10,7,'rgba(255,255,255,.14)')}
   zSign(X,1.7,4.45,'← SALJU');lamp(X,19.7,4.5);lamp(X,28,4.5);
-  for(let x=0;x<W;x++){tree(x*T+T/2,H*T-4,1.1,R,X);if(!(x>=19&&x<=23)&&!(x>=26&&x<=31)&&x>1)tree(x*T+T/2,T+6,1,R,X)}
-  for(let y=2;y<H-1;y++){if(!(y>=4&&y<=7))tree(T/2,y*T+T-6,1,R,X)}
+  for(let x=0;x<W;x++){edgeTree(d.TL,x*T+T/2,H*T-4,1.1);if(!(x>=19&&x<=23)&&!(x>=26&&x<=31)&&x>1)edgeTree(d.TL,x*T+T/2,T+6,1)}
+  for(let y=2;y<H-1;y++){if(!(y>=4&&y<=7))edgeTree(d.TL,T/2,y*T+T-6,1)}
   d.bg=c;
   const pondBad=(tx,ty)=>((tx-25)/4.6)**2+((ty-16)/3.2)**2<1;
   placeTrees(d,52,57,(tx,ty)=>gateBad(tx,ty)||(ty>=4&&ty<=7)||(tx>=19&&tx<=23&&ty<=5)||(tx>=26&&ty<=5)||pondBad(tx,ty)||d.NODES.some(n=>Math.hypot(n.x-tx-.5,n.y-ty-.5)<1.4)||tx>=30,(s,r)=>treeSprite(s,r))}
@@ -3014,7 +3016,23 @@ loadImg('trees',TREES_URL);
 const _treeSprite=treeSprite;
 treeSprite=function(s,R){const sp=_treeSprite(s,R);sp.k=R?Math.floor(R()*1000):0;sp.sc=s;return sp};
 const treeVar=k=>k<260?0:k<500?1:k<650?2:k<800?3:k<900?4:5;
+/* Hiasan alam (props.png: 4 kolom x 3 baris). 0-3 rumput, 4-5 rumput tinggi, 6-7 semak bunga, 8-9 batu, 10 tunggul, 11 jamur.
+   Hanya hiasan (tanpa tabrakan). Gagal dimuat -> tidak digambar. */
+const PROPS_URL='https://zvsvftphialhaolinldx.supabase.co/storage/v1/object/public/sprites/props.png';
+const PROP_AMP=[1.4,1.2,1.8,1.4,2.4,2.4,1.1,1.1];
+loadImg('props',PROPS_URL);
+function drawProp(t){
+  const im=IMG.props;if(!im||!im.width)return;
+  const i=t.pr,cw=im.width/4,ch=im.height/3,sx=(i%4)*cw,sy=((i/4)|0)*ch,ws=.42,dw=cw*ws,dh=ch*ws,x0=t.x-dw/2,y0=t.y-(ch-3)*ws;
+  g.save();g.imageSmoothingEnabled=true;g.imageSmoothingQuality='high';
+  if(i>=8){g.fillStyle='rgba(0,0,0,.2)';g.beginPath();g.ellipse(t.x+2,t.y+1,dw*.32,dw*.08,0,0,7);g.fill()}
+  if(i>=8||!TREE_SWAY){g.drawImage(im,sx,sy,cw,ch,x0,y0,dw,dh);g.restore();return}
+  const now=performance.now(),wind=Math.sin(now/1500+t.ph)*.6+Math.sin(now/480+t.ph*1.7)*.4,N=8;
+  for(let k=0;k<N;k++){const a=Math.floor(k*ch/N),b=Math.floor((k+1)*ch/N),sh=Math.min(b-a+1,ch-a),fr=1-(k+.5)/N,dx=PROP_AMP[i]*wind*Math.pow(fr,1.6);
+    g.drawImage(im,sx,sy+a,cw,sh,x0+dx,y0+a*ws,dw,sh*ws+.5)}
+  g.restore()}
 window.__drawTree=function(t){
+  if(t.pr!=null)return drawProp(t);
   const sp=t.sp,im=IMG.trees;
   if(!im||!im.width||sp.k==null){g.drawImage(sp.c,t.x-sp.ox,t.y-sp.oy,sp.w,sp.h);return}
   const v=treeVar(sp.k),cw=im.width/3,ch=im.height/2,sx=(v%3)*cw,sy=((v/3)|0)*ch;
