@@ -3166,6 +3166,8 @@ person=function(x,y,f,col,ph,mv,o){o=o||{};
 const _npcHuman=npcHuman;
 npcHuman=function(n,p,t){WHO=SHEET['npc_'+n.id]?'npc_'+n.id:null;try{return _npcHuman(n,p,t)}finally{WHO=null}};
 
+/* preview Cowo/Cewe di menu pilih karakter ikut memakai sheet (player_m.png / player_f.png) */
+const _prevPick=prev;prev=function(c,fem){PLY=1;try{_prevPick(c,fem)}finally{PLY=0}};
 /* ---------- 3b) NPC Aula: Pelayan Dewi & Pianis (sprite sheet 4 kolom x 6 baris, sel 128x128) ----------
    Upload ke bucket "sprites" di Supabase: pelayan_sheet.png dan pianis_sheet.png (nama persis ini).
    Gagal dimuat dari Supabase -> otomatis pakai gambar tertanam di bawah.
