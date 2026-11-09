@@ -692,10 +692,17 @@ button .ic,.cell .ic,.slot .ic{vertical-align:middle}
 </style></head><body>
 <!-- ===== INTRO / OPENING VIDEO (atur URL & mode di script paling bawah) ===== -->
 <div id="intro" style="position:fixed;inset:0;z-index:99999;background:#000;display:flex;align-items:center;justify-content:center;font-family:Fredoka,system-ui,sans-serif;color:#fff;transition:opacity .4s">
-<video id="introV" playsinline webkit-playsinline preload="auto" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#000;display:none"></video>
+<video id="introBg" muted playsinline webkit-playsinline preload="auto"></video>
+<video id="introV" playsinline webkit-playsinline preload="auto"></video>
 <div id="introGate" style="display:flex;flex-direction:column;align-items:center;gap:14px;cursor:pointer;text-align:center;padding:24px"><div style="font-size:56px">🌾</div><div style="font-size:34px;font-weight:700;letter-spacing:2px">PIXEL FARM</div><div style="font-size:16px;opacity:.8;animation:introP 1.4s ease-in-out infinite">Ketuk untuk memulai</div></div>
 <button id="introSkip" style="display:none;position:absolute;top:max(12px,env(safe-area-inset-top));right:12px;background:rgba(0,0,0,.55);color:#fff;border:1px solid rgba(255,255,255,.5);border-radius:20px;padding:8px 16px;font:600 14px Fredoka,system-ui,sans-serif;cursor:pointer">Lewati ⏭</button>
-<style>@keyframes introP{0%,100%{opacity:.35}50%{opacity:1}}</style>
+<style>@keyframes introP{0%,100%{opacity:.35}50%{opacity:1}}
+#introV,#introBg{position:absolute;inset:0;width:100%;height:100%;display:none}
+#introV{object-fit:contain;background:transparent}
+#introBg{object-fit:cover;filter:blur(26px) brightness(.92);transform:scale(1.18)}
+/* layar lebar (HP landscape / laptop): video PENUH tanpa pita kosong (sisi yang kelebihan terpotong sedikit). Layar tinggi (HP portrait): video utuh, sisanya diisi blur video itu sendiri */
+@media (min-aspect-ratio:13/10){#introV{object-fit:cover}}
+@media (max-aspect-ratio:13/10){#introBg.on{display:block}}</style>
 </div>
 <div id="fade"></div><div id="wrap"><canvas id="c" width="960" height="672"></canvas>
 <div id="ui" style="display:none"><div id="hurt"></div>
@@ -3421,7 +3428,7 @@ window.__pf24={setQ:q=>{QL=q;lsSet('pf_q',q);syncSel()},exportGuide,SHEET,IMG};
    Video gagal dimuat / belum diupload -> otomatis dilewati, game jalan normal. */
 (function(){
 const INTRO={url:'https://zvsvftphialhaolinldx.supabase.co/storage/v1/object/public/video/intro.mp4',mode:'open',once:0,key:'pfc2_intro_seen'};
-const e=id=>document.getElementById(id),box=e('intro'),v=e('introV'),gate=e('introGate'),sk=e('introSkip');
+const e=id=>document.getElementById(id),box=e('intro'),v=e('introV'),bg=e('introBg'),gate=e('introGate'),sk=e('introSkip');
 let busy=null;
 const seen=()=>{try{return INTRO.once&&localStorage.getItem(INTRO.key)==='1'}catch(_){return false}};
 function hideBox(){box.style.opacity=0;setTimeout(()=>{box.style.display='none'},420)}
@@ -3430,17 +3437,19 @@ function run(auto){
   if(!INTRO.url||seen()){hideBox();return Promise.resolve()}
   busy=new Promise(res=>{
     let done=0;
-    const fin=()=>{if(done)return;done=1;try{v.pause();v.removeAttribute('src');v.load()}catch(_){}
+    const fin=()=>{if(done)return;done=1;try{v.pause();v.removeAttribute('src');v.load();bg.pause();bg.classList.remove('on');bg.removeAttribute('src');bg.load()}catch(_){}
       try{if(INTRO.once)localStorage.setItem(INTRO.key,'1')}catch(_){}
       hideBox();document.removeEventListener('keydown',kd);busy=null;res()};
     const kd=ev=>{if(ev.key==='Escape'||ev.key==='Enter'&&v.style.display==='none'&&!auto)ev.key==='Escape'&&fin()};
     document.addEventListener('keydown',kd);
     box.style.display='flex';box.style.opacity=1;gate.style.display='flex';v.style.display='none';sk.style.display='none';
     v.onerror=fin;v.onended=fin;sk.onclick=fin;
+    v.onplay=()=>{try{bg.play().catch(()=>{})}catch(_){}};v.onpause=()=>{try{bg.pause()}catch(_){}};
+    v.ontimeupdate=()=>{if(bg.src&&Math.abs(bg.currentTime-v.currentTime)>.35){try{bg.currentTime=v.currentTime}catch(_){}}};
     gate.onclick=()=>{gate.style.display='none';v.style.display='block';sk.style.display='block';v.muted=false;
       const p=v.play();if(p&&p.catch)p.catch(()=>{v.muted=true;const q=v.play();if(q&&q.catch)q.catch(fin)});
       setTimeout(()=>{if(v.readyState<2)fin()},15000)};
-    v.src=INTRO.url;v.load();
+    v.src=INTRO.url;v.load();if(matchMedia('(max-aspect-ratio:13/10)').matches){bg.classList.add('on');bg.src=INTRO.url;bg.muted=true;bg.load()}
     if(auto)gate.onclick();
   });
   return busy;
