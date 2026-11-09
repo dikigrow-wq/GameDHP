@@ -3065,8 +3065,8 @@ function loadAulaImg(kind,done){const im=new Image();let fb=0;im.crossOrigin='an
   im.onerror=()=>{if(!fb){fb=1;im.removeAttribute('crossorigin');im.src=AULA_BUILTIN[kind]}};im.src=AULA_URL[kind]}
 loadAulaImg('ext',im=>{AULA_EXT=im});
 loadAulaImg('inn',im=>{IMG.in_aula=im;try{delete IBG.au}catch(e){}});
-const AX={L:27.5*T-.5013*360,W:360,H:360*992/1586};
-const AFX=(ix,iy)=>[AX.L+ix/1586*AX.W,iy/992*AX.H];
+const AX={W:270,T:-3};AX.H=AX.W*992/1586;AX.L=27.5*T-.5013*AX.W;   // W = lebar gambar (px dunia). 270 ~ 5,6 tile; T = geser vertikal
+const AFX=(ix,iy)=>[AX.L+ix/1586*AX.W,AX.T+iy/992*AX.H];
 const ATW=[[795,238],[793,32],[137,206],[1449,206],[134,449],[484,449],[1102,449],[1451,449]];   // titik kilau emas (bintang, puncak, kepala pilar)
 /* eksterior Aula: digambar di atas peta, di bawah karakter; ada cahaya lentera (malam) & kilau emas */
 window.__aulaExt=function(time){
@@ -3074,13 +3074,13 @@ window.__aulaExt=function(time){
   if(AX.L>cam.x+VW/Z+60||AX.L+AX.W<cam.x-60)return;
   const t=time/1000;
   g.save();g.imageSmoothingEnabled=true;g.imageSmoothingQuality='high';
-  g.drawImage(AULA_EXT,AX.L,0,AX.W,AX.H);
-  g.font='700 8px Fredoka,sans-serif';g.textAlign='center';g.textBaseline='middle';
+  g.drawImage(AULA_EXT,AX.L,AX.T,AX.W,AX.H);
+  g.font='700 6.5px Fredoka,sans-serif';g.textAlign='center';g.textBaseline='middle';
   const[px,py]=AFX(795,391);g.fillStyle='rgba(0,0,0,.55)';g.fillText('AULA MEETING',px,py+1.5);g.fillStyle='#ffe27a';g.fillText('AULA MEETING',px,py+.5);
   g.textAlign='left';g.textBaseline='alphabetic';
   const hh=6+Math.min(1,S.t/DAY)*18,nf=hh>=17?Math.min(1,(hh-17)/2.2):0,base=.1+.5*nf;
   g.globalCompositeOperation='lighter';
-  [[578,574,40],[1006,574,40],[795,565,62]].forEach   /* lentera kiri, lentera kanan, cahaya pintu */(([ix,iy,r],i)=>{
+  [[578,574,26],[1006,574,26],[795,565,44]].forEach   /* lentera kiri, lentera kanan, cahaya pintu */(([ix,iy,r],i)=>{
     const[x,y]=AFX(ix,iy),f=base*(.82+.12*Math.sin(t*3.1+i*1.7)+.06*Math.sin(t*7.3+i)),q=g.createRadialGradient(x,y,1,x,y,r);
     q.addColorStop(0,'rgba(255,200,110,'+(f*(i===2?.5:1)).toFixed(3)+')');q.addColorStop(1,'rgba(255,200,110,0)');g.fillStyle=q;g.fillRect(x-r,y-r,2*r,2*r)});
   ATW.forEach(([ix,iy],i)=>{const q=Math.sin(t*1.1+i*2.3);if(q<.82)return;const a=(q-.82)/.18,[x,y]=AFX(ix,iy),r=2+a*4;
