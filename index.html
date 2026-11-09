@@ -926,6 +926,28 @@ function edgeTree(L,x,y,s){
   if(r()<.8)mk(x+(r()-.5)*44,y-24-r()*18,s*(.82+r()*.3),1);
 }
 /* Jalan bertekstur (roads.png: atas = batu, bawah = tanah). Bila gagal dimuat, jalan lama dipakai. */
+/* Rumput dasar bergambar (grass_atlas.png 4x2 kotak 192px + grass_macro.png peta cahaya).
+   Bila gagal dimuat, rumput lama dipakai. */
+const GRASS_URL='https://zvsvftphialhaolinldx.supabase.co/storage/v1/object/public/sprites/grass_atlas.png',GRASS_MACRO_URL='https://zvsvftphialhaolinldx.supabase.co/storage/v1/object/public/sprites/grass_macro.png';
+let GRASSIMG=null,GRASSMAC=null;
+function buildGround(WW,HH){
+  if(!GRASSIMG||!GRASSIMG.width)return null;
+  const c=document.createElement('canvas');c.width=WW*Q;c.height=HH*Q;const x=c.getContext('2d'),f=GRASSIMG.width/4,r=rng(4242);
+  const nx=Math.ceil(c.width/f)+1,ny=Math.ceil(c.height/f)+1,farmAt=(px,py)=>{const tx=px/(Q*T),ty=py/(Q*T);return tx>2&&tx<18&&ty>2&&ty<13};
+  const pick=(px,py)=>{let v=(r()*4)|0;if(!farmAt(px,py)&&r()<.3)v+=4;return v};
+  /* lapis 1: kotak penuh */
+  for(let cy=0;cy<ny;cy++)for(let cx=0;cx<nx;cx++){const v=pick(cx*f,cy*f);x.drawImage(GRASSIMG,(v%4)*f,((v/4)|0)*f,f,f,cx*f,cy*f,f,f)}
+  /* lapis 2: kotak bertepi memudar, digeser setengah kotak, menutup semua sambungan */
+  const m=document.createElement('canvas');m.width=m.height=f;const mx=m.getContext('2d'),fe=.3;
+  for(let cy=0;cy<=ny;cy++)for(let cx=0;cx<=nx;cx++){
+    const px=(cx-.5)*f,py=(cy-.5)*f,v=pick(px,py);
+    mx.globalCompositeOperation='source-over';mx.clearRect(0,0,f,f);mx.drawImage(GRASSIMG,(v%4)*f,((v/4)|0)*f,f,f,0,0,f,f);
+    mx.globalCompositeOperation='destination-in';
+    let gx=mx.createLinearGradient(0,0,f,0);gx.addColorStop(0,'rgba(0,0,0,0)');gx.addColorStop(fe,'#000');gx.addColorStop(1-fe,'#000');gx.addColorStop(1,'rgba(0,0,0,0)');mx.fillStyle=gx;mx.fillRect(0,0,f,f);
+    let gy=mx.createLinearGradient(0,0,0,f);gy.addColorStop(0,'rgba(0,0,0,0)');gy.addColorStop(fe,'#000');gy.addColorStop(1-fe,'#000');gy.addColorStop(1,'rgba(0,0,0,0)');mx.fillStyle=gy;mx.fillRect(0,0,f,f);
+    x.save();if(r()<.5){x.translate(px+f,py);x.scale(-1,1);x.drawImage(m,0,0)}else x.drawImage(m,px,py);x.restore()}
+  if(GRASSMAC){x.save();x.globalCompositeOperation='soft-light';x.imageSmoothingEnabled=true;x.imageSmoothingQuality='high';x.drawImage(GRASSMAC,0,0,c.width,c.height);x.restore()}
+  return c}
 const ROADS_URL='https://zvsvftphialhaolinldx.supabase.co/storage/v1/object/public/sprites/roads.png';
 let ROADPAT=null;
 function mkRoadPats(im){const w=im.width,h2=im.height/2,o={};['stone','dirt'].forEach((k,i)=>{const c=document.createElement('canvas');c.width=w;c.height=h2;const cx=c.getContext('2d');cx.drawImage(im,0,i*h2,w,h2,0,0,w,h2);if(k==='dirt'){cx.globalCompositeOperation='source-atop';cx.fillStyle='rgba(128,98,66,.38)';cx.fillRect(0,0,w,h2)}o[k]=c});ROADPAT=o}
@@ -946,10 +968,10 @@ function roadStroke(X,pts,w,kind,c0,c1,c2){
       X.strokeStyle=cols[(r()*4)|0];X.lineWidth=1.1;X.beginPath();X.moveTo(px,py);X.lineTo(px+(r()-.5)*3,py-3-r()*5);X.stroke()}}
   X.restore()}
 function buildBG(){const R=rng(7),WW=W*T,HH=H*T,ell=(x,y,rx,ry,f)=>{b.fillStyle=f;b.beginPath();b.ellipse(x,y,rx,ry,0,0,7);b.fill()};
-  let gr=b.createLinearGradient(0,0,0,HH);gr.addColorStop(0,'#6aae4a');gr.addColorStop(.55,'#58993f');gr.addColorStop(1,'#4a8a38');b.fillStyle=gr;b.fillRect(0,0,WW,HH);
-  for(let i=0;i<520;i++)ell(R()*WW,R()*HH,12+R()*30,8+R()*16,`rgba(${30+R()*40|0},${90+R()*50|0},${30+R()*30|0},.28)`);
-  for(let i=0;i<40;i++)ell((21+R()*10)*T,(1+R()*7)*T,40+R()*50,25+R()*30,'rgba(15,70,30,.22)');
-  for(let i=0;i<12500;i++){const x=R()*WW,y=R()*HH;b.strokeStyle=R()<.5?'#78bd58':'#3a7a2d';b.beginPath();b.moveTo(x,y);b.lineTo(x+(R()-.5)*3,y-3-R()*5);b.stroke()}
+  const GR=buildGround(WW,HH);let gr=b.createLinearGradient(0,0,0,HH);gr.addColorStop(0,'#6aae4a');gr.addColorStop(.55,'#58993f');gr.addColorStop(1,'#4a8a38');b.fillStyle=gr;b.fillRect(0,0,WW,HH);if(GR)b.drawImage(GR,0,0,WW,HH);
+  if(!GR)for(let i=0;i<520;i++)ell(R()*WW,R()*HH,12+R()*30,8+R()*16,`rgba(${30+R()*40|0},${90+R()*50|0},${30+R()*30|0},.28)`);
+  if(!GR)for(let i=0;i<40;i++)ell((21+R()*10)*T,(1+R()*7)*T,40+R()*50,25+R()*30,'rgba(15,70,30,.22)');
+  if(!GR)for(let i=0;i<12500;i++){const x=R()*WW,y=R()*HH;b.strokeStyle=R()<.5?'#78bd58':'#3a7a2d';b.beginPath();b.moveTo(x,y);b.lineTo(x+(R()-.5)*3,y-3-R()*5);b.stroke()}
   for(let i=0;i<340;i++){const m=i<160,x=m?(1+R()*11)*T:R()*WW,y=m?(14+R()*7)*T:R()*HH;if(farm(x/T|0,y/T|0)||y<3*T)continue;ell(x,y,2.4,2.4,['#fff','#ffd84a','#ff8fb1','#b48cff'][i%4]);ell(x,y,.9,.9,'#e8a020')}
   // jalan
   const PQ=[],pth=(pts,w,kind)=>PQ.push([pts,w,kind||'dirt']);
@@ -3072,7 +3094,7 @@ function loadAulaImg(kind,done){const im=new Image();let fb=0;im.crossOrigin='an
   im.onerror=()=>{if(!fb){fb=1;im.removeAttribute('crossorigin');im.src=AULA_BUILTIN[kind]}};im.src=AULA_URL[kind]}
 loadAulaImg('ext',im=>{AULA_EXT=im});
 loadAulaImg('inn',im=>{IMG.in_aula=im;try{delete IBG.au}catch(e){}});
-const AX={W:270,T:-3};AX.H=AX.W*992/1586;AX.L=27.5*T-.5013*AX.W;   // W = lebar gambar (px dunia). 270 ~ 5,6 tile; T = geser vertikal
+const AX={W:240,T:-3.4};AX.H=AX.W*992/1586;AX.L=27.5*T-.5013*AX.W;   // W = lebar gambar (px dunia); T = geser vertikal. Dasar tangga = garis dasar rumah lain (y = 3 tile)
 const AFX=(ix,iy)=>[AX.L+ix/1586*AX.W,AX.T+iy/992*AX.H];
 const ATW=[[795,238],[793,32],[137,206],[1449,206],[134,449],[484,449],[1102,449],[1451,449]];   // titik kilau emas (bintang, puncak, kepala pilar)
 /* eksterior Aula: digambar di atas peta, di bawah karakter; ada cahaya lentera (malam) & kilau emas */
@@ -3082,12 +3104,12 @@ window.__aulaExt=function(time){
   const t=time/1000;
   g.save();g.imageSmoothingEnabled=true;g.imageSmoothingQuality='high';
   g.drawImage(AULA_EXT,AX.L,AX.T,AX.W,AX.H);
-  g.font='700 6.5px Fredoka,sans-serif';g.textAlign='center';g.textBaseline='middle';
+  g.font='700 5.8px Fredoka,sans-serif';g.textAlign='center';g.textBaseline='middle';
   const[px,py]=AFX(795,391);g.fillStyle='rgba(0,0,0,.55)';g.fillText('AULA MEETING',px,py+1.5);g.fillStyle='#ffe27a';g.fillText('AULA MEETING',px,py+.5);
   g.textAlign='left';g.textBaseline='alphabetic';
   const hh=6+Math.min(1,S.t/DAY)*18,nf=hh>=17?Math.min(1,(hh-17)/2.2):0,base=.1+.5*nf;
   g.globalCompositeOperation='lighter';
-  [[578,574,26],[1006,574,26],[795,565,44]].forEach   /* lentera kiri, lentera kanan, cahaya pintu */(([ix,iy,r],i)=>{
+  [[578,574,23],[1006,574,23],[795,565,39]].forEach   /* lentera kiri, lentera kanan, cahaya pintu */(([ix,iy,r],i)=>{
     const[x,y]=AFX(ix,iy),f=base*(.82+.12*Math.sin(t*3.1+i*1.7)+.06*Math.sin(t*7.3+i)),q=g.createRadialGradient(x,y,1,x,y,r);
     q.addColorStop(0,'rgba(255,200,110,'+(f*(i===2?.5:1)).toFixed(3)+')');q.addColorStop(1,'rgba(255,200,110,0)');g.fillStyle=q;g.fillRect(x-r,y-r,2*r,2*r)});
   ATW.forEach(([ix,iy],i)=>{const q=Math.sin(t*1.1+i*2.3);if(q<.82)return;const a=(q-.82)/.18,[x,y]=AFX(ix,iy),r=2+a*4;
@@ -3417,7 +3439,10 @@ window.__pf24={setQ:q=>{QL=q;lsSet('pf_q',q);syncSel()},exportGuide,SHEET,IMG};
 
 (function(){const go=()=>{resize();buildBG();initZones();hud();requestAnimationFrame(loop)};
   let done=false;const fin=()=>{if(done)return;done=true;go()};
-  const im=new Image();im.crossOrigin='anonymous';im.onload=()=>{try{mkRoadPats(im)}catch(e){}fin()};im.onerror=fin;setTimeout(fin,3000);im.src=ROADS_URL})();
+  let pend=3;const one=()=>{if(--pend<=0)fin()};
+  const ld=(u,ok)=>{const im=new Image();im.crossOrigin='anonymous';im.onload=()=>{try{ok(im)}catch(e){}one()};im.onerror=one;im.src=u};
+  setTimeout(fin,3500);
+  ld(ROADS_URL,mkRoadPats);ld(GRASS_URL,im=>{GRASSIMG=im});ld(GRASS_MACRO_URL,im=>{GRASSMAC=im})})();
 
 </script><script>
 /* ===== Opening video =====
