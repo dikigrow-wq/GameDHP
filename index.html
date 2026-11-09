@@ -1170,7 +1170,14 @@ function draw(now,time){
 
 /* ===== loop ===== */
 let last=performance.now(),pAcc=0,hAcc=0,lastP='';
-function loop(now){const dt=Math.min(.05,(now-last)/1000);last=now;
+const _lerr={};
+function loopErr(e,w){try{const m=(w||'')+': '+(e&&e.message||e);console.error('[PixelFarm]',m,e&&e.stack);if(!_lerr[m]){_lerr[m]=1;if(Object.keys(_lerr).length<6)say('⚠ Error '+m)}}catch(_){}}
+function loop(now){
+  try{loopUpd(now)}catch(e){loopErr(e,'update')}
+  try{draw(now,now)}catch(e){loopErr(e,'draw');try{g.setTransform(1,0,0,1,0,0);g.globalAlpha=1;g.globalCompositeOperation='source-over';g.shadowColor='transparent'}catch(_){}}
+  try{if(started)minimap(now)}catch(e){loopErr(e,'minimap')}
+  requestAnimationFrame(loop)}
+function loopUpd(now){const dt=Math.min(.05,(now-last)/1000);last=now;
   let dx=(keys.right?1:0)-(keys.left?1:0),dy=(keys.down?1:0)-(keys.up?1:0);me.mv=0;if(jv){dx=jv.x;dy=jv.y}const ox0=me.x,oy0=me.y;
   if(me.sit>=0&&scene!==60)me.sit=-1;if(me.sit>=0&&started&&(dx||dy)){standUp();dx=dy=0}
   if(started&&!trans&&(dx||dy)){const l=Math.hypot(dx,dy),sp=150*dt*Math.min(1,l)*(wet(me.x,me.y)?.6:1)*(1+(ST.spd|0)/100);dx=dx/l*sp;dy=dy/l*sp;me.mv=1;me.ph+=dt*12;
@@ -1179,14 +1186,14 @@ function loop(now){const dt=Math.min(.05,(now-last)/1000);last=now;
     me.f=Math.abs(dx)>Math.abs(dy)?(dx>0?'right':'left'):(dy>0?'down':'up')}
   me.vx=dt>0?(me.x-ox0)/dt:0;me.vy=dt>0?(me.y-oy0)/dt:0;
   if(started){const w0=wet(me.x,me.y);if(w0!==wasWet){sfx('splash');wasWet=w0}if(me.mv){stepD+=Math.hypot(me.x-ox0,me.y-oy0);if(stepD>38){stepD=0;sfx('step',{s:surfAt(me.x,me.y)})}}else stepD=30}
-  zoneCheck();if(started&&(ch||!modal)){vitTick(dt);S.t+=dt;if(S.t>=DAY){if(isHost()){nextDay();bcast(1)}else S.t=DAY}}
+  try{zoneCheck()}catch(e){loopErr(e,'zone')}if(started&&(ch||!modal)){try{vitTick(dt)}catch(e){loopErr(e,'vit')}S.t+=dt;if(S.t>=DAY){if(isHost()){nextDay();bcast(1)}else S.t=DAY}}
   toastT-=dt;for(const k in remote){const o=remote[k];if(o.tx==null)continue;o.sc=o.zr===zone?(o.rs|0):99;const el=Math.min(.2,(now-o.seen)/1000),px=o.tx+(o.vx||0)*el,py=o.ty+(o.vy||0)*el,mx=px-o.x,my=py-o.y,dd=Math.hypot(mx,my);if(dd>260){o.x=px;o.y=py}else{const f=Math.min(1,dt*22);o.x+=mx*f;o.y+=my*f}o.mv=Math.hypot(o.vx||0,o.vy||0)>12||dd>4;if(o.mv){o.ph+=dt*12;o.sd=(o.sd||0)+Math.hypot(o.vx||0,o.vy||0)*dt;if(o.sd>38){o.sd=0;const d2=Math.hypot(o.x-me.x,o.y-me.y);if(d2<420&&(o.sc|0)===scene)sfx('step',{s:surfAt(o.x,o.y),v:.7*(1-d2/420)})}}}
   pAcc+=dt;if(pAcc>(remSame()?.055:.4)&&ch&&started){pAcc=0;const k=[Math.round(me.x),Math.round(me.y),me.f,me.mv,Math.round(vit.hp/4),scene,zone,me.sit].join();if(k!==lastP||now-lastPT>1500){lastP=k;lastPT=now;send('pos',{id:myId,x:me.x,y:me.y,vx:Math.round(me.vx||0),vy:Math.round(me.vy||0),f:me.f,col:me.col,n:me.n,g:me.g,hp:Math.round(vit.hp),sc:scene,z:zone,si:me.sit+1,mu:AUTH.mod?AUTH.uid:''})}}
-  hAcc+=dt;if(hAcc>1){hAcc=0;hud();if(ch&&isHost()){syncN++;if(syncN%12===0)send('state',{h:myId,s:S});else sendSync()}}
+  hAcc+=dt;if(hAcc>1){hAcc=0;try{hud()}catch(e){loopErr(e,'hud')}if(ch&&isHost()){syncN++;if(syncN%12===0)send('state',{h:myId,s:S});else sendSync()}}
   if(scene){cam.x=IW*T/2-VW/Z/2;cam.y=IH*T/2-VH/Z/2-8;cam.s=0}else{const vw=VW/Z,vh=VH/Z,tx=Math.max(0,Math.min(W*T-vw,me.x-vw/2)),ty=Math.max(0,Math.min(H*T-vh,me.y-vh/2-20)),k=cam.s?1:1-Math.exp(-dt*9);cam.s=0;cam.x+=(tx-cam.x)*k;cam.y+=(ty-cam.y)*k}
   if(fishing){if(me.mv||modal)fishing=null;else if(fishing.st==='wait'&&now>=fishing.at){fishing.st='bite';fishing.until=now+1300;navigator.vibrate&&navigator.vibrate(30);say('❗ Ikan menyambar! Tekan Pakai!');sfx('bite')}else if(fishing.st==='bite'&&now>fishing.until){fishing=null;say('Ikan lepas…');sfx('miss')}}
-  cAcc+=dt;if(cAcc>.12){cAcc=0;ctxUpdate();if(started){vitUI();ambUpdate(performance.now())}}
-  draw(now,now);if(started)minimap(now);requestAnimationFrame(loop)}
+  cAcc+=dt;if(cAcc>.12){cAcc=0;try{ctxUpdate()}catch(e){loopErr(e,'ctx')}if(started){try{vitUI()}catch(e){loopErr(e,'vitUI')}try{ambUpdate(performance.now())}catch(e){}}}
+  }
 
 /* ===== v2: layar penuh + kamera ===== */
 let DPR=1,VW=960,VH=672,Z=1,cam={x:0,y:0,s:1},cAcc=0;
@@ -1650,7 +1657,7 @@ const IOBJ=[['bed',2.2,3.75,'🛏️','Tidur','Tidur & mulai hari baru'],['chest
 function objNear(){let best=null,bd=1.4*T;for(const o of (scene===50?AOBJ:scene===60?UOBJ:IOBJ)){const d=Math.hypot(me.x-o[1]*T,me.y-o[2]*T);if(d<bd){bd=d;best=o}}return best}
 const nearIn=()=>{if(scene===60){if(me.sit>=0)return['🪑','Berdiri','Berdiri dari kursi'];if(waiterNear())return['🍵','Pelayan','Pesan minuman ke Pelayan Dewi']}const o=objNear();return o?[o[3],o[4],o[5]]:null};
 function doorNear(){if(scene)return-1;if(zone)return zone===1&&Math.hypot(me.x-AR.x*T,me.y-AR.y*T)<1.2*T?100:-1;for(let i=0;i<HOUSES.length;i++){const h=HOUSES[i];if(Math.hypot(me.x-HX(h)*T,me.y-HY(h)*T)<1.2*T)return i}return-1}
-function goScene(fn){if(trans)return;trans=1;keys={};resetJoy();const f=$('fade');f.style.opacity=1;setTimeout(()=>{fn();cam.s=1;lastP='';setTimeout(()=>{f.style.opacity=0;trans=0},80)},270)}
+function goScene(fn){if(trans)return;trans=1;keys={};resetJoy();const f=$('fade');f.style.opacity=1;setTimeout(()=>{try{fn()}catch(e){loopErr(e,'scene')}cam.s=1;lastP='';setTimeout(()=>{f.style.opacity=0;trans=0},80)},270)}
 function enterHouse(i){if(i===100){enterArcade();return}closeModal();goScene(()=>{outPos={x:me.x,y:me.y};hid=i;scene=HOUSES[i].au?60:1+i;me.x=8*T;me.y=9.1*T;me.f='up';applyZ();sfx('door');say('🏠 '+HOUSES[i].nm)})}
 function exitHouse(){goScene(()=>{if(scene===50){scene=0;me.x=AR.x*T;me.y=(AR.y+.3)*T;me.f='down';applyZ();sfx('door');return}const h=HOUSES[hid];scene=0;me.x=HX(h)*T;me.y=(h.gh?8.5:3.5)*T;me.f='down';applyZ();sfx('door')})}
 function cnt(id){let n=0;for(const q of[0,1,2])n+=inv[id+100*q]|0;return n}
@@ -1736,7 +1743,7 @@ function drawIn(now,time){
   const E=[];
   E.push({y:me.y,d:()=>{drawP(me.x,me.y,me.f,me.col,me.ph,me.mv,{fem:me.g==='f',sit:me.sit>=0,mod:AUTH.mod});label(me.x,me.y-66,me.n,AUTH.mod);const q=bub[myId];if(q&&performance.now()<q.until)say2(me.x,me.y-72,q.text,me.n)}});if(scene===60)auEnts(E,time);
   for(const id in remote){const r=remote[id];if((r.sc|0)!==scene)continue;E.push({y:r.y,d:()=>{drawP(r.x,r.y,r.f||'down',r.col||'#3b82d9',r.ph,r.mv,{fem:r.g==='f',sit:(r.si|0)>0,mod:!!r.vm});label(r.x,r.y-66,r.n||'Teman',r.vm);if(r.hp!=null)hpBar(r.x,r.y-82,r.hp);const q=bub[id];if(q&&performance.now()<q.until)say2(r.x,r.y-72,q.text,r.n||"Teman")}})}
-  E.sort((a,b)=>a.y-b.y).forEach(e=>e.d());drawParts(performance.now());
+  E.sort((a,b)=>a.y-b.y).forEach(e=>{try{e.d()}catch(err){loopErr(err,'ent');g.setTransform(DPR*Z,0,0,DPR*Z,-cam.x*DPR*Z,-cam.y*DPR*Z);g.globalAlpha=1;g.globalCompositeOperation='source-over';g.shadowColor='transparent'}});try{drawParts(performance.now())}catch(err){loopErr(err,'parts')}
   const hh=6+Math.min(1,S.t/DAY)*18,a=Math.max(0,Math.min(1,(hh-17)/3))*.4;
   if(a>0){g.fillStyle='rgba(10,12,44,'+a+')';g.fillRect(0,0,IW*T,IH*T);g.save();g.globalCompositeOperation='lighter';
     [[3.85,1.4,3.2,.5],[2,5.6,2.6,.3],[8,5,6.5,.18],[12.8,1.2,2.4,.2]].forEach(([lx,ly,lr,la])=>{const gr=g.createRadialGradient(lx*T,ly*T,4,lx*T,ly*T,lr*T);gr.addColorStop(0,'rgba(255,200,110,'+la*a*2.2+')');gr.addColorStop(1,'rgba(255,200,110,0)');g.fillStyle=gr;g.fillRect(0,0,IW*T,IH*T)});g.restore()}}
@@ -2952,7 +2959,7 @@ function pianistD(time){const x=13.5*T,y=3.8*T,t=time/1000;
   g.fillStyle='#f0c59b';g.fillRect(x-14,y-30+Math.sin(t*6)*2,5,10);g.fillRect(x+9,y-30+Math.cos(t*5.3)*2,5,10);
   label(x,y-62,'Pianis');
   g.save();g.font='bold 16px sans-serif';g.fillStyle='#ffe27a';for(let i=0;i<3;i++){const q=(t/1.6+i/3)%1;g.globalAlpha=Math.max(0,1-q);g.fillText(['♪','♫','♪'][i],x-18+Math.sin(q*6+i*2)*16+i*14,y-70-q*40)}g.restore()}
-function auGlow(time){const t=time/1000,ib=IBG.au,k=ib&&ib.width?ib.width/16:0,cust=k&&ib===IMG.in_aula;
+function auGlow(time){const t=time/1000,ib=IBG.au,k=ib&&ib.width?ib.width/16:0,cust=k&&(ib instanceof HTMLImageElement);
   g.save();
   if(cust){g.imageSmoothingEnabled=true;                                   // tirai bergoyang pelan
     [[3.75,4.6,0],[5.25,6.05,1.7],[10.07,10.88,.9],[11.55,12.35,2.6]].forEach(([a,b2,ph])=>{const sw=(b2-a)*k;
