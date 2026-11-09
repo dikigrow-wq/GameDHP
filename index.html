@@ -690,6 +690,13 @@ button .ic,.cell .ic,.slot .ic{vertical-align:middle}
 .fxset{display:flex;flex-direction:column;gap:6px;margin:6px 0}
 .fxset select{background:#1a2438;color:#eef2f8;border:1px solid #cfd7e3;border-radius:8px;padding:6px;font:600 14px system-ui}
 </style></head><body>
+<!-- ===== INTRO / OPENING VIDEO (atur URL & mode di script paling bawah) ===== -->
+<div id="intro" style="position:fixed;inset:0;z-index:99999;background:#000;display:flex;align-items:center;justify-content:center;font-family:Fredoka,system-ui,sans-serif;color:#fff;transition:opacity .4s">
+<video id="introV" playsinline webkit-playsinline preload="auto" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#000;display:none"></video>
+<div id="introGate" style="display:flex;flex-direction:column;align-items:center;gap:14px;cursor:pointer;text-align:center;padding:24px"><div style="font-size:56px">🌾</div><div style="font-size:34px;font-weight:700;letter-spacing:2px">PIXEL FARM</div><div style="font-size:16px;opacity:.8;animation:introP 1.4s ease-in-out infinite">Ketuk untuk memulai</div></div>
+<button id="introSkip" style="display:none;position:absolute;top:max(12px,env(safe-area-inset-top));right:12px;background:rgba(0,0,0,.55);color:#fff;border:1px solid rgba(255,255,255,.5);border-radius:20px;padding:8px 16px;font:600 14px Fredoka,system-ui,sans-serif;cursor:pointer">Lewati ⏭</button>
+<style>@keyframes introP{0%,100%{opacity:.35}50%{opacity:1}}</style>
+</div>
 <div id="fade"></div><div id="wrap"><canvas id="c" width="960" height="672"></canvas>
 <div id="ui" style="display:none"><div id="hurt"></div>
 <div id="tlc"><div id="tl" class="panel"><div id="av"></div><div><b id="pn"></b><div id="dt"></div></div><div id="gold"></div></div>
@@ -3405,4 +3412,46 @@ window.__pf24={setQ:q=>{QL=q;lsSet('pf_q',q);syncSel()},exportGuide,SHEET,IMG};
   let done=false;const fin=()=>{if(done)return;done=true;go()};
   const im=new Image();im.crossOrigin='anonymous';im.onload=()=>{try{mkRoadPats(im)}catch(e){}fin()};im.onerror=fin;setTimeout(fin,3000);im.src=ROADS_URL})();
 
-</script></body></html>
+</script><script>
+/* ===== Opening video =====
+   URL  : taruh video di Supabase Storage (bucket publik), lalu isi url di bawah.
+   mode : 'open'  = diputar saat game dibuka (sebelum menu login) -> lalu menu -> loading
+          'enter' = diputar setelah pemain menekan Single Player / masuk room -> langsung ke loading
+   once : 1 = hanya sekali per perangkat, 0 = setiap game dibuka
+   Video gagal dimuat / belum diupload -> otomatis dilewati, game jalan normal. */
+(function(){
+const INTRO={url:'https://zvsvftphialhaolinldx.supabase.co/storage/v1/object/public/video/intro.mp4',mode:'open',once:0,key:'pfc2_intro_seen'};
+const e=id=>document.getElementById(id),box=e('intro'),v=e('introV'),gate=e('introGate'),sk=e('introSkip');
+let busy=null;
+const seen=()=>{try{return INTRO.once&&localStorage.getItem(INTRO.key)==='1'}catch(_){return false}};
+function hideBox(){box.style.opacity=0;setTimeout(()=>{box.style.display='none'},420)}
+function run(auto){
+  if(busy)return busy;
+  if(!INTRO.url||seen()){hideBox();return Promise.resolve()}
+  busy=new Promise(res=>{
+    let done=0;
+    const fin=()=>{if(done)return;done=1;try{v.pause();v.removeAttribute('src');v.load()}catch(_){}
+      try{if(INTRO.once)localStorage.setItem(INTRO.key,'1')}catch(_){}
+      hideBox();document.removeEventListener('keydown',kd);busy=null;res()};
+    const kd=ev=>{if(ev.key==='Escape'||ev.key==='Enter'&&v.style.display==='none'&&!auto)ev.key==='Escape'&&fin()};
+    document.addEventListener('keydown',kd);
+    box.style.display='flex';box.style.opacity=1;gate.style.display='flex';v.style.display='none';sk.style.display='none';
+    v.onerror=fin;v.onended=fin;sk.onclick=fin;
+    gate.onclick=()=>{gate.style.display='none';v.style.display='block';sk.style.display='block';v.muted=false;
+      const p=v.play();if(p&&p.catch)p.catch(()=>{v.muted=true;const q=v.play();if(q&&q.catch)q.catch(fin)});
+      setTimeout(()=>{if(v.readyState<2)fin()},15000)};
+    v.src=INTRO.url;v.load();
+    if(auto)gate.onclick();
+  });
+  return busy;
+}
+if(INTRO.mode==='enter'){
+  box.style.display='none';
+  const wrap=n=>{const f=window[n];if(typeof f!=='function')return;window[n]=async function(){if(busy)return;await run(true);return f.apply(this,arguments)}};
+  wrap('enterSolo');wrap('enterRoom');
+}else{
+  run(false);
+}
+})();
+</script>
+</body></html>
