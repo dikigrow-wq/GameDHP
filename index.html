@@ -694,9 +694,12 @@ button .ic,.cell .ic,.slot .ic{vertical-align:middle}
 <div id="intro" style="position:fixed;inset:0;z-index:99999;background:#000;display:flex;align-items:center;justify-content:center;font-family:Fredoka,system-ui,sans-serif;color:#fff;transition:opacity .4s">
 <video id="introBg" muted playsinline webkit-playsinline preload="auto"></video>
 <video id="introV" playsinline webkit-playsinline preload="auto"></video>
-<div id="introGate" style="display:flex;flex-direction:column;align-items:center;gap:14px;cursor:pointer;text-align:center;padding:24px"><div style="font-size:56px">🌾</div><div style="font-size:34px;font-weight:700;letter-spacing:2px">PIXEL FARM</div><div style="font-size:16px;opacity:.8;animation:introP 1.4s ease-in-out infinite">Ketuk untuk memulai</div></div>
-<button id="introSkip" style="display:none;position:absolute;top:max(12px,env(safe-area-inset-top));right:12px;background:rgba(0,0,0,.55);color:#fff;border:1px solid rgba(255,255,255,.5);border-radius:20px;padding:8px 16px;font:600 14px Fredoka,system-ui,sans-serif;cursor:pointer">Lewati ⏭</button>
-<style>@keyframes introP{0%,100%{opacity:.35}50%{opacity:1}}
+<div id="introGate" style="display:flex;flex-direction:column;align-items:center;gap:14px;cursor:pointer;text-align:center;padding:24px"><div style="font-size:56px">🌾</div><div style="font-size:34px;font-weight:700;letter-spacing:2px">PIXEL FARM</div><div style="font-size:16px;opacity:.8;animation:introP 1.4s ease-in-out infinite">Ketuk untuk memulai</div><div style="font-size:12px;opacity:.6">Layar penuh · mode landscape</div></div>
+<div id="introRot"><div style="font-size:64px;animation:introR 1.6s ease-in-out infinite">📱</div><div style="font-size:20px;font-weight:600;margin-top:10px">Putar ponsel ke mode landscape</div></div>
+<style>@keyframes introP{0%,100%{opacity:.35}50%{opacity:1}}@keyframes introR{0%,20%{transform:rotate(0)}60%,100%{transform:rotate(-90deg)}}
+#introV,#introBg{pointer-events:none}
+#introRot{display:none;position:absolute;inset:0;z-index:3;background:#0b140a;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:24px}
+#intro.rot #introRot{display:flex}
 #introV,#introBg{position:absolute;inset:0;width:100%;height:100%;display:none}
 #introV{object-fit:contain;background:transparent}
 #introBg{object-fit:cover;filter:blur(26px) brightness(.92);transform:scale(1.18)}
@@ -3718,8 +3721,24 @@ window.__pf24={setQ:q=>{QL=q;lsSet('pf_q',q);syncSel()},exportGuide,SHEET,IMG};
    Video gagal dimuat / belum diupload -> otomatis dilewati, game jalan normal. */
 (function(){
 const INTRO={url:'https://zvsvftphialhaolinldx.supabase.co/storage/v1/object/public/video/intro.mp4',mode:'open',once:0,key:'pfc2_intro_seen'};
-const e=id=>document.getElementById(id),box=e('intro'),v=e('introV'),bg=e('introBg'),gate=e('introGate'),sk=e('introSkip');
+const e=id=>document.getElementById(id),box=e('intro'),v=e('introV'),bg=e('introBg'),gate=e('introGate'),rot=e('introRot');
 let busy=null;
+/* layar penuh + kunci landscape (harus dipicu dari ketukan pemain) */
+const touch=matchMedia('(pointer:coarse)'),mq=matchMedia('(orientation:portrait)');
+function goLand(){
+  const d=document.documentElement,rq=d.requestFullscreen||d.webkitRequestFullscreen;
+  const lock=()=>{try{const o=screen.orientation;if(o&&o.lock)o.lock('landscape').catch(()=>{})}catch(_){}};
+  try{const p=rq&&rq.call(d,{navigationUI:'hide'});if(p&&p.then)p.then(lock,lock);else lock()}catch(_){lock()}
+}
+window.pfGoLandscape=goLand;
+/* HP masih portrait (mis. iPhone yg tak bisa mengunci rotasi): tampilkan perintah putar & jeda video sampai landscape */
+function chk(){
+  if(!busy)return;
+  const bad=touch.matches&&mq.matches&&gate.style.display==='none';
+  box.classList.toggle('rot',bad);
+  try{if(bad){v.pause()}else if(v.style.display==='block'&&v.paused&&!v.ended)v.play().catch(()=>{})}catch(_){}
+}
+mq.addEventListener&&mq.addEventListener('change',chk);
 const seen=()=>{try{return INTRO.once&&localStorage.getItem(INTRO.key)==='1'}catch(_){return false}};
 function hideBox(){box.style.opacity=0;setTimeout(()=>{box.style.display='none'},420)}
 function run(auto){
@@ -3729,14 +3748,12 @@ function run(auto){
     let done=0;
     const fin=()=>{if(done)return;done=1;try{v.pause();v.removeAttribute('src');v.load();bg.pause();bg.classList.remove('on');bg.removeAttribute('src');bg.load()}catch(_){}
       try{if(INTRO.once)localStorage.setItem(INTRO.key,'1')}catch(_){}
-      hideBox();document.removeEventListener('keydown',kd);busy=null;res()};
-    const kd=ev=>{if(ev.key==='Escape'||ev.key==='Enter'&&v.style.display==='none'&&!auto)ev.key==='Escape'&&fin()};
-    document.addEventListener('keydown',kd);
-    box.style.display='flex';box.style.opacity=1;gate.style.display='flex';v.style.display='none';sk.style.display='none';
-    v.onerror=fin;v.onended=fin;sk.onclick=fin;
+      hideBox();box.classList.remove('rot');busy=null;res()};
+        box.style.display='flex';box.style.opacity=1;gate.style.display='flex';v.style.display='none';
+    v.onerror=fin;v.onended=fin;
     v.onplay=()=>{try{bg.play().catch(()=>{})}catch(_){}};v.onpause=()=>{try{bg.pause()}catch(_){}};
     v.ontimeupdate=()=>{if(bg.src&&Math.abs(bg.currentTime-v.currentTime)>.35){try{bg.currentTime=v.currentTime}catch(_){}}};
-    gate.onclick=()=>{gate.style.display='none';v.style.display='block';sk.style.display='block';v.muted=false;
+    gate.onclick=()=>{gate.style.display='none';v.style.display='block';goLand();chk();v.muted=false;
       const p=v.play();if(p&&p.catch)p.catch(()=>{v.muted=true;const q=v.play();if(q&&q.catch)q.catch(fin)});
       setTimeout(()=>{if(v.readyState<2)fin()},15000)};
     v.src=INTRO.url;v.load();if(matchMedia('(max-aspect-ratio:13/10)').matches){bg.classList.add('on');bg.src=INTRO.url;bg.muted=true;bg.load()}
