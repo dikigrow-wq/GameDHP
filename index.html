@@ -969,6 +969,38 @@ function buildGround(WW,HH){
     x.save();if(r()<.5){x.translate(px+f,py);x.scale(-1,1);x.drawImage(m,0,0)}else x.drawImage(m,px,py);x.restore()}
   if(GRASSMAC){x.save();x.globalCompositeOperation='soft-light';x.imageSmoothingEnabled=true;x.imageSmoothingQuality='high';x.drawImage(GRASSMAC,0,0,c.width,c.height);x.restore()}
   return c}
+/* Sungai & jembatan bergambar: river_atlas.png (4x2: baris atas air, baris bawah pasir tepian) dan bridge.png.
+   Bila gagal dimuat, sungai & jembatan lama (digambar kode) dipakai. */
+const RIVER_URL='https://zvsvftphialhaolinldx.supabase.co/storage/v1/object/public/sprites/river_atlas.png',BRIDGE_URL='https://zvsvftphialhaolinldx.supabase.co/storage/v1/object/public/sprites/bridge.png';
+let RIVIMG=null,BRIDGEIMG=null;
+function quiltCanvas(img,row,pw,ph,seed){
+  const f=img.width/4,c=document.createElement('canvas');c.width=pw;c.height=ph;const x=c.getContext('2d'),r=rng(seed);
+  const nx=Math.ceil(pw/f)+1,ny=Math.ceil(ph/f)+1;
+  for(let cy=0;cy<ny;cy++)for(let cx=0;cx<nx;cx++){const v=(r()*4)|0;x.drawImage(img,v*f,row*f,f,f,cx*f,cy*f,f,f)}
+  const m=document.createElement('canvas');m.width=m.height=f;const mx=m.getContext('2d'),fe=.3;
+  for(let cy=0;cy<=ny;cy++)for(let cx=0;cx<=nx;cx++){
+    const px=(cx-.5)*f,py=(cy-.5)*f,v=(r()*4)|0;
+    mx.globalCompositeOperation='source-over';mx.clearRect(0,0,f,f);mx.drawImage(img,v*f,row*f,f,f,0,0,f,f);
+    mx.globalCompositeOperation='destination-in';
+    let gx=mx.createLinearGradient(0,0,f,0);gx.addColorStop(0,'rgba(0,0,0,0)');gx.addColorStop(fe,'#000');gx.addColorStop(1-fe,'#000');gx.addColorStop(1,'rgba(0,0,0,0)');mx.fillStyle=gx;mx.fillRect(0,0,f,f);
+    let gy=mx.createLinearGradient(0,0,0,f);gy.addColorStop(0,'rgba(0,0,0,0)');gy.addColorStop(fe,'#000');gy.addColorStop(1-fe,'#000');gy.addColorStop(1,'rgba(0,0,0,0)');mx.fillStyle=gy;mx.fillRect(0,0,f,f);
+    x.save();if(r()<.5){x.translate(px+f,py);x.scale(-1,1);x.drawImage(m,0,0)}else x.drawImage(m,px,py);x.restore()}
+  return c}
+function riverPaint(b,pts){
+  const rx=33.8,ry=-1.2,rw=6.4,rh=H+2.4,sand=quiltCanvas(RIVIMG,1,Math.round(rw*T*Q),Math.round(rh*T*Q),777),water=quiltCanvas(RIVIMG,0,Math.round(rw*T*Q),Math.round(rh*T*Q),555);
+  const path=off=>{b.beginPath();pts.forEach(([x,y,hh],i)=>{const px=(x-hh-off)*T,py=y*T;i?b.lineTo(px,py):b.moveTo(px,py)});for(let i=pts.length-1;i>=0;i--){const[x,y,hh]=pts[i];b.lineTo((x+hh+off)*T,y*T)}b.closePath()};
+  const tex=(off,cv,a)=>{b.save();path(off);b.clip();b.globalAlpha=a;b.imageSmoothingEnabled=true;b.drawImage(cv,rx*T,ry*T,rw*T,rh*T);b.restore()};
+  const fill=(off,f)=>{b.fillStyle=f;path(off);b.fill()};
+  fill(.66,'rgba(60,40,20,.09)');
+  tex(.62,sand,.16);tex(.56,sand,.3);tex(.5,sand,.55);tex(.46,sand,1);        // pasir memudar ke rumput
+  fill(.3,'rgba(95,65,28,.16)');fill(.2,'rgba(70,45,20,.2)');                  // pasir basah dekat air
+  fill(.12,'rgba(255,255,255,.5)');                                            // busa tepi
+  tex(0,water,1);fill(-.4,'rgba(20,80,140,.2)');                               // air + kedalaman
+  b.save();path(0);b.clip();b.strokeStyle='rgba(150,225,235,.35)';b.lineWidth=.34*T;path(0);b.stroke();b.restore()}   // tepi dangkal lebih jernih
+function bridgePaint(b,B,s){
+  const L=(s[1]-s[0])*T,iw=L/.792,ih=iw*BRIDGEIMG.height/BRIDGEIMG.width,cx=(s[0]+s[1])/2*T,cy=(B[0]+B[1])/2*T;
+  b.save();[[7,.17],[12,.12],[17,.07]].forEach(([d,a])=>{b.fillStyle='rgba(0,30,60,'+a+')';b.fillRect(s[0]*T+.55*T,B[1]*T+1,L-1.1*T,d)});
+  b.imageSmoothingEnabled=true;b.imageSmoothingQuality='high';b.drawImage(BRIDGEIMG,cx-iw/2,cy-ih/2,iw,ih);b.restore()}
 const ROADS_URL='https://zvsvftphialhaolinldx.supabase.co/storage/v1/object/public/sprites/roads.png';
 let ROADPAT=null;
 function mkRoadPats(im){const w=im.width,h2=im.height/2,o={};['stone','dirt'].forEach((k,i)=>{const c=document.createElement('canvas');c.width=w;c.height=h2;const cx=c.getContext('2d');cx.drawImage(im,0,i*h2,w,h2,0,0,w,h2);if(k==='dirt'){cx.globalCompositeOperation='source-atop';cx.fillStyle='rgba(128,98,66,.38)';cx.fillRect(0,0,w,h2)}o[k]=c});ROADPAT=o}
@@ -3725,10 +3757,10 @@ window.__pf24={setQ:q=>{QL=q;lsSet('pf_q',q);syncSel()},exportGuide,SHEET,IMG};
 
 (function(){const go=()=>{resize();buildBG();initZones();hud();requestAnimationFrame(loop)};
   let done=false;const fin=()=>{if(done)return;done=true;go()};
-  let pend=3;const one=()=>{if(--pend<=0)fin()};
+  let pend=5;const one=()=>{if(--pend<=0)fin()};
   const ld=(u,ok)=>{const im=new Image();im.crossOrigin='anonymous';im.onload=()=>{try{ok(im)}catch(e){}one()};im.onerror=one;im.src=u};
   setTimeout(fin,3500);
-  ld(ROADS_URL,mkRoadPats);ld(GRASS_URL,im=>{GRASSIMG=im});ld(GRASS_MACRO_URL,im=>{GRASSMAC=im})})();
+  ld(ROADS_URL,mkRoadPats);ld(GRASS_URL,im=>{GRASSIMG=im});ld(GRASS_MACRO_URL,im=>{GRASSMAC=im});ld(RIVER_URL,im=>{RIVIMG=im});ld(BRIDGE_URL,im=>{BRIDGEIMG=im})})();
 
 /* ===== v48: PERLUASAN PETA KE TIMUR (tinggi tetap) — sungai, 2 jembatan, desa warga, Rumah Saya, taman ===== */
 function mmFit(){mm.style.width='';if(mm.width>192){const w=parseFloat(getComputedStyle(mm).width);if(w)mm.style.width=Math.round(w*1.55)+'px'}}
@@ -3773,7 +3805,7 @@ function buildEast(){
   const pts=[];for(let y=-1;y<=H+1;y+=.25)pts.push([xc(y),y,hwR(y)]);
   const poly=(off,f)=>{b.fillStyle=f;b.beginPath();pts.forEach(([x,y,h],i)=>{const px=(x-h-off)*T,py=y*T;i?b.lineTo(px,py):b.moveTo(px,py)});for(let i=pts.length-1;i>=0;i--){const[x,y,h]=pts[i];b.lineTo((x+h+off)*T,y*T)}b.closePath();b.fill()};
   const gg=b.createLinearGradient(33*T,0,41*T,0);gg.addColorStop(0,'#6fcbf0');gg.addColorStop(.5,'#3a96cc');gg.addColorStop(1,'#2b78b0');
-  poly(.6,'rgba(60,40,20,.12)');poly(.46,'#b9a46c');poly(.34,'#e3d3a0');poly(.12,'rgba(255,255,255,.55)');poly(0,gg);poly(-.4,'rgba(20,80,140,.22)');
+  if(RIVIMG)riverPaint(b,pts);else{poly(.6,'rgba(60,40,20,.12)');poly(.46,'#b9a46c');poly(.34,'#e3d3a0');poly(.12,'rgba(255,255,255,.55)');poly(0,gg);poly(-.4,'rgba(20,80,140,.22)');}
   b.save();b.lineWidth=2;b.setLineDash([16,26]);b.strokeStyle='rgba(255,255,255,.16)';[-.6,-.2,.25,.6].forEach(k=>{b.beginPath();pts.forEach(([x,y,h],i)=>{const px=(x+k*h)*T,py=y*T;i?b.lineTo(px,py):b.moveTo(px,py)});b.stroke()});b.restore();
   const nearBr=y=>(y>BA[0]-.9&&y<BA[1]+.9)||(y>BB[0]-.9&&y<BB[1]+.9);
   for(let i=0;i<60;i++){const y=1.2+R()*19.6;if(nearBr(y))continue;const e=R()<.5?-1:1,x=xc(y)+e*(hwR(y)+.3+R()*.35);if(R()<.35)reed(x*T,y*T);else rock(x*T,y*T)}
@@ -3794,7 +3826,7 @@ function buildEast(){
     for(let x=x0+2,i=0;x<x1-6;x+=11,i++){b.fillStyle=i%2?'#a8723f':'#b57d46';b.fillRect(x,y0+7,9,y1-y0-14);b.fillStyle='rgba(0,0,0,.14)';b.fillRect(x+8,y0+7,1.5,y1-y0-14)}
     [y0,y1-8].forEach(y=>{b.fillStyle='#5a3a22';b.fillRect(x0,y,x1-x0,8);b.fillStyle='#7a5230';b.fillRect(x0,y+(y===y0?0:5),x1-x0,3)});
     for(let x=x0+4;x<=x1-4;x+=38)[y0-2,y1-6].forEach(y=>{b.fillStyle='#4a2f1a';b.fillRect(x-8,y,18,8);b.fillStyle='#8a5a35';b.fillRect(x-10,y-1,4,10)})};
-  bridge(BA,sA);bridge(BB,sB);
+  if(BRIDGEIMG){bridgePaint(b,BA,sA);bridgePaint(b,BB,sB)}else{bridge(BA,sA);bridge(BB,sB)}
   lamp(sA[0]-.15,2.7);lamp(sA[1]+.15,2.7);lamp(sB[0]-.15,16.7);lamp(sB[1]+.15,16.7);
   sign(33.3,2.7,'DESA WARGA →');sign(33.3,16.6,'TAMAN →');
 
