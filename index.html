@@ -699,6 +699,30 @@ button .ic,.cell .ic,.slot .ic{vertical-align:middle}
 #clog p{font-family:'Lora',Georgia,serif}
 .fxset{display:flex;flex-direction:column;gap:6px;margin:6px 0}
 .fxset select{background:#1a2438;color:#eef2f8;border:1px solid #cfd7e3;border-radius:8px;padding:6px;font:600 14px system-ui}
+
+/* ===== v53: menu pas layar HP (tanpa scroll) ===== */
+#menu{position:fixed!important;inset:0!important;width:100vw!important;height:100vh!important;height:100dvh!important;overflow:hidden!important;padding:max(6px,env(safe-area-inset-top)) max(8px,env(safe-area-inset-right)) max(6px,env(safe-area-inset-bottom)) max(8px,env(safe-area-inset-left))!important;border-radius:0!important}
+#mbox{margin:0!important;transform-origin:center center;max-height:none}
+@media (orientation:landscape) and (max-height:560px){
+ #mbox{width:min(96%,860px)!important;flex-direction:row!important;align-items:center!important;justify-content:center!important;gap:4vw!important}
+ #logo{flex:1 1 46%;margin:0!important;min-width:0}
+ #logo .em{display:block!important;width:clamp(48px,20vh,96px)}
+ #logo .lg{width:min(100%,calc(34vh*3.28))}
+ #mbox .mp{flex:1 1 50%;min-width:0;padding:10px!important;gap:7px!important}
+ #mbox .mp input{padding:8px 10px!important;font-size:14px!important}
+ #mbox .mp .mb{padding:9px!important;font-size:15px!important}
+ #m0 .mb{font-size:16px!important;padding:11px!important}
+ #mbox .amut{display:none}
+ #mbox small{font-size:11px;line-height:1.25}
+ #mbox .atab button{padding:7px}
+}
+@media (orientation:portrait){
+ #mbox{width:min(92%,380px)!important;gap:10px!important}
+ #logo .em{width:clamp(48px,11vh,90px)!important}
+ #logo .lg{width:min(100%,calc(17vh*3.28))!important}
+ #mbox .mp{padding:12px!important;gap:8px!important}
+ #mbox .mp input{padding:9px 10px!important}
+}
 </style></head><body>
 <!-- ===== INTRO / OPENING VIDEO (atur URL & mode di script paling bawah) ===== -->
 <div id="intro" style="position:fixed;inset:0;z-index:99999;background:#000;display:flex;align-items:center;justify-content:center;font-family:Fredoka,system-ui,sans-serif;color:#fff;transition:opacity .4s">
@@ -3951,9 +3975,19 @@ function draw(now){
  for(let i=0;i<22;i++){const x=(rnd(i+300)*IW+t*(6+i%5*3))%IW,y=(rnd(i+320)*IH*.7+Math.sin(t*.5+i)*20+t*-3*(i%3)+IH)%(IH*.75)+60,a=.25+.35*Math.sin(t*1.2+i);c.fillStyle=`rgba(255,240,190,${Math.max(0,a).toFixed(2)})`;c.fillRect(X(x),Y(y),Math.max(1.5,2*U),Math.max(1.5,2*U))}
  c.restore();
 }
-function loop(now){requestAnimationFrame(loop);if(!ready||menu.offsetParent===null||document.hidden)return;if(now-last<33)return;last=now;try{draw(now)}catch(e){}}
+function loop(now){requestAnimationFrame(loop);if(!ready||!menu.getClientRects().length||document.hidden)return;if(now-last<33)return;last=now;try{draw(now)}catch(e){}}
 requestAnimationFrame(loop);
 })();
+
+
+(function(){const menu=document.getElementById('menu'),box=document.getElementById('mbox');if(!menu||!box)return;
+function fit(){box.style.transform='none';const cs=getComputedStyle(menu),pw=parseFloat(cs.paddingLeft)+parseFloat(cs.paddingRight),ph=parseFloat(cs.paddingTop)+parseFloat(cs.paddingBottom);
+ const aw=menu.clientWidth-pw,ah=menu.clientHeight-ph,nw=box.offsetWidth,nh=box.offsetHeight;if(!nw||!nh)return;
+ const k=Math.min(1,aw/nw,ah/nh);box.style.transform=k<1?'scale('+k.toFixed(3)+')':'none'}
+if(window.ResizeObserver){let t;new ResizeObserver(()=>{clearTimeout(t);t=setTimeout(fit,30)}).observe(box)}
+addEventListener('resize',()=>setTimeout(fit,60));addEventListener('orientationchange',()=>setTimeout(fit,300));
+new MutationObserver(()=>setTimeout(fit,30)).observe(box,{attributes:true,subtree:true,attributeFilter:['style','class']});
+setTimeout(fit,100);setTimeout(fit,800)})();
 
 </script><script>
 /* ===== Opening video =====
