@@ -754,7 +754,7 @@ button .ic,.cell .ic,.slot .ic{vertical-align:middle}
 <div id="tlc"><div id="tl" class="panel"><div id="av"></div><div><b id="pn"></b><div id="dt"></div></div><div id="gold"></div></div>
 <div id="vit" class="panel"><div class="vr"><span>❤️</span><i class="vb"><u id="vHp"></u></i><em id="vHpN"></em></div><div class="vr"><span>🍗</span><i class="vb"><u id="vFd"></u></i><em id="vFdN"></em></div><div class="vr"><span>💧</span><i class="vb"><u id="vWt"></u></i><em id="vWtN"></em></div></div><div id="pdrow"></div><div id="roster"></div></div>
 <div id="rt"><div id="tr" class="panel"><canvas id="mm" width="192" height="132"></canvas><div id="mmcap"></div></div>
-<div id="side"><button class="panel ib" id="dayb" onclick="openModal('daily')" title="Absen Harian">📅<i class="nb"></i></button><button class="panel ib" id="chatb" onclick="toggleChat()" title="Chat (Enter)" style="display:none">💬<i id="unread"></i></button><button class="panel ib" id="tradeb" onclick="openModal('trade')" title="Trade" style="display:none">🤝</button><button class="panel ib" onclick="openModal('pause')" title="Jeda (Esc)">⏸</button><button class="panel ib" id="fsb" title="Layar penuh">⛶</button></div><div id="dl" class="panel"></div></div>
+<div id="side"><button class="panel ib" id="dayb" onclick="openModal('daily')" title="Absen Harian">📅<i class="nb"></i></button><button class="panel ib" id="chatb" onclick="toggleChat()" title="Chat (Enter)" style="display:none">💬<i id="unread"></i></button><button class="panel ib" id="tradeb" onclick="openModal('trade')" title="Trade" style="display:none">🤝</button><button class="panel ib" id="wxb2" onclick="openModal('wxm')" title="Cuaca &amp; Musim">🌤️</button><button class="panel ib" onclick="openModal('pause')" title="Jeda (Esc)">⏸</button><button class="panel ib" id="fsb" title="Layar penuh">⛶</button></div><div id="dl" class="panel"></div></div>
 <div id="hot" class="panel"><div id="hs"></div><button class="more" id="moreB" onclick="openModal('bag')" title="Semua inventori (I)" aria-label="Inventori"><span class="dots"><i></i><i></i><i></i></span><em class="nb" id="moreN"></em></button></div>
 <div id="hint"></div><div id="toast"></div><div id="pops"></div>
 <div id="chatw" class="panel"><div class="mh"><b>💬 Chat</b><span id="cmeta"></span><button class="x" onclick="toggleChat(0)">✕</button></div>
@@ -764,6 +764,7 @@ button .ic,.cell .ic,.slot .ic{vertical-align:middle}
 </div>
 <div id="bag" class="modal"><div class="panel mcard big"><div class="mh"><b>🎒 Tas</b><span class="meta" id="bagMeta"></span><button class="x" onclick="closeModal()">✕</button></div><div class="bagtop" id="btabs"></div><div class="bw"><div id="grid"></div><div id="info"></div></div><div class="bfoot"><button class="mb sec sm" onclick="openModal('daily')">📅 Absen Harian</button><button class="mb sec sm" onclick="quickEat()">🍴 Makan cepat</button></div></div></div>
 <div id="daily" class="modal"><div class="panel mcard big"><div class="mh"><b>📅 Absen Harian</b><span class="meta">Reset 00:00</span><button class="x" onclick="closeModal()">✕</button></div><div id="dbody" style="display:flex;flex-direction:column;gap:10px"></div></div></div>
+<div id="wxm" class="modal"><div class="panel mcard"><div class="mh"><b>🌤️ Cuaca &amp; Musim</b><button class="x" onclick="closeModal()">✕</button></div><div id="wxb" style="display:flex;flex-direction:column;gap:8px"></div></div></div>
 <div id="gacha" class="modal"><div class="gstage" id="gst"></div></div>
 <div id="pause" class="modal"><div class="panel mcard" style="max-width:340px"><div class="mh"><b>⏸ Jeda &amp; Pengaturan</b></div><button class="mb" onclick="closeModal()">▶ Lanjutkan</button>
 <div class="aset"><label>🎵 Musik<input type="range" id="vM" min="0" max="100"></label><label>🔊 Efek suara<input type="range" id="vS" min="0" max="100"></label><label>🍃 Suasana<input type="range" id="vA" min="0" max="100"></label>
@@ -788,7 +789,7 @@ button .ic,.cell .ic,.slot .ic{vertical-align:middle}
 <div id="m0" class="mp"><div id="ubar"></div><button class="mb" onclick="show('sp')">▶ Single Player</button><button class="mb" onclick="show('mp')">👥 Multiplayer</button><button class="mb sec" onclick="show('how')">❓ Cara Main</button></div>
 <div id="sp" class="mp"><h2>Single Player</h2><input id="nm1" placeholder="Nama kamu" maxlength="12"><div id="pk1" class="pk"></div><button class="mb" id="cont">Lanjutkan</button><button class="mb" id="newg">Game Baru</button><button class="mb sec" onclick="show('m0')">← Kembali</button></div>
 <div id="mp" class="mp"><h2>Multiplayer</h2><input id="nm2" placeholder="Nama kamu" maxlength="12"><div id="pk2" class="pk"></div><div class="row"><input id="rm" placeholder="Kode room" maxlength="12"><button class="mb sm" id="rnd">Acak</button></div><button class="mb" id="join">Gabung / Buat Room</button><small id="st"></small><button class="mb sec" onclick="show('m0')">← Kembali</button></div>
-<div id="how" class="mp"><h2>Cara Main</h2><ul><li>🏠 Rumah: dekati pintu lalu tekan E. Di dalam ada 🛏️ kasur (tidur setelah 18:00), 📦 peti, 🍳 kompor, 🚿 kamar mandi, dan 🚪 pintu keluar.</li><li>🌱 Bertani: ⛏️ gali tanah → pilih biji (slot 4-8) → Pakai buat tanam → 💧 siram TIAP HARI → 🧺 panen. Makin rajin disiram, makin bagus grade (Biasa / ⭐ Bagus / 🌟 Prima). Biji dibeli di Toko, dan panen bisa ngasih biji lagi.</li><li>🏛️ Aula Meeting (pojok kanan atas Kebun, tempat kamu muncul): masuk lewat pintu, tekan E di dekat kursi untuk duduk (8 kursi), E di dekat Pelayan Dewi untuk minum teh. Di dalam, musik berubah jadi fancy.</li><li>HP: joystick kiri untuk jalan, tombol ⛏️ pakai alat (tahan = ulang), tombol kanan = aksi (bicara/tidur/jual)</li><li>WASD / panah: jalan</li><li>1-8: pilih alat &amp; bibit · Q/Z/scroll: ganti slot</li><li>Spasi: pakai alat di tile depan</li><li>E: bicara NPC, tidur di rumah, jual di toko</li><li>🎣 (slot 9): hadap air, Pakai, tunggu ❗ lalu Pakai lagi · berenang di kolam/danau · E dekat ayam = telur</li><li>Trade: dekati pemain lain lalu E, atau tombol 🤝</li><li>⚔️ F / tombol Serang: pukul pemain lain (friendly fire, host bisa mematikannya di menu ⏸). 🎵 Musik latar diunduh otomatis saat masuk game. Atur volume atau ganti lagu di menu ⏸.</li><li>❤️ Darah · 🍗 Lapar · 💧 Haus: makan panen/ikan/telur dari 🎒 Tas (pilih item → Makan), minum dengan E di dekat air / air mancur. Kalau lapar atau haus habis, darah berkurang. Tidur di rumah memulihkan darah.</li><li>Waktu: Pagi 06-11 · Siang 11-15 · Sore 15-18 · Malam 18-24 (lampu menyala, kunang-kunang muncul)</li><li>🗺️ Jelajah: jalan ke tepi kiri/kanan peta (jalan setapak) untuk pindah map. Kebun ← → ❄️ Salju → ⛰️ Bukit, dan 🏜️ Gurun di sebelah barat Kebun. Tiap map punya NPC dan fitur sendiri: Salju = mancing es, Kedai Hangat &amp; 🎮 Rumah Game (hanya ada di Salju); Bukit = tambang, beri liar, susu kambing; Gurun = gali harta, kaktus, oasis, Kafilah. Salju bikin cepat lapar, Gurun bikin cepat haus.</li><li>📜 Misi &amp; Level: cari NPC bertanda ❗ (misi baru) atau ❓ (siap dilapor), tekan E untuk bicara. J / tombol 📜: buka jurnal misi. Misi Utama membawamu keliling Kebun → Salju → Bukit → Gurun, Misi Sampingan ada di tiap NPC. Selesaikan misi &amp; panen untuk XP, naik level, dan dapat gold + hadiah.</li><li>🪑 Bangku taman: dekati lalu tekan E untuk duduk (bangku tidak bisa ditembus). Gerak atau tekan E lagi untuk berdiri. ⛲ Air mancur juga bisa diminum dengan E.</li><li>I: buka tas · Enter / 💬: chat (multiplayer) · Esc: jeda</li></ul><button class="mb sec" onclick="show('m0')">← Kembali</button></div>
+<div id="how" class="mp"><h2>Cara Main</h2><ul><li>🏠 Rumah: dekati pintu lalu tekan E. Di dalam ada 🛏️ kasur (tidur setelah 18:00), 📦 peti, 🍳 kompor, 🚿 kamar mandi, dan 🚪 pintu keluar.</li><li>🌱 Bertani: ⛏️ gali tanah → pilih biji (slot 4-8) → Pakai buat tanam → 💧 siram TIAP HARI → 🧺 panen. Makin rajin disiram, makin bagus grade (Biasa / ⭐ Bagus / 🌟 Prima). Biji dibeli di Toko, dan panen bisa ngasih biji lagi.</li><li>🌦️ Cuaca &amp; Musim: 1 musim = 7 hari (🌸 Semi · ☀️ Panas · 🍂 Gugur · ❄️ Dingin). Hujan/salju menyiram semua tanaman otomatis. ⛈️ Badai bisa merusak tanaman, jadi lihat prakiraan di tombol 🌤️ dan panen dulu. Tiap tanaman laku +50% di musimnya (Wortel 🌸, Tomat &amp; Bunga Matahari ☀️, Jagung 🍂, Labu ❄️).</li><li>🏛️ Aula Meeting (pojok kanan atas Kebun, tempat kamu muncul): masuk lewat pintu, tekan E di dekat kursi untuk duduk (8 kursi), E di dekat Pelayan Dewi untuk minum teh. Di dalam, musik berubah jadi fancy.</li><li>HP: joystick kiri untuk jalan, tombol ⛏️ pakai alat (tahan = ulang), tombol kanan = aksi (bicara/tidur/jual)</li><li>WASD / panah: jalan</li><li>1-8: pilih alat &amp; bibit · Q/Z/scroll: ganti slot</li><li>Spasi: pakai alat di tile depan</li><li>E: bicara NPC, tidur di rumah, jual di toko</li><li>🎣 (slot 9): hadap air, Pakai, tunggu ❗ lalu Pakai lagi · berenang di kolam/danau · E dekat ayam = telur</li><li>Trade: dekati pemain lain lalu E, atau tombol 🤝</li><li>⚔️ F / tombol Serang: pukul pemain lain (friendly fire, host bisa mematikannya di menu ⏸). 🎵 Musik latar diunduh otomatis saat masuk game. Atur volume atau ganti lagu di menu ⏸.</li><li>❤️ Darah · 🍗 Lapar · 💧 Haus: makan panen/ikan/telur dari 🎒 Tas (pilih item → Makan), minum dengan E di dekat air / air mancur. Kalau lapar atau haus habis, darah berkurang. Tidur di rumah memulihkan darah.</li><li>Waktu: Pagi 06-11 · Siang 11-15 · Sore 15-18 · Malam 18-24 (lampu menyala, kunang-kunang muncul)</li><li>🗺️ Jelajah: jalan ke tepi kiri/kanan peta (jalan setapak) untuk pindah map. Kebun ← → ❄️ Salju → ⛰️ Bukit, dan 🏜️ Gurun di sebelah barat Kebun. Tiap map punya NPC dan fitur sendiri: Salju = mancing es, Kedai Hangat &amp; 🎮 Rumah Game (hanya ada di Salju); Bukit = tambang, beri liar, susu kambing; Gurun = gali harta, kaktus, oasis, Kafilah. Salju bikin cepat lapar, Gurun bikin cepat haus.</li><li>📜 Misi &amp; Level: cari NPC bertanda ❗ (misi baru) atau ❓ (siap dilapor), tekan E untuk bicara. J / tombol 📜: buka jurnal misi. Misi Utama membawamu keliling Kebun → Salju → Bukit → Gurun, Misi Sampingan ada di tiap NPC. Selesaikan misi &amp; panen untuk XP, naik level, dan dapat gold + hadiah.</li><li>🪑 Bangku taman: dekati lalu tekan E untuk duduk (bangku tidak bisa ditembus). Gerak atau tekan E lagi untuk berdiri. ⛲ Air mancur juga bisa diminum dengan E.</li><li>I: buka tas · Enter / 💬: chat (multiplayer) · Esc: jeda</li></ul><button class="mb sec" onclick="show('m0')">← Kembali</button></div>
 </div></div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.57.4/dist/umd/supabase.min.js"></script>
@@ -832,6 +833,101 @@ const cv=$('c');let g=cv.getContext('2d');
 const rng=s=>()=>(s=(s*16807)%2147483647)/2147483647;
 const hash=s=>{let h=1;for(const c of String(s))h=(h*31+c.charCodeAt(0))%2147483000;return h+1};
 const mkTiles=()=>Array.from({length:W*H},()=>[0,0,0,0]);
+
+/* ===== v61: CUACA & MUSIM =====
+   Cuaca ditentukan deterministik dari (kode room + nomor hari), jadi semua pemain
+   melihat cuaca yang sama tanpa pesan jaringan tambahan. Efek ke tanaman dihitung
+   host saat ganti hari (nextDay). 1 musim = 7 hari, 4 musim = 28 hari. */
+const SEAS=[{n:'Semi',e:'🌸'},{n:'Panas',e:'☀️'},{n:'Gugur',e:'🍂'},{n:'Dingin',e:'❄️'}];
+const SEAS_LEN=7,SEAS_UP=1.5,SEAS_DOWN=.9;
+const CROP_SEASON={1:0,2:1,3:2,4:3,5:1};            /* tanaman -> musim harga naik */
+const seasonOf=d=>Math.floor((Math.max(1,d|0)-1)/SEAS_LEN)%4;
+const dayInSeason=d=>(Math.max(1,d|0)-1)%SEAS_LEN+1;
+const seasMul=id=>{const cs=CROP_SEASON[id];return cs==null?1:(cs===seasonOf(S.d)?SEAS_UP:SEAS_DOWN)};
+/* peluang [cerah, berawan, hujan, badai] per musim (total 100) */
+const WXW=[[40,25,30,5],[55,20,17,8],[30,25,35,10],[30,40,25,5]];
+function wxRaw(d){if(d<=3)return 0;const R=rng(hash(code+'|wx|'+d));R();R();const r=R()*100,wt=WXW[seasonOf(d)];let a=0;for(let i=0;i<4;i++){a+=wt[i];if(r<a)return i}return 0}
+const _wxC={};
+function wxInfo(d){d=Math.max(1,d|0);const k=code+'|'+d;let o=_wxC[k];if(o)return o;
+  let w=wxRaw(d);if(w===3&&wxRaw(d-1)===3)w=2;            /* tidak ada badai 2 hari beruntun */
+  const s=seasonOf(d),win=s===3,N=[['Cerah','☀️'],['Berawan','⛅'],win?['Salju','🌨️']:['Hujan','🌧️'],win?['Badai Salju','❄️']:['Badai','⛈️']][w];
+  o={w,s,n:N[0],e:N[1],rain:w>=2,storm:w===3,snow:win&&w>=2};
+  if(Object.keys(_wxC).length>400)for(const x in _wxC)delete _wxC[x];
+  return _wxC[k]=o}
+function seasBanner(){const s=seasonOf(S.d),f=Object.keys(CROP_SEASON).filter(k=>CROP_SEASON[k]===s).map(k=>CROPS[k].e+' '+CROPS[k].n);
+  return `<div class="tst">${SEAS[s].e} Musim ${SEAS[s].n}: ${f.join(', ')} laku <b>+50%</b> 🔥 · lainnya −10%</div>`}
+function wxStep(){ /* dipanggil nextDay SETELAH S.d naik: hujan menyiram, badai merusak */
+  const w=wxInfo(S.d);S.wd=S.d;S.wh=0;
+  if(w.rain)S.tiles.forEach(t=>{if(t[0]&&t[1]&&t[2]<CROPS[t[1]].g)t[3]=1});
+  if(w.storm){const R=rng(hash(code+'|st|'+S.d));
+    S.tiles.forEach(t=>{if(t[0]&&t[1]&&R()<(t[2]>=CROPS[t[1]].g?.10:.22)){t[1]=t[2]=t[3]=t[4]=t[5]=0;S.wh++}})}}
+
+/* ---- tampilan: overlay cuaca, partikel, petir ---- */
+let wxI=0,wxFl=0,wxLt=0,wxLastD=null;
+const wxM=(a,b)=>((a%b)+b)%b;
+function wxVisTarget(){if(scene||!started||zone===3)return 0;const w=wxInfo(S.d);return w.storm?1:w.rain?.62:w.w===1?.22:0}
+function wxDraw(time){
+  if(scene)return;
+  const w=wxInfo(S.d),s=w.s,k=Math.min(1.6,Math.max(.6,VW*VH/518400));
+  g.save();g.setTransform(DPR,0,0,DPR,0,0);
+  if(zone===0){const ST=[null,'rgba(255,205,90,.05)','rgba(225,115,30,.075)','rgba(160,195,255,.10)'][s];if(ST){g.fillStyle=ST;g.fillRect(0,0,VW,VH)}}
+  if(wxI>.01){
+    g.fillStyle='rgba(38,52,78,'+(.40*wxI).toFixed(3)+')';g.fillRect(0,0,VW,VH);
+    if(w.rain){
+      const f=Math.min(1,wxI/(w.storm?1:.62));
+      if(w.snow||zone===1){const n=Math.round((w.storm?220:120)*f*k);g.fillStyle='rgba(255,255,255,.85)';
+        for(let i=0;i<n;i++){const sp=.6+(i%5)*.2,x=wxM(i*131.9+time*(w.storm?-.22:-.03)*sp+Math.sin(time/700+i)*14,VW+40)-20,y=wxM(i*57.7+time*(w.storm?.33:.07)*(.6+(i%4)*.25),VH+30)-15;g.fillRect(x,y,i%3?2:3,i%3?2:3)}}
+      else{const n=Math.round((w.storm?340:190)*f*k),sl=w.storm?-.38:-.12,L=w.storm?20:13;
+        g.strokeStyle='rgba(205,225,255,'+(w.storm?.75:.62)+')';g.lineWidth=1.5;g.beginPath();
+        for(let i=0;i<n;i++){const sp=(w.storm?1.15:.85)*(.85+(i%7)*.045),x=wxM(i*127.7+time*sp*sl,VW+60)-30,y=wxM(i*61.3+time*sp,VH+40)-20;g.moveTo(x-sl*L,y-L);g.lineTo(x,y)}
+        g.stroke()}}
+    if(wxFl>.02){g.fillStyle='rgba(235,240,255,'+(wxFl*.55).toFixed(3)+')';g.fillRect(0,0,VW,VH)}}
+  else if(zone===0&&w.w<2){ /* partikel musiman saat tidak hujan */
+    if(s===0||s===2){const n=Math.round(18*k);g.fillStyle=s===0?'rgba(255,175,205,.85)':'rgba(205,110,35,.85)';
+      for(let i=0;i<n;i++){const x=wxM(i*173.1+time*-.025*(.6+(i%4)*.2)+Math.sin(time/900+i)*22,VW+40)-20,y=wxM(i*89.3+time*.045*(.6+(i%5)*.15),VH+30)-15;g.fillRect(x,y,s===0?3:4,s===0?2:3)}}
+    else if(s===3){const n=Math.round(40*k);g.fillStyle='rgba(255,255,255,.8)';
+      for(let i=0;i<n;i++){const x=wxM(i*131.9+Math.sin(time/800+i)*12,VW+40)-20,y=wxM(i*57.7+time*.05*(.6+(i%4)*.25),VH+30)-15;g.fillRect(x,y,2,2)}}}
+  g.restore()}
+function wxThunder(){try{if(!AC||AU.mute||AC.state!=='running')return;sv=1;const k=scene?.35:1;sfxNoise(2.4,'lowpass',420,.7,.9*k,0,60);sfxNoise(.5,'bandpass',900,.8,.35*k,0,200);sfxTone(52,1.8,'sine',.4*k,26)}catch(e){}}
+function wxAud(){if(!started||zone===3)return 0;const w=wxInfo(S.d);return (w.storm?1:w.rain?.6:0)*(w.snow||zone===1?.35:1)*(scene?.3:1)}
+function wxAnnounce(first,old){
+  if(!started)return;const s=seasonOf(S.d);
+  if(!first&&old!=null&&seasonOf(old)!==s){const fav=Object.keys(CROP_SEASON).filter(k=>CROP_SEASON[k]===s).map(k=>CROPS[k].e+CROPS[k].n);
+    say(SEAS[s].e+' Musim '+SEAS[s].n+' dimulai! '+fav.join(', ')+' laku +50%');setTimeout(wxAnnounce2,2700);return}
+  wxAnnounce2()}
+function wxAnnounce2(){
+  if(!started)return;const w=wxInfo(S.d),nx=wxInfo(S.d+1);let m='';
+  if(w.storm)m=S.wd===S.d&&S.wh>0?w.e+' '+w.n+' semalam merusak '+S.wh+' tanaman!':w.e+' '+w.n+' hari ini — kebun tersiram, tanaman aman';
+  else if(w.rain)m=w.e+' '+w.n+' — tanaman tersiram otomatis 💧';
+  else m=w.e+' Hari ini '+w.n.toLowerCase();
+  say(m);
+  if(nx.storm)setTimeout(()=>{if(started)say('⚠️ Prakiraan: besok '+nx.n+'! Panen dulu yang sudah siap')},2700)}
+function renderWx(){
+  const d=S.d,s=seasonOf(d),w=wxInfo(d),n=SEAS_LEN-dayInSeason(d)+1,ns=(s+1)%4;
+  const eff=x=>x.storm?'Tanaman tersiram, tapi sebagian bisa RUSAK ⚠':x.rain?'Semua tanaman tersiram otomatis 💧':x.w===1?'Sejuk, tanpa efek khusus':'Hari biasa — siram sendiri';
+  let h=`<div class="srow"><span class="se">${SEAS[s].e}</span><div class="si"><b>Musim ${SEAS[s].n} · hari ${dayInSeason(d)}/${SEAS_LEN}</b><small>Berikutnya: ${SEAS[ns].e} ${SEAS[ns].n} ${n===1?'besok':'dalam '+n+' hari'}</small></div></div>`;
+  h+=`<div class="tst"><b>Prakiraan cuaca</b></div>`;
+  for(let i=0;i<4;i++){const x=wxInfo(d+i),lab=i===0?'Hari ini':i===1?'Besok':'Hari ke-'+(d+i);
+    h+=`<div class="srow"${x.storm?' style="outline:2px solid #e0674a"':''}><span class="se">${x.e}</span><div class="si"><b>${lab} · ${x.n}</b><small>${eff(x)}</small></div></div>`}
+  h+=`<div class="tst"><b>Harga panen per musim</b></div>`;
+  for(let c=1;c<=5;c++){const o=CROPS[c],cs=CROP_SEASON[c],hot=cs===s;
+    h+=`<div class="srow"><span class="se">${o.e}</span><div class="si"><b>${o.n}</b><small>Mahal di ${SEAS[cs].e} ${SEAS[cs].n} (+50%) · sekarang ${Math.round(o.s*seasMul(c))}g</small></div><span>${hot?'🔥 +50%':'−10%'}</span></div>`}
+  h+=`<div class="tst">💡 Panen dulu sebelum badai datang. Simpan hasil panen, jual saat musimnya.</div>`;
+  put('wxb',h)}
+setInterval(()=>{
+  try{
+    if(!started)return;
+    const tg=wxVisTarget();wxI+=(tg-wxI)*.12;if(Math.abs(tg-wxI)<.005)wxI=tg;
+    wxFl*=.82;if(wxFl<.02)wxFl=0;
+    const w=wxInfo(S.d),now=performance.now();
+    if(w.storm&&zone!==3&&now>wxLt){wxLt=now+4500+Math.random()*9000;if(!scene)wxFl=1;
+      setTimeout(wxThunder,scene?200:350+Math.random()*900);if(Math.random()<.35)setTimeout(()=>{if(!scene)wxFl=.7},180)}
+    const b=$('wxb2');if(b&&b._e!==w.e){b._e=w.e;b.textContent=w.e}
+    if(wxLastD===null){wxLastD=S.d;setTimeout(()=>wxAnnounce(true),3000)}
+    else if(S.d!==wxLastD){const old=wxLastD;wxLastD=S.d;setTimeout(()=>wxAnnounce(false,old),2700)}
+  }catch(e){}
+},100);
+
 let S={d:1,gold:60,t:0,tiles:mkTiles()};
 function fixS(st){if(!st||!st.tiles)return{d:1,gold:60,t:0,tiles:mkTiles()};if(st.tiles.length!==W*H){const o=st.tiles,n=mkTiles();if(o.length===280)o.forEach((t,i)=>{n[(i%20)+(i/20|0)*W]=t});st.tiles=n}return st}
 const myId=(crypto.randomUUID?crypto.randomUUID():String(Math.random()).slice(2));
@@ -846,7 +942,7 @@ const solidOut=(px,py)=>{const x=Math.floor(px/T),y=Math.floor(py/T);
 
 const solid=(px,py)=>scene?isolid(px,py):solidOut(px,py);
 /* ===== aturan game (divalidasi host) ===== */
-function nextDay(){S.tiles.forEach(t=>{if(t[0]&&t[1]&&t[2]<CROPS[t[1]].g){if(t[3]){t[2]++;t[4]=(t[4]|0)+1}else t[5]=(t[5]|0)+1}t[3]=0});S.d++;S.t=0;save();sfx('chime')}
+function nextDay(){S.tiles.forEach(t=>{if(t[0]&&t[1]&&t[2]<CROPS[t[1]].g){if(t[3]){t[2]++;t[4]=(t[4]|0)+1}else t[5]=(t[5]|0)+1}t[3]=0});S.d++;S.t=0;wxStep();save();sfx('chime')}
 function give(by,id){if(by===myId||!ch)inv[id]=(inv[id]||0)+1;else send('got',{to:by,id})}
 function apply(a,by){
   if(a.t==='sell'){S.gold+=Math.max(0,Math.min(99999,a.v|0));return 1}
@@ -949,7 +1045,7 @@ const HOT=[{i:'⛏️',n:'Cangkul'},{i:'💧',n:'Siram'},{i:'🧺',n:'Panen'}].c
 function setHot(h){if(h>=3&&h<=7&&!(sd[h-2]|0)){say('Biji '+CROPS[h-2].n+' habis — beli di Toko 🏪');return}hot=h;tool=[0,1,3,2,2,2,2,2,4][h];if(h>=3&&h<=7){sel=h-2;const c=CROPS[sel];say(c.e+' Biji '+c.n+' ×'+(sd[sel]|0)+' · tumbuh '+c.g+' hari')}else if(h===0)say('⛏️ Cangkul — tekan Spasi / E / klik untuk menggali');else if(h===1)say('💧 Siram tanaman — tekan Spasi / klik');else if(h===2)say('🧺 Panen tanaman matang');else say('🎣 Pancing — hadap air');if(tool!==4)fishing=null;hud()}
 function put(id,h){const e=$(id);if(e._h!==h){e.innerHTML=h;e._h=h}}
 function hud(){if(started){const j=snapInv();if(j!==lastInv){lastInv=j;try{localStorage.setItem('pfc2_inv_'+code,j)}catch(e){}}}const p=S.t/DAY;$('pn').textContent=me.n;$('pn').className=AUTH.mod?'modnick':'';$('av').style.background=me.col;
-  put('dt',`${phase()[0]} ${phase()[1]} · Hari ${S.d} · ${clock()}<i class="bar"><u style="width:${Math.round(p*100)}%"></u></i>`);
+  put('dt',`${phase()[0]} ${phase()[1]} · Hari ${S.d} ${SEAS[seasonOf(S.d)].e}${wxInfo(S.d).e} · ${clock()}<i class="bar"><u style="width:${Math.round(p*100)}%"></u></i>`);
   const gd=$('gold');gd.textContent='🪙 '+S.gold;if(S.gold!==lastGold){gd.classList.remove('pop');void gd.offsetWidth;gd.classList.add('pop');lastGold=S.gold}
   {if(HOT[hot].p&&!(sd[hot-2]|0)){let nx=0;for(let q=3;q<=7;q++)if(sd[q-2]>0){nx=q;break}hot=nx;tool=nx?2:0;if(nx)sel=nx-2;fishing=null}
   put('hs',HOT.map((h,i)=>h.p&&!(sd[i-2]|0)?'':`<button class="slot ${i===hot?'on':''}" onclick="setHot(${i})" title="${h.n}"><kbd>${i+1}</kbd><span>${h.p?'🌱':h.i}</span>${h.p?`<i class="sub">${h.i}</i><em>×${sd[i-2]|0}</em>`:''}</button>`).join(''))}
@@ -958,8 +1054,8 @@ function hud(){if(started){const j=snapInv();if(j!==lastInv){lastInv=j;try{local
   if(ch)$('cmeta').textContent=(1+Object.keys(remote).length)+' online';$('mmcap').textContent=ZN[zone].e+' '+ZN[zone].n+' · '+(ch?'Room '+code+' · '+(1+Object.keys(remote).length)+' pemain':'Single Player');
   if(modal==='bag')renderBag();if(modal==='trade')renderTrade();if(modal==='shop')renderShop();if(modal==='chest')renderChest();if(modal==='cook')renderCook()}
 let bagSel=null;
-function openModal(m){sfx('click');if(m==='pause')audUI();modal=m;keys={};resetJoy();fishing=null;['bag','pause','trade','shop','chest','cook','daily','gacha','zshop','arcade','tgame','modp'].forEach(i=>$(i).style.display=m===i?'flex':'none');if(m==='bag')renderBag();if(m==='daily'){_dcFresh=1;renderDaily()}if(m==='trade')renderTrade();if(m==='shop')renderShop();if(m==='chest')renderChest();if(m==='cook')renderCook()}
-function closeModal(){if(modal==='trade'&&trade){tsend('cancel');trade=null}modal='';['bag','pause','trade','shop','chest','cook','daily','gacha','zshop','arcade','tgame','modp'].forEach(i=>$(i).style.display='none');gClean()}
+function openModal(m){sfx('click');if(m==='pause')audUI();modal=m;keys={};resetJoy();fishing=null;['bag','pause','trade','shop','chest','cook','daily','gacha','zshop','arcade','tgame','modp','wxm'].forEach(i=>$(i).style.display=m===i?'flex':'none');if(m==='bag')renderBag();if(m==='daily'){_dcFresh=1;renderDaily()}if(m==='trade')renderTrade();if(m==='shop')renderShop();if(m==='chest')renderChest();if(m==='cook')renderCook();if(m==='wxm')renderWx()}
+function closeModal(){if(modal==='trade'&&trade){tsend('cancel');trade=null}modal='';['bag','pause','trade','shop','chest','cook','daily','gacha','zshop','arcade','tgame','modp','wxm'].forEach(i=>$(i).style.display='none');gClean()}
 const mm=$('mm'),mc=mm.getContext('2d');
 function minimap(time){const mX=scene?outPos.x:me.x,mY=scene?outPos.y:me.y;const mw=WZ0()*6;if(mm.width!==mw){mm.width=mw;mmFit()}mc.clearRect(0,0,mw,132);mc.drawImage(bg,0,0,mw,132);const s=6;
   for(let y=FY0;y<=FY1;y++)for(let x=FX0;x<=FX1;x++){const t=S.tiles[x+y*W];if(zone||!t[0])continue;mc.fillStyle=t[1]&&t[2]>=CROPS[t[1]].g?'#ffd24a':t[1]?'#6fd04a':'#8a5a35';mc.fillRect(x*s+1,y*s+1,s-2,s-2)}
@@ -1363,7 +1459,7 @@ function draw(now,time){
   if(zone===0)E.push({y:18.7*T,d:()=>fire(time)});
   try{window.__envDraw&&window.__envDraw(E,time)}catch(e){}
   try{window.__shadowPass&&window.__shadowPass(time)}catch(e){}try{window.__aulaExt&&window.__aulaExt(time)}catch(e){}E.sort((a,b)=>a.y-b.y).forEach(e=>e.d());drawParts(performance.now());drawSwings(performance.now());
-  const p=S.t/DAY,hh=6+Math.min(1,p)*18;tint(hh);if(zone===0)lights(time,p);flies(time,hh);if(zone)zOver(time,hh)}
+  const p=S.t/DAY,hh=6+Math.min(1,p)*18;tint(hh);if(zone===0)lights(time,p);flies(time,hh);if(zone)zOver(time,hh);try{wxDraw(time)}catch(e){loopErr(e,'cuaca')}}
 
 /* ===== loop ===== */
 let last=performance.now(),pAcc=0,hAcc=0,lastP='';
@@ -1445,7 +1541,7 @@ $('quick').querySelectorAll('button').forEach(b=>b.onclick=()=>sendChat(b.datase
 
 /* ===== sistem bertani v3 ===== */
 const QN=['','⭐ Bagus','🌟 Prima'],QM=[1,1.5,2.2];
-function IT(k){k=+k;const c=CROPS[k%100];if(!c||!(k>0))return null;const q=k/100|0;return{n:c.n+(q?' '+QN[q]:''),e:c.e,s:Math.round(c.s*QM[q]),q}}
+function IT(k){k=+k;const c=CROPS[k%100];if(!c||!(k>0))return null;const q=k/100|0;return{n:c.n+(q?' '+QN[q]:''),e:c.e,s:Math.round(c.s*QM[q]*seasMul(k%100)),q}}
 function qOf(t){const g=CROPS[t[1]].g,d=t[5]|0;return d===0?2:d<=(g>=5?2:1)?1:0}
 let sd={1:5,2:3},lastInv='',xi={},pd=[],eq=[],ST={};
 function loadInv(){stash={};xi={};pd=[];eq=[];vit={hp:100,food:85,water:85};try{const v=JSON.parse(localStorage.getItem('pfc2_inv_'+code)||'null');if(v&&v.inv){inv=v.inv;sd=v.sd||{};xi=v.xi||{};pd=v.pd||[];eq=v.eq||[];stash=v.st||{};if(v.vit)Object.assign(vit,v.vit);if(vit.hp<20)vit.hp=20}else{inv={};sd={1:5,2:3}}}catch(e){}calcST();lastInv=snapInv()}
@@ -1455,8 +1551,8 @@ function addLoot(items,seeds,msg){const p=[];let bonus=0;for(const k in items){l
 function lootTo(by,items,seeds,msg){if(by===myId||!ch)addLoot(items,seeds,msg);else send('loot',{to:by,items,seeds,msg})}
 /* toko */
 function renderShop(){if(modal!=='shop')return;let tot=0,cnt=0;for(const k in inv){if(inv[k]>0){tot+=inv[k]*IT(k).s;cnt+=inv[k]}}
-  let h=`<div class="tst">Kas bersama: <b>🪙 ${S.gold}</b> · Biji kamu dibeli dari kas ini</div>`+[1,2,3,4,5].map(c=>{const o=CROPS[c];
-    return `<div class="srow"><span class="se">${o.e}</span><div class="si"><b>Biji ${o.n}</b><small>Tumbuh ${o.g} hari · panen ${o.s}g (⭐${Math.round(o.s*1.5)}g · 🌟${Math.round(o.s*2.2)}g) · punya ${sd[c]|0}</small></div><button class="mb sm" ${S.gold<o.c?'disabled':''} onclick="buy(${c},1)">🪙${o.c}</button><button class="mb sm" ${S.gold<o.c*5?'disabled':''} onclick="buy(${c},5)">×5</button></div>`}).join('')
+  let h=`<div class="tst">Kas bersama: <b>🪙 ${S.gold}</b> · Biji kamu dibeli dari kas ini</div>`+seasBanner()+[1,2,3,4,5].map(c=>{const o=CROPS[c];
+    return `<div class="srow"><span class="se">${o.e}</span><div class="si"><b>Biji ${o.n}</b><small>Tumbuh ${o.g} hari · panen ${Math.round(o.s*seasMul(c))}g${CROP_SEASON[c]===seasonOf(S.d)?' 🔥':''} (⭐${Math.round(o.s*1.5*seasMul(c))}g · 🌟${Math.round(o.s*2.2*seasMul(c))}g) · punya ${sd[c]|0}</small></div><button class="mb sm" ${S.gold<o.c?'disabled':''} onclick="buy(${c},1)">🪙${o.c}</button><button class="mb sm" ${S.gold<o.c*5?'disabled':''} onclick="buy(${c},5)">×5</button></div>`}).join('')
   +`<button class="mb" ${cnt?'':'disabled'} onclick="sellAll()">💰 Jual semua panen (${cnt} item · 🪙${tot})</button>`;put('sb',h)}
 function buy(c,n){const o=CROPS[c];if(S.gold<o.c*n){say('Kas bersama tidak cukup');return}dispatch({t:'buy',c,n});sfx('coin');renderShop()}
 function sellAll(){let v=0,n=0;for(const k in inv){v+=inv[k]*IT(k).s;n+=inv[k]}if(!n){say('Belum ada hasil panen');return}const bn=Math.round(v*(ST.gold|0)/100);v+=bn;dispatch({t:'sell',v});sfx('coin');inv={};say('Terjual '+n+' item +'+v+'g'+(bn?' (bonus Dagang +'+bn+')':''));hud()}
@@ -1626,7 +1722,7 @@ function cricket(f,rate,gate){const o=AC.createOscillator(),p=AC.createGain(),q=
 function ambStart(){if(amb||!AC)return;amb={};
   const w=loopNoise('bandpass',420,.6);lfo(.13,200,w.fl.frequency);lfo(.21,.03,w.g.gain);amb.w=w;
   const wt=loopNoise('bandpass',1100,.5);lfo(.7,250,wt.fl.frequency);amb.wt=wt;
-  amb.c1=cricket(4300,9,1.3);amb.c2=cricket(5100,11,.9)}
+  amb.c1=cricket(4300,9,1.3);amb.c2=cricket(5100,11,.9);amb.r=loopNoise('highpass',1800,.3);amb.r2=loopNoise('bandpass',700,.4)}
 function bird(v){const f=2200+Math.random()*1800,n=2+(Math.random()*3|0);for(let i=0;i<n;i++){const t=AC.currentTime+i*.11,o=AC.createOscillator(),g=AC.createGain();
   o.frequency.setValueAtTime(f*(1+Math.random()*.15),t);o.frequency.exponentialRampToValueAtTime(f*(1.25+Math.random()*.3),t+.07);
   g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(.06*v,t+.015);g.gain.exponentialRampToValueAtTime(.0001,t+.09);o.connect(g);g.connect(aA);o.start(t);o.stop(t+.12)}}
@@ -1634,11 +1730,11 @@ function owl(){const t=AC.currentTime;for(let i=0;i<2;i++){const o=AC.createOsci
   g.gain.setValueAtTime(0,s);g.gain.linearRampToValueAtTime(.07,s+.08);g.gain.exponentialRampToValueAtTime(.0001,s+.45);o.connect(g);g.connect(aA);o.start(s);o.stop(s+.5)}}
 function crackle(v){sv=1;sfxNoise(.02+Math.random()*.03,'highpass',2500+Math.random()*2500,.7,.25*v,Math.random()*.1,0,aA)}
 function ambUpdate(now){if(!AC||!amb||AC.state!=='running')return;const t=AC.currentTime,h=6+Math.min(1,S.t/DAY)*18,tx=scene?-99:me.x/T,ty=scene?-99:me.y/T;
-  amb.w.g.gain.setTargetAtTime(scene?.008:.05+(h>16?.02:0),t,.6);
+  amb.w.g.gain.setTargetAtTime(scene?.008:.05+(h>16?.02:0)+(!scene&&started&&wxInfo(S.d).storm?.06:0),t,.6);const ri=wxAud();amb.r.g.gain.setTargetAtTime(ri*.10,t,.8);amb.r2.g.gain.setTargetAtTime(ri*.12,t,.8);
   let dm=99;for(const[a,c,rx,ry]of WZ)dm=Math.min(dm,Math.hypot(tx-a,ty-c)-Math.max(rx,ry));if(zone===0)dm=Math.min(dm,Math.hypot(tx-17,ty-17.5)-1,Math.hypot(tx-44,ty-17.5)-1);
   amb.wt.g.gain.setTargetAtTime(Math.pow(Math.max(0,1-dm/7),2)*.22,t,.3);
   const nf=scene?0:Math.max(0,Math.min(1,(h-18.3)/1.5));amb.c1.gain.setTargetAtTime(nf*.035,t,1);amb.c2.gain.setTargetAtTime(nf*.03,t,1);
-  if(!scene&&h<18.3&&now>nxBird){nxBird=now+(h<11?2200:4500)+Math.random()*5000;bird(.7+Math.random()*.6)}
+  if(!scene&&h<18.3&&now>nxBird&&!wxInfo(S.d).rain){nxBird=now+(h<11?2200:4500)+Math.random()*5000;bird(.7+Math.random()*.6)}
   if(!scene&&h>20&&now>nxOwl){nxOwl=now+14000+Math.random()*16000;owl()}
   const df=zone===0?Math.hypot(tx-5.5,ty-18.5):99;if(df<10&&Math.random()<.35)crackle(1-df/10);
   if(now>nxCl){nxCl=now+7000+Math.random()*9000;for(const n of NPC){if(n.k!=='c'||(chDead[n.id]||0)>performance.now())continue;const p=npcPos(n,Date.now()),d=Math.hypot(p.x-me.x,p.y-me.y);if(d<300){sfx('cluck',{v:1-d/300});break}}}}
