@@ -752,8 +752,8 @@ button .ic,.cell .ic,.slot .ic{vertical-align:middle}
 </div>
 <div id="fade"></div><div id="wrap"><canvas id="c" width="960" height="672"></canvas>
 <div id="ui" style="display:none"><div id="hurt"></div>
-<div id="tlc"><div id="tl" class="panel"><div id="av"></div><div class="tlm"><b id="pn"></b><div id="vit"><div class="vr" title="Darah"><span>❤️</span><i class="vb"><u id="vHp"></u></i><em id="vHpN"></em></div><div class="vr" title="Lapar (ketuk untuk makan)"><span>🍗</span><i class="vb"><u id="vFd"></u></i><em id="vFdN"></em></div><div class="vr" title="Haus"><span>💧</span><i class="vb"><u id="vWt"></u></i><em id="vWtN"></em></div></div><div id="dt"></div></div><div id="gold"></div></div>
-<div id="pdrow"></div><div id="roster"></div></div>
+<div id="tlc"><div id="tl" class="panel"><div id="av"></div><div><b id="pn"></b><div id="dt"></div></div><div id="gold"></div></div>
+<div id="vit" class="panel"><div class="vr"><span>❤️</span><i class="vb"><u id="vHp"></u></i><em id="vHpN"></em></div><div class="vr"><span>🍗</span><i class="vb"><u id="vFd"></u></i><em id="vFdN"></em></div><div class="vr"><span>💧</span><i class="vb"><u id="vWt"></u></i><em id="vWtN"></em></div></div><div id="pdrow"></div><div id="roster"></div></div>
 <div id="rt"><div id="tr" class="panel"><canvas id="mm" width="192" height="132"></canvas><div id="mmcap"></div></div>
 <div id="side"><button class="panel ib" id="dayb" onclick="openModal('daily')" title="Absen Harian">📅<i class="nb"></i></button><button class="panel ib" id="chatb" onclick="toggleChat()" title="Chat (Enter)" style="display:none">💬<i id="unread"></i></button><button class="panel ib" id="tradeb" onclick="openModal('trade')" title="Trade" style="display:none">🤝</button><button class="panel ib" id="wxb2" onclick="openModal('wxm')" title="Cuaca &amp; Musim">🌤️</button><button class="panel ib" onclick="openModal('pause')" title="Jeda (Esc)">⏸</button><button class="panel ib" id="fsb" title="Layar penuh">⛶</button></div><div id="dl" class="panel"></div></div>
 <div id="hot" class="panel"><div id="hs"></div><button class="more" id="moreB" onclick="openModal('bag')" title="Semua inventori (I)" aria-label="Inventori"><span class="dots"><i></i><i></i><i></i></span><em class="nb" id="moreN"></em></button></div>
@@ -1383,6 +1383,13 @@ function cat(x,y,f,ph,mv){g.save();g.translate(x,y);g.scale(f==='left'?-1:1,1);
   g.strokeStyle='#d98a3a';g.lineWidth=3;g.beginPath();g.moveTo(-13,-9);g.quadraticCurveTo(-20,-18+Math.sin(ph)*3,-16,-24);g.stroke();
   g.fillStyle='#222';g.fillRect(11,-14,2,2);g.restore()}
 function say2(x,y,text){g.font='13px sans-serif';const w=g.measureText(text).width+14;g.fillStyle='#fff';g.beginPath();g.roundRect(x-w/2,y-26,w,22,8);g.fill();g.beginPath();g.moveTo(x-4,y-5);g.lineTo(x+4,y-5);g.lineTo(x,y+1);g.fill();g.fillStyle='#222';g.textAlign='center';g.fillText(text,x,y-11);g.textAlign='left'}
+function vitBars(x,y){
+  const W=34,h=2.5,gp=2,L=x-W/2,t=performance.now(),rows=[[vit.hp,'#ff6b6b'],[vit.food,'#ffb84d'],[vit.water,'#5ec8ff']];
+  g.save();
+  rows.forEach((r,i)=>{const yy=y+i*(h+gp),v=Math.max(0,Math.min(100,r[0]));
+    g.globalAlpha=1;g.fillStyle='rgba(8,12,20,.55)';g.beginPath();g.roundRect(L-.75,yy-.75,W+1.5,h+1.5,2.2);g.fill();
+    if(v>0){g.globalAlpha=v<25?.55+.45*Math.abs(Math.sin(t/220)):1;g.fillStyle=r[1];g.beginPath();g.roundRect(L,yy,Math.max(1.5,W*v/100),h,1.4);g.fill()}});
+  g.restore()}
 function label(x,y,t){g.font='600 12px sans-serif';g.textAlign='center';g.lineWidth=3;g.strokeStyle='rgba(0,0,0,.6)';g.strokeText(t,x,y);g.fillStyle='#fff';g.fillText(t,x,y);g.textAlign='left'}
 
 /* ===== NPC (gerak deterministik dari jam, sama di semua klien) ===== */
@@ -1449,7 +1456,7 @@ function draw(now,time){
     const[tx,ty]=target();if(farm(tx,ty)){g.strokeStyle='rgba(255,255,255,.9)';g.lineWidth=2;g.setLineDash([6,4]);g.beginPath();g.roundRect(tx*T+3,ty*T+3,T-6,T-6,7);g.stroke();g.setLineDash([]);tileTip(tx,ty)}}
   else zfx(time);
   const E=[];
-  E.push({y:me.y,d:()=>{drawP(me.x,me.y,me.f,me.col,me.ph,me.mv,{fem:me.g==='f',mod:AUTH.mod});label(me.x,me.y-66,me.n,AUTH.mod);fishDraw();const q=bub[myId];if(q&&performance.now()<q.until)say2(me.x,me.y-72,q.text,me.n)}});
+  E.push({y:me.y,d:()=>{drawP(me.x,me.y,me.f,me.col,me.ph,me.mv,{fem:me.g==='f',mod:AUTH.mod});label(me.x,me.y-80,me.n,AUTH.mod);vitBars(me.x,me.y-75);fishDraw();const q=bub[myId];if(q&&performance.now()<q.until)say2(me.x,me.y-100,q.text,me.n)}});
   for(const id in remote){const o=remote[id];if(o.sc|0)continue;E.push({y:o.y,d:()=>{drawP(o.x,o.y,o.f||'down',o.col||'#3b82d9',o.ph,o.mv,{fem:o.g==='f',mod:!!o.vm});label(o.x,o.y-66,o.n||'Teman',o.vm);if(o.hp!=null)hpBar(o.x,o.y-82,o.hp);const q=bub[id];if(q&&performance.now()<q.until)say2(o.x,o.y-72,q.text,o.n||"Teman")}})}
   const nw=Date.now();
   for(const n of NPC){if(n.k==='c'&&(chDead[n.id]||0)>performance.now())continue;const p=npcPos(n,nw);E.push({y:p.y,d:()=>{
@@ -2075,7 +2082,7 @@ function drawIn(now,time){
   const ib=scene===50?(IBG.ar||(IBG.ar=buildArcade())):scene===60?(IBG.au||(IBG.au=buildAula())):(IBG[hid]||(IBG[hid]=buildIn(hid)));g.drawImage(ib,0,0,IW*T,IH*T);
   const o=objNear();if(o){const bob=Math.sin(time/220)*3;g.fillStyle='rgba(0,0,0,.35)';g.beginPath();g.ellipse(o[1]*T,o[2]*T+4,16,6,0,0,7);g.fill();const im=icImg(o[3]),cy=o[2]*T-34+bob;g.fillStyle='rgba(34,23,13,.9)';g.strokeStyle='#e8be68';g.lineWidth=2;g.beginPath();g.arc(o[1]*T,cy,17,0,7);g.fill();g.stroke();if(im&&im.complete)g.drawImage(im,o[1]*T-12,cy-12,24,24)}
   const E=[];
-  E.push({y:me.y+(window.__sitSY?__sitSY(me.sit):0),d:()=>{drawP(me.x,me.y,me.f,me.col,me.ph,me.mv,{fem:me.g==='f',sit:me.sit>=0,mod:AUTH.mod});label(me.x,me.y-66,me.n,AUTH.mod);const q=bub[myId];if(q&&performance.now()<q.until)say2(me.x,me.y-72,q.text,me.n)}});if(scene===60)auEnts(E,time);
+  E.push({y:me.y+(window.__sitSY?__sitSY(me.sit):0),d:()=>{drawP(me.x,me.y,me.f,me.col,me.ph,me.mv,{fem:me.g==='f',sit:me.sit>=0,mod:AUTH.mod});label(me.x,me.y-80,me.n,AUTH.mod);vitBars(me.x,me.y-75);const q=bub[myId];if(q&&performance.now()<q.until)say2(me.x,me.y-100,q.text,me.n)}});if(scene===60)auEnts(E,time);
   for(const id in remote){const r=remote[id];if((r.sc|0)!==scene)continue;E.push({y:r.y+(window.__sitSY?__sitSY((r.si|0)-1):0),d:()=>{drawP(r.x,r.y,r.f||'down',r.col||'#3b82d9',r.ph,r.mv,{fem:r.g==='f',sit:(r.si|0)>0,mod:!!r.vm});label(r.x,r.y-66,r.n||'Teman',r.vm);if(r.hp!=null)hpBar(r.x,r.y-82,r.hp);const q=bub[id];if(q&&performance.now()<q.until)say2(r.x,r.y-72,q.text,r.n||"Teman")}})}
   E.sort((a,b)=>a.y-b.y).forEach(e=>{try{e.d()}catch(err){loopErr(err,'ent');g.setTransform(DPR*Z,0,0,DPR*Z,-cam.x*DPR*Z,-cam.y*DPR*Z);g.globalAlpha=1;g.globalCompositeOperation='source-over';g.shadowColor='transparent'}});try{drawParts(performance.now())}catch(err){loopErr(err,'parts')}
   const hh=6+Math.min(1,S.t/DAY)*18,a=Math.max(0,Math.min(1,(hh-17)/3))*.4;
@@ -4558,7 +4565,7 @@ function build(){
   const pnP=$('pn').parentNode,lv=document.createElement('div');lv.id='qlv';pnP.appendChild(lv);
   const trk=document.createElement('div');trk.id='qtrk';trk.className='panel';trk.style.display='none';
   trk.onclick=()=>{if(!started||modal)return;QT='act';openModal('ql');renderLog()};
-  const vit=$('tl');vit.parentNode.insertBefore(trk,vit.nextSibling);
+  const vit=$('vit');vit.parentNode.insertBefore(trk,vit.nextSibling);
   const b=document.createElement('button');b.id='qb';b.className='panel ib';b.title='Misi & Level (J)';b.innerHTML='📜<i class="qnb">0</i>';
   b.onclick=()=>{if(!started)return;if(modal==='ql'){closeModal();return}if(modal)return;QT='act';openModal('ql');renderLog()};
   $('side').insertBefore(b,$('side').firstChild);
@@ -5430,19 +5437,5 @@ setInterval(fitHUD,700);fitHUD();
 <script id="hud-compact-js">
 (function(){const f=document.getElementById('fsb');if(f&&!(document.documentElement.requestFullscreen||document.documentElement.webkitRequestFullscreen)&&!(IOS&&!STANDALONE))f.style.display='none'})();
 </script>
-<style id="vit-mini">
-/* v62: bar darah/lapar/haus tipis & minimalis di bawah nickname */
-#tl #vit{position:static;display:flex!important;flex-direction:column;align-items:stretch;justify-content:flex-start;gap:4px;width:100%;min-width:96px;box-sizing:border-box;margin:4px 0 5px;padding:0;background:none;border:0;border-radius:0;box-shadow:none;flex-wrap:nowrap}
-#tl #vit .vr{flex:none;display:flex;align-items:center;gap:5px;min-width:0;padding:2px 0;margin:-2px 0;font-size:0;line-height:0}
-#tl #vit .vr span{flex:none;width:11px;height:11px;display:grid;place-items:center;background:none;border-radius:0;font-size:9px;line-height:1;opacity:.95}
-#tl #vit .vb{flex:1;min-width:0;height:4px;border:0;border-radius:4px;background:rgba(0,0,0,.42);box-shadow:inset 0 0 0 1px rgba(255,255,255,.07);overflow:hidden}
-#tl #vit .vb u{height:100%;border-radius:4px;box-shadow:none;transition:width .25s}
-#tl #vit #vHp{background:linear-gradient(90deg,#ff8a8a,#f0484f)}
-#tl #vit #vFd{background:linear-gradient(90deg,#ffcb78,#f0932b)}
-#tl #vit #vWt{background:linear-gradient(90deg,#8fe0ff,#3aa0ee)}
-#tl #vit .vr em{display:none!important}
-.hud-3 #tl #vit{display:flex!important}
-#tl .tlm{min-width:0}
-@media (pointer:coarse),(max-width:700px){#tl #vit{flex-direction:column;gap:3px;padding:0;margin:3px 0 4px}#tl #vit .vr{gap:4px}#tl #vit .vb{height:3px}#tl #vit .vr span{width:10px;height:10px;font-size:8px}}
-</style>
+<style id="vit-hide">/* v62: bar vital pindah ke atas kepala karakter */#vit{display:none!important}</style>
 </body></html>
