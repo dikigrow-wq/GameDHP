@@ -5211,4 +5211,52 @@ if(INTRO.mode==='enter'){
 }
 })();
 </script>
+
+<style id="hud-fit">
+/* v59: HUD anti-menumpuk untuk semua HP (iPhone 13 dll) */
+:root{--hotH:64px}
+#hot{box-sizing:border-box;align-items:center}
+@media (pointer:coarse) and (orientation:portrait){
+ #ctl{bottom:calc(var(--sb) + var(--hotH) + 22px)}
+ #toast{bottom:calc(var(--sb) + var(--hotH) + 22px + 150px)}
+ #nbar{bottom:calc(var(--sb) + var(--hotH) + 22px + 150px)}
+}
+@media (max-width:380px){
+ #side{grid-template-columns:repeat(2,auto)}
+ #tlc{max-width:calc(100vw - 128px - var(--sl) - var(--sr))}
+ #tl{gap:5px;padding:5px 7px}#av{width:24px;height:24px}#pn{max-width:64px;font-size:12px}#dt{font-size:10px}#gold{padding:2px 5px;font-size:11px}
+ #vit{width:100%;box-sizing:border-box}
+ #qtrk{max-width:100%;box-sizing:border-box}
+}
+@media (max-width:340px){#tl #av{display:none}}
+.hud-1 #dl{display:none!important}
+.hud-2 #qtrk{display:none!important}
+.hud-3 #tr{display:none!important}
+.hud-4 #vit .vr em{display:none}
+</style>
+<script id="hud-fit-js">
+(function(){"use strict";
+const $=id=>document.getElementById(id);
+const vis=e=>{if(!e)return null;const cs=getComputedStyle(e);if(cs.display==='none'||cs.visibility==='hidden')return null;const r=e.getBoundingClientRect();return r.width>0&&r.height>0?r:null};
+const hit=(a,b)=>Math.min(a.right,b.right)-Math.max(a.left,b.left)>1&&Math.min(a.bottom,b.bottom)-Math.max(a.top,b.top)>1;
+const TOP_L=['tl','vit','qtrk'],TOP_R=['tr','side','dl'],BOT=['hot','joy','bUse','bE','bAtk'];
+function clash(){
+  const g=a=>a.map(id=>vis($(id))).filter(Boolean),L=g(TOP_L),R=g(TOP_R),B=g(BOT);
+  for(const a of L.concat(R))for(const b of B)if(hit(a,b))return true;
+  for(const a of L)for(const b of R)if(hit(a,b))return true;
+  for(const a of B)for(const b of B)if(a!==b&&hit(a,b)&&!(a===b))return true;
+  return false}
+function fitHUD(){
+  const ui=$('ui');if(!ui||getComputedStyle(ui).display==='none')return;
+  const root=document.documentElement,hot=$('hot');
+  if(hot){const h=Math.ceil(hot.getBoundingClientRect().height);if(h>20&&h<140)root.style.setProperty('--hotH',h+'px')}
+  for(let i=1;i<=4;i++)ui.classList.remove('hud-'+i);
+  for(let i=1;i<=4&&clash();i++)ui.classList.add('hud-'+i)}
+window.fitHUD=fitHUD;
+let t=0;const sched=()=>{clearTimeout(t);t=setTimeout(fitHUD,60)};
+addEventListener('resize',sched);addEventListener('orientationchange',()=>setTimeout(fitHUD,300));
+if(window.visualViewport)visualViewport.addEventListener('resize',sched);
+setInterval(fitHUD,700);fitHUD();
+})();
+</script>
 </body></html>
