@@ -1960,7 +1960,7 @@ if(!/^https?:/.test(SB_URL))$('st').textContent='⚠ Supabase belum diisi di fil
 try{const sv=JSON.parse(localStorage.getItem('pfc2_char')||'null');if(sv){pick.g=sv.g==='f'?'f':'m';if(COLS.includes(sv.col))pick.col=sv.col;if(sv.n)$('nm1').value=$('nm2').value=sv.n}}catch(e){}
 renderPick();
 /* ===== v16: sistem akun (Supabase Auth) + mode tamu + sinkron cloud ===== */
-let sba=null;const AUTH={mode:'',name:'',uid:'',last:'',tab:'in',mod:false,nick:''},SYNC_RE=/^pfc2_(char|SOLO|daily|cal30|inv_.+|quest_.+)$/;
+let sba=null;const AUTH={mode:'',name:'',uid:'',last:'',tab:'in',mod:false,nick:''},SYNC_RE=/^pfc2_(char|SOLO|daily|cal30|orders|bond|inv_.+|quest_.+)$/;
 try{if(window.supabase&&/^https?:/.test(SB_URL))sba=supabase.createClient(SB_URL,SB_KEY,{auth:{persistSession:true,autoRefreshToken:true}})}catch(e){sba=null}
 const RURL=()=>/^https?:/.test(location.protocol)?location.origin+location.pathname:undefined;
 const uMail=u=>u.includes('@')?u:u.toLowerCase()+'@pixelfarm.game';
@@ -2002,6 +2002,25 @@ async function authOut(){if(AUTH.mode==='acct'){await pushCloud(true);try{await 
 ['au','ap','ap2'].forEach(id=>$(id).addEventListener('keydown',e=>{if(e.key==='Enter')authSubmit()}));
 setInterval(()=>{if(AUTH.mode==='acct')pushCloud(false)},25000);
 document.addEventListener('visibilitychange',()=>{if(document.hidden&&AUTH.mode==='acct')pushCloud(false)});addEventListener('pagehide',()=>{if(AUTH.mode==='acct')pushCloud(false)});
+{ /* ===== v18: sinkron akun lintas perangkat (dipasang SEBELUM auto-login berjalan) ===== */
+AUTH.ts='';AUTH.hold=0;
+const cloudTs=async()=>{try{const{data,error}=await sba.from('profiles').select('updated_at').eq('id',AUTH.uid).maybeSingle();if(error)return null;return data&&data.updated_at||''}catch(e){return null}};
+const _pull=pullCloud;
+pullCloud=async function(){if(sba&&AUTH.uid){const t=await cloudTs();if(t!==null)AUTH.ts=t}return _pull.apply(this,arguments)};
+let asking=0;
+async function conflict(){if(asking||document.hidden)return;asking=1;
+  try{if(confirm('Progres akun ini lebih baru di perangkat lain.\n\nOK = muat data terbaru (progres yang belum tersimpan di perangkat ini hilang).\nBatal = tetap di sini (tidak disimpan ke cloud untuk sementara).')){AUTH.ts='';await _pull();location.reload()}else AUTH.hold=Date.now()+180000}
+  finally{asking=0}}
+pushCloud=async function(force){if(!sba||AUTH.mode!=='acct'||!AUTH.uid)return;
+  if(Date.now()<AUTH.hold)return;
+  const d=localData(),j=JSON.stringify(d);if(!force&&j===AUTH.last)return;
+  try{const c=await cloudTs();
+    if(c===null)return;
+    if(c&&(!AUTH.ts||new Date(c)>new Date(AUTH.ts))){conflict();return}
+    const ts=new Date().toISOString(),{data:r,error}=await sba.from('profiles').upsert({id:AUTH.uid,username:AUTH.name,data:d,updated_at:ts}).select('updated_at').maybeSingle();
+    if(!error){AUTH.last=j;AUTH.ts=(r&&r.updated_at)||ts}}catch(e){}};
+document.addEventListener('visibilitychange',()=>{if(!document.hidden&&AUTH.mode==='acct'&&AUTH.ts)cloudTs().then(c=>{if(c&&new Date(c)>new Date(AUTH.ts))conflict()})});
+}
 (async()=>{show('auth');if(!sba){aMsg('Server tidak terjangkau — kamu masih bisa main sebagai Tamu.');return}
   try{const{data}=await sba.auth.getSession(),se=data&&data.session;if(se){const us=se.user;AUTH.mode='acct';AUTH.uid=us.id;AUTH.name=((us.user_metadata&&us.user_metadata.username)||(us.email||'').split('@')[0]||'Pemain').slice(0,16);await pullCloud();await checkMod();applyChar();updUbar();show('m0')}}catch(e){}})();
 
@@ -5613,6 +5632,7 @@ window.renderOrders=function(){const el=$('ob');if(!el)return;const L=load(),nd=
   el.innerHTML=L.list.map((o,i)=>{const c=CROPS[o.id],h=Math.min(have(o.id),o.n),ok=!o.done&&h>=o.n;
     return `<div class="ord ${o.done?'dn':ok?'ok':''}"><div class="av">${o.a}</div><div><b>${o.w}</b> minta ${o.n}× ${c.e} ${c.n}<small>Hadiah: 🪙 ${o.g} · ✨ ${o.xp} XP</small><div class="pb"><u style="width:${h/o.n*100}%"></u></div><small>${o.done?'Selesai ✔':'Punya '+h+'/'+o.n+' (kualitas apa pun)'}</small></div><button class="mb ${ok?'':'sec'}" ${ok?'':'disabled'} onclick="orderGo(${i})">${o.done?'✔':'Antar'}</button></div>`}).join('')
    +`<div class="obn">${L.bonus?'🎉 Bonus hari ini sudah diambil':'Selesaikan semua 3 pesanan ('+nd+'/3) → bonus 🪙 '+BONUS+' + 3 biji Tomat'}</div>`};
+const _bg=begin;begin=function(){O=null;return _bg.apply(this,arguments)};
 setInterval(()=>{try{if(!started)return;const b=$('ordb');if(!b)return;const L=load();b.classList.toggle('has',L.list.some(o=>!o.done&&have(o.id)>=o.n))}catch(e){}},1500);
 })();
 </script>
@@ -5731,6 +5751,8 @@ window.bondGive=function(b){const id=BID,o=B(id),p=prof(id);if(o.g===today()||cn
   take(b,1);o.g=today();o.k[b]=t;lastRe=fill(rn(RE[t]));view='main';sfx(t==='hate'?'click':'coin');
   addP(id,PTS[t],(t==='love'?'💖 ':t==='hate'?'😒 ':'🎁 ')+NM(id)+' '+(PTS[t]>0?'+':'')+PTS[t]+' ❤');renderBond()};
 window.bondAdd=addP;
+const _bg=begin;begin=function(){try{D=JSON.parse(localStorage.getItem(KEY)||'{}')||{}}catch(e){D={}}
+  for(const k in RECB){const i=REC.findIndex(r=>r.o===RECB[k].o);if(i>=0)REC.splice(i,1)}applyRec();QUE=[];busy=0;BID=null;for(const k in was)delete was[k];return _bg.apply(this,arguments)};
 /* talk harian otomatis saat buka dialog misi */
 function autoTalk(id){const o=B(id);if(o.t===today())return;o.t=today();addP(id,3,'💬 '+NM(id)+' +3 ❤')}
 /* tombol kedekatan di dialog misi */
