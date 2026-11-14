@@ -990,7 +990,7 @@ async function connect(){
       for(const k in st){if(k!==myId&&remote[k]){remote[k].n=st[k][0].n;remote[k].col=st[k][0].col;remote[k].g=st[k][0].g}}pinfo=st;hud()});
     ch.on('presence',{event:'join'},({key,newPresences:np})=>{if(key!==myId&&np&&np[0]){addLog(0,0,(np[0].n||'Teman')+' bergabung 👋',0,1);say((np[0].n||'Teman')+' bergabung')}lastP='';if(isHost())setTimeout(()=>bcast(1),400)});
     ch.on('presence',{event:'leave'},({key,leftPresences:lp})=>{if(key!==myId&&lp&&lp[0])addLog(0,0,(lp[0].n||'Teman')+' keluar',0,1)});
-    ch.on('broadcast',{event:'pos'},({payload:p})=>{if(p.id===myId)return;const o=remote[p.id]||(remote[p.id]={x:p.x,y:p.y,ph:0});o.tx=p.x;o.ty=p.y;o.vx=p.vx||0;o.vy=p.vy||0;o.hp=p.hp;o.f=p.f;o.col=p.col;o.n=p.n;if(p.mu!==o.mu){o.mu=p.mu;o.vm=0;if(p.mu)isModUid(p.mu).then(v=>{if(o.mu===p.mu)o.vm=v?1:0})}o.g=p.g;o.si=p.si|0;{const ns=p.sc|0,nz=p.z|0;if(o.rs!==ns||o.zr!==nz){o.rs=ns;o.zr=nz;o.x=p.x;o.y=p.y}o.sc=o.zr===zone?o.rs:99}o.seen=performance.now()});
+    ch.on('broadcast',{event:'pos'},({payload:p})=>{if(p.id===myId)return;const o=remote[p.id]||(remote[p.id]={x:p.x,y:p.y,ph:0});o.tx=p.x;o.ty=p.y;o.vx=p.vx||0;o.vy=p.vy||0;o.hp=p.hp;o.f=p.f;o.col=p.col;o.n=p.n;if(p.mu!==o.mu){o.mu=p.mu;o.vm=0;if(p.mu)isModUid(p.mu).then(v=>{if(o.mu===p.mu)o.vm=v?1:0})}o.g=p.g;o.em=p.em||'';o.si=p.si|0;{const ns=p.sc|0,nz=p.z|0;if(o.rs!==ns||o.zr!==nz){o.rs=ns;o.zr=nz;o.x=p.x;o.y=p.y}o.sc=o.zr===zone?o.rs:99}o.seen=performance.now()});
     ch.on('broadcast',{event:'state'},({payload:p})=>{if(p.h!==roster[0]||p.h===myId)return;const t=S.t;S=fixS(p.s);if(Math.abs(S.t-t)<.6)S.t=t;hud()});
     ch.on('broadcast',{event:'sync'},({payload:p})=>{if(p.h!==roster[0]||p.h===myId)return;tSync(p);S.gold=p.g;if(p.pv!=null)S.pvp=p.pv;hud()});
     ch.on('broadcast',{event:'delta'},({payload:p})=>{if(p.h!==roster[0]||p.h===myId)return;(p.tl||[]).forEach(([i,t])=>{if(S.tiles[i]&&Array.isArray(t)){tileSfx(i,S.tiles[i],t);S.tiles[i]=t}});S.gold=p.gold;tSync(p);hud()});
@@ -1456,8 +1456,8 @@ function draw(now,time){
     const[tx,ty]=target();if(farm(tx,ty)){g.strokeStyle='rgba(255,255,255,.9)';g.lineWidth=2;g.setLineDash([6,4]);g.beginPath();g.roundRect(tx*T+3,ty*T+3,T-6,T-6,7);g.stroke();g.setLineDash([]);tileTip(tx,ty)}}
   else zfx(time);
   const E=[];
-  E.push({y:me.y,d:()=>{drawP(me.x,me.y,me.f,me.col,me.ph,me.mv,{fem:me.g==='f',mod:AUTH.mod,ms:AUTH.nick});label(me.x,me.y-80,me.n,AUTH.mod);vitBars(me.x,me.y-75);fishDraw();const q=bub[myId];if(q&&performance.now()<q.until)say2(me.x,me.y-100,q.text,me.n)}});
-  for(const id in remote){const o=remote[id];if(o.sc|0)continue;E.push({y:o.y,d:()=>{drawP(o.x,o.y,o.f||'down',o.col||'#3b82d9',o.ph,o.mv,{fem:o.g==='f',mod:!!o.vm,ms:o.n});label(o.x,o.y-66,o.n||'Teman',o.vm);if(o.hp!=null)hpBar(o.x,o.y-82,o.hp);const q=bub[id];if(q&&performance.now()<q.until)say2(o.x,o.y-72,q.text,o.n||"Teman")}})}
+  E.push({y:me.y,d:()=>{drawP(me.x,me.y,me.f,me.col,me.ph,me.mv,{fem:me.g==='f',mod:AUTH.mod,ms:AUTH.nick,em:AUTH.emo||'',sf:1});label(me.x,me.y-80,me.n,AUTH.mod);vitBars(me.x,me.y-75);fishDraw();const q=bub[myId];if(q&&performance.now()<q.until)say2(me.x,me.y-100,q.text,me.n)}});
+  for(const id in remote){const o=remote[id];if(o.sc|0)continue;E.push({y:o.y,d:()=>{drawP(o.x,o.y,o.f||'down',o.col||'#3b82d9',o.ph,o.mv,{fem:o.g==='f',mod:!!o.vm,ms:o.n,em:o.em});label(o.x,o.y-66,o.n||'Teman',o.vm);if(o.hp!=null)hpBar(o.x,o.y-82,o.hp);const q=bub[id];if(q&&performance.now()<q.until)say2(o.x,o.y-72,q.text,o.n||"Teman")}})}
   const nw=Date.now();
   for(const n of NPC){if(n.k==='c'&&(chDead[n.id]||0)>performance.now())continue;const p=npcPos(n,nw);E.push({y:p.y,d:()=>{
     if(n.k==='h'){npcHuman(n,p,time)}else if(n.k==='c')chicken(p.x,p.y,p.f,time/80+hash(n.id),p.mv);else if(n.k==='k')cat(p.x,p.y,p.f,time/200,p.mv);else zanimal(n,p,time);
@@ -1489,7 +1489,7 @@ function loopUpd(now){const dt=Math.min(.05,(now-last)/1000);last=now;
   if(started){const w0=wet(me.x,me.y);if(w0!==wasWet){sfx('splash');wasWet=w0}if(me.mv){stepD+=Math.hypot(me.x-ox0,me.y-oy0);if(stepD>38){stepD=0;sfx('step',{s:surfAt(me.x,me.y)})}}else stepD=30}
   try{zoneCheck()}catch(e){loopErr(e,'zone')}if(started&&(ch||!modal)){try{vitTick(dt)}catch(e){loopErr(e,'vit')}S.t+=dt;if(S.t>=DAY){if(isHost()){nextDay();bcast(1)}else S.t=DAY}}
   toastT-=dt;for(const k in remote){const o=remote[k];if(o.tx==null)continue;o.sc=o.zr===zone?(o.rs|0):99;const el=Math.min(.2,(now-o.seen)/1000),px=o.tx+(o.vx||0)*el,py=o.ty+(o.vy||0)*el,mx=px-o.x,my=py-o.y,dd=Math.hypot(mx,my);if(dd>260){o.x=px;o.y=py}else{const f=Math.min(1,dt*22);o.x+=mx*f;o.y+=my*f}o.mv=Math.hypot(o.vx||0,o.vy||0)>12||dd>4;if(o.mv){o.ph+=dt*12;o.sd=(o.sd||0)+Math.hypot(o.vx||0,o.vy||0)*dt;if(o.sd>38){o.sd=0;const d2=Math.hypot(o.x-me.x,o.y-me.y);if(d2<420&&(o.sc|0)===scene)sfx('step',{s:surfAt(o.x,o.y),v:.7*(1-d2/420)})}}}
-  pAcc+=dt;if(pAcc>(remSame()?.055:.4)&&ch&&started){pAcc=0;const k=[Math.round(me.x),Math.round(me.y),me.f,me.mv,Math.round(vit.hp/4),scene,zone,me.sit].join();if(k!==lastP||now-lastPT>1500){lastP=k;lastPT=now;send('pos',{id:myId,x:me.x,y:me.y,vx:Math.round(me.vx||0),vy:Math.round(me.vy||0),f:me.f,col:me.col,n:me.n,g:me.g,hp:Math.round(vit.hp),sc:scene,z:zone,si:me.sit+1,mu:AUTH.mod?AUTH.uid:''})}}
+  pAcc+=dt;if(pAcc>(remSame()?.055:.4)&&ch&&started){pAcc=0;const k=[Math.round(me.x),Math.round(me.y),me.f,me.mv,Math.round(vit.hp/4),scene,zone,me.sit,AUTH.emo||''].join();if(k!==lastP||now-lastPT>1500){lastP=k;lastPT=now;send('pos',{id:myId,x:me.x,y:me.y,vx:Math.round(me.vx||0),vy:Math.round(me.vy||0),f:me.f,col:me.col,n:me.n,g:me.g,hp:Math.round(vit.hp),sc:scene,z:zone,si:me.sit+1,mu:AUTH.mod?AUTH.uid:'',em:AUTH.mod?(AUTH.emo||''):''})}}
   hAcc+=dt;if(hAcc>1){hAcc=0;try{hud()}catch(e){loopErr(e,'hud')}if(ch&&isHost()){syncN++;if(syncN%12===0)send('state',{h:myId,s:S});else sendSync()}}
   if(scene){cam.x=IW*T/2-VW/Z/2;cam.y=IH*T/2-VH/Z/2-8;cam.s=0}else{const vw=VW/Z,vh=VH/Z,tx=Math.max(0,Math.min(WZ0()*T-vw,me.x-vw/2)),ty=Math.max(0,Math.min(H*T-vh,me.y-vh/2-20)),k=cam.s?1:1-Math.exp(-dt*9);cam.s=0;cam.x+=(tx-cam.x)*k;cam.y+=(ty-cam.y)*k}
   if(fishing){if(me.mv||modal)fishing=null;else if(fishing.st==='wait'&&now>=fishing.at){fishing.st='bite';fishing.until=now+1300;navigator.vibrate&&navigator.vibrate(30);say('❗ Ikan menyambar! Tekan Pakai!');sfx('bite')}else if(fishing.st==='bite'&&now>fishing.until){fishing=null;say('Ikan lepas…');sfx('miss')}}
@@ -1992,7 +1992,7 @@ function openMod(){if(!AUTH.mod)return;openModal('modp');renderMod()}
 const _hudM=hud;hud=function(){_hudM.apply(this,arguments);const b=$('modb');if(b)b.style.display=AUTH.mod&&started&&ch&&!modal?'':'none';if(modal==='modp')renderMod()};
 addEventListener('keydown',e=>{if(e.key==='m'&&AUTH.mod&&started&&!modal&&document.activeElement.tagName!=='INPUT')openMod()});
 /* ===== v18: perintah moderator lewat chat (ketik /) ===== */
-const MCMD=[['help','','Daftar perintah moderator'],['list','','Pemain yang sedang online'],['pull','<nama|semua>','Tarik pemain ke tempatmu'],['goto','<nama>','Pindah ke dekat pemain'],['heal','<nama|semua>','Pulihkan HP, lapar, haus'],['announce','<teks>','Umumkan ke semua pemain'],['kick','<nama>','Keluarkan pemain ke menu']];
+const MCMD=[['help','','Daftar perintah moderator'],['list','','Pemain yang sedang online'],['pull','<nama|semua>','Tarik pemain ke tempatmu'],['goto','<nama>','Pindah ke dekat pemain'],['heal','<nama|semua>','Pulihkan HP, lapar, haus'],['announce','<teks>','Umumkan ke semua pemain'],['kick','<nama>','Keluarkan pemain ke menu'],['emote','<smoke|read|stop>','Pose khusus skinmu (smoke / read)']];
 const mlog=t=>addLog(0,0,t,0,1);
 function mNames(){return Object.keys(pinfo).filter(k=>k!==myId).map(k=>[k,String((pinfo[k][0]&&pinfo[k][0].n)||'Pemain')])}
 function mTarget(q){q=String(q||'').trim().toLowerCase();if(!q){mlog('Tulis nama pemainnya. Contoh: /pull budi');return null}
@@ -2004,6 +2004,11 @@ function modCmd(v){if(!AUTH.mod)return;const sp=v.slice(1).trim().split(/\s+/),c
   if(c==='help'){mlog('Perintah moderator:');MCMD.forEach(x=>mlog('/'+x[0]+(x[1]?' '+x[1]:'')+' - '+x[2]));return}
   if(c==='list'){const L=mNames();mlog(L.length?'Online ('+L.length+'): '+L.map(x=>x[1]).join(', '):'Belum ada pemain lain yang online.');return}
   if(c==='announce'){if(!a){mlog('Tulis isi pengumuman. Contoh: /announce Server restart 5 menit lagi');return}send('modcmd',{c:'ann',mu:AUTH.uid,n:me.n,t:a.slice(0,140)});mlog('Pengumuman terkirim.');sfx('chime');return}
+  if(c==='emote'){const sk=/zuoyuta/i.test(AUTH.nick)?'smoke':/sancctumm/i.test(AUTH.nick)?'read':'',w=a.toLowerCase();
+    if(w==='stop'||w==='off'){AUTH.emo='';mlog('Emote dihentikan.');return}
+    if(!sk){mlog('Skinmu belum punya emote.');return}
+    if(w&&w!==sk){mlog('Emote skinmu: /emote '+sk+' atau /emote stop');return}
+    AUTH.emo=sk;mlog((sk==='smoke'?'Merokok':'Membaca buku')+'. Gerak untuk berhenti.');return}
   const all=/^(semua|all|\*)$/i.test(a);
   if(c==='pull'){if(all)return modPull('*');const id=mTarget(a);if(id)modPull(id);return}
   if(c==='heal'){if(all){send('modcmd',{c:'heal',mu:AUTH.uid,to:'*'});mlog('Memulihkan semua pemain.');return}const id=mTarget(a);if(id){send('modcmd',{c:'heal',mu:AUTH.uid,to:id});mlog('Memulihkan pemain.')}return}
@@ -2123,8 +2128,8 @@ function drawIn(now,time){
   const ib=scene===50?(IBG.ar||(IBG.ar=buildArcade())):scene===60?(IBG.au||(IBG.au=buildAula())):(IBG[hid]||(IBG[hid]=buildIn(hid)));g.drawImage(ib,0,0,IW*T,IH*T);
   const o=objNear();if(o){const bob=Math.sin(time/220)*3;g.fillStyle='rgba(0,0,0,.35)';g.beginPath();g.ellipse(o[1]*T,o[2]*T+4,16,6,0,0,7);g.fill();const im=icImg(o[3]),cy=o[2]*T-34+bob;g.fillStyle='rgba(34,23,13,.9)';g.strokeStyle='#e8be68';g.lineWidth=2;g.beginPath();g.arc(o[1]*T,cy,17,0,7);g.fill();g.stroke();if(im&&im.complete)g.drawImage(im,o[1]*T-12,cy-12,24,24)}
   const E=[];
-  E.push({y:me.y+(window.__sitSY?__sitSY(me.sit):0),d:()=>{drawP(me.x,me.y,me.f,me.col,me.ph,me.mv,{fem:me.g==='f',sit:me.sit>=0,mod:AUTH.mod,ms:AUTH.nick});label(me.x,me.y-80,me.n,AUTH.mod);vitBars(me.x,me.y-75);const q=bub[myId];if(q&&performance.now()<q.until)say2(me.x,me.y-100,q.text,me.n)}});if(scene===60)auEnts(E,time);
-  for(const id in remote){const r=remote[id];if((r.sc|0)!==scene)continue;E.push({y:r.y+(window.__sitSY?__sitSY((r.si|0)-1):0),d:()=>{drawP(r.x,r.y,r.f||'down',r.col||'#3b82d9',r.ph,r.mv,{fem:r.g==='f',sit:(r.si|0)>0,mod:!!r.vm,ms:r.n});label(r.x,r.y-66,r.n||'Teman',r.vm);if(r.hp!=null)hpBar(r.x,r.y-82,r.hp);const q=bub[id];if(q&&performance.now()<q.until)say2(r.x,r.y-72,q.text,r.n||"Teman")}})}
+  E.push({y:me.y+(window.__sitSY?__sitSY(me.sit):0),d:()=>{drawP(me.x,me.y,me.f,me.col,me.ph,me.mv,{fem:me.g==='f',sit:me.sit>=0,mod:AUTH.mod,ms:AUTH.nick,em:AUTH.emo||'',sf:1});label(me.x,me.y-80,me.n,AUTH.mod);vitBars(me.x,me.y-75);const q=bub[myId];if(q&&performance.now()<q.until)say2(me.x,me.y-100,q.text,me.n)}});if(scene===60)auEnts(E,time);
+  for(const id in remote){const r=remote[id];if((r.sc|0)!==scene)continue;E.push({y:r.y+(window.__sitSY?__sitSY((r.si|0)-1):0),d:()=>{drawP(r.x,r.y,r.f||'down',r.col||'#3b82d9',r.ph,r.mv,{fem:r.g==='f',sit:(r.si|0)>0,mod:!!r.vm,ms:r.n,em:r.em});label(r.x,r.y-66,r.n||'Teman',r.vm);if(r.hp!=null)hpBar(r.x,r.y-82,r.hp);const q=bub[id];if(q&&performance.now()<q.until)say2(r.x,r.y-72,q.text,r.n||"Teman")}})}
   E.sort((a,b)=>a.y-b.y).forEach(e=>{try{e.d()}catch(err){loopErr(err,'ent');g.setTransform(DPR*Z,0,0,DPR*Z,-cam.x*DPR*Z,-cam.y*DPR*Z);g.globalAlpha=1;g.globalCompositeOperation='source-over';g.shadowColor='transparent'}});try{drawParts(performance.now())}catch(err){loopErr(err,'parts')}
   const hh=6+Math.min(1,S.t/DAY)*18,a=Math.max(0,Math.min(1,(hh-17)/3))*.4;
   if(a>0){g.fillStyle='rgba(10,12,44,'+a+')';g.fillRect(0,0,IW*T,IH*T);g.save();g.globalCompositeOperation='lighter';
@@ -3457,8 +3462,15 @@ loadImg('mod_zuoyuta',SPRITE_URL||BUILTIN_SRC,im=>mkSheet('mod_zuoyuta',im,{sit:
 /* Skin moderator @Sancctumm (sheet 4 kolom x 6 baris, sel 128x128): bawah, kiri, kanan, atas, idle, baca buku.
    Upload ke bucket "sprites" di Supabase dengan nama persis: sancctumm_sheet.png
    Diam lebih dari READ_MS milidetik -> karakter membaca buku (baris 6). Baris 6 juga dipakai saat duduk. */
-const SANC_URL='https://zvsvftphialhaolinldx.supabase.co/storage/v1/object/public/sprites/sancctumm_sheet.png',READ_MS=15000;
+const SANC_URL='https://zvsvftphialhaolinldx.supabase.co/storage/v1/object/public/sprites/sancctumm_sheet.png',READ_MS=15000,SMOKE_MS=15000;
 loadImg('mod_sancctumm',SANC_URL,im=>mkSheet('mod_sancctumm',im,{fw:128,fh:128,rows:6,idle:4,sit:5,smooth:true,dsz:59,fy:117}));
+/* ZuoYuta merokok: sheet 4x4 frame (sel 192x192, tinggi karakter sama persis dengan skin ZuoYuta). Upload ke bucket sprites: zuoyuta_smoke.png
+   Urutan frame: 0 berdiri | 1-2 ambil rokok | 3-4 rokok ke mulut | 5-7 nyalakan korek | 8-13 menghisap & mengembuskan asap (berulang) | 14-15 cadangan
+   Diam lebih dari SMOKE_MS -> mulai merokok. Moderator juga bisa pakai /emote smoke dan /emote stop. */
+const SMOKE_URL='https://zvsvftphialhaolinldx.supabase.co/storage/v1/object/public/sprites/zuoyuta_smoke.png';
+loadImg('mod_zuoyuta_smoke',SMOKE_URL,im=>mkSheet('mod_zuoyuta_smoke',im,{fw:192,fh:192,rows:4,smooth:true,dsz:64,fy:180}));
+const SM_A=[[1,550],[2,550],[3,550],[4,650],[5,550],[6,450],[7,550],[8,700]],SM_L=[[8,900],[9,700],[10,900],[11,850],[12,1300],[13,900]];
+function smokeFrame(t){let u=t;for(const a of SM_A){if(u<a[1])return a[0];u-=a[1]}const T=SM_L.reduce((n,a)=>n+a[1],0);u%=T;for(const a of SM_L){if(u<a[1])return a[0];u-=a[1]}return 8}
 /* Skin pemain default (Cowo/Cewe). Sheet 4 kolom x 6 baris: bawah, kiri, kanan, atas, idle, duduk (sel 128x128).
    Coba muat dari Supabase Storage (sprites/player_m.png & player_f.png); bila belum diupload, pakai gambar tertanam.
    Akun moderator ZuoYuta tetap memakai skin sendiri (mod_zuoyuta), tidak ikut skin ini. */
@@ -3571,14 +3583,19 @@ function tinted(key,col,sh){const ck=key+'|'+col,c0=TINTC.get(ck);if(c0)return c
   x.drawImage(tm,0,0);x.globalCompositeOperation='multiply';x.fillStyle=col;x.fillRect(0,0,c.width,c.height);
   x.globalCompositeOperation='destination-in';x.drawImage(tm,0,0);TINTC.set(ck,c);return c}
 person=function(x,y,f,col,ph,mv,o){o=o||{};
-  const key=WHO||(PLY?(o.mod&&SHEET.mod_sancctumm&&/sancctumm/i.test(String(o.ms||''))?'mod_sancctumm':(o.mod&&SHEET.mod_zuoyuta?'mod_zuoyuta':(o.fem?'player_f':'player_m'))):'-'),sh=SHEET[key];
+  let key=WHO||(PLY?(o.mod&&SHEET.mod_sancctumm&&/sancctumm/i.test(String(o.ms||''))?'mod_sancctumm':(o.mod&&SHEET.mod_zuoyuta?'mod_zuoyuta':(o.fem?'player_f':'player_m'))):'-'),sh=SHEET[key];
   if(!sh)return _person(x,y,f,col,ph,mv,o);
   const now=performance.now();
-  let rd=0;if(key==='mod_sancctumm'){const st=sh.st||(sh.st={x:x,y:y,t:now});if(mv||Math.abs(x-st.x)>2||Math.abs(y-st.y)>2){st.x=x;st.y=y;st.t=now}rd=now-st.t>READ_MS}
+  let rd=0,sm=-1;if(o.sf&&AUTH.emo&&mv)AUTH.emo='';
+  if(key==='mod_sancctumm'||key==='mod_zuoyuta'){const st=sh.st||(sh.st={x:x,y:y,t:now,e:'',e0:now});if(mv||Math.abs(x-st.x)>2||Math.abs(y-st.y)>2){st.x=x;st.y=y;st.t=now}
+    const em=o.em||'';if(em!==st.e){st.e=em;st.e0=now}
+    if(key==='mod_sancctumm')rd=!mv&&(em==='read'||now-st.t>READ_MS);
+    else if(SHEET.mod_zuoyuta_smoke&&!mv&&!o.sit){if(em==='smoke')sm=smokeFrame(now-st.e0);else if(now-st.t>SMOKE_MS)sm=smokeFrame(now-st.t-SMOKE_MS)}}
   let r=ROW[f]|0,c=mv?Math.floor((ph||0)/1.5)%4:0;if(c<0)c+=4;
   if(!mv&&!o.sit&&r===0&&sh.idle>=0&&sh.rows>sh.idle){r=sh.idle;c=Math.floor(now/450)%4}   // napas/idle menghadap bawah
   if(o.sit&&sh.rows>sh.sit){r=sh.sit;c=Math.floor(now/500)%4}
   if(rd&&!o.sit&&sh.rows>sh.sit){r=sh.sit;c=[0,1,0,3,0,1,2,3][Math.floor(now/700)%8]}                // diam lama -> baca buku                                // duduk
+  if(sm>=0){sh=SHEET.mod_zuoyuta_smoke;r=sm>>2;c=sm&3}
   const sx=c*sh.fw,sy=r*sh.fh,dw=sh.dsz||48,dh=sh.dsz||64,dy=sh.dsz?y-sh.fy*sh.dsz/sh.fh+(o.sit?4:0):y-60+(o.sit?6:0);
   g.save();g.fillStyle='rgba(0,0,0,.28)';g.beginPath();g.ellipse(x,y,15,6,0,0,7);g.fill();
   if(sh.ring&&col&&!o.mod){g.strokeStyle=col;g.globalAlpha=.9;g.lineWidth=2;g.beginPath();g.ellipse(x,y,17,6.5,0,0,7);g.stroke();g.globalAlpha=1}
