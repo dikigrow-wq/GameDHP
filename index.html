@@ -5362,7 +5362,7 @@ function chk(){
   try{if(bad){v.pause()}else if(v.style.display==='block'&&v.paused&&!v.ended)v.play().catch(()=>{})}catch(_){}
 }
 mq.addEventListener&&mq.addEventListener('change',chk);
-const seen=()=>{try{return INTRO.once&&localStorage.getItem(INTRO.key)==='1'}catch(_){return false}};
+const seen=()=>{try{return /[#&?](access_token|code|error_description)=/.test(location.hash+location.search)||sessionStorage.getItem('pf_intro_ses')==='1'||(INTRO.once&&localStorage.getItem(INTRO.key)==='1')}catch(_){return false}};
 function hideBox(){box.style.opacity=0;setTimeout(()=>{box.style.display='none'},420)}
 function run(auto){
   if(busy)return busy;
@@ -5370,7 +5370,7 @@ function run(auto){
   busy=new Promise(res=>{
     let done=0;
     const fin=()=>{if(done)return;done=1;try{v.pause();v.removeAttribute('src');v.load();bg.pause();bg.classList.remove('on');bg.removeAttribute('src');bg.load()}catch(_){}
-      try{if(INTRO.once)localStorage.setItem(INTRO.key,'1')}catch(_){}
+      try{sessionStorage.setItem('pf_intro_ses','1');if(INTRO.once)localStorage.setItem(INTRO.key,'1')}catch(_){}
       hideBox();box.classList.remove('rot');busy=null;res()};
         box.style.display='flex';box.style.opacity=1;gate.style.display='flex';v.style.display='none';
     v.onerror=fin;v.onended=fin;
