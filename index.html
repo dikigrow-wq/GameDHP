@@ -725,6 +725,42 @@ button .ic,.cell .ic,.slot .ic{vertical-align:middle}
  #mbox .mp input{padding:9px 10px!important}
 }
 </style><script>window.ENVI={};</script>
+<style id="v13-fix">
+/* fix: kelas .gp (badge harga) bentrok dengan tile hari ke-30 -> tile menimpa hari ke-6 */
+.tk.gp{position:relative;top:auto;right:auto;z-index:auto;padding:17px 3px 6px;font:inherit;color:inherit;border-radius:12px;line-height:inherit;font-style:normal}
+.tk.miss{filter:grayscale(.6);opacity:.7}
+.tk.miss::after{content:'SUSULAN';position:absolute;left:0;right:0;bottom:0;font:700 8px/13px system-ui;letter-spacing:1px;text-align:center;background:rgba(0,0,0,.55);color:#ffd24a}
+#ordb{position:relative}#ordb.has{animation:v11glow 1.6s infinite;--rc:#ffd24a;border-color:#ffd24a}
+#ordb .nb{position:absolute;top:-5px;right:-5px;width:14px;height:14px;border-radius:50%;background:#e5484d;border:1.5px solid #2a1c10;display:none}#ordb.has .nb{display:block}
+#orders .mcard{max-width:520px;background:radial-gradient(ellipse at 50% -20%,#6b4a24 0%,#3a2812 40%,#1c120a 100%);border:3px solid #ffd24a}
+#ob{display:flex;flex-direction:column;gap:8px;overflow-y:auto;max-height:calc(100dvh - 130px)}
+.ord{display:grid;grid-template-columns:44px 1fr auto;gap:10px;align-items:center;padding:9px 10px;border-radius:12px;border:2px solid #6b4a28;background:rgba(0,0,0,.32)}
+.ord.ok{border-color:#8fe06a}.ord.dn{opacity:.55}
+.ord .av{font-size:30px;text-align:center}
+.ord b{color:#ffd24a}.ord small{display:block;opacity:.8;margin-top:2px}
+.ord .pb{height:6px;border-radius:3px;background:rgba(0,0,0,.5);margin-top:5px;overflow:hidden}.ord .pb u{display:block;height:100%;background:linear-gradient(90deg,#8fe06a,#ffd24a)}
+.ord .mb{padding:8px 12px;font-size:13px;white-space:nowrap}
+.obn{padding:9px 12px;border-radius:12px;background:linear-gradient(90deg,rgba(255,210,74,.18),rgba(255,210,74,.06));border:2px dashed #ffd24a;text-align:center}
+</style>
+<style id="v14-bond">
+#bond .mcard{max-width:540px;background:radial-gradient(ellipse at 50% -20%,#7a3a4a 0%,#3a1f2c 40%,#1c0f16 100%);border:3px solid #ff9ab8}
+#bb{display:flex;flex-direction:column;gap:9px;overflow-y:auto;max-height:calc(100dvh - 120px)}
+.bhd{display:flex;gap:12px;align-items:center}.bav{width:64px;height:64px;flex:none;border-radius:50%;display:grid;place-items:center;font-size:36px;background:radial-gradient(circle,color-mix(in srgb,var(--c) 55%,#fff3) ,rgba(0,0,0,.4));border:3px solid var(--c);box-shadow:0 0 16px color-mix(in srgb,var(--c) 60%,transparent)}
+.bhi{flex:1}.bhi b{font-size:1.15em;color:#ffd24a}.bhr{font-size:18px;letter-spacing:2px;margin:1px 0}
+.bpb{height:7px;border-radius:4px;background:rgba(0,0,0,.5);overflow:hidden;margin:3px 0}.bpb u{display:block;height:100%;background:linear-gradient(90deg,#ff7aa8,#ffd24a);transition:width .5s}
+.bsay{padding:9px 12px;border-radius:12px;background:rgba(0,0,0,.35);border:1px solid rgba(255,154,184,.4);line-height:1.5;font-family:Georgia,serif}
+.bfav{font-size:.92em;line-height:1.6;opacity:.95}
+.brow{display:flex;gap:8px}.brow .mb{flex:1}
+.bmw{display:flex;flex-direction:column;gap:4px}.bms{display:flex;gap:8px;align-items:center;padding:5px 8px;border-radius:9px;background:rgba(0,0,0,.28);font-size:.85em;opacity:.7}.bms.ok{opacity:1;border:1px solid #8fe06a}.bms b{flex:none;font-size:.8em}.bms span{flex:1}.bms .mb{padding:4px 8px;font-size:11px}
+.bgl{display:grid;grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:6px}.bgi{display:flex;flex-direction:column;align-items:center;gap:2px;padding:8px 4px;border-radius:10px;border:2px solid #6b4a28;background:rgba(0,0,0,.35);color:#ffeccc;cursor:pointer;font:inherit}.bgi span{font-size:26px}.bgi:disabled{opacity:.4;cursor:default}.bgi:not(:disabled):hover{border-color:#ff9ab8}
+.bwr{display:grid;grid-template-columns:34px 1fr auto;gap:8px;align-items:center;padding:6px 8px;border-radius:10px;background:rgba(0,0,0,.3)}.bwa{font-size:26px;text-align:center}
+#bcs{z-index:25;background:radial-gradient(ellipse at 50% 40%,color-mix(in srgb,var(--c,#c99a4a) 35%,#150d12),#050306 80%);align-items:flex-end;justify-content:center;padding:0}
+.bcw{width:min(96%,760px);margin-bottom:max(18px,env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;align-items:center;gap:10px;position:relative;z-index:2}
+.bcp{font-size:clamp(70px,22vh,130px);filter:drop-shadow(0 0 22px var(--c));animation:bcf 3.2s ease-in-out infinite}@keyframes bcf{50%{transform:translateY(-8px)}}
+.bcb{width:100%;padding:14px 18px;border-radius:14px;background:linear-gradient(rgba(58,38,18,.92),rgba(30,18,8,.94));border:2px solid #d9b25a;box-shadow:0 0 0 3px #3a2412;min-height:112px;display:flex;flex-direction:column;gap:6px}
+.bcn{font:700 13px Georgia,serif;letter-spacing:2px;color:#ffd24a;text-transform:uppercase}.bct{font:16px/1.6 Georgia,serif;color:#fff4dc;min-height:52px}.bcf{display:flex;justify-content:space-between;align-items:center}.bcf small{opacity:.9;color:#ffd9a0}
+.bch{position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at 20% 80%,rgba(255,120,170,.18) 0 3px,transparent 4px) 0 0/90px 90px,radial-gradient(circle at 70% 30%,rgba(255,210,74,.16) 0 2px,transparent 3px) 0 0/70px 70px;animation:bcd 14s linear infinite}@keyframes bcd{to{background-position:0 -90px,0 -70px}}
+</style>
 </head><body>
 <!-- ===== INTRO / OPENING VIDEO (atur URL & mode di script paling bawah) ===== -->
 <div id="intro" style="position:fixed;inset:0;z-index:99999;background:#000;display:flex;align-items:center;justify-content:center;font-family:Fredoka,system-ui,sans-serif;color:#fff;transition:opacity .4s">
@@ -755,7 +791,7 @@ button .ic,.cell .ic,.slot .ic{vertical-align:middle}
 <div id="tlc"><div id="tl" class="panel"><div id="av"></div><div><b id="pn"></b><div id="dt"></div></div><div id="gold"></div></div>
 <div id="vit" class="panel"><div class="vr"><span>❤️</span><i class="vb"><u id="vHp"></u></i><em id="vHpN"></em></div><div class="vr"><span>🍗</span><i class="vb"><u id="vFd"></u></i><em id="vFdN"></em></div><div class="vr"><span>💧</span><i class="vb"><u id="vWt"></u></i><em id="vWtN"></em></div></div><div id="pdrow"></div><div id="roster"></div></div>
 <div id="rt"><div id="tr" class="panel"><canvas id="mm" width="192" height="132"></canvas><div id="mmcap"></div></div>
-<div id="side"><button class="panel ib" id="dayb" onclick="openModal('daily')" title="Absen Harian">📅<i class="nb"></i></button><button class="panel ib" id="chatb" onclick="toggleChat()" title="Chat (Enter)" style="display:none">💬<i id="unread"></i></button><button class="panel ib" id="tradeb" onclick="openModal('trade')" title="Trade" style="display:none">🤝</button><button class="panel ib" id="wxb2" onclick="openModal('wxm')" title="Cuaca &amp; Musim">🌤️</button><button class="panel ib" onclick="openModal('pause')" title="Jeda (Esc)">⏸</button><button class="panel ib" id="fsb" title="Layar penuh">⛶</button></div><div id="dl" class="panel"></div></div>
+<div id="side"><button class="panel ib" id="dayb" onclick="openModal('daily')" title="Absen Harian">📅<i class="nb"></i></button><button class="panel ib" id="ordb" onclick="openModal('orders')" title="Pesanan Harian">📋<i class="nb"></i></button><button class="panel ib" id="chatb" onclick="toggleChat()" title="Chat (Enter)" style="display:none">💬<i id="unread"></i></button><button class="panel ib" id="tradeb" onclick="openModal('trade')" title="Trade" style="display:none">🤝</button><button class="panel ib" id="wxb2" onclick="openModal('wxm')" title="Cuaca &amp; Musim">🌤️</button><button class="panel ib" onclick="openModal('pause')" title="Jeda (Esc)">⏸</button><button class="panel ib" id="fsb" title="Layar penuh">⛶</button></div><div id="dl" class="panel"></div></div>
 <div id="hot" class="panel"><div id="hs"></div><button class="more" id="moreB" onclick="openModal('bag')" title="Semua inventori (I)" aria-label="Inventori"><span class="dots"><i></i><i></i><i></i></span><em class="nb" id="moreN"></em></button></div>
 <div id="hint"></div><div id="toast"></div><div id="pops"></div>
 <div id="chatw" class="panel"><div class="mh"><b>💬 Chat</b><span id="cmeta"></span><button class="x" onclick="toggleChat(0)">✕</button></div>
@@ -766,6 +802,9 @@ button .ic,.cell .ic,.slot .ic{vertical-align:middle}
 <div id="bag" class="modal"><div class="panel mcard big"><div class="mh"><b>🎒 Tas</b><span class="meta" id="bagMeta"></span><button class="x" onclick="closeModal()">✕</button></div><div class="bagtop" id="btabs"></div><div class="bw"><div id="grid"></div><div id="info"></div></div><div class="bfoot"><button class="mb sec sm" onclick="openModal('daily')">📅 Absen Harian</button><button class="mb sec sm" onclick="quickEat()">🍴 Makan cepat</button></div></div></div>
 <div id="daily" class="modal"><div class="panel mcard big"><div class="mh"><b>📅 Absen Harian</b><span class="meta">Reset 00:00</span><button class="x" onclick="closeModal()">✕</button></div><div id="dbody" style="display:flex;flex-direction:column;gap:10px"></div></div></div>
 <div id="wxm" class="modal"><div class="panel mcard"><div class="mh"><b>🌤️ Cuaca &amp; Musim</b><button class="x" onclick="closeModal()">✕</button></div><div id="wxb" style="display:flex;flex-direction:column;gap:8px"></div></div></div>
+<div id="orders" class="modal"><div class="panel mcard"><div class="mh"><b>📋 Papan Pesanan</b><span class="meta">Reset 00:00</span><button class="x" onclick="closeModal()">✕</button></div><div id="ob"></div></div></div>
+<div id="bond" class="modal"><div class="panel mcard"><div class="mh"><b id="bt">❤️</b><button class="x" onclick="closeModal()">✕</button></div><div id="bb"></div></div></div>
+<div id="bcs" class="modal"></div>
 <div id="gacha" class="modal"><div class="gstage" id="gst"></div></div>
 <div id="pause" class="modal"><div class="panel mcard" style="max-width:340px"><div class="mh"><b>⏸ Jeda &amp; Pengaturan</b></div><button class="mb" onclick="closeModal()">▶ Lanjutkan</button>
 <div class="aset"><label>🎵 Musik<input type="range" id="vM" min="0" max="100"></label><label>🔊 Efek suara<input type="range" id="vS" min="0" max="100"></label><label>🍃 Suasana<input type="range" id="vA" min="0" max="100"></label>
@@ -1055,8 +1094,8 @@ function hud(){if(started){const j=snapInv();if(j!==lastInv){lastInv=j;try{local
   if(ch)$('cmeta').textContent=(1+Object.keys(remote).length)+' online';$('mmcap').textContent=ZN[zone].e+' '+ZN[zone].n+' · '+(ch?'Room '+code+' · '+(1+Object.keys(remote).length)+' pemain':'Single Player');
   if(modal==='bag')renderBag();if(modal==='trade')renderTrade();if(modal==='shop')renderShop();if(modal==='chest')renderChest();if(modal==='cook')renderCook()}
 let bagSel=null;
-function openModal(m){sfx('click');if(m==='pause')audUI();modal=m;keys={};resetJoy();fishing=null;['bag','pause','trade','shop','chest','cook','daily','gacha','zshop','arcade','tgame','modp','wxm'].forEach(i=>$(i).style.display=m===i?'flex':'none');if(m==='bag')renderBag();if(m==='daily'){_dcFresh=1;renderDaily()}if(m==='trade')renderTrade();if(m==='shop')renderShop();if(m==='chest')renderChest();if(m==='cook')renderCook();if(m==='wxm')renderWx()}
-function closeModal(){if(modal==='trade'&&trade){tsend('cancel');trade=null}modal='';['bag','pause','trade','shop','chest','cook','daily','gacha','zshop','arcade','tgame','modp','wxm'].forEach(i=>$(i).style.display='none');gClean()}
+function openModal(m){sfx('click');if(m==='pause')audUI();modal=m;keys={};resetJoy();fishing=null;['bag','pause','trade','shop','chest','cook','daily','gacha','zshop','arcade','tgame','modp','wxm','orders','bond','bcs'].forEach(i=>$(i).style.display=m===i?'flex':'none');if(m==='bag')renderBag();if(m==='daily'){_dcFresh=1;renderDaily()}if(m==='trade')renderTrade();if(m==='shop')renderShop();if(m==='chest')renderChest();if(m==='cook')renderCook();if(m==='wxm')renderWx();if(m==='orders')renderOrders()}
+function closeModal(){if(modal==='trade'&&trade){tsend('cancel');trade=null}modal='';['bag','pause','trade','shop','chest','cook','daily','gacha','zshop','arcade','tgame','modp','wxm','orders','bond','bcs'].forEach(i=>$(i).style.display='none');gClean()}
 const mm=$('mm'),mc=mm.getContext('2d');
 function minimap(time){const mX=scene?outPos.x:me.x,mY=scene?outPos.y:me.y;const mw=WZ0()*6;if(mm.width!==mw){mm.width=mw;mmFit()}mc.clearRect(0,0,mw,132);mc.drawImage(bg,0,0,mw,132);const s=6;
   for(let y=FY0;y<=FY1;y++)for(let x=FX0;x<=FX1;x++){const t=S.tiles[x+y*W];if(zone||!t[0])continue;mc.fillStyle=t[1]&&t[2]>=CROPS[t[1]].g?'#ffd24a':t[1]?'#6fd04a':'#8a5a35';mc.fillRect(x*s+1,y*s+1,s-2,s-2)}
@@ -2450,6 +2489,7 @@ function reveal(o){openModal('gacha');gClean();const st=$('gst');st.className='g
 let _dcFresh=0;
 function calTap(n){const cn=calNow(),rw=CAL[n-1];
   if(n===cn.n&&!claimedToday()){claimDaily();return}
+  if(!cn.fresh&&n<cn.n&&!CS.c[n]){catchUp(n);return}
   const d=!cn.fresh&&!!CS.c[n];say('Hari '+n+': '+rw.s+(d?' ✔ sudah diklaim':n<cn.n?' · terlewat':' · belum dibuka'))}
 function renderDaily(){if(modal!=='daily')return;
   const cn=calNow(),cl=claimedToday(),dn=cn.fresh?0:Object.keys(CS.c).length;
@@ -2460,8 +2500,13 @@ function renderDaily(){if(modal!=='daily')return;
   <div class="gpb"><span>🏆</span><div><b>GRAND PRIZE · HARI 30</b><small>5.000 gold + Peti Pendant Legendaris + Kotak Emas</small></div></div>
   <div class="cal">${cells}</div>
   ${cl?`<button class="mb sec big" disabled>✔ Sudah diklaim${cn.n<30?' · besok hari ke-'+(cn.n+1):''}</button>`:`<button class="mb gold big" onclick="claimDaily()">${CAL[cn.n-1].e} KLAIM HARI KE-${cn.n}</button>`}
-  <div class="drule">Hadiah naik tiap hari. Hari terlewat tidak bisa diklaim. Setelah hari ke-30, kalender mulai lagi dari hari 1.</div>`);
+  <div class="drule">Hadiah naik tiap hari. Hari terlewat: ketuk untuk klaim susulan (bayar gold). Setelah hari 30 mulai lagi dari 1.</div>`);
   if(_dcFresh){_dcFresh=0;const cal=$('dbody').querySelector('.cal'),t=cal&&cal.querySelector('[data-n="'+cn.n+'"]');if(t)cal.scrollTop=Math.max(0,t.offsetTop-cal.clientHeight/2+t.offsetHeight/2)}}
+function catchUp(n){const rw=CAL[n-1],cost=Math.min(1200,100+n*25);
+  if(!confirm('Klaim susulan hari ke-'+n+' ('+rw.s+') seharga '+cost+' gold?'))return;
+  if(!spend(cost))return;CS.c[n]=dkey(todayD());saveCS();
+  const items=grantReward(rw);
+  reveal({daily:1,coins:1,box:rw.e,r:rw.r,title:'HARI KE-'+n+' (SUSULAN)',sub:'Klaim susulan hari ke-'+n,items,act:null,after:()=>openModal('daily')})}
 function claimDaily(){if(claimedToday()){say('Hari ini sudah absen ✔');return}
   const cn=calNow(),t=todayD();if(cn.fresh||!CS.start)CS={start:dkey(t),c:{}};
   const n=cn.n,rw=CAL[n-1];CS.c[n]=dkey(t);saveCS();
@@ -5538,4 +5583,183 @@ setInterval(fitHUD,700);fitHUD();
 (function(){const f=document.getElementById('fsb');if(f&&!(document.documentElement.requestFullscreen||document.documentElement.webkitRequestFullscreen)&&!(IOS&&!STANDALONE))f.style.display='none'})();
 </script>
 <style id="vit-hide">/* v62: bar vital pindah ke atas kepala karakter */#vit{display:none!important}</style>
+<script id="orders-system">
+(function(){"use strict";
+const KEY='pfc2_orders',BONUS=250;
+const WHO=[['Pak Joko','🧓'],['Bu Sari','👩'],['Nenek Ratmi','👵'],['Tono','🧒'],['Pak Dodi','👨‍🌾'],['Mbak Rina','👩‍🦰'],['Bang Udin','🧔']];
+const EASY=[[1,4,8],[2,3,6],[3,3,5],[5,3,5],[8,3,6],[6,2,4]],MID=[[4,2,3],[7,1,3],[9,2,4]],HARD=[[10,1,2],[11,1,2],[12,1,2],[13,1,1]];
+const hash=s=>{let h=2166136261;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)}return h>>>0};
+const rng=a=>()=>{a=(a+0x6D2B79F5)|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296};
+const lvl=()=>{try{return PFQ.state.lv|0}catch(e){return 1}};
+let O=null;
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(O))}catch(e){}};
+function gen(day){const R=rng(hash(day)),pick=a=>a[R()*a.length|0];
+  const who=WHO.slice().sort(()=>R()-.5),used=new Set(),list=[];
+  [EASY,EASY,lvl()>=6&&R()<.5?HARD:MID].forEach((pool,i)=>{let p,g=0;do{p=pick(pool)}while(used.has(p[0])&&++g<30);used.add(p[0]);
+    const tier=pool===EASY?0:pool===MID?1:2,n=p[1]+(R()*(p[2]-p[1]+1)|0),c=CROPS[p[0]];
+    list.push({id:p[0],n,w:who[i][0],a:who[i][1],g:Math.round(c.s*n*(1.5+tier*.15)/5)*5,xp:15+tier*15,done:0})});
+  return{d:day,list,bonus:0}}
+function load(){const day=dkey(todayD());if(O&&O.d===day)return O;let v=null;try{v=JSON.parse(localStorage.getItem(KEY)||'null')}catch(e){}
+  O=v&&v.d===day&&Array.isArray(v.list)?v:gen(day);save();return O}
+const have=id=>{let n=0;for(const k in inv)if(+k%100===id)n+=inv[k]|0;return n};
+function take(id,n){const ks=Object.keys(inv).filter(k=>+k%100===id&&inv[k]>0).sort((a,b)=>a-b);
+  for(const k of ks){const t=Math.min(n,inv[k]);inv[k]-=t;n-=t;if(!inv[k])delete inv[k];if(!n)break}}
+window.orderGo=function(i){const L=load(),o=L.list[i];if(!o||o.done||have(o.id)<o.n)return;
+  take(o.id,o.n);o.done=1;dispatch({t:'sell',v:o.g});sfx('coin');try{PFQ.addXp(o.xp)}catch(e){}
+  let m='Pesanan '+o.w+' selesai +'+o.g+'g';
+  if(L.list.every(x=>x.done)&&!L.bonus){L.bonus=1;dispatch({t:'sell',v:BONUS});sd[2]=(sd[2]||0)+3;m+=' · BONUS +'+BONUS+'g & 3 biji Tomat 🎉'}
+  save();say(m);hud();window.renderOrders()};
+window.renderOrders=function(){const el=$('ob');if(!el)return;const L=load(),nd=L.list.filter(x=>x.done).length;
+  el.innerHTML=L.list.map((o,i)=>{const c=CROPS[o.id],h=Math.min(have(o.id),o.n),ok=!o.done&&h>=o.n;
+    return `<div class="ord ${o.done?'dn':ok?'ok':''}"><div class="av">${o.a}</div><div><b>${o.w}</b> minta ${o.n}× ${c.e} ${c.n}<small>Hadiah: 🪙 ${o.g} · ✨ ${o.xp} XP</small><div class="pb"><u style="width:${h/o.n*100}%"></u></div><small>${o.done?'Selesai ✔':'Punya '+h+'/'+o.n+' (kualitas apa pun)'}</small></div><button class="mb ${ok?'':'sec'}" ${ok?'':'disabled'} onclick="orderGo(${i})">${o.done?'✔':'Antar'}</button></div>`}).join('')
+   +`<div class="obn">${L.bonus?'🎉 Bonus hari ini sudah diambil':'Selesaikan semua 3 pesanan ('+nd+'/3) → bonus 🪙 '+BONUS+' + 3 biji Tomat'}</div>`};
+setInterval(()=>{try{if(!started)return;const b=$('ordb');if(!b)return;const L=load();b.classList.toggle('has',L.list.some(o=>!o.done&&have(o.id)>=o.n))}catch(e){}},1500);
+})();
+</script>
+<script id="bond-system">
+(function(){"use strict";
+const KEY='pfc2_bond',HT=[0,25,70,140,240,380],TT=['','Kenalan','Teman','Teman Dekat','Sahabat','Keluarga'];
+/* ---- item & resep baru dari kedekatan ---- */
+if(CROPS.length<30){CROPS.push(
+ {n:'Soto Ayam Nenek',c:0,s:78,g:0,e:'🥘'},{n:'Pepes Ikan',c:0,s:70,g:0,e:'🍱'},{n:'Pai Labu',c:0,s:95,g:0,e:'🥧'},
+ {n:'Bubur Jagung',c:0,s:80,g:0,e:'🥣'},{n:'Salad Pasar',c:0,s:66,g:0,e:'🥗'});
+ FD[24]={f:44,w:14,h:12};FD[25]={f:40,w:0,h:10};FD[26]={f:36,w:6,h:6};FD[27]={f:42,w:8,h:10};FD[28]={f:28,w:20,h:4}}
+const RECB={ratmi:{o:24,n:'Soto Ayam Nenek',need:{9:1,8:1,1:1}},tono:{o:25,n:'Pepes Ikan',need:{6:2}},sari:{o:26,n:'Pai Labu',need:{4:1,8:1}},haji:{o:27,n:'Bubur Jagung',need:{3:2}},rina:{o:28,n:'Salad Pasar',need:{1:1,2:2}}};
+/* ---- profil NPC: avatar, favorit, tidak suka, cerita ---- */
+const PR={
+joko:{a:'👨‍🌾',love:[4,13],like:[1,3,10],hate:[6],s3:['Dulu Kakekmu, Darmo, suka duduk di pematang itu sambil bersiul. Aku masih hafal lagunya.','Kalau kamu mau, nanti kuajari bersiul juga. Tapi jangan ketawa, ya, {n}.'],s5:['{n}, ada yang belum pernah kuceritakan. Kakekmu bukan cuma tetanggaku. Dia sahabat paling keras kepala yang pernah kupunya.','Tiap panen pertama, kami selalu makan di pematang ini. Dia bilang tanah itu mendengar kalau kita rajin menyapanya.','Sejak kamu datang, kebun ini terasa seperti dulu lagi. Ramai, hangat, penuh orang yang peduli.','Terima kasih sudah pulang, {n}. Ini titipan untukmu. Aku simpan lama sekali untuk orang yang pantas.']},
+sari:{a:'👩‍🌾',love:[5,12],like:[2,8,26],hate:[17],s3:['Resep pai ini turun-temurun dari ibuku. Rahasianya cuma satu: sabar.','Kuajarkan ke kamu saja ya, {n}. Jangan bilang-bilang Mbak Rina.'],s5:['Aku dulu pernah ingin buka warung di kota, {n}.','Tapi tiap kali lihat bunga matahari mekar di sini, rasanya semua mimpiku sudah ada di Lembah.','Warga yang makan masakanku bahagia, dan itu cukup buatku.','Kamu mengingatkanku kenapa aku memilih tinggal. Terima kasih, {n}.']},
+udin:{a:'🧔',love:[3,10],like:[1,2,4],hate:[5],s3:['Capek itu wajar, {n}. Yang penting jangan berhenti sebelum tanahnya selesai kamu gemburkan.','Kalau lagi lelah, duduk di bangku taman sebentar. Tanahnya nggak ke mana-mana.'],s5:['Dulu aku hampir menyerah jadi petani, {n}. Gagal panen tiga musim berturut-turut.','Lalu Pak Joko cuma bilang: tanah nggak pernah marah, dia cuma menunggu kita belajar.','Sekarang tiap kamu lewat sambil bawa air, aku ingat masa itu dan jadi semangat lagi.','Kamu petani yang baik, {n}. Aku bangga jadi tetanggamu.']},
+ratmi:{a:'👵',love:[8,13],like:[1,2,24],hate:[9,10],s3:['Soto ini dulu kubuat tiap Kakekmu pulang dari ladang, {n}.','Ambil resepnya. Nenek sudah terlalu tua buat menghafal sendirian.'],s5:['Nenek punya cucu di kota, {n}. Sudah lama sekali tidak pulang.','Tiap pagi kuhitung telur sambil membayangkan dia yang makan.','Sejak kamu sering mampir, rumah terasa lebih ramai. Ayam-ayamku pun lebih ceria.','Kalau kamu nggak keberatan, panggil aku Nenek saja. Ini, buat cucu kesayangan Nenek.']},
+tono:{a:'👦',love:[7,11],like:[6,19],hate:[8],s3:['Rahasia ikan enak bukan di kailnya, {n}. Tapi di daun pisang dan sabar.','Ini resep pepes dari ayahku. Dulu dia memancing di kolam yang sama.'],s5:['Aku dulu takut air, {n}. Pernah tenggelam waktu kecil di kolam ini.','Ayah menyuruhku duduk di tepinya tiap sore, cuma duduk, sampai takutku hilang.','Sekarang aku memancing di sini, dan kamu orang pertama yang menemaniku tanpa berisik.','Terima kasih, {n}. Teman memancing terbaik yang pernah kupunya.']},
+dodi:{a:'👨‍🦳',love:[7,15],like:[6,11,14],hate:[3],s3:['Danau ini punya satu ikan besar yang belum pernah kutangkap, {n}.','Kalau kamu mau, nanti kita tangkap bareng. Janji.'],s5:['Aku sudah dua puluh tahun menunggu ikan legenda itu, {n}.','Ternyata yang kutunggu bukan ikannya. Tapi seseorang yang mau duduk di tepi danau dan ikut menunggu.','Ikan itu boleh tetap bebas. Aku sudah dapat sesuatu yang lebih berharga.','Terima kasih, {n}. Terima ini sebagai tanda persahabatan kita.']},
+rina:{a:'👩‍🦰',love:[2,5],like:[1,4,8],hate:[17],s3:['Pasar itu hidup kalau ada yang ngobrol, {n}. Makanya aku suka kamu mampir.','Salad ini andalanku kalau pasar ramai. Segar, murah, bikin pembeli balik lagi.'],s5:['Pasar ini dulu sepi sekali, {n}. Aku hampir tutup lapak.','Lalu kamu datang, beli dan jual, dan lama-lama yang lain ikut ramai.','Aku sadar dagang itu bukan cuma untung. Tapi tentang siapa yang kita sapa tiap pagi.','Kamu bagian dari pasar ini sekarang, {n}. Selamanya.']},
+rt:{a:'👨‍💼',love:[13,4],like:[3,12],hate:[],s3:['Jadi RT itu repot, {n}. Tapi tiap warga baru menyapa, repotnya hilang.','Aku catat namamu di buku warga. Resmi, lho.'],s5:['Aula Meeting itu kubangun bersama warga, {n}, dulu waktu desa nyaris terpecah.','Kami pikir kalau punya tempat duduk bersama, orang akan lebih mau saling dengar.','Ternyata benar. Dan kamu ikut menjaga tempat itu tetap hangat.','Atas nama warga Lembah: terima kasih, {n}.']},
+wati:{a:'👩‍🍳',love:[5,2],like:[1,23],hate:[9],s3:['Aku nyapu tiap pagi bukan karena disuruh, {n}. Rasanya seperti menyapa halaman.','Kamu juga suka menyapa tanahmu, kan? Aku bisa lihat dari caramu menyiram.'],s5:['Rumah ini dulu ramai, {n}. Anak-anakku sekarang di kota.','Tapi tiap kamu lewat dan menyapa, rasanya ada yang pulang.','Halaman ini jadi bersih bukan cuma karena sapu, tapi karena ada yang peduli.','Terima kasih sudah jadi tetangga yang hangat, {n}.']},
+haji:{a:'👴',love:[3,16],like:[1,8,23],hate:[],s3:['Ada pepatah: yang sabar menanam, dia yang paling lama menikmati panen, {n}.','Bubur jagung ini sering kubagi ke tetangga. Ini resepnya.'],s5:['Aku sudah melihat banyak orang datang dan pergi dari Lembah ini, {n}.','Sedikit yang tinggal. Lebih sedikit lagi yang membuat orang lain ingin tinggal.','Kamu salah satunya. Itu rezeki bagi desa kami.','Semoga langkahmu selalu dimudahkan, {n}. Terima ini dengan doa dariku.']},
+bayu:{a:'🧑',love:[7,11],like:[6,15,14],hate:[4],s3:['Mancing di sungai itu beda dari kolam, {n}. Airnya bergerak, ikannya pintar.','Tapi kalau kamu sabar, sungai ini murah hati. Aku janji.'],s5:['Aku dulu kerja di kota, {n}. Bangun jam lima, pulang jam sepuluh malam.','Waktu pindah ke sini, aku cuma ingin duduk di tepi sungai tanpa jam.','Kamu salah satu alasan aku betah. Kita nggak perlu banyak bicara.','Terima kasih, {n}. Teman yang tahu kapan harus diam itu langka.']},
+lina:{a:'👩',love:[7,12],like:[2,5],hate:[17],s3:['Sisi barat sungai itu rahasia kecilku, {n}. Ikannya jarang yang tahu.','Kutunjukkan satu titik bagus. Tapi jangan bilang Mas Bayu, ya!'],s5:['Aku dan Mas Bayu sering bersaing siapa dapat ikan terbanyak, {n}.','Padahal diam-diam kami selalu saling menyisakan umpan.','Sungai ini mengajari kami berbagi, dan kamu mengajari kami berkumpul.','Hadiah ini dariku dan Mas Bayu. Kami patungan, hehe.']},
+guru:{a:'👩‍🏫',love:[1,23],like:[4,5,19],hate:[],s3:['Anak-anak sering menanyakanmu, {n}. Katanya petani baru itu keren.','Besok kuajak mereka belajar menanam wortel. Mau jadi tamu kehormatan?'],s5:['Aku mengajar anak-anak membaca, {n}. Tapi kadang yang belajar justru aku.','Dari kamu aku belajar bahwa orang dewasa pun boleh mulai dari awal.','Anak-anak melihatnya. Mereka jadi berani mencoba hal baru.','Terima kasih sudah jadi contoh baik, {n}. Ini untukmu.']},
+nenek:{a:'👵',love:[16,14],like:[4,13],hate:[20]},arka:{a:'🧑',love:[15,10],like:[14,16],hate:[]},pakes:{a:'👴',love:[16,4],like:[14,13],hate:[]},
+tambang:{a:'👷',love:[17,18],like:[10,11],hate:[5]},pendaki:{a:'🧗',love:[19,23],like:[13,16],hate:[]},abuzaid:{a:'🧔',love:[21,22],like:[20,18],hate:[]},fatimah:{a:'👩‍🦱',love:[20,3],like:[1,2,12],hate:[]}};
+const G3=['Kita sudah sering ngobrol, ya {n}. Rasanya seperti teman lama.','Terimalah ini sebagai tanda persahabatan.'],G5=['{n}, kamu sudah jauh-jauh datang ke sini, dan aku tidak pernah lupa itu.','Tempat ini terasa lebih hangat sejak ada kamu.','Apa pun yang terjadi, kamu selalu diterima di sini.','Terima kasih, sahabatku.'];
+const hs=s=>{let h=7;for(let i=0;i<s.length;i++)h=(h*31+s.charCodeAt(i))>>>0;return h};
+function prof(id){let p=PR[id];if(!p){const h=hs(id),A=[1,2,3,4,5,6,7,8],l=A[h%8];p=PR[id]={a:'🙂',love:[l,A[(h>>3)%8]===l?9:A[(h>>3)%8]],like:[A[(h>>6)%8]],hate:[]}}return p}
+const lines3=id=>prof(id).s3||G3,lines5=id=>prof(id).s5||G5;
+/* ---- data ---- */
+let D={};try{D=JSON.parse(localStorage.getItem(KEY)||'{}')||{}}catch(e){D={}}
+const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(D))}catch(e){}};
+const B=id=>D[id]||(D[id]={p:0,t:'',g:'',c:{},k:{},nm:''});
+const hOf=p=>{let h=0;for(let i=1;i<6;i++)if(p>=HT[i])h=i;return h};
+const hrt=h=>'❤️'.repeat(h)+'🤍'.repeat(5-h);
+const today=()=>dkey(todayD());
+const nick=()=>(me&&me.n)||'Petani';
+const fill=t=>String(t).replace(/\{n\}/g,nick());
+const NM=id=>{const n=NPC.find(x=>x.id===id);if(n&&n.n){B(id).nm=n.n;return n.n}return B(id).nm||id};
+const COL=id=>{const n=NPC.find(x=>x.id===id);return(n&&n.col)||'#c99a4a'};
+const ic=i=>CROPS[i]?CROPS[i].e+' '+CROPS[i].n:'?';
+/* resep yang sudah terbuka */
+function applyRec(){for(const id in D){const o=D[id];if(o&&o.c&&o.c[3]&&RECB[id]&&!REC.some(r=>r.o===RECB[id].o))REC.push(RECB[id])}}
+applyRec();
+/* ---- reaksi & dialog ---- */
+const SAY={
+ 0:['Hm? Ada perlu apa, {n}?','Eh, {n}. Lagi ke mana?','Halo, {n}. Cuacanya enak, ya.'],
+ 1:['Halo, {n}! Senang kamu mampir.','{n}, kebunnya gimana kabarnya?','Oh, {n}! Aku baru ingat namamu.'],
+ 2:['{n}! Pas banget kamu datang.','Ngobrol dulu yuk, {n}, sebentar saja.','Kamu sudah makan belum, {n}?'],
+ 3:['{n}, aku senang sekali kamu ada di Lembah ini.','Duduk sini, {n}. Ada cerita yang pengin kubagi.','Tiap lihat {n} lewat, hariku langsung lebih ringan.'],
+ 4:['{n}! Kamu sudah seperti keluarga sendiri.','Apa pun masalahmu, {n}, bilang saja padaku ya.','Hari ini kamu kelihatan semangat, {n}. Aku ikut senang.'],
+ 5:['{n}, sahabatku! Aku selalu menunggu kamu mampir. 💖','Lembah ini rumah kita, ya, {n}.','Kamu tahu, {n}? Kamu bagian dari keluargaku.']};
+const RE={love:['Wah!! Ini kesukaanku! Kamu tahu aja, {n}! 💖','Astaga, {n}, ini luar biasa! Terima kasih banyak!'],like:['Wah, makasih ya, {n}. Aku suka ini.','Manis sekali, {n}. Pas banget!'],ok:['Oh, makasih, {n}. Pasti kupakai.','Terima kasih, {n}. Repot-repot segala.'],hate:['Eh… makasih, {n}. Hm, tapi sebenarnya aku kurang suka ini.','Aduh, {n}… ini bukan seleraku. Tapi niatmu kuhargai.']};
+const PTS={love:20,like:8,ok:3,hate:-6},rn=a=>a[Math.random()*a.length|0];
+/* ---- poin & level ---- */
+let QUE=[],busy=0,BID=null,view='main',lastRe='';
+function addP(id,d,note){const o=B(id),h0=hOf(o.p);o.p=Math.max(0,o.p+d);NM(id);const h1=hOf(o.p);
+  for(let l=h0+1;l<=h1;l++)if(!o.c[l])QUE.push([id,l]);
+  save();if(note)say(note);hud();pump()}
+function pump(){if(busy||!QUE.length)return;busy=1;const[id,lv]=QUE.shift();stage(id,lv)}
+function stage(id,lv){const o=B(id);o.c[lv]=1;save();
+  const go=()=>pay(id,lv);
+  if(lv===3)cine(id,lines3(id),go);else if(lv===5)cine(id,lines5(id),go);else go()}
+function pay(id,lv){const o=B(id),nm=NM(id),rw={1:{g:60},2:{seeds:{2:3,3:2}},3:{g:150},4:{g:300,xi:{x1:2}},5:{g:800,xi:{b2:1}}}[lv];
+  const items=grantReward(rw);
+  if(lv===5){try{items.push(grant({pd:mkPd(2)}))}catch(e){}}
+  if(lv===3&&RECB[id]){const r=RECB[id];if(!REC.some(x=>x.o===r.o))REC.push(r);items.push({e:CROPS[r.o].e,nm:'Resep: '+r.n+' (Kompor)',r:3})}
+  sfx('chime');
+  reveal({daily:1,coins:1,box:'💖',r:lv>=5?4:lv>=3?3:2,title:nm+' · ❤ '+lv,sub:'Kamu sekarang: '+TT[lv],items,act:null,after:()=>{busy=0;if(QUE.length){closeModal();pump()}else openBond(id)}})}
+/* ---- cutscene ---- */
+let CS=null,CT=0;
+function cine(id,lines,cb){const el=$('bcs');if(!el){cb();return}
+  CS={id,lines:lines.map(fill),i:0,cb,txt:'',pos:0};openModal('bcs');
+  const nm=NM(id),p=prof(id),c=COL(id);
+  el.style.setProperty('--c',c);
+  el.innerHTML=`<div class="bcw"><div class="bcp">${p.a}</div><div class="bcb"><div class="bcn">${esc(nm)}</div><div class="bct" id="bct"></div><div class="bcf"><small>Ketuk / Enter untuk lanjut</small><button class="mb sm sec" id="bcskip">Lewati ⏭</button></div></div></div><div class="bch"></div>`;
+  $('bcskip').onclick=e=>{e.stopPropagation();endScene()};
+  el.onclick=adv;line()}
+function line(){const t=CS.lines[CS.i];CS.txt=t;CS.pos=0;clearInterval(CT);const e=$('bct');if(!e)return;e.textContent='';
+  CT=setInterval(()=>{CS.pos+=2;e.textContent=t.slice(0,CS.pos);if(CS.pos>=t.length)clearInterval(CT)},24)}
+function adv(){if(!CS)return;if(CS.pos<CS.txt.length){clearInterval(CT);CS.pos=CS.txt.length;$('bct').textContent=CS.txt;return}
+  if(++CS.i>=CS.lines.length){endScene();return}line()}
+function endScene(){if(!CS)return;clearInterval(CT);const cb=CS.cb;CS=null;const el=$('bcs');if(el)el.onclick=null;closeModal();cb&&cb()}
+addEventListener('keydown',e=>{if(CS&&(e.key==='Enter'||e.key===' '||e.key==='e'||e.key==='E')){e.preventDefault();e.stopPropagation();adv()}},true);
+window.replayScene=id=>{cine(id,lines5(id),()=>openBond(id))};
+/* ---- kartu kedekatan ---- */
+window.openBond=function(id){BID=id;view='main';lastRe='';NM(id);openModal('bond')};
+window.renderBond=function(){const el=$('bb');if(!el||!BID)return;const id=BID,o=B(id),p=prof(id),h=hOf(o.p),nm=NM(id),n=NPC.find(x=>x.id===id);
+  $('bt').textContent='❤️ '+nm;
+  if(view==='all'){const ids=Object.keys(D).filter(k=>D[k].nm).sort((a,b)=>D[b].p-D[a].p);
+    el.innerHTML=`<div class="bsay">📖 Buku Warga: ${ids.length} warga yang sudah kamu kenal</div>`+ids.map(k=>{const q=D[k],hh=hOf(q.p),nx=HT[Math.min(5,hh+1)];return `<div class="bwr"><span class="bwa">${prof(k).a}</span><div><b>${esc(q.nm)}</b> <small>${TT[hh]||'Baru kenal'}</small><div class="bpb"><u style="width:${hh>=5?100:Math.round((q.p-HT[hh])/(nx-HT[hh])*100)}%"></u></div></div><span>${hrt(hh)}</span></div>`}).join('')+`<button class="mb sec sm" onclick="bondView('main')">← Kembali</button>`;return}
+  if(view==='gift'){const ids={};for(const k in inv){if(inv[k]>0){const b=+k%100;if(CROPS[b]&&b>0)ids[b]=1}}
+    const L=Object.keys(ids).map(Number).sort((a,b)=>a-b),done=o.g===today();
+    el.innerHTML=`<div class="bsay">${done?'Kamu sudah memberi hadiah hari ini. Besok lagi ya!':'Pilih hadiah untuk '+esc(nm)+' (1× per hari).'}</div><div class="bgl">`+(L.length?L.map(b=>{const k=o.k[b],tag=k==='love'?'💖':k==='like'?'🙂':k==='hate'?'😒':k==='ok'?'😐':'';
+      return `<button class="bgi" ${done?'disabled':''} onclick="bondGive(${b})"><span>${CROPS[b].e}</span><small>${esc(CROPS[b].n)} ×${cnt(b)} ${tag}</small></button>`}).join(''):'<div class="mut">Tasmu kosong. Panen atau masak dulu.</div>')+`</div><button class="mb sec sm" onclick="bondView('main')">← Kembali</button>`;return}
+  const nx=HT[Math.min(5,h+1)],pc=h>=5?100:Math.round((o.p-HT[h])/(nx-HT[h])*100),talked=o.t===today();
+  const love=h>=1?p.love.map(ic).join(' · '):'???',hate=h>=2?(p.hate.length?p.hate.map(ic).join(' · '):'—'):'???';
+  const hasQ=!!(n&&window.PFQ&&PFQ.st);
+  const ms=[1,2,3,4,5].map(l=>{const r={1:'Favorit terbuka · 🪙 60',2:'🌱 Biji Tomat ×3 + Jagung ×2',3:'Cerita pribadi · 🪙 150'+(RECB[id]?' · 🍳 Resep '+RECB[id].n:''),4:'🪙 300 · Ramuan ×2',5:'🎬 Cutscene · 🪙 800 · Liontin A · Kotak Perak'}[l],ok=!!o.c[l];
+    return `<div class="bms ${ok?'ok':''}"><b>${'❤️'.repeat(l)}</b><span>${TT[l]}: ${r}</span>${l===5&&ok?`<button class="mb sm sec" onclick="replayScene('${id}')">▶ Putar</button>`:`<i>${ok?'✔':'🔒'}</i>`}</div>`}).join('');
+  const say1=lastRe||fill(rn(SAY[h]));
+  el.innerHTML=`<div class="bhd"><div class="bav" style="--c:${COL(id)}">${p.a}</div><div class="bhi"><b>${esc(nm)}</b> <small>${TT[h]||'Orang asing'}</small><div class="bhr">${hrt(h)}</div><div class="bpb"><u style="width:${pc}%"></u></div><small>${h>=5?'Tingkat maksimal 💖':o.p+' / '+nx+' poin'}</small></div></div>
+  <div class="bsay">“${esc(say1)}”</div>
+  <div class="bfav"><div>💖 Favorit: ${love}</div><div>😒 Tidak suka: ${hate}</div></div>
+  <div class="brow"><button class="mb ${talked?'sec':''}" ${talked?'disabled':''} onclick="bondTalk()">${talked?'💬 Sudah ngobrol ✔':'💬 Ngobrol +3'}</button><button class="mb" onclick="bondView('gift')">🎁 Beri Hadiah</button></div>
+  <div class="bmw">${ms}</div><button class="mb sec sm" onclick="bondView('all')">📖 Buku Warga</button>`};
+window.bondView=v=>{view=v;lastRe='';renderBond()};
+window.bondTalk=function(){const id=BID,o=B(id);if(o.t===today())return;o.t=today();const n=NPC.find(x=>x.id===id),l=(n&&n.L&&n.L.length&&Math.random()<.5)?rn(n.L):fill(rn(SAY[hOf(o.p)]));
+  lastRe=l;sfx('click');addP(id,3,'💬 '+NM(id)+' +3 ❤');renderBond()};
+window.bondGive=function(b){const id=BID,o=B(id),p=prof(id);if(o.g===today()||cnt(b)<1)return;
+  const t=p.love.includes(b)?'love':p.like.includes(b)?'like':p.hate.includes(b)?'hate':'ok';
+  take(b,1);o.g=today();o.k[b]=t;lastRe=fill(rn(RE[t]));view='main';sfx(t==='hate'?'click':'coin');
+  addP(id,PTS[t],(t==='love'?'💖 ':t==='hate'?'😒 ':'🎁 ')+NM(id)+' '+(PTS[t]>0?'+':'')+PTS[t]+' ❤');renderBond()};
+window.bondAdd=addP;
+/* talk harian otomatis saat buka dialog misi */
+function autoTalk(id){const o=B(id);if(o.t===today())return;o.t=today();addP(id,3,'💬 '+NM(id)+' +3 ❤')}
+/* tombol kedekatan di dialog misi */
+setInterval(()=>{try{if(modal!=='qd')return;const f=document.querySelector('#qd .qft');if(!f||f.querySelector('.bondb'))return;
+  const nm=document.querySelector('#qd .qnm'),n=NPC.find(x=>x.n===(nm&&nm.textContent));if(!n)return;
+  const b=document.createElement('button');b.className='mb sec sm bondb';b.textContent='❤️ Kedekatan';b.onclick=()=>{closeModal();openBond(n.id)};f.insertBefore(b,f.firstChild)}catch(e){}},350);
+/* ---- hook near / inter ---- */
+const nearH=()=>{const now=Date.now();let best=null,bd=1e9;for(const n of NPC){if(n.k!=='h'||!n.n)continue;const p=npcPos(n,now),d=Math.hypot(p.x-me.x,p.y-me.y);if(d<80&&d<bd){bd=d;best=n}}return best};
+const _near=near;near=function(){const r=_near.apply(this,arguments);try{if(r&&r[1]==='Bicara'&&started&&!scene){const n=nearH();if(n)return['💬','Ngobrol','Ngobrol dengan '+n.n+' '+hrt(hOf(B(n.id).p))]}}catch(e){}return r};
+const _inter=inter;inter=function(){let n=null;
+  try{if(started&&!scene&&!trans&&!modal){n=nearH();if(n&&ch&&Object.values(remote).some(o=>!(o.sc|0)&&Math.hypot(o.x-me.x,o.y-me.y)<90))n=null}}catch(e){n=null}
+  const r=_inter.apply(this,arguments);
+  try{if(n){if(modal==='qd')autoTalk(n.id);else if(!modal)openBond(n.id)}}catch(e){console.warn('[bond]',e)}
+  return r};
+const _om=openModal;openModal=function(m){const r=_om.apply(this,arguments);if(m==='bond')renderBond();return r};
+/* ---- sapaan NPC bila papasan ---- */
+const GR={0:['Halo, {n}!','Eh, {n}. Selamat {ph}!','Oh, {n}! Semangat ya!','Selamat {ph}, {n}.'],
+ 1:['{n}! Sehat hari ini?','Wah, {n} lewat. Mampir ngobrol, yuk.','Hai {n}, kebunnya gimana?','{n}, jangan lupa makan ya!'],
+ 3:['{n}! Senang lihat kamu ❤','Eh {n}, ada waktu? Aku punya cerita.','Kebetulan! {n}, sini sebentar!','{n}, hari ini kamu kelihatan semangat!'],
+ 5:['{n}, sahabatku! 💖','Kangen ngobrol sama {n}!','Hei {n}! Kamu bikin harinya cerah ☀️']};
+const was={},cd={};
+setInterval(()=>{try{if(!started||scene||trans||modal||!me)return;const now=Date.now(),pn=performance.now(),ph=phase()[1].toLowerCase();
+  for(const n of NPC){if(n.k!=='h'||!n.n)continue;const p=npcPos(n,now),d=Math.hypot(p.x-me.x,p.y-me.y),inr=d<105;
+    if(inr&&!was[n.id]){was[n.id]=1;const b=bub[n.id];if((cd[n.id]||0)<now&&Math.random()<.7&&!(b&&pn<b.until)){
+      const o=B(n.id),h=hOf(o.p),pool=GR[h>=5?5:h>=3?3:h>=1?1:0].slice();
+      if(h>=1&&o.t!==today())pool.push('{n}, mampir ngobrol sebentar, yuk!');
+      if(h>=2&&o.g!==today())pool.push('Hei {n}, hari ini ada kejutan buatku? 😄');
+      bubble(n.id,fill(rn(pool)).replace('{ph}',ph));cd[n.id]=now+75000+Math.random()*60000}}
+    else if(!inr&&d>135)was[n.id]=0}}catch(e){}},600);
+})();
+</script>
 </body></html>
