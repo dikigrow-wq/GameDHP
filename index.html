@@ -2003,7 +2003,7 @@ if(!/^https?:/.test(SB_URL))$('st').textContent='⚠ Supabase belum diisi di fil
 try{const sv=JSON.parse(localStorage.getItem('pfc2_char')||'null');if(sv){pick.g=sv.g==='f'?'f':'m';if(COLS.includes(sv.col))pick.col=sv.col;if(sv.n)$('nm1').value=$('nm2').value=sv.n}}catch(e){}
 renderPick();
 /* ===== v16: sistem akun (Supabase Auth) + mode tamu + sinkron cloud ===== */
-let sba=null;const AUTH={mode:'',name:'',uid:'',last:'',tab:'in',mod:false,nick:''},SYNC_RE=/^pfc2_(char|SOLO|daily|cal30|orders|bond|dex|fish|inv_.+|quest_.+)$/;
+let sba=null;const AUTH={mode:'',name:'',uid:'',last:'',tab:'in',mod:false,nick:''},SYNC_RE=/^pfc2_(char|SOLO|daily|cal30|orders|bond|dex|fish|fest|inv_.+|quest_.+)$/;
 try{if(window.supabase&&/^https?:/.test(SB_URL))sba=supabase.createClient(SB_URL,SB_KEY,{auth:{persistSession:true,autoRefreshToken:true}})}catch(e){sba=null}
 const RURL=()=>/^https?:/.test(location.protocol)?location.origin+location.pathname:undefined;
 const uMail=u=>u.includes('@')?u:u.toLowerCase()+'@pixelfarm.game';
@@ -5898,7 +5898,7 @@ function roll(id){let r=Math.random()*100,t=0;for(;t<4;t++){if((r-=TIER[t].r)<0)
   const T=TIER[t],mx=(SP[id]||{max:10}).max,w=Math.round(mx*(T.m[0]+(T.m[1]-T.m[0])*Math.random())*10)/10;return{t,w:Math.max(.2,w)}}
 /* ---- tangkapan ---- */
 window.fishCatch=function(id){const{t,w}=roll(id),T=TIER[t],key=id+100*T.q;inv[key]=(inv[key]|0)+1;
-  const b=F.best[id],rec=!b||w>b.w;if(rec)F.best[id]={w,t};F.n++;save();last={id,w,t,rec};
+  const b=F.best[id],rec=!b||w>b.w;if(rec)F.best[id]={w,t};F.n++;save();last={id,w,t,rec};try{window.__fcHook&&window.__fcHook(last)}catch(e){}
   say('🎣 Dapat '+CROPS[id].e+' '+nm(id)+' '+w.toFixed(1)+' lbs'+(T.e?' '+T.e:''));sfx('catch');hud();card(last)};
 function card(c){const el=$('fcard');if(!el)return;const T=TIER[c.t];
   el.style.setProperty('--tc',T.col);
@@ -5939,6 +5939,88 @@ window.renderFishRec=function(){const el=$('frb');if(!el)return;const ids=[6,7,1
   +ids.map(i=>{const b=F.best[i];return `<div class="frr"><span class="fre">${CROPS[i].e}</span><div><b>${esc(nm(i))}</b><small>${b?'Rekor: '+b.w.toFixed(1)+' lbs · '+TIER[b.t].n+' '+TIER[b.t].e:'Belum pernah ditangkap'}</small></div>${b?`<button class="mb sm" onclick="soStart(${i},${b.w},${b.t})">📣 Pamer</button>`:'<i>🔒</i>'}</div>`}).join('')
   +`<div class="frl"><b>Peluang ukuran</b><br>${TIER.map(t=>`<span style="color:${t.col}">${t.n}${t.e} ${t.r}%</span>`).join(' · ')}<br><small>Ikan Besar ke atas berkualitas lebih tinggi dan laku lebih mahal.</small></div>`};
 const _om=openModal;openModal=function(m){const r=_om.apply(this,arguments);if(m==='fishrec')renderFishRec();return r};
+})();
+</script>
+<script id="festival-system">
+(function(){"use strict";
+/* ===== Festival Musiman: pembuka = Lomba Mancing (bobot lbs). Festival = hari pertama tiap musim (hari 8,15,22,29,...). Lomba berjalan 10:30-16:00 waktu game. ===== */
+const KEY='pfc2_fest',T0=105,T1=233,NPCS=[['Tono',8],['Pak Dodi',11],['Mas Bayu',9.5]];
+let L={done:{}},LB={k:'',w:0,i:6},A='',shown='',mode='live',top=[];
+const E=id=>document.getElementById(id);
+const ld=()=>{try{L=JSON.parse(localStorage.getItem(KEY)||'null')||{}}catch(e){L={}}L.done=L.done||{};L.win=L.win|0};
+const sv=()=>{try{localStorage.setItem(KEY,JSON.stringify(L))}catch(e){}};ld();
+const _b=begin;begin=function(){ld();LB={k:'',w:0,i:6};A='';shown='';return _b.apply(this,arguments)};
+const fday=d=>d>1&&dayInSeason(d)===1,fkey=d=>'F'+Math.floor((d-1)/SEAS_LEN);
+const cur=()=>fday(S.d)?{k:fkey(S.d),s:seasonOf(S.d)}:null;
+const ph=()=>S.t<T0?0:S.t<T1?1:2;
+const sn=k=>SEAS[(+k.slice(1))%4];
+/* peserta NPC (nelayan desa) deterministik per room+festival: semua pemain melihat skor yang sama */
+const nw=(k,i,t)=>{const R=rng(hash(code+'|fest|'+k+'|'+i));R();R();const f=3+R()*(NPCS[i][1]-3),p=Math.min(1,Math.max(0,(t-T0)/((T1-T0)*.8)));return Math.round(f*p*10)/10};
+function board(k,t){const f=S.fest&&S.fest.k===k?S.fest:null,a=[];
+ if(f)for(const n in f.sc)a.push({n,w:f.sc[n].w,i:f.sc[n].i,t:f.sc[n].q});
+ NPCS.forEach((x,i)=>{const w=nw(k,i,t);if(w>0)a.push({n:x[0],w,npc:1})});
+ return a.sort((p,q)=>q.w-p.w)}
+function live(k,t){const b=board(k,t).filter(x=>x.npc||x.n!==me.n),o=S.fest&&S.fest.k===k&&S.fest.sc[me.n];
+ if(LB.k===k&&LB.w>0)b.push({n:me.n,w:Math.max(LB.w,o?o.w:0),i:LB.i,me:1});else if(o)b.push({n:me.n,w:o.w,i:o.i,t:o.q,me:1});
+ return b.sort((p,q)=>q.w-p.w)}
+function fin(){const f=S.fest;if(!f||f.res)return;f.res=board(f.k,T1).slice(0,12);bcast(1)}
+/* host menerima skor dari semua pemain (aksi 'fest') */
+const _a=applyA;applyA=function(a,by){
+ if(a&&a.t==='fest'){const f=S.fest;
+  if(f&&f.k===a.k&&!f.res&&a.n&&a.w>0&&a.w<45&&(f.sc[a.n]||Object.keys(f.sc).length<40)){const o=f.sc[a.n];if(!o||a.w>o.w){f.sc[a.n]={w:a.w,i:a.i|0,q:a.q|0};bcast(1)}}
+  return true}
+ return _a.apply(this,arguments)};
+/* dipanggil fish-system tiap tangkapan */
+window.__fcHook=function(c){try{const k=cur();if(!k||ph()!==1||zone!==0||!S.fest||S.fest.k!==k.k)return;
+ if(LB.k!==k.k)LB={k:k.k,w:0,i:c.id};if(c.w<=LB.w)return;LB.w=c.w;LB.i=c.id;
+ dispatch({t:'fest',k:k.k,n:me.n,w:c.w,i:c.id,q:c.t});
+ setTimeout(()=>{const r=live(k.k,S.t).findIndex(x=>x.me)+1;say('🏁 Lomba: '+c.w.toFixed(1)+' lbs'+(r?' · peringkat #'+r:''))},900)}catch(e){}};
+/* piala dekorasi limited = item spesial 'F<n>' */
+const _spi=spi;spi=function(k){const m=/^F(\d+)$/.exec(k);if(m){const n=+m[1],s=SEAS[n%4];return{n:'Piala Lomba Mancing '+s.n+' Thn '+(Math.floor(n/4)+1),e:'🏆',r:4,s:900,lim:1,u:'DEKORASI LIMITED: hadiah juara Lomba Mancing '+s.e+' '+s.n+'. Tidak bisa didapat lagi.'}}return _spi(k)};
+/* ---- Rekor Dunia (opsional, perlu festival_update.sql) ---- */
+async function cloudPut(f,i){try{if(!sba||!AUTH||!AUTH.uid)return;const m=f.sc[me.n];if(!m)return;
+ await sba.from('festival_results').upsert({festival_key:code+':'+f.k,user_id:AUTH.uid,username:me.n,species:m.i,weight:m.w,tier:m.q|0,place:i>=0?i+1:null},{onConflict:'festival_key,user_id'})}catch(e){}}
+async function cloudTop(){try{if(!sba)return[];const{data,error}=await sba.from('festival_results').select('username,species,weight').order('weight',{ascending:false}).limit(5);return error?[]:data||[]}catch(e){return[]}}
+/* ---- UI ---- */
+const st=document.createElement('style');
+st.textContent='#festc{position:fixed;left:50%;top:calc(8px + env(safe-area-inset-top,0px));transform:translateX(-50%);z-index:40;display:none;padding:6px 14px;border-radius:999px;border:2px solid #ffd24a;background:rgba(20,40,70,.93);color:#fff;font:600 12px system-ui;cursor:pointer;white-space:nowrap;box-shadow:0 4px 12px #0007}#festp{position:fixed;inset:0;z-index:9990;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.6);padding:10px}#festp .fb{width:min(94vw,400px);max-height:90dvh;overflow:auto;background:linear-gradient(#17405c,#0a1e2e);border:3px solid #6fd0ff;border-radius:16px;padding:14px;color:#fff;font:14px system-ui}#festp h3{margin:0 0 6px;text-align:center;color:#ffd24a}#festp .r{display:flex;gap:8px;align-items:center;padding:5px 8px;margin:3px 0;border-radius:8px;background:rgba(255,255,255,.08)}#festp .r.me{outline:2px solid #ffd24a}#festp .r b{flex:1}#festp .c{text-align:center}#festp button{margin:6px 3px 0;padding:8px 12px;border:0;border-radius:10px;font:700 13px system-ui;background:#ffd24a;color:#3a2412;cursor:pointer}#festp button.s{background:#2d5a78;color:#fff}';
+document.head.appendChild(st);
+const C=document.createElement('div');C.id='festc';document.body.appendChild(C);
+const P=document.createElement('div');P.id='festp';P.innerHTML='<div class="fb"></div>';document.body.appendChild(P);
+const rows=b=>b.slice(0,8).map((x,i)=>`<div class="r${x.me?' me':''}"><span>${['🥇','🥈','🥉'][i]||'#'+(i+1)}</span><b>${esc(x.n)}${x.npc?' 🎣':''}</b><span>${x.i&&CROPS[x.i]?CROPS[x.i].e:''} ${x.w.toFixed(1)} lbs</span></div>`).join('')||'<div class="r"><b>Belum ada tangkapan</b></div>';
+const hall=()=>top.length?'<h4 style="margin:10px 0 2px">🌐 Rekor Dunia</h4>'+top.map(x=>`<div class="r"><b>${esc(x.username)}</b><span>${CROPS[x.species]?CROPS[x.species].e:''} ${(+x.weight).toFixed(1)} lbs</span></div>`).join(''):'';
+function paint(){const f=S.fest,k=cur(),el=P.firstChild;let h='';
+ if(mode==='res'&&f&&f.res){const s=sn(f.k),i=f.res.findIndex(x=>!x.npc&&x.n===me.n),got=L.done[f.k];
+  h=`<h3>🏁 Hasil Lomba Mancing ${s.e} ${s.n}</h3>${rows(f.res)}`;
+  if(!got&&f.sc[me.n])h+=i===0?`<div class="c" style="margin-top:8px">🥇 Kamu juara! Pilih hadiah limited:</div><div class="c"><button data-c="p">🏅 Liontin Juara</button><button data-c="d">🏆 Piala Dekorasi</button></div>`:`<div class="c"><button data-c="g">🎁 Ambil Hadiah${i===1?' (+Peti Pendant Langka)':i===2?' (+Peti Pendant)':''}</button></div>`;
+  else h+=`<div class="c" style="margin-top:8px;opacity:.8">${got?'Hadiah sudah diambil ✔':'Kamu tidak ikut lomba ini'}</div>`;
+  if(i>=0&&window.soStart)h+=`<div class="c"><button class="s" data-c="s">📣 Pamer Tangkapan</button></div>`}
+ else if(k){const s=SEAS[k.s],p=ph();
+  h=`<h3>🎪 Festival ${s.e} ${s.n}</h3><div class="c" style="opacity:.9">${p===0?'Lomba mancing mulai 10:30 ('+Math.ceil(T0-S.t)+' dtk lagi)':p===1?'🎣 Berlangsung · sisa '+Math.ceil(T1-S.t)+' dtk':'Lomba selesai'}</div>${rows(live(k.k,S.t))}<small style="display:block;opacity:.8;margin-top:6px">Mancing di Lembah (bukan danau es). Yang dinilai satu ikan terberat. 🥇 Liontin Juara / Piala Dekorasi limited · 🥈 Peti Pendant Langka · 🥉 Peti Pendant. Semua peserta dapat 150 gold + Kotak Kayu.</small>`}
+ else h=`<h3>🎪 Festival Musiman</h3><div>Festival hadir tiap pergantian musim (tiap ${SEAS_LEN} hari, mulai hari ke-8). Dibuka dengan Lomba Mancing: ikan terberat (lbs) menang! Juara ${L.win|0}x</div>`;
+ el.innerHTML=h+hall()+'<div class="c"><button class="s" data-c="x">Tutup</button></div>'}
+function show(m){mode=m;P.style.display='flex';paint();cloudTop().then(t=>{top=t;if(P.style.display==='flex')paint()})}
+const hide=()=>{P.style.display='none'};
+function claim(c){const f=S.fest;if(!f||!f.res||L.done[f.k]||!f.sc[me.n])return;
+ const k=f.k,i=f.res.findIndex(x=>!x.npc&&x.n===me.n),rw={g:150,xi:{b1:1}};
+ if(i===1)rw.xi.p2=1;else if(i===2)rw.xi.p1=1;
+ L.done[k]=1;const items=grantReward(rw);
+ if(i===0){L.win++;if(c==='p'){const p=mkPd(4);p.s[p.t]=Math.round(p.s[p.t]*1.25);p.fest=k;items.push(grant({pd:p}))}else items.push(grant({xi:k}))}
+ sv();cloudPut(f,i);hide();const s=sn(k);
+ reveal({daily:1,coins:1,box:'🏆',r:i===0?4:3,title:i===0?'JUARA FESTIVAL!':'HADIAH FESTIVAL',sub:'Lomba Mancing '+s.e+' '+s.n,items,act:null,after:()=>{}})}
+P.addEventListener('click',e=>{const c=e.target.dataset&&e.target.dataset.c;if(!c){if(e.target===P)hide();return}
+ if(c==='x')hide();else if(c==='s'){const f=S.fest,m=f&&f.res&&f.res.find(x=>!x.npc&&x.n===me.n);if(m){hide();soStart(m.i,m.w,m.t|0)}}
+ else claim(c)});
+C.onclick=()=>{const f=S.fest,k=cur();show(f&&f.res&&k&&f.k===k.k?'res':'live')};
+function chip(k){if(!k){C.style.display='none';return}const s=SEAS[k.s],p=ph(),f=S.fest;
+ C.style.display='block';
+ C.textContent=p===0?`🎪 Festival ${s.e} · Lomba mancing 10:30 (${Math.ceil(T0-S.t)} dtk)`:p===1?`🎣 LOMBA ${Math.ceil(T1-S.t)} dtk · kamu ${LB.k===k.k?LB.w.toFixed(1):'0.0'} lbs`:(f&&f.res?'🏁 Selesai — lihat hasil':'🏁 Menghitung hasil…')}
+setInterval(()=>{try{if(typeof started==='undefined'||!started)return;const k=cur(),f=S.fest;
+ if(isHost()){if(k&&(!f||f.k!==k.k)){S.fest={k:k.k,sc:{},res:null};bcast(1)}else if(f&&!f.res&&(!k||k.k!==f.k||ph()===2))fin()}
+ const key=k?k.k+ph():'';if(key!==A){A=key;if(k){const s=SEAS[k.s],p=ph();say(p===0?'🎪 Festival Musim '+s.n+'! Lomba Mancing dibuka 10:30 — ketuk 🎪 untuk info':p===1?'🎣 LOMBA MANCING DIMULAI! Ikan terberat di Lembah menang':'🏁 Lomba Mancing selesai!')}}
+ chip(k);
+ const g=S.fest;if(g&&g.res&&!L.done[g.k]&&shown!==g.k&&g.sc[me.n]){shown=g.k;show('res')}
+ else if(P.style.display==='flex'&&mode==='live')paint()}catch(e){}},500);
 })();
 </script>
 </body></html>
