@@ -838,6 +838,22 @@ button .ic,.cell .ic,.slot .ic{vertical-align:middle}
 #ubar button:active{transform:translateY(2px);box-shadow:0 1px 0 #0f3725}
 .modnick:before{content:''!important;display:inline-block;width:21px;height:16px;margin-right:5px;vertical-align:-2px;background:url(https://zvsvftphialhaolinldx.supabase.co/storage/v1/object/public/sprites/ic_crown.png) center/100% 100% no-repeat!important;image-rendering:pixelated;-webkit-text-fill-color:initial}
 @media (orientation:landscape) and (max-height:560px){:root{--us:1}#mbox .mb .pxi{--ik:.5}#mbox .mb{font-size:15px!important;min-height:34px!important}#m0 .mb{font-size:15px!important;padding:5px 8px!important}}
+/* ===== Alur v2: layar akun baru & Daftar Dunia ===== */
+#pnote{display:none;font:600 13px/1.35 Fredoka,system-ui,sans-serif;color:#ffe08a;text-align:center;background:rgba(0,0,0,.3);border:2px solid #5e9c4e;padding:7px 9px}
+#sp.newp #pnote{display:block}
+#sp.newp #cont,#sp.newp #prolog{display:none!important}
+#mw{gap:8px}
+#mw h2{margin:0}
+#mw>small{text-align:center;color:#ffe08a}
+#mwl{display:flex;flex-direction:column;gap:8px;max-height:min(46vh,330px);overflow-y:auto;overscroll-behavior:contain;touch-action:pan-y;padding:0 2px}
+#mw .wr{background:rgba(0,0,0,.3);border:2px solid #3f7a3a;padding:8px;display:flex;flex-direction:column;gap:6px;color:#fdf4d6}
+#mw .wr.off{opacity:.8;border-color:#2c5a35}
+#mw .wh{display:flex;justify-content:space-between;align-items:center;gap:8px;font:600 15px Fredoka,system-ui,sans-serif}
+#mw .wh span{font-size:12px;color:#c9e8b0}
+#mw .wp{display:flex;flex-wrap:wrap;gap:4px}
+#mw .wp>span{background:#1b4d2c;border:1px solid #5e9c4e;padding:2px 7px;font:600 13px Fredoka,system-ui,sans-serif}
+#mw .wp b{font-weight:700}
+#mw .wn{text-align:center;font:500 12.5px/1.35 Fredoka,system-ui,sans-serif;color:#c9e8b0;padding:4px}
 </style>
 </head><body>
 <!-- ===== INTRO / OPENING VIDEO (atur URL & mode di script paling bawah) ===== -->
@@ -2041,7 +2057,7 @@ if(!/^https?:/.test(SB_URL))$('st').textContent='⚠ Supabase belum diisi di fil
 try{const sv=JSON.parse(localStorage.getItem('pfc2_char')||'null');if(sv){pick.g=sv.g==='f'?'f':'m';if(COLS.includes(sv.col))pick.col=sv.col;if(sv.n)$('nm1').value=$('nm2').value=sv.n}}catch(e){}
 renderPick();
 /* ===== v16: sistem akun (Supabase Auth) + mode tamu + sinkron cloud ===== */
-let sba=null;const AUTH={mode:'',name:'',uid:'',last:'',tab:'in',mod:false,nick:''},SYNC_RE=/^pfc2_(char|SOLO|daily|cal30|orders|bond|dex|fish|fest|inv_.+|quest_.+)$/;
+let sba=null;const AUTH={mode:'',name:'',uid:'',last:'',tab:'in',mod:false,nick:''},SYNC_RE=/^pfc2_(char|prolog|SOLO|daily|cal30|orders|bond|dex|fish|fest|inv_.+|quest_.+)$/;
 try{if(window.supabase&&/^https?:/.test(SB_URL))sba=supabase.createClient(SB_URL,SB_KEY,{auth:{persistSession:true,autoRefreshToken:true}})}catch(e){sba=null}
 const RURL=()=>/^https?:/.test(location.protocol)?location.origin+location.pathname:undefined;
 const uMail=u=>u.includes('@')?u:u.toLowerCase()+'@pixelfarm.game';
@@ -6646,6 +6662,87 @@ setInterval(()=>{try{fitH3()}catch(e){}},900);
 addEventListener('resize',()=>setTimeout(()=>{try{fitH3()}catch(e){}},80));
 addEventListener('pagehide',()=>{try{if(G)gsave()}catch(e){}});
 window.HUD3={goals:()=>GOALS.map(o=>[o.k,val(o.k),o.n]),state:()=>gload(),alerts,fitH3};
+})();
+</script>
+<script id="flow-v2">
+/* ===== Alur v2: akun baru wajib prolog · moderator langsung masuk + Daftar Dunia online ===== */
+(function(){
+var $=function(id){return document.getElementById(id)};
+var PRO='pfc2_prolog';
+function lsGet(k){try{return localStorage.getItem(k)}catch(e){return null}}
+function lsSet(k,v){try{localStorage.setItem(k,v)}catch(e){}}
+/* sudah pernah lewat prolog, atau sudah punya dunia Single Player tersimpan */
+function prologDone(){return !!(lsGet(PRO)||lsGet('pfc2_SOLO'))}
+function needProlog(){return !AUTH.mod&&!prologDone()}
+
+/* ---------- Lobby online (Realtime Presence, tanpa tabel baru) ---------- */
+var LOBBY={ch:null,key:'s'+Math.random().toString(36).slice(2,10),st:{},ok:false};
+function payload(){return{n:String(AUTH.mod?AUTH.nick:(typeof me!=='undefined'&&me.n)||AUTH.name||'Pemain').slice(0,16),m:AUTH.mod?1:0,w:(typeof started!=='undefined'&&started)?String(code||'SOLO'):'',ts:Date.now()}}
+function lbJoin(){if(!sba||LOBBY.ch||!AUTH.mode)return;
+  try{var c=sba.channel('pf:lobby',{config:{presence:{key:LOBBY.key}}});LOBBY.ch=c;
+    c.on('presence',{event:'sync'},function(){LOBBY.st=c.presenceState();lbRender()});
+    c.subscribe(function(s){if(s==='SUBSCRIBED'){LOBBY.ok=true;c.track(payload())}else if(s==='CLOSED'||s==='CHANNEL_ERROR'||s==='TIMED_OUT'){LOBBY.ok=false}})}
+  catch(e){LOBBY.ch=null}}
+function lbUpdate(){if(LOBBY.ch&&LOBBY.ok)try{LOBBY.ch.track(payload())}catch(e){}}
+function lbLeave(){if(LOBBY.ch){try{LOBBY.ch.untrack();sba.removeChannel(LOBBY.ch)}catch(e){}}LOBBY.ch=null;LOBBY.ok=false;LOBBY.st={}}
+function others(){var o=[];for(var k in LOBBY.st){if(k===LOBBY.key)continue;var p=(LOBBY.st[k]||[])[0];if(p&&p.n)o.push(p)}return o}
+setInterval(function(){if(LOBBY.ok)lbUpdate()},30000);
+
+/* ---------- Layar Daftar Dunia (khusus moderator) ---------- */
+var mw=document.createElement('div');mw.id='mw';mw.className='mp';
+mw.innerHTML='<h2>Daftar Dunia</h2><small id="mwc"></small><div id="mwl"></div><small id="mwst"></small><button class="mb sec" type="button" id="mwback"><span>← Kembali</span></button>';
+$('how').parentNode.appendChild(mw);
+$('mwback').onclick=function(){show('m0')};
+function chip(p){return '<span>'+(p.m?'<b class="modnick">'+esc(p.n)+'</b>':esc(p.n))+'</span>'}
+function lbRender(){
+  var L=others(),b=$('mwb');
+  if(b){var s=b.querySelector('span');if(s)s.textContent='Daftar Dunia'+(L.length?' ('+L.length+')':'')}
+  if(mw.style.display==='none'||!mw.style.display)return;
+  var rooms={},solo=[],menu=[];
+  L.forEach(function(p){if(!p.w)menu.push(p);else if(p.w==='SOLO')solo.push(p);else(rooms[p.w]=rooms[p.w]||[]).push(p)});
+  var h='',codes=Object.keys(rooms).sort(function(a,b){return rooms[b].length-rooms[a].length});
+  codes.forEach(function(c){h+='<div class="wr"><div class="wh"><b>🌾 Room '+esc(c)+'</b><span>'+rooms[c].length+' pemain</span></div><div class="wp">'+rooms[c].map(chip).join('')+'</div><button class="mb sm" type="button" data-room="'+esc(c)+'"><span>Kunjungi</span></button></div>'});
+  if(solo.length)h+='<div class="wr off"><div class="wh"><b>Single Player</b><span>'+solo.length+' pemain</span></div><div class="wp">'+solo.map(chip).join('')+'</div><div class="wn">Dunia pribadi di perangkat pemain, tidak bisa dikunjungi.</div></div>';
+  if(menu.length)h+='<div class="wr off"><div class="wh"><b>Sedang di menu</b><span>'+menu.length+' pemain</span></div><div class="wp">'+menu.map(chip).join('')+'</div></div>';
+  if(!h)h='<div class="wn">'+(LOBBY.ok?'Belum ada pemain lain yang online.':'Menghubungkan ke server…')+'</div>';
+  $('mwl').innerHTML=h;$('mwc').textContent=L.length?L.length+' pemain online':'';
+}
+$('mwl').addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-room]');if(b)visit(b.getAttribute('data-room'))});
+function visit(c){if(!AUTH.mod||!c)return;var st=$('mwst');st.textContent='Menghubungkan ke room '+c+'…';
+  $('rm').value=c;$('join').click();
+  setTimeout(function(){if(typeof started!=='undefined'&&!started){var m=$('st').textContent;st.textContent=m||'Gagal terhubung ke room. Coba lagi.'}},9000)}
+
+/* ---------- tombol khusus moderator di menu utama ---------- */
+function modUI(){var b=$('mwb');
+  if(AUTH.mod){if(!b){b=document.createElement('button');b.id='mwb';b.className='mb';b.type='button';b.innerHTML='<i class="pxi pxi-crown"></i><span>Daftar Dunia</span>';b.onclick=function(){show('mw')};var m0=$('m0');m0.insertBefore(b,m0.querySelector('.mb'))}b.style.display=''}
+  else if(b)b.style.display='none'}
+/* moderator: Single Player langsung masuk (tanpa layar nama/karakter) */
+function modSolo(){try{if(lsGet('pfc2_SOLO')){$('cont').onclick()}else{setup(0);code='SOLO';enterSolo()}}catch(e){console.warn('[modSolo]',e)}}
+
+/* ---------- layar Single Player untuk akun baru ---------- */
+var sp=$('sp'),note=document.createElement('div');note.id='pnote';
+note.textContent='Selamat datang! Buat karakter lalu tonton prolog dulu sebelum bisa bermain (termasuk Multiplayer).';
+sp.insertBefore(note,sp.querySelector('h2').nextSibling);
+function spMode(nw){sp.classList.toggle('newp',nw);var ng=$('newg'),h=sp.querySelector('h2');
+  if(!ng.dataset.t0)ng.dataset.t0=ng.textContent;if(!h.dataset.t0)h.dataset.t0=h.textContent;
+  var sx=ng.querySelector('span')||ng;sx.textContent=nw?'Mulai Petualangan':ng.dataset.t0;h.textContent=nw?'Buat Karakter':h.dataset.t0}
+
+/* ---------- pengatur alur ---------- */
+var _show=show;
+show=function(id){
+  if(id==='mp'&&needProlog())id='sp';
+  if(id==='sp'&&AUTH.mod&&AUTH.mode==='acct'){modSolo();return}
+  spMode(id==='sp'&&needProlog());
+  _show(id);
+  if(id==='auth')lbLeave();
+  if(id==='m0'){modUI();lbJoin();lbUpdate();lbRender()}
+  if(id==='mw'){$('mwst').textContent='';lbJoin();lbRender()}
+};
+/* tandai prolog selesai begitu pemain masuk ke dunia Single Player (setelah prolog) */
+var _es=enterSolo;enterSolo=function(){lsSet(PRO,'1');return _es.apply(this,arguments)};
+/* perbarui info dunia di lobby saat pemain mulai bermain */
+var _bg=begin;begin=function(){var r=_bg.apply(this,arguments);try{lbUpdate()}catch(e){}return r};
+window.PFFLOW={needProlog:needProlog,prologDone:prologDone,lobby:function(){return others()}};
 })();
 </script>
 </body></html>
