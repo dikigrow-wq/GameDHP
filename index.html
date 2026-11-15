@@ -925,7 +925,7 @@ button .ic,.cell .ic,.slot .ic{vertical-align:middle}
 <button class="mb" id="abtn" onclick="authSubmit()">Masuk</button><small id="aerr"></small><div class="aor"><span>atau</span></div><button class="mb sec" id="agoogle" onclick="authGoogle()"><svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.6l6.8-6.8C35.8 2.4 30.300 0 24 0 14.600 0 6.500 5.400 2.600 13.200l7.900 6.100C12.400 13.600 17.700 9.500 24 9.500z"/><path fill="#4285F4" d="M46.500 24.500c0-1.600-.1-3.100-.4-4.500H24v9h12.700c-.6 3-2.300 5.500-4.800 7.200l7.700 6c4.500-4.200 6.900-10.300 6.900-17.700z"/><path fill="#FBBC05" d="M10.500 28.700c-.5-1.500-.8-3-.8-4.700s.3-3.200.8-4.700l-7.900-6.100C.9 16.400 0 20.100 0 24s.9 7.600 2.600 10.800z"/><path fill="#34A853" d="M24 48c6.500 0 11.900-2.100 15.900-5.800l-7.700-6c-2.100 1.400-4.900 2.300-8.200 2.300-6.300 0-11.600-4.100-13.500-9.800l-7.900 6.100C6.500 42.600 14.600 48 24 48z"/></svg> Lanjut dengan Google</button><button class="mb sec" onclick="authGuest()"><i class="pxi pxi-avatar"></i><span>Main sebagai Tamu</span></button><small class="amut">Akun menyimpan progres &amp; karaktermu di cloud (bisa main dari perangkat lain). Tamu hanya tersimpan di perangkat ini.</small></div>
 <div id="m0" class="mp"><div id="ubar"></div><button class="mb" onclick="show('sp')"><i class="pxi pxi-single"></i><span>Single Player</span></button><button class="mb" onclick="show('mp')"><i class="pxi pxi-multi"></i><span>Multiplayer</span></button><button class="mb sec" onclick="show('how')"><i class="pxi pxi-howto"></i><span>Cara Main</span></button><button class="mb sec inst-btn" onclick="installApp()" style="display:none"><i class="pxi pxi-install"></i><span>Pasang ke Layar Utama</span></button></div>
 <div id="sp" class="mp"><h2>Single Player</h2><input id="nm1" placeholder="Nama kamu" maxlength="12"><div id="pk1" class="pk"></div><button class="mb" id="cont">Lanjutkan</button><button class="mb" id="newg">Game Baru</button><button class="mb sec" onclick="show('m0')">← Kembali</button></div>
-<div id="mp" class="mp"><h2>Multiplayer</h2><input id="nm2" placeholder="Nama kamu" maxlength="12"><div id="pk2" class="pk"></div><div class="row"><input id="rm" placeholder="Kode room" maxlength="12"><button class="mb sm" id="rnd">Acak</button></div><button class="mb" id="join">Gabung / Buat Room</button><small id="st"></small><button class="mb sec" onclick="show('m0')">← Kembali</button></div>
+<div id="mp" class="mp"><h2>Multiplayer</h2><input id="nm2" placeholder="Nama kamu" maxlength="12"><div id="pk2" class="pk"></div><button class="mb" type="button" onclick="show('mpc')"><span>Buat Room</span></button><button class="mb" type="button" onclick="show('mpj')"><span>Cari / Gabung Room</span></button><small id="st"></small><button class="mb sec" onclick="show('m0')">← Kembali</button></div><div id="mpc" class="mp"><h2>Buat Room</h2><div class="row"><input id="rm" placeholder="Kode room (3-12 huruf/angka)" maxlength="12" autocapitalize="characters" autocomplete="off"><button class="mb sm" id="rnd" type="button">Acak</button></div><button class="mb sec" id="rlk" type="button"><span>🔓 Room terbuka (siapa saja boleh masuk)</span></button><input id="rpw" type="password" placeholder="Password room (min. 4 karakter)" maxlength="32" autocomplete="off" style="display:none"><button class="mb" id="join" type="button"><span>Buat &amp; Masuk</span></button><small id="rcst"></small><button class="mb sec" type="button" onclick="show('mp')">← Kembali</button></div><div id="mpj" class="mp"><h2>Cari Room</h2><small id="rjh"></small><div id="rjl"></div><div class="row"><input id="rjc" placeholder="Kode room" maxlength="12" autocapitalize="characters" autocomplete="off"><button class="mb sm" id="rjg" type="button"><span>Gabung</span></button></div><input id="rjp" type="password" placeholder="Password room" maxlength="32" autocomplete="off" style="display:none"><small id="stj"></small><div class="row"><button class="mb sec sm" id="rjr" type="button"><span>↻</span></button><button class="mb sec" type="button" style="flex:1" onclick="show('mp')">← Kembali</button></div></div>
 <div id="how" class="mp"><h2>Cara Main</h2><ul><li>🏠 Rumah: dekati pintu lalu tekan E. Di dalam ada 🛏️ kasur (tidur setelah 18:00), 📦 peti, 🍳 kompor, 🚿 kamar mandi, dan 🚪 pintu keluar.</li><li>🌱 Bertani: ⛏️ gali tanah → pilih biji (slot 4-8) → Pakai buat tanam → 💧 siram TIAP HARI → 🧺 panen. Makin rajin disiram, makin bagus grade (Biasa / ⭐ Bagus / 🌟 Prima). Biji dibeli di Toko, dan panen bisa ngasih biji lagi.</li><li>🌦️ Cuaca &amp; Musim: 1 musim = 7 hari (🌸 Semi · ☀️ Panas · 🍂 Gugur · ❄️ Dingin). Hujan/salju menyiram semua tanaman otomatis. ⛈️ Badai bisa merusak tanaman, jadi lihat prakiraan di tombol 🌤️ dan panen dulu. Tiap tanaman laku +50% di musimnya (Wortel 🌸, Tomat &amp; Bunga Matahari ☀️, Jagung 🍂, Labu ❄️).</li><li>🏛️ Aula Meeting (pojok kanan atas Kebun, tempat kamu muncul): masuk lewat pintu, tekan E di dekat kursi untuk duduk (8 kursi), E di dekat Pelayan Dewi untuk minum teh. Di dalam, musik berubah jadi fancy.</li><li>HP: joystick kiri untuk jalan, tombol ⛏️ pakai alat (tahan = ulang), tombol kanan = aksi (bicara/tidur/jual)</li><li>WASD / panah: jalan</li><li>1-8: pilih alat &amp; bibit · Q/Z/scroll: ganti slot</li><li>Spasi: pakai alat di tile depan</li><li>E: bicara NPC, tidur di rumah, jual di toko</li><li>🎣 (slot 9): hadap air, Pakai, tunggu ❗ lalu Pakai lagi · berenang di kolam/danau · E dekat ayam = telur</li><li>Trade: dekati pemain lain lalu E, atau tombol 🤝</li><li>⚔️ F / tombol Serang: pukul pemain lain (friendly fire, host bisa mematikannya di menu ⏸). 🎵 Musik latar diunduh otomatis saat masuk game. Atur volume atau ganti lagu di menu ⏸.</li><li>❤️ Darah · 🍗 Lapar · 💧 Haus: makan panen/ikan/telur dari 🎒 Tas (pilih item → Makan), minum dengan E di dekat air / air mancur. Kalau lapar atau haus habis, darah berkurang. Tidur di rumah memulihkan darah.</li><li>Waktu: Pagi 06-11 · Siang 11-15 · Sore 15-18 · Malam 18-24 (lampu menyala, kunang-kunang muncul)</li><li>🗺️ Jelajah: jalan ke tepi kiri/kanan peta (jalan setapak) untuk pindah map. Kebun ← → ❄️ Salju → ⛰️ Bukit, dan 🏜️ Gurun di sebelah barat Kebun. Tiap map punya NPC dan fitur sendiri: Salju = mancing es, Kedai Hangat &amp; 🎮 Rumah Game (hanya ada di Salju); Bukit = tambang, beri liar, susu kambing; Gurun = gali harta, kaktus, oasis, Kafilah. Salju bikin cepat lapar, Gurun bikin cepat haus.</li><li>📜 Misi &amp; Level: cari NPC bertanda ❗ (misi baru) atau ❓ (siap dilapor), tekan E untuk bicara. J / tombol 📜: buka jurnal misi. Misi Utama membawamu keliling Kebun → Salju → Bukit → Gurun, Misi Sampingan ada di tiap NPC. Selesaikan misi &amp; panen untuk XP, naik level, dan dapat gold + hadiah.</li><li>🪑 Bangku taman: dekati lalu tekan E untuk duduk (bangku tidak bisa ditembus). Gerak atau tekan E lagi untuk berdiri. ⛲ Air mancur juga bisa diminum dengan E.</li><li>I: buka tas · Enter / 💬: chat (multiplayer) · Esc: jeda</li></ul><button class="mb sec" onclick="show('m0')">← Kembali</button></div>
 </div></div>
 </div>
@@ -6708,9 +6708,7 @@ function lbRender(){
   $('mwl').innerHTML=h;$('mwc').textContent=L.length?L.length+' pemain online':'';
 }
 $('mwl').addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-room]');if(b)visit(b.getAttribute('data-room'))});
-function visit(c){if(!AUTH.mod||!c)return;var st=$('mwst');st.textContent='Menghubungkan ke room '+c+'…';
-  $('rm').value=c;$('join').click();
-  setTimeout(function(){if(typeof started!=='undefined'&&!started){var m=$('st').textContent;st.textContent=m||'Gagal terhubung ke room. Coba lagi.'}},9000)}
+function visit(c){if(!AUTH.mod||!c)return;var st=$('mwst');window.PFROOMS.enter(c,'',function(m){st.textContent=m})}
 
 /* ---------- tombol khusus moderator di menu utama ---------- */
 function modUI(){var b=$('mwb');
@@ -6743,6 +6741,130 @@ var _es=enterSolo;enterSolo=function(){lsSet(PRO,'1');return _es.apply(this,argu
 /* perbarui info dunia di lobby saat pemain mulai bermain */
 var _bg=begin;begin=function(){var r=_bg.apply(this,arguments);try{lbUpdate()}catch(e){}return r};
 window.PFFLOW={needProlog:needProlog,prologDone:prologDone,lobby:function(){return others()}};
+})();
+</script>
+<style id="rooms-v1-css">
+#mpc,#mpj{gap:8px}
+#mpc h2,#mpj h2{margin:0}
+#mpc small,#mpj small{text-align:center;color:#ffe08a;min-height:1.2em}
+#rjl{display:flex;flex-direction:column;gap:6px;max-height:min(34vh,240px);overflow-y:auto;overscroll-behavior:contain;touch-action:pan-y;padding:0 2px}
+#rjl .wr{background:rgba(0,0,0,.3);border:2px solid #3f7a3a;padding:7px 8px;display:flex;align-items:center;justify-content:space-between;gap:8px;color:#fdf4d6}
+#rjl .wr.lk{border-color:#c99a4a}
+#rjl .wi{display:flex;flex-direction:column;gap:2px;min-width:0}
+#rjl .wi b{font:600 15px Fredoka,system-ui,sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#rjl .wi span{font:500 12px Fredoka,system-ui,sans-serif;color:#c9e8b0}
+#rjl .wn{text-align:center;font:500 12.5px/1.35 Fredoka,system-ui,sans-serif;color:#c9e8b0;padding:6px}
+</style>
+<script id="rooms-v1">
+/* ===== Room Multiplayer: buat room, cari/gabung room, kunci password, moderator bebas masuk =====
+   Butuh rooms_setup.sql (fungsi create_room / join_room / list_rooms di Supabase). */
+(function(){
+var $=function(id){return document.getElementById(id)};
+var RM={lock:false,busy:false,list:[],t:0};
+var ERR={
+  notfound:'Room tidak ditemukan. Buat dulu lewat "Buat Room".',
+  needpass:'Room ini dikunci - masukkan password.',
+  wrongpass:'Password salah.',
+  taken:'Kode room sudah dipakai, coba kode lain.',
+  badcode:'Kode room harus 3-12 huruf/angka.',
+  badpass:'Password minimal 4 karakter.',
+  nosql:'Fitur room belum aktif: jalankan rooms_setup.sql di Supabase SQL Editor.'
+};
+function norm(s){return String(s||'').toUpperCase().replace(/[^A-Z0-9]/g,'')}
+function rpc(fn,args){
+  if(typeof sba==='undefined'||!sba)return Promise.resolve({error:{message:'Server tidak terjangkau'}});
+  return sba.rpc(fn,args||{}).then(function(r){return r},function(e){return{error:{message:(e&&e.message)||'Server tidak terjangkau'}}})}
+function noSql(e){return !!e&&(e.code==='PGRST202'||e.code==='42883'||/could not find the function|schema cache/i.test(e.message||''))}
+
+/* masuk ke dunia (alur lama: setup -> enterRoom -> begin) */
+async function go(c,msg){
+  setup(1);code=c;msg('Menghubungkan ke room '+c+'...');
+  var ok=await enterRoom();
+  if(ok){begin();return true}
+  msg($('st').textContent||'Gagal terhubung ke room. Coba lagi.');return false}
+
+/* cek izin di server lalu masuk. Moderator lolos walau room dikunci (dicek di server). */
+async function enter(c,pw,msg){
+  c=norm(c);msg=msg||function(){};
+  if(c.length<3){msg(ERR.badcode);return{ok:false,err:'badcode'}}
+  if(RM.busy)return{ok:false,err:'busy'};
+  RM.busy=true;
+  try{
+    msg('Memeriksa room...');
+    var r=await rpc('join_room',{p_code:c,p_pass:pw||null});
+    if(r.error){
+      if(noSql(r.error)&&AUTH.mod)return{ok:await go(c,msg)};   /* moderator tetap bisa masuk walau SQL belum dipasang */
+      msg(noSql(r.error)?ERR.nosql:'Gagal memeriksa room: '+r.error.message);return{ok:false,err:'rpc'}}
+    var d=r.data||{};
+    if(!d.ok){msg(ERR[d.err]||'Tidak bisa masuk ke room.');return{ok:false,err:d.err}}
+    return{ok:await go(c,msg)}
+  }finally{RM.busy=false}}
+
+/* ---------- Buat Room ---------- */
+function cmsg(m){$('rcst').textContent=m}
+function lockUI(){
+  $('rlk').querySelector('span').textContent=RM.lock?'🔒 Room dikunci (pakai password)':'🔓 Room terbuka (siapa saja boleh masuk)';
+  $('rpw').style.display=RM.lock?'':'none';if(!RM.lock)$('rpw').value=''}
+$('rlk').onclick=function(){RM.lock=!RM.lock;lockUI();if(RM.lock)$('rpw').focus()};
+$('join').onclick=async function(){
+  var c=norm($('rm').value),pw=RM.lock?$('rpw').value:'';
+  if(c.length<3){cmsg(ERR.badcode);return}
+  if(RM.lock&&(pw.length<4||pw.length>32)){cmsg(ERR.badpass);return}
+  if(RM.busy)return;
+  setup(1);$('join').disabled=true;cmsg('Membuat room...');
+  try{
+    var r=await rpc('create_room',{p_code:c,p_name:me.n,p_pass:RM.lock?pw:null});
+    if(r.error){cmsg(noSql(r.error)?ERR.nosql:'Gagal membuat room: '+r.error.message);return}
+    var d=r.data||{};
+    if(!d.ok){cmsg(ERR[d.err]||'Gagal membuat room.');return}
+    RM.busy=true;try{await go(c,cmsg)}finally{RM.busy=false}
+  }finally{$('join').disabled=false}};
+$('rpw').addEventListener('keydown',function(e){if(e.key==='Enter')$('join').click()});
+
+/* ---------- Cari / Gabung Room ---------- */
+function jmsg(m){$('stj').textContent=m}
+function counts(){var o={};try{window.PFFLOW.lobby().forEach(function(p){if(p.w&&p.w!=='SOLO')o[p.w]=(o[p.w]||0)+1})}catch(e){}return o}
+function render(){
+  var box=$('rjl'),n=counts(),L=RM.list.slice();
+  L.sort(function(a,b){return(n[b.code]||0)-(n[a.code]||0)});
+  if(!L.length){box.innerHTML='<div class="wn">Belum ada room. Buat room pertama lewat "Buat Room".</div>';return}
+  box.innerHTML=L.map(function(r){
+    var on=n[r.code]||0,lk=!!r.locked,mod=!!AUTH.mod;
+    return '<div class="wr'+(lk?' lk':'')+'"><div class="wi"><b>'+(lk?'🔒':'🌾')+' '+esc(r.code)+'</b><span>'+esc(r.owner_name||'Pemain')+' · '+on+' online'+(lk?(mod?' · bebas masuk':' · dikunci'):'')+'</span></div>'+
+      '<button class="mb sm" type="button" data-j="'+esc(r.code)+'" data-lk="'+(lk?1:0)+'"><span>'+(lk&&mod?'🛡️ Masuk':'Gabung')+'</span></button></div>'}).join('')}
+async function refresh(){
+  var box=$('rjl');if(!RM.list.length)box.innerHTML='<div class="wn">Memuat daftar room...</div>';
+  var r=await rpc('list_rooms');RM.t=Date.now();
+  if(r.error){RM.list=[];box.innerHTML='<div class="wn">'+esc(noSql(r.error)?ERR.nosql:'Gagal memuat daftar room.')+'</div>';return}
+  RM.list=r.data||[];render()}
+async function doJoin(c,pw){
+  var r=await enter(c,pw,jmsg);
+  if(!r.ok&&(r.err==='needpass'||r.err==='wrongpass')){$('rjp').style.display='';$('rjp').focus()}
+  if(!r.ok&&r.err==='notfound')refresh()}
+$('rjl').addEventListener('click',function(e){
+  var b=e.target.closest&&e.target.closest('[data-j]');if(!b)return;
+  var c=b.getAttribute('data-j'),lk=b.getAttribute('data-lk')==='1';
+  $('rjc').value=c;$('rjp').value='';
+  if(lk&&!AUTH.mod){$('rjp').style.display='';$('rjp').focus();jmsg('Room '+c+' dikunci - masukkan password lalu tekan Gabung.');return}
+  $('rjp').style.display='none';doJoin(c,'')});
+$('rjg').onclick=function(){doJoin($('rjc').value,$('rjp').value)};
+$('rjc').addEventListener('keydown',function(e){if(e.key==='Enter')$('rjg').click()});
+$('rjp').addEventListener('keydown',function(e){if(e.key==='Enter')$('rjg').click()});
+$('rjr').onclick=function(){jmsg('');refresh()};
+setInterval(function(){
+  if($('mpj').style.display!=='flex')return;
+  render();if(Date.now()-RM.t>15000)refresh()},4000);
+
+/* ---------- pengatur layar ---------- */
+var _s2=window.show;
+window.show=function(id){
+  if((id==='mpc'||id==='mpj')&&window.PFFLOW&&PFFLOW.needProlog())id='sp';   /* akun baru wajib prolog dulu */
+  _s2.apply(this,arguments);
+  if(id==='mpc'){cmsg('');RM.lock=false;lockUI()}
+  if(id==='mpj'){jmsg('');$('rjc').value='';$('rjp').value='';$('rjp').style.display='none';
+    $('rjh').textContent=AUTH.mod?'🛡️ Moderator: bebas masuk ke room terkunci.':'';refresh()}
+};
+window.PFROOMS={enter:enter,refresh:refresh};
 })();
 </script>
 </body></html>
