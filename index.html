@@ -1126,7 +1126,7 @@ async function connect(){
       for(const k in st){if(k!==myId&&remote[k]){remote[k].n=st[k][0].n;remote[k].col=st[k][0].col;remote[k].g=st[k][0].g}}pinfo=st;hud()});
     ch.on('presence',{event:'join'},({key,newPresences:np})=>{if(key!==myId&&np&&np[0]){addLog(0,0,(np[0].n||'Teman')+' bergabung 👋',0,1);say((np[0].n||'Teman')+' bergabung')}lastP='';if(isHost())setTimeout(()=>bcast(1),400)});
     ch.on('presence',{event:'leave'},({key,leftPresences:lp})=>{if(key!==myId&&lp&&lp[0])addLog(0,0,(lp[0].n||'Teman')+' keluar',0,1)});
-    ch.on('broadcast',{event:'pos'},({payload:p})=>{if(p.id===myId)return;const o=remote[p.id]||(remote[p.id]={x:p.x,y:p.y,ph:0});o.tx=p.x;o.ty=p.y;o.vx=p.vx||0;o.vy=p.vy||0;o.hp=p.hp;o.f=p.f;o.col=p.col;o.n=p.n;if(p.mu!==o.mu){o.mu=p.mu;o.vm=0;if(p.mu)isModUid(p.mu).then(v=>{if(o.mu===p.mu)o.vm=v?1:0})}o.g=p.g;o.em=p.em||'';o.si=p.si|0;o.sh=p.sh?{i:p.sh.i,w:p.sh.w,t:p.sh.t,u:performance.now()+(p.sh.d|0)}:0;{const ns=p.sc|0,nz=p.z|0;if(o.rs!==ns||o.zr!==nz){o.rs=ns;o.zr=nz;o.x=p.x;o.y=p.y}o.sc=o.zr===zone?o.rs:99}o.seen=performance.now()});
+    ch.on('broadcast',{event:'pos'},({payload:p})=>{if(p.id===myId)return;const o=remote[p.id]||(remote[p.id]={x:p.x,y:p.y,ph:0});o.tx=p.x;o.ty=p.y;o.vx=p.vx||0;o.vy=p.vy||0;o.hp=p.hp;o.f=p.f;o.col=p.col;o.n=p.n;if(p.mu!==o.mu){o.mu=p.mu;o.vm=0;if(p.mu)isModUid(p.mu).then(v=>{if(o.mu===p.mu)o.vm=v?1:0})}o.g=p.g;o.em=p.em||'';o.si=p.si|0;o.sh=p.sh?{i:p.sh.i,w:p.sh.w,t:p.sh.t,s:p.sh.s,u:performance.now()+(p.sh.d|0)}:0;{const ns=p.sc|0,nz=p.z|0;if(o.rs!==ns||o.zr!==nz){o.rs=ns;o.zr=nz;o.x=p.x;o.y=p.y}o.sc=o.zr===zone?o.rs:99}o.seen=performance.now()});
     ch.on('broadcast',{event:'state'},({payload:p})=>{if(p.h!==roster[0]||p.h===myId)return;const t=S.t;S=fixS(p.s);if(Math.abs(S.t-t)<.6)S.t=t;hud()});
     ch.on('broadcast',{event:'sync'},({payload:p})=>{if(p.h!==roster[0]||p.h===myId)return;tSync(p);S.gold=p.g;if(p.pv!=null)S.pvp=p.pv;hud()});
     ch.on('broadcast',{event:'delta'},({payload:p})=>{if(p.h!==roster[0]||p.h===myId)return;(p.tl||[]).forEach(([i,t])=>{if(S.tiles[i]&&Array.isArray(t)){tileSfx(i,S.tiles[i],t);S.tiles[i]=t}});S.gold=p.gold;tSync(p);hud()});
@@ -2660,7 +2660,7 @@ function renderBag(){const all=bagEntries(),cnt=c=>c==='all'?all.length:all.filt
       ${bs==='x1'||bs==='x2'?`<button class="mb" onclick="useSp('${bs}')">⚡ Pakai</button>`:''}
       ${d.s?`<button class="mb sec sm" onclick="sellSp('${bs}')">💰 Jual 1 · +${d.s} gold</button>`:''}</div>`}
   else if(inv[bs]>0&&IT(bs)){const i=IT(bs),b=bs%100,rr=list.find(x=>x.k===bs)||all.find(x=>x.k===bs),r=rr?rr.r:0;
-    inf=`<div class="ihead" style="--rc:${RC[r]}"><span class="big">${i.e}</span><div><h3>${i.n}</h3><i class="rtag">${RN[r]}</i></div></div><p>Jumlah: <b>${inv[bs]}</b><br>Harga jual: ${i.s} gold / buah<br>Nilai: ${nf(i.s*inv[bs])} gold<br><span class="mut">Jual di Toko, atau makan.</span></p>${FD[b]?`<div class="iact"><button class="mb" onclick="eat('${bs}')">🍴 Makan · +${Math.round(FD[b].f*(1+.25*i.q))} lapar</button></div>`:''}`}
+    inf=`<div class="ihead" style="--rc:${RC[r]}"><span class="big">${i.e}</span><div><h3>${i.n}</h3><i class="rtag">${RN[r]}</i></div></div><p>Jumlah: <b>${inv[bs]}</b><br>Harga jual: ${i.s} gold / buah<br>Nilai: ${nf(i.s*inv[bs])} gold<br><span class="mut">Jual di Toko, atau makan.</span></p>${FD[b]?`<div class="iact"><button class="mb" onclick="eat('${bs}')">🍴 Makan · +${Math.round(FD[b].f*(1+.25*i.q))} lapar</button></div>`:''}${window.soBagBtn?soBagBtn(bs):''}`}
   const foot=bagTab==='pd'||bs[0]==='P'?`<hr><b>Bonus karakter</b> <span class="mut">(${eq.length}/2 slot)</span><div class="stl">${totRows()}</div>`:`<hr><span class="mut">Nilai semua panen: <b>${nf(tot)}</b> gold</span>`;
   put('info',inf+foot)}
 function useSp(k){const d=spi(k);if(!d||!(xi[k]>0))return;
@@ -5945,55 +5945,141 @@ const _om=openModal;openModal=function(m){const r=_om.apply(this,arguments);if(m
 const KEY='pfc2_fish';
 const SP={6:{n:'Ikan',max:8,c:['#6fb6e0','#3f86b8']},7:{n:'Ikan Mas',max:16,c:['#ff9a3a','#e5602a']},14:{n:'Ikan Salju',max:14,c:['#d8f0ff','#7fb8e0']},15:{n:'Ikan Kristal',max:30,c:['#7ff0ff','#c07aff']}};
 const TIER=[{n:'Kecil',r:38,m:[.1,.3],q:0,e:'',col:'#9fb4c4'},{n:'Biasa',r:34,m:[.3,.55],q:0,e:'',col:'#cfe8ff'},{n:'Besar',r:18,m:[.55,.8],q:1,e:'⭐',col:'#ffd24a'},{n:'Raksasa',r:8,m:[.8,1],q:2,e:'🔥',col:'#ff8a3a'},{n:'Legenda',r:2,m:[1,1.35],q:2,e:'👑',col:'#ff6ae8'}];
+/* ---- spesies ikan: nama realistis + ikan legenda & mitos (peluang kecil) ----
+   p = bobot peluang di dalam keluarganya, max = bobot dasar (lbs), rar: 0 umum 1 jarang 2 langka 3 legenda 4 mitos,
+   d = hiasan gambar. Legenda selalu tier Raksasa+, Mitos selalu tier Legenda (bobot maks tetap < 45 lbs agar valid di Lomba). */
+const RAR=[{n:'Umum',col:'#cfe8ff'},{n:'Jarang',col:'#7be39a'},{n:'Langka',col:'#6fb6ff'},{n:'Legenda',col:'#ffd24a'},{n:'Mitos',col:'#7af0ff'}];
+const SPS={
+ 6:[{n:'Nila',p:28,max:9,c:['#9aa7a8','#5f6e72']},{n:'Mujair',p:24,max:6,c:['#b6a97a','#7d7048']},{n:'Lele',p:22,max:11,c:['#6b6a60','#3d3c36'],d:['whisk']},
+    {n:'Gabus',p:12,max:10,rar:1,c:['#7a6a4a','#4a3f2a']},{n:'Patin',p:8,max:20,rar:1,c:['#aab8c2','#6c7f8c'],d:['whisk']},{n:'Gurame',p:5,max:16,rar:1,c:['#c9a77a','#8b6b44']},
+    {n:'Raja Patin Kali',p:.8,max:30,rar:3,c:['#e6dfcc','#8fa3b5'],d:['whisk']},{n:'Nila Dewa',p:.25,max:32,rar:4,c:['#ffe08a','#ffb13a'],d:['wing']}],
+ 7:[{n:'Ikan Mas',p:38,max:16,c:['#ff9a3a','#e5602a']},{n:'Koi',p:24,max:18,rar:1,c:['#f4f0e6','#d8d0bf'],d:['spot']},{n:'Koki',p:18,max:6,rar:1,c:['#ffb347','#ff7a2a'],d:['wing']},
+    {n:'Arwana Silver',p:12,max:28,rar:2,c:['#d6dde6','#8e9bb0'],d:['whisk']},{n:'Arwana Emas',p:1.8,max:30,rar:3,c:['#ffd24a','#d49a1a'],d:['whisk']},{n:'Koi Naga',p:.45,max:32,rar:4,c:['#ff6a5a','#ffd24a'],d:['horn','whisk']}],
+ 14:[{n:'Trout Pelangi',p:34,max:14,c:['#a9c0a0','#e07a8a']},{n:'Salmon',p:28,max:22,c:['#c7ced6','#e08a7a']},{n:'Arctic Char',p:20,max:12,rar:1,c:['#9fb8d0','#e6905a']},
+    {n:'Pike Utara',p:12,max:25,rar:1,c:['#7f9a62','#4f6a3a']},{n:'Sturgeon Putih',p:5,max:32,rar:2,c:['#cfd6dc','#8b97a3']},
+    {n:'Salmon Raja Beku',p:.9,max:30,rar:3,c:['#bfefff','#5aa8e0'],d:['wing']},{n:'Naga Es Beku',p:.3,max:32,rar:4,c:['#d8f6ff','#6f9bff'],d:['horn','whisk','facet']}],
+ 15:[{n:'Ikan Kristal',p:78,max:30,rar:2,c:['#7ff0ff','#c07aff'],d:['facet']},{n:'Kristal Aurora',p:17,max:32,rar:2,c:['#9affc8','#8a7bff'],d:['facet']},
+    {n:'Leviathan Kristal',p:1.5,max:30,rar:3,c:['#7aa8ff','#c07aff'],d:['wing','facet']},{n:'Phoenix Es',p:.4,max:32,rar:4,c:['#ff9a6a','#ffd24a'],d:['wing']}]};
+const FAMF={6:.62,7:.38,14:.8,15:.2};
+const sp=(id,s)=>(SPS[id]&&SPS[id][s])||null;
+const rarOf=(id,s)=>{const x=sp(id,s);return x?x.rar|0:0};
+const snm=(id,s)=>{const x=sp(id,s);return x?x.n:nm(id)};
+const smax=(id,s)=>{const x=sp(id,s);return x?x.max:(SP[id]||{max:10}).max};
+const scol=(id,s)=>{const x=sp(id,s);return x?x.c:(SP[id]||SP[6]).c};
+function pickSp(id,skipTop){const L=SPS[id];if(!L)return -1;let tot=0;for(const x of L)if(!(skipTop&&x.rar>=3))tot+=x.p;let r=Math.random()*tot;for(let i=0;i<L.length;i++){if(skipTop&&L[i].rar>=3)continue;if((r-=L[i].p)<0)return i}return 0}
 let F={best:{},n:0},SO=null,last=null,hideT=0;
-const load=()=>{try{F=JSON.parse(localStorage.getItem(KEY)||'null')||{best:{},n:0}}catch(e){F={best:{},n:0}}F.best=F.best||{};F.n=F.n|0};
+const load=()=>{try{F=JSON.parse(localStorage.getItem(KEY)||'null')||{best:{},n:0}}catch(e){F={best:{},n:0}}F.best=F.best||{};F.bag=F.bag||{};F.sp=F.sp||{};F.n=F.n|0};
 const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(F))}catch(e){}};load();
 const _bg=begin;begin=function(){load();SO=null;return _bg.apply(this,arguments)};
 const nm=id=>(SP[id]||{n:CROPS[id]?CROPS[id].n:'Ikan'}).n;
-function roll(id){let r=Math.random()*100,t=0;for(;t<4;t++){if((r-=TIER[t].r)<0)break}
-  const T=TIER[t],mx=(SP[id]||{max:10}).max,w=Math.round(mx*(T.m[0]+(T.m[1]-T.m[0])*Math.random())*10)/10;return{t,w:Math.max(.2,w)}}
+function roll(id){const s=pickSp(id),rar=rarOf(id,s);let r=Math.random()*100,t=0;for(;t<4;t++){if((r-=TIER[t].r)<0)break}
+  if(rar===4)t=4;else if(rar===3)t=Math.max(t,3);
+  const T=TIER[t],mx=smax(id,s),w=Math.round(mx*(T.m[0]+(T.m[1]-T.m[0])*Math.random())*10)/10;return{t,w:Math.max(.2,w),s}}
 /* ---- tangkapan ---- */
-window.fishCatch=function(id){const{t,w}=roll(id),T=TIER[t],key=id+100*T.q;inv[key]=(inv[key]|0)+1;
-  const b=F.best[id],rec=!b||w>b.w;if(rec)F.best[id]={w,t};F.n++;save();last={id,w,t,rec};try{window.__fcHook&&window.__fcHook(last)}catch(e){}
-  say('🎣 Dapat '+CROPS[id].e+' '+nm(id)+' '+w.toFixed(1)+' lbs'+(T.e?' '+T.e:''));sfx('catch');hud();card(last)};
-function card(c){const el=$('fcard');if(!el)return;const T=TIER[c.t];
-  el.style.setProperty('--tc',T.col);
-  el.innerHTML=`<span class="fce">${CROPS[c.id].e}</span><div class="fct"><b>${esc(nm(c.id))} · ${c.w.toFixed(1)} lbs</b><small>${T.n} ${T.e}${c.rec?' · <u>REKOR BARU!</u>':''}</small></div><button class="mb sm" onclick="soStart(${c.id},${c.w},${c.t})">📣 Pamer</button><button class="mb sm sec" onclick="openModal('fishrec')">🏆</button><button class="x" onclick="fcardHide()">✕</button>`;
-  el.classList.add('on');clearTimeout(hideT);hideT=setTimeout(fcardHide,9000)}
+window.fishCatch=function(id){const{t,w,s}=roll(id),T=TIER[t],key=id+100*T.q,rar=rarOf(id,s);
+  inv[key]=(inv[key]|0)+1;(F.bag[key]=F.bag[key]||[]).push({w,t,s});if(F.bag[key].length>40)F.bag[key].shift();
+  const sk=id+':'+s,b=F.sp[sk],rec=!b||w>b.w;if(rec)F.sp[sk]={w,t};const fb=F.best[id];if(!fb||w>fb.w)F.best[id]={w,t,s};
+  F.n++;save();last={id,w,t,s,rec};try{window.__fcHook&&window.__fcHook(last)}catch(e){}
+  say('🎣 Dapat '+CROPS[id].e+' '+snm(id,s)+' '+w.toFixed(1)+' lbs'+(T.e?' '+T.e:''));sfx(rar>=3?'chime':'catch');hud();card(last);
+  if(rar>=3){const m=(rar===4?'🐉 MITOS! ':'✨ LEGENDA! ')+me.n+' menangkap '+snm(id,s)+' '+w.toFixed(1)+' lbs!';
+    setTimeout(()=>{say(m);try{if(ch&&started)send('chat',{id:myId,n:'🎣',col:RAR[rar].col,text:m})}catch(e){}},700)}};
+function card(c){const el=$('fcard');if(!el)return;const T=TIER[c.t],rar=rarOf(c.id,c.s),R=RAR[rar];
+  el.style.setProperty('--tc',rar>=3?R.col:T.col);
+  el.innerHTML=`<span class="fce">${CROPS[c.id].e}</span><div class="fct"><b>${esc(snm(c.id,c.s))} · ${c.w.toFixed(1)} lbs</b><small>${rar>=3?(rar===4?'🐉 MITOS':'✨ LEGENDA')+' · ':rar>=1?R.n+' · ':''}${T.n} ${T.e}${c.rec?' · <u>REKOR BARU!</u>':''}</small></div><button class="mb sm" onclick="soStart(${c.id},${c.w},${c.t},${c.s})">📣 Pamer</button><button class="mb sm sec" onclick="openModal('fishrec')">🏆</button><button class="x" onclick="fcardHide()">✕</button>`;
+  el.classList.add('on');clearTimeout(hideT);hideT=setTimeout(fcardHide,rar>=3?14000:9000)}
 window.fcardHide=()=>{const el=$('fcard');if(el)el.classList.remove('on')};
-/* ---- pamer ---- */
-window.soStart=function(id,w,t){fcardHide();if(modal)closeModal();fishing=null;SO={i:id,w,t,u:performance.now()+9000};say('📣 '+me.n+' memamerkan '+nm(id)+' '+w.toFixed(1)+' lbs!');sfx('chime')};
-window.__soSend=()=>SO&&performance.now()<SO.u?{i:SO.i,w:SO.w,t:SO.t,d:Math.round(SO.u-performance.now())}:0;
-window.__soK=()=>SO&&performance.now()<SO.u?'s'+SO.i+SO.w:'';
-setInterval(()=>{if(SO&&(me.mv||modal||fishing||performance.now()>SO.u))SO=null},150);
-function drawFish(x,y,sz,c,t,tier){const rx=sz*.5,ry=sz*.27,wg=Math.sin(t/220)*.12;
-  g.save();g.translate(x,y);g.rotate(wg);
+/* ---- pamer ----
+   Pemain memilih sendiri ikan & bobotnya (dari Tas atau Rekor). Ikan tetap terangkat sampai dilepas
+   ("Turunkan", ketuk Pamer lagi, atau mulai memancing). Ukuran normal -> gede banget menurut tier; pose ikut tier. */
+const FISHIDS=[6,7,14,15],SZ=[34,48,76,116,160],FIRST={};
+function szOf(s){const T=TIER[s.t|0]||TIER[0],mx=smax(s.i,s.s),r=s.w/mx,fr=Math.max(0,Math.min(1,(r-T.m[0])/((T.m[1]-T.m[0])||1)));return SZ[s.t|0]*(.88+.24*fr)}
+window.soStart=function(id,w,t,s){s=(s===undefined||s===null)?-1:+s;fcardHide();if(modal)closeModal();fishing=null;
+  if(SO&&SO.i===id&&SO.w===w&&SO.t===t&&SO.s===s){window.soStop();return}
+  SO={i:id,w,t,s,u:Infinity};say('📣 '+me.n+' memamerkan '+snm(id,s)+' '+w.toFixed(1)+' lbs!');sfx('chime');relUI()};
+window.soStop=function(){if(!SO)return;SO=null;relUI();say('⬇ Ikan diturunkan');sfx('click')};
+/* d = masa berlaku di layar pemain lain; diperbarui tiap paket posisi (maks. jeda 1,5 dtk) jadi hilang sendiri kalau pemain putus */
+window.__soSend=()=>SO?{i:SO.i,w:SO.w,t:SO.t,s:SO.s,d:4000}:0;
+window.__soK=()=>SO?'s'+SO.i+SO.w+'.'+SO.s:'';
+const relB=document.createElement('button');relB.id='soRel';relB.type='button';relB.textContent='⬇ Turunkan ikan';relB.onclick=()=>window.soStop();
+const relS=document.createElement('style');relS.textContent='#soRel{display:none;position:absolute;left:50%;bottom:calc(62px + var(--sb,0px));transform:translateX(-50%);z-index:5;background:rgba(24,16,9,.92);color:#ffeccc;border:2px solid #e8be68;border-radius:14px;padding:7px 16px;font:700 13px system-ui,sans-serif;box-shadow:0 3px 0 #1a110a,0 6px 14px rgba(0,0,0,.4);cursor:pointer;touch-action:manipulation}#soRel:active{transform:translateX(-50%) translateY(2px)}'+
+ '.spl{display:flex;flex-direction:column;gap:4px;margin-top:8px;padding:6px;border-radius:10px;background:rgba(0,0,0,.28);max-height:200px;overflow-y:auto}.sph{font:700 12px system-ui,sans-serif;opacity:.9}'+
+ '.spr{display:flex;align-items:center;gap:6px;font-size:12.5px;padding:3px 4px;border-radius:8px;background:rgba(255,255,255,.06)}.spr b{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.spr .mb{padding:3px 9px;font-size:12px}.sbd{font-size:11px;font-weight:800;white-space:nowrap}.frh2{font-weight:800;padding:6px 4px 0;opacity:.9}';
+document.head.appendChild(relS);($('ui')||document.body).appendChild(relB);
+function relUI(){relB.style.display=SO?'block':'none'}
+setInterval(()=>{if(SO&&(fishing||vit.hp<=0))SO=null;relUI();const n=performance.now();for(const k in FIRST)if(n-FIRST[k].s>1500)delete FIRST[k]},150);
+function drawFish(x,y,sz,c,t,tier,ang,wa,dec,rar){const rx=sz*.5,ry=sz*.27,wg=Math.sin(t/(190+tier*30))*wa;dec=dec||[];
+  g.save();g.translate(x,y);g.rotate((ang||0)+wg);
   g.fillStyle=c[1];g.beginPath();g.moveTo(-rx*.8,0);g.lineTo(-rx*1.35,-ry*1.05);g.lineTo(-rx*1.28,0);g.lineTo(-rx*1.35,ry*1.05);g.closePath();g.fill();
   g.beginPath();g.moveTo(-rx*.1,-ry*.8);g.lineTo(rx*.1,-ry*1.5);g.lineTo(rx*.45,-ry*.7);g.closePath();g.fill();
   g.fillStyle=c[0];g.beginPath();g.ellipse(0,0,rx,ry,0,0,7);g.fill();
   g.fillStyle='rgba(255,255,255,.28)';g.beginPath();g.ellipse(rx*.05,ry*.35,rx*.7,ry*.4,0,0,7);g.fill();
   g.strokeStyle=c[1];g.lineWidth=Math.max(1.2,sz/38);for(let i=-1;i<=1;i++){g.beginPath();g.arc(-rx*.1+i*rx*.28,0,ry*.62,-1.1,1.1);g.stroke()}
+  if(dec.indexOf('spot')>=0){[['#e5482d',-.35,-.25,.28,.2],['#e5482d',.25,.2,.25,.18],['#2b2b2b',.05,-.3,.16,.12],['#e5482d',.55,-.1,.14,.12]].forEach(function(p){g.fillStyle=p[0];g.beginPath();g.ellipse(rx*p[1],ry*p[2],rx*p[3],ry*p[4],0,0,7);g.fill()})}
+  if(dec.indexOf('facet')>=0){g.strokeStyle='rgba(255,255,255,.7)';g.lineWidth=Math.max(1,sz/60);g.beginPath();g.moveTo(-rx*.5,0);g.lineTo(-rx*.1,-ry*.6);g.lineTo(rx*.3,0);g.lineTo(-rx*.1,ry*.6);g.closePath();g.moveTo(-rx*.1,-ry*.6);g.lineTo(-rx*.1,ry*.6);g.stroke()}
+  if(dec.indexOf('whisk')>=0){g.strokeStyle=c[1];g.lineWidth=Math.max(1.4,sz/46);g.lineCap='round';[0,1].forEach(function(i){g.beginPath();g.moveTo(rx*.92,ry*(.15+i*.1));g.quadraticCurveTo(rx*1.25,ry*(.5+i*.5)+Math.sin(t/200+i)*ry*.15,rx*1.5,ry*(.15+i*.9)+Math.sin(t/170+i)*ry*.25);g.stroke()})}
+  if(dec.indexOf('horn')>=0){g.fillStyle='#ffe9a8';[[.52,-.78],[.7,-.72]].forEach(function(p){g.beginPath();g.moveTo(rx*p[0],ry*p[1]);g.lineTo(rx*(p[0]+.05),ry*(p[1]-.8));g.lineTo(rx*(p[0]+.16),ry*(p[1]+.05));g.closePath();g.fill()})}
+  if(dec.indexOf('wing')>=0){g.fillStyle='rgba(255,255,255,.3)';[-1,1].forEach(function(sd){g.beginPath();g.moveTo(-rx*.1,sd*ry*.7);g.quadraticCurveTo(-rx*.2,sd*ry*(2.2+Math.sin(t/220)*.25),rx*.55,sd*ry*1.0);g.closePath();g.fill()})}
   g.fillStyle='#fff';g.beginPath();g.arc(rx*.62,-ry*.18,Math.max(2,sz*.06),0,7);g.fill();g.fillStyle='#21140a';g.beginPath();g.arc(rx*.65,-ry*.18,Math.max(1,sz*.03),0,7);g.fill();
   g.restore();
-  if(tier>=3){const n=tier===4?7:4;for(let i=0;i<n;i++){const a=t/500+i*6.283/n,r=sz*.78+Math.sin(t/180+i)*5,sx=x+Math.cos(a)*r,sy=y+Math.sin(a)*r*.6,s=2+Math.abs(Math.sin(t/140+i*2))*3;
-    g.fillStyle=tier===4?'#ff9af0':'#ffe08a';g.fillRect(sx-s/2,sy-.6,s,1.2);g.fillRect(sx-.6,sy-s/2,1.2,s)}}}
-function soDraw(x,y,s){const t=performance.now(),sz=22+66*Math.sqrt(Math.min(1,s.w/40)),by=y-96-sz*.3+Math.sin(t/260)*2,T=TIER[s.t]||TIER[0];
-  g.save();g.lineCap='round';const ax=Math.min(sz*.3,16),ay=by+sz*.2;
-  [['#4a2c18',8],['#f0c59b',5]].forEach(([c,w])=>{g.strokeStyle=c;g.lineWidth=w;g.beginPath();g.moveTo(x-10,y-32);g.lineTo(x-ax,ay);g.moveTo(x+10,y-32);g.lineTo(x+ax,ay);g.stroke()});
-  drawFish(x,by,sz,(SP[s.i]||SP[6]).c,t,s.t);
-  const txt=nm(s.i)+' · '+s.w.toFixed(1)+' lbs'+(T.e?' '+T.e:'');g.font='700 12px sans-serif';const w=g.measureText(txt).width+16,ly=by-sz*.55-24;
-  g.fillStyle='rgba(22,13,6,.82)';g.strokeStyle=T.col;g.lineWidth=2;g.beginPath();g.roundRect(x-w/2,ly,w,20,10);g.fill();g.stroke();
-  g.fillStyle='#fff';g.textAlign='center';g.fillText(txt,x,ly+14);g.textAlign='left';g.restore()}
+  if(tier>=3||rar>=3){const n=rar===4?12:tier===4?9:5,col=rar===4?'#8ff6ff':rar===3?'#ffe27a':tier===4?'#ff9af0':'#ffe08a';
+    for(let i=0;i<n;i++){const a=t/500+i*6.283/n,r=sz*(tier===4?.9:.78)+Math.sin(t/180+i)*5,sx=x+Math.cos(a)*r,sy=y+Math.sin(a)*r*.6,s=2+Math.abs(Math.sin(t/140+i*2))*(tier===4?5:3);
+      g.fillStyle=col;g.fillRect(sx-s/2,sy-.6,s,1.2);g.fillRect(sx-.6,sy-s/2,1.2,s)}}}
+function soArm(sx,sy,hx,hy,bend){g.beginPath();g.moveTo(sx,sy);g.quadraticCurveTo((sx+hx)/2+bend,(sy+hy)/2,hx,hy);g.stroke()}
+/* pose per tier: 0-1 satu tangan pegang ekor · 2 dua tangan di atas kepala · 3 gemetar menahan beban + aura · 4 angkat tinggi, miring. Legenda = aura emas, Mitos = aura cyan + cincin berputar */
+function soDraw(x,y,s,mv,pk){const now=performance.now(),tier=s.t|0,T=TIER[tier]||TIER[0],rar=rarOf(s.i,s.s),X=sp(s.i,s.s)||{},RC=RAR[rar];
+  let F0=FIRST[pk];if(!F0)F0=FIRST[pk]={t:now};F0.s=now;
+  const k=Math.min(1,(now-F0.t)/380),eb=1+2.70158*Math.pow(k-1,3)+1.70158*Math.pow(k-1,2);   /* muncul membesar dgn sedikit mantul */
+  const sz=szOf(s)*Math.max(.05,eb),rx=sz*.5,ry=sz*.27,bob=Math.sin(now/260)*(mv?3.2:1.4),shk=tier>=3?Math.sin(now/45)*(tier-2)*.9:0,sy0=y-32,lx=x-10,rs=x+10;
+  let C,ang,arms,hands;
+  if(tier<=1){ang=-.55;const H=[x+16,y-60+bob];C=[H[0]+Math.cos(ang)*rx*1.3,H[1]+Math.sin(ang)*rx*1.3];arms=[[rs,sy0,H[0],H[1],8],[lx,sy0,x-14,y-13,-3]];hands=[H]}
+  else{const up=tier===2?74:tier===3?70:86,ax=Math.min(sz*.28,tier===2?16:tier===3?30:24),bd=tier>=3?10:5;
+    ang=tier===4?-.22:tier===3?-.05:0;const hl=[x-ax+shk,y-up+bob],hr=[x+ax+shk,y-up+bob];
+    C=[x+(tier===4?5:0)+shk,y-up+bob-ry*.95];arms=[[lx,sy0,hl[0],hl[1],-bd],[rs,sy0,hr[0],hr[1],bd]];hands=[hl,hr]}
+  g.save();g.lineCap='round';
+  if(tier>=3||rar>=3){const R=sz*(rar===4?1.05:tier===4?.95:.75),a=(.24+.1*Math.sin(now/240))*(tier===4||rar>=3?1.4:1),gr=g.createRadialGradient(C[0],C[1],R*.15,C[0],C[1],R),
+      c0=rar===4?'rgba(122,240,255,':rar===3?'rgba(255,214,90,':tier===4?'rgba(255,150,240,':'rgba(255,170,70,';
+    gr.addColorStop(0,c0+a+')');gr.addColorStop(1,'rgba(255,255,255,0)');g.fillStyle=gr;g.beginPath();g.arc(C[0],C[1],R,0,7);g.fill();
+    if(rar===4){g.strokeStyle='rgba(140,255,255,.6)';g.lineWidth=2;g.beginPath();g.ellipse(C[0],C[1],R*.8,R*.33,now/900,0,7);g.stroke();g.beginPath();g.ellipse(C[0],C[1],R*.62,R*.26,-now/700,0,7);g.stroke()}}
+  [['#4a2c18',8],['#f0c59b',5]].forEach(([c,w])=>{g.strokeStyle=c;g.lineWidth=w;arms.forEach(a=>soArm(a[0],a[1],a[2],a[3],a[4]))});
+  drawFish(C[0],C[1],sz,scol(s.i,s.s),now,tier,ang,tier<=1?.2:.1/(tier-.5),X.d,rar);
+  g.fillStyle='#f0c59b';g.strokeStyle='#4a2c18';g.lineWidth=1.5;hands.forEach(h=>{g.beginPath();g.arc(h[0],h[1],4,0,7);g.fill();g.stroke()});
+  const txt=(rar===4?'🐉 MITOS · ':rar===3?'✨ LEGENDA · ':'')+snm(s.i,s.s)+' · '+s.w.toFixed(1)+' lbs'+(T.e?' '+T.e:'')+(tier>=2&&rar<3?' · '+T.n:'');g.font='700 '+(12+Math.min(tier,3))+'px sans-serif';
+  const w=g.measureText(txt).width+16,lh=20+tier*2,ly=C[1]-ry*1.55-Math.abs(Math.sin(ang))*rx*.9-lh-6;
+  g.fillStyle='rgba(22,13,6,.82)';g.strokeStyle=rar>=3?RC.col:T.col;g.lineWidth=2;g.beginPath();g.roundRect(C[0]-w/2,ly,w,lh,10);g.fill();g.stroke();
+  g.fillStyle='#fff';g.textAlign='center';g.fillText(txt,C[0],ly+lh*.7);g.textAlign='left';g.restore()}
 const _dp=drawP;drawP=function(x,y,f,col,ph,mv,o){_dp.apply(this,arguments);
-  try{const now=performance.now();let s=0;
-    if(o&&o.sf){if(SO&&now<SO.u)s=SO}
-    else if(o&&o.ms){for(const id in remote){const r=remote[id];if(r.n===o.ms&&r.sh&&now<r.sh.u){s=r.sh;break}}}
-    if(s)soDraw(x,y,s)}catch(e){}};
+  try{const now=performance.now();let s=0,pk='';
+    if(o&&o.sf){if(SO){s=SO;pk='me'}}
+    else if(o&&o.ms){for(const id in remote){const r=remote[id];if(r.n===o.ms&&r.sh&&now<r.sh.u){s=r.sh;pk=id;break}}}
+    if(s)soDraw(x,y,s,mv,pk+':'+s.i+':'+s.w+':'+s.s)}catch(e){}};
+/* ---- pamer dari tas: pemain memilih sendiri ikan & bobotnya (ikan tidak berkurang) ---- */
+function rollQ(id,q){const s=pickSp(id,true),r=Math.random(),t=q===0?(r<.53?0:1):q===1?2:(r<.8?3:4),T=TIER[t],mx=smax(id,s),w=Math.round(mx*(T.m[0]+(T.m[1]-T.m[0])*Math.random())*10)/10;return{w:Math.max(.2,w),t,s}}
+function bagList(key){const id=key%100,q=key/100|0,n=inv[key]|0;let L=F.bag[key]||[],ch=0;
+  if(L.length>n){L=L.slice(L.length-n);ch=1}
+  while(L.length<n&&L.length<40){L.push(rollQ(id,q));ch=1}   /* ikan lama (sebelum ada catatan): tebak dari kualitas */
+  if(ch){F.bag[key]=L;save()}return L}
+const sOf=e=>e.s===undefined||e.s===null?-1:e.s;
+window.soBagBtn=function(key){key=+key;const id=key%100;if(!FISHIDS.includes(id)||!(inv[key]>0))return'';const L=bagList(key);if(!L.length)return'';
+  const rows=L.map((e,i)=>({e,i})).sort((a,b)=>b.e.w-a.e.w).slice(0,12);
+  return '<div class="spl"><div class="sph">📣 Pilih ikan yang mau dipamerkan'+(L.length>12?' (12 terbesar)':'')+'</div>'+rows.map(({e,i})=>{const s=sOf(e),rr=rarOf(id,s),R=RAR[rr],on=SO&&SO.i===id&&SO.w===e.w&&SO.t===e.t&&SO.s===s;
+    return '<div class="spr"><span class="sbd" style="color:'+R.col+'">'+(rr>=3?(rr===4?'🐉':'✨'):TIER[e.t].e||'·')+'</span><b>'+esc(snm(id,s))+'</b><span>'+e.w.toFixed(1)+' lbs</span>'+
+      (on?'<button class="mb sm sec" onclick="soStop();renderBag()">⬇</button>':'<button class="mb sm gold" onclick="soBagPick(\''+key+'\','+i+')">📣 Pamer</button>')+'</div>'}).join('')+'</div>'};
+window.soBagPick=function(key,i){key=+key;const e=bagList(key)[i];if(!e)return;window.soStart(key%100,e.w,e.t,sOf(e))};
 /* ---- panel rekor ---- */
-window.renderFishRec=function(){const el=$('frb');if(!el)return;const ids=[6,7,14,15],bests=ids.map(i=>F.best[i]?{i,...F.best[i]}:null).filter(Boolean).sort((a,b)=>b.w-a.w),top=bests[0];
-  el.innerHTML=`<div class="frh">${top?`<div class="frt">🏆 Ikan terbesarmu</div><b>${CROPS[top.i].e} ${esc(nm(top.i))} · ${top.w.toFixed(1)} lbs</b><small>${TIER[top.t].n} ${TIER[top.t].e}</small>`:'<div class="frt">Belum ada tangkapan</div><small>Mancing dulu di danau, sungai, atau lubang es 🎣</small>'}<small>Total tangkapan: ${F.n}</small></div>`
-  +ids.map(i=>{const b=F.best[i];return `<div class="frr"><span class="fre">${CROPS[i].e}</span><div><b>${esc(nm(i))}</b><small>${b?'Rekor: '+b.w.toFixed(1)+' lbs · '+TIER[b.t].n+' '+TIER[b.t].e:'Belum pernah ditangkap'}</small></div>${b?`<button class="mb sm" onclick="soStart(${i},${b.w},${b.t})">📣 Pamer</button>`:'<i>🔒</i>'}</div>`}).join('')
-  +`<div class="frl"><b>Peluang ukuran</b><br>${TIER.map(t=>`<span style="color:${t.col}">${t.n}${t.e} ${t.r}%</span>`).join(' · ')}<br><small>Ikan Besar ke atas berkualitas lebih tinggi dan laku lebih mahal.</small></div>`};
+window.renderFishRec=function(){const el=$('frb');if(!el)return;
+  const all=[];FISHIDS.forEach(i=>{(SPS[i]||[]).forEach((x,si)=>{const b=F.sp[i+':'+si];if(b)all.push({i,s:si,w:b.w,t:b.t})})});
+  FISHIDS.forEach(i=>{const b=F.best[i];if(b&&b.s===undefined)all.push({i,s:-1,w:b.w,t:b.t})});   /* rekor lama (sebelum ada spesies) */
+  all.sort((a,b)=>b.w-a.w);const top=all[0],got=FISHIDS.reduce((n,i)=>n+(SPS[i]||[]).filter((x,si)=>F.sp[i+':'+si]).length,0),tot=FISHIDS.reduce((n,i)=>n+(SPS[i]||[]).length,0);
+  const pct=(grp,rar)=>grp.reduce((a,i)=>{const L=SPS[i],sum=L.reduce((n,x)=>n+x.p,0),m=L.filter(x=>(x.rar|0)===rar).reduce((n,x)=>n+x.p,0);return a+FAMF[i]*m/sum},0)*100;
+  let h=`<div class="frh">${top?`<div class="frt">🏆 Ikan terbesarmu</div><b>${CROPS[top.i].e} ${esc(snm(top.i,top.s))} · ${top.w.toFixed(1)} lbs</b><small>${TIER[top.t].n} ${TIER[top.t].e}</small>`:'<div class="frt">Belum ada tangkapan</div><b>Ayo memancing!</b>'}<small>Koleksi spesies: ${got}/${tot}</small></div>`;
+  FISHIDS.forEach(i=>{h+=`<div class="frh2">${CROPS[i].e} ${esc(nm(i))}</div>`;
+    (SPS[i]||[]).forEach((x,si)=>{const b=F.sp[i+':'+si],R=RAR[x.rar|0];
+      h+=b?`<div class="frr"><span class="fre">${CROPS[i].e}</span><div><b>${esc(x.n)}</b> <span class="sbd" style="color:${R.col}">${R.n}</span><small>Rekor: ${b.w.toFixed(1)} lbs · ${TIER[b.t].n} ${TIER[b.t].e}</small></div><button class="mb sm" onclick="soStart(${i},${b.w},${b.t},${si})">📣 Pamer</button></div>`
+        :`<div class="frr" style="opacity:.55"><span class="fre">❔</span><div><b>???</b> <span class="sbd" style="color:${R.col}">${R.n}</span><small>Belum pernah ditangkap</small></div></div>`});
+    const ob=F.best[i];if(ob&&ob.s===undefined)h+=`<div class="frr"><span class="fre">${CROPS[i].e}</span><div><b>${esc(nm(i))}</b> <small>Tangkapan lama · ${ob.w.toFixed(1)} lbs · ${TIER[ob.t].n} ${TIER[ob.t].e}</small></div><button class="mb sm" onclick="soStart(${i},${ob.w},${ob.t},-1)">📣 Pamer</button></div>`});
+  h+=`<div class="frl"><b>Peluang ukuran</b><br>${TIER.map(t=>`<span style="color:${t.col}">${t.n}${t.e} ${t.r}%</span>`).join(' · ')}<br><small>Ikan Besar ke atas berkualitas lebih tinggi dan laku lebih mahal.</small></div>`
+   +`<div class="frl"><b>Peluang ikan istimewa</b><br>🏞 Danau & sungai: <span style="color:${RAR[3].col}">Legenda ✨ ${pct([6,7],3).toFixed(1)}%</span> · <span style="color:${RAR[4].col}">Mitos 🐉 ${pct([6,7],4).toFixed(2)}%</span><br>❄ Danau es: <span style="color:${RAR[3].col}">Legenda ✨ ${pct([14,15],3).toFixed(1)}%</span> · <span style="color:${RAR[4].col}">Mitos 🐉 ${pct([14,15],4).toFixed(2)}%</span></div>`;
+  el.innerHTML=h};
 const _om=openModal;openModal=function(m){const r=_om.apply(this,arguments);if(m==='fishrec')renderFishRec();return r};
 })();
 </script>
