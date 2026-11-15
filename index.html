@@ -1101,11 +1101,11 @@ const isHost=()=>!ch||!roster.length||roster[0]===myId;
 const send=(e,p)=>{if(ch)ch.send({type:'broadcast',event:e,payload:p})};
 let svT;function save(){try{localStorage.setItem('pfc2_'+code,JSON.stringify(S))}catch(e){}
   if(sb&&isHost()){clearTimeout(svT);svT=setTimeout(()=>sb.from('farms').upsert({code,state:S,updated_at:new Date().toISOString()}).then(r=>r.error&&console.warn('save',r.error)),1500)}}
-let syncN=0,lastPT=0,drinkAt=0,botolIsi=4;const BOTOL_MAX=4,BOTOL_HAUS=25;let vit={hp:100,food:85,water:85},vwarn={f:0,w:0};
+let syncN=0,lastPT=0,drinkAt=0,botolIsi=4;const BOTOL_MAX=4,BOTOL_HAUS=25;let up={hoe:0,can:0,rod:0},canIsi=6;const CANCAP=[6,10,16,24],canMax=()=>CANCAP[up.can|0];let vit={hp:100,food:85,water:85},vwarn={f:0,w:0};
 const dirty=new Set();
 const FD={1:{f:14,w:2},2:{f:10,w:12},3:{f:22,w:0},4:{f:30,w:4},5:{f:8,w:0},6:{f:20,w:0},7:{f:26,w:0},8:{f:14,w:0},9:{f:10,w:0,h:-5},10:{f:38,w:0},11:{f:34,w:0,h:6},12:{f:26,w:0},13:{f:32,w:24,h:8}};
 const TK=[[6,255,170,110,.24],[8,255,225,170,.06],[11,255,255,240,0],[14,255,250,225,0],[16,255,200,110,.12],[17.7,255,130,60,.26],[19,95,60,125,.42],[20.5,16,26,78,.48],[24,12,20,70,.52]];
-const snapInv=()=>JSON.stringify({inv,sd,xi,pd,eq,st:stash,vit:{hp:Math.round(vit.hp),food:Math.round(vit.food),water:Math.round(vit.water)},bt:botolIsi});
+const snapInv=()=>JSON.stringify({inv,sd,xi,pd,eq,st:stash,vit:{hp:Math.round(vit.hp),food:Math.round(vit.food),water:Math.round(vit.water)},bt:botolIsi,up,cn:canIsi});
 function applyA(a,by){const ok=apply(a,by);if(ok&&Number.isInteger(a.x)&&Number.isInteger(a.y))dirty.add(a.x+a.y*W);return ok}
 function bdelta(){if(!ch)return;const tl=[];dirty.forEach(i=>tl.push([i,S.tiles[i]]));dirty.clear();send('delta',{h:myId,tl,gold:S.gold,d:S.d,t:S.t})}
 const bcast=full=>{if(isHost()){if(ch){if(full===1)send('state',{h:myId,s:S});else bdelta()}save()}};
@@ -1159,7 +1159,7 @@ function inter(){const now=Date.now();
     if((egg[n.id]||0)<now){egg[n.id]=now+45000;inv[8]=(inv[8]||0)+1;bub[n.id]={text:'Kluk kluk! 🥚',until:performance.now()+2500};say('🥚 Dapat telur!');sfx('cluck');hud()}
     else{bub[n.id]={text:'Kok…',until:performance.now()+2000};say('Ayamnya belum bertelur lagi')}return}}
   if(zone===0&&Math.hypot(me.x-5.5*T,me.y-18.5*T)<1.9*T&&(inv[9]|0)>0){cookMeat();return}
-  if(drinkSpot()){if(tool===5){isiBotol();return}drink(atFountain()?'f':'w');return}
+  if(drinkSpot()){if(tool===1&&canIsi<canMax()){isiCan();return}if(tool===5&&botolIsi<BOTOL_MAX){isiBotol();return}drink(atFountain()?'f':'w');return}
   if(zone===0&&Math.hypot(me.x-17.5*T,me.y-3.2*T)<1.6*T){openModal('shop')}else use()}
 const km={ArrowUp:'up',w:'up',ArrowDown:'down',s:'down',ArrowLeft:'left',a:'left',ArrowRight:'right',d:'right'};
 addEventListener('keydown',e=>{if(document.activeElement===$('ci')){if(e.key==='Enter')sendChat();else if(e.key==='Escape')toggleChat(0);return}
@@ -1179,17 +1179,17 @@ addEventListener('keyup',e=>{if(km[e.key])keys[km[e.key]]=0});
 addEventListener('wheel',e=>{if(started&&!modal)stepHot(e.deltaY>0?1:-1)},{passive:true});
 const clock=()=>{const h=6+S.t/DAY*18;return String(Math.floor(h)%24).padStart(2,'0')+':'+String(Math.floor((h%1)*6)*10).padStart(2,'0')};
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const HOT=[{i:'⛏️',n:'Cangkul'},{i:'🫗',n:'Penyiram Tanaman'},{i:'🧺',n:'Panen'}].concat(CROPS.slice(1,6).map(c=>({i:c.e,n:'Bibit '+c.n,p:c.c})),[{i:'🎣',n:'Pancing'},{i:'🧴',n:'Botol Air (minum)',b:1}]);
+const HOT=[{i:'⛏️',n:'Cangkul'},{i:'🫗',n:'Penyiram Tanaman',c:1},{i:'🧺',n:'Panen'}].concat(CROPS.slice(1,6).map(c=>({i:c.e,n:'Bibit '+c.n,p:c.c})),[{i:'🎣',n:'Pancing'},{i:'🧴',n:'Botol Air (minum)',b:1}]);
 function setHot(h){if(h>=3&&h<=7&&!(sd[h-2]|0)){say('Biji '+CROPS[h-2].n+' habis — beli di Toko 🏪');return}hot=h;tool=[0,1,3,2,2,2,2,2,4,5][h];if(h>=3&&h<=7){sel=h-2;const c=CROPS[sel];say(c.e+' Biji '+c.n+' ×'+(sd[sel]|0)+' · tumbuh '+c.g+' hari')}else if(h===0)say('⛏️ Cangkul — tekan Spasi / E / klik untuk menggali');else if(h===1)say('🫗 Penyiram — arahkan ke tanaman, tekan Spasi / klik untuk menyiram');else if(h===2)say('🧺 Panen tanaman matang');else if(h===9)say('🧴 Botol Air — Spasi / klik untuk minum ('+botolIsi+'/'+BOTOL_MAX+') · isi ulang di dekat air');else say('🎣 Pancing — hadap air');if(tool!==4)fishing=null;hud()}
 function isiBotol(){const n=Date.now();if(n<drinkAt)return;if(botolIsi>=BOTOL_MAX){say('🧴 Botol sudah penuh');return}drinkAt=n+450;botolIsi=BOTOL_MAX;puff(me.x/T,me.y/T-.6,'water');say('🧴 Botol diisi penuh · '+BOTOL_MAX+' tegukan');sfx('water');hud()}
 function minumBotol(){const n=Date.now();if(n<drinkAt)return;if(botolIsi<=0){say('🧴 Botol kosong — isi ulang di dekat air / air mancur');return}if(vit.water>=99){say('Sudah tidak haus 😌');return}drinkAt=n+450;botolIsi--;vit.water=Math.min(100,vit.water+BOTOL_HAUS);puff(me.x/T,me.y/T-.6,'water');say('🧴 Minum dari botol · +'+BOTOL_HAUS+' haus · sisa '+botolIsi+'/'+BOTOL_MAX);sfx('drink');navigator.vibrate&&navigator.vibrate(10);vitUI();try{ev('drink',0,1)}catch(e){}hud()}
-function pakaiBotol(){if(drinkSpot())isiBotol();else minumBotol()}
+function pakaiBotol(){if(drinkSpot()&&botolIsi<BOTOL_MAX)isiBotol();else minumBotol()}
 function put(id,h){const e=$(id);if(e._h!==h){e.innerHTML=h;e._h=h}}
 function hud(){if(started){const j=snapInv();if(j!==lastInv){lastInv=j;try{localStorage.setItem('pfc2_inv_'+code,j)}catch(e){}}}const p=S.t/DAY;$('pn').textContent=me.n;$('pn').className=AUTH.mod?'modnick':'';$('av').style.background=me.col;
   put('dt',`${phase()[0]} ${phase()[1]} · Hari ${S.d} ${SEAS[seasonOf(S.d)].e}${wxInfo(S.d).e} · ${clock()}<i class="bar"><u style="width:${Math.round(p*100)}%"></u></i>`);
   const gd=$('gold');gd.textContent='🪙 '+S.gold;if(S.gold!==lastGold){gd.classList.remove('pop');void gd.offsetWidth;gd.classList.add('pop');lastGold=S.gold}
   {if(HOT[hot].p&&!(sd[hot-2]|0)){let nx=0;for(let q=3;q<=7;q++)if(sd[q-2]>0){nx=q;break}hot=nx;tool=nx?2:0;if(nx)sel=nx-2;fishing=null}
-  put('hs',HOT.map((h,i)=>h.p&&!(sd[i-2]|0)?'':`<button class="slot ${i===hot?'on':''}" onclick="setHot(${i})" title="${h.n}"><kbd>${(i+1)%10}</kbd><span>${h.p?'🌱':h.i}</span>${h.p?`<i class="sub">${h.i}</i><em>×${sd[i-2]|0}</em>`:''}${h.b?`<em>${botolIsi}/${BOTOL_MAX}</em>`:''}</button>`).join(''))}
+  put('hs',HOT.map((h,i)=>h.p&&!(sd[i-2]|0)?'':`<button class="slot ${i===hot?'on':''}${window.coachHi===i?' coach':''}" onclick="setHot(${i})" title="${h.n}"><kbd>${(i+1)%10}</kbd><span>${h.p?'🌱':h.i}</span>${h.p?`<i class="sub">${h.i}</i><em>×${sd[i-2]|0}</em>`:''}${h.b?`<em>${botolIsi}/${BOTOL_MAX}</em>`:''}${h.c?`<em>${canIsi}/${canMax()}</em>`:''}</button>`).join(''))}
   const rs=ch?[{n:me.n,col:me.col,me:1}].concat(Object.keys(remote).map(k=>remote[k])):[];
   put('roster',rs.map(r=>`<div><i style="background:${esc(r.col||'#888')}"></i>${esc(r.n||'Teman')}${r.me&&isHost()?' ★':''}</div>`).join(''));
   if(ch)$('cmeta').textContent=(1+Object.keys(remote).length)+' online';$('mmcap').textContent=ZN[zone].e+' '+ZN[zone].n+' · '+(ch?'Room '+code+' · '+(1+Object.keys(remote).length)+' pemain':'Single Player');
@@ -1478,7 +1478,7 @@ function fish(){const now=performance.now();
   if(wet(me.x,me.y)){say('Naik ke daratan dulu buat mancing');return}
   const d={up:[0,-1],down:[0,1],left:[-1,0],right:[1,0]}[me.f],x=me.x+d[0]*62,y=me.y+d[1]*62-8;
   if(!fishWater(x,y)){say('Hadap ke air / lubang es buat mancing 🎣');return}
-  fishing={st:'wait',at:now+1800+Math.random()*3500,x,y};say('Menunggu ikan…');sfx('cast')}
+  fishing={st:'wait',at:now+(1800+Math.random()*3500)*[1,.8,.62,.45][up.rod|0],x,y};say('Menunggu ikan…');sfx('cast')}
 
 /* ===== gambar dinamis ===== */
 function soil(x,y,t){const px=x*T,py=y*T,R=rng(x*31+y*17+1),w=t[3];
@@ -1632,7 +1632,7 @@ function loopUpd(now){const dt=Math.min(.05,(now-last)/1000);last=now;
   pAcc+=dt;if(pAcc>(remSame()?.055:.4)&&ch&&started){pAcc=0;const k=[Math.round(me.x),Math.round(me.y),me.f,me.mv,Math.round(vit.hp/4),scene,zone,me.sit,AUTH.emo||'',window.__soK?__soK():''].join();if(k!==lastP||now-lastPT>1500){lastP=k;lastPT=now;send('pos',{id:myId,x:me.x,y:me.y,vx:Math.round(me.vx||0),vy:Math.round(me.vy||0),f:me.f,col:me.col,n:me.n,g:me.g,hp:Math.round(vit.hp),sc:scene,z:zone,si:me.sit+1,mu:AUTH.mod?AUTH.uid:'',em:AUTH.mod?(AUTH.emo||''):'',sh:window.__soSend?__soSend():0})}}
   hAcc+=dt;if(hAcc>1){hAcc=0;try{hud()}catch(e){loopErr(e,'hud')}if(ch&&isHost()){syncN++;if(syncN%12===0)send('state',{h:myId,s:S});else sendSync()}}
   if(scene){cam.x=IW*T/2-VW/Z/2;cam.y=IH*T/2-VH/Z/2-8;cam.s=0}else{const vw=VW/Z,vh=VH/Z,tx=Math.max(0,Math.min(WZ0()*T-vw,me.x-vw/2)),ty=Math.max(0,Math.min(H*T-vh,me.y-vh/2-20)),k=cam.s?1:1-Math.exp(-dt*9);cam.s=0;cam.x+=(tx-cam.x)*k;cam.y+=(ty-cam.y)*k}
-  if(fishing){if(me.mv||modal)fishing=null;else if(fishing.st==='wait'&&now>=fishing.at){fishing.st='bite';fishing.until=now+1300;navigator.vibrate&&navigator.vibrate(30);say('❗ Ikan menyambar! Tekan Pakai!');sfx('bite')}else if(fishing.st==='bite'&&now>fishing.until){fishing=null;say('Ikan lepas…');sfx('miss')}}
+  if(fishing){if(me.mv||modal)fishing=null;else if(fishing.st==='wait'&&now>=fishing.at){fishing.st='bite';fishing.until=now+1300+250*(up.rod|0);navigator.vibrate&&navigator.vibrate(30);say('❗ Ikan menyambar! Tekan Pakai!');sfx('bite')}else if(fishing.st==='bite'&&now>fishing.until){fishing=null;say('Ikan lepas…');sfx('miss')}}
   cAcc+=dt;if(cAcc>.12){cAcc=0;try{ctxUpdate()}catch(e){loopErr(e,'ctx')}if(started){try{vitUI()}catch(e){loopErr(e,'vitUI')}try{ambUpdate(performance.now())}catch(e){}}}
   }
 
@@ -1732,7 +1732,7 @@ const QN=['','⭐ Bagus','🌟 Prima'],QM=[1,1.5,2.2];
 function IT(k){k=+k;const c=CROPS[k%100];if(!c||!(k>0))return null;const q=k/100|0;return{n:c.n+(q?' '+QN[q]:''),e:c.e,s:Math.round(c.s*QM[q]*seasMul(k%100)),q}}
 function qOf(t){const g=CROPS[t[1]].g,d=t[5]|0;return d===0?2:d<=(g>=5?2:1)?1:0}
 let sd={1:5,2:3},lastInv='',xi={},pd=[],eq=[],ST={};
-function loadInv(){stash={};xi={};pd=[];eq=[];vit={hp:100,food:85,water:85};botolIsi=BOTOL_MAX;try{const v=JSON.parse(localStorage.getItem('pfc2_inv_'+code)||'null');if(v&&v.inv){inv=v.inv;sd=v.sd||{};xi=v.xi||{};pd=v.pd||[];eq=v.eq||[];stash=v.st||{};if(v.vit)Object.assign(vit,v.vit);if(v.bt!=null)botolIsi=Math.max(0,Math.min(BOTOL_MAX,v.bt|0));if(vit.hp<20)vit.hp=20}else{inv={};sd={1:5,2:3}}}catch(e){}calcST();lastInv=snapInv()}
+function loadInv(){stash={};xi={};pd=[];eq=[];vit={hp:100,food:85,water:85};botolIsi=BOTOL_MAX;up={hoe:0,can:0,rod:0};canIsi=CANCAP[0];try{const v=JSON.parse(localStorage.getItem('pfc2_inv_'+code)||'null');if(v&&v.inv){inv=v.inv;sd=v.sd||{};xi=v.xi||{};pd=v.pd||[];eq=v.eq||[];stash=v.st||{};if(v.vit)Object.assign(vit,v.vit);if(v.bt!=null)botolIsi=Math.max(0,Math.min(BOTOL_MAX,v.bt|0));if(v.up)for(const k in up)up[k]=Math.max(0,Math.min(3,v.up[k]|0));canIsi=v.cn!=null?Math.max(0,Math.min(canMax(),v.cn|0)):canMax();if(vit.hp<20)vit.hp=20}else{inv={};sd={1:5,2:3}}}catch(e){}calcST();lastInv=snapInv()}
 function addLoot(items,seeds,msg){const p=[];let bonus=0;for(const k in items){let n=items[k]|0;const i=IT(k);if(!i||n<1)continue;if(!msg&&(ST.harv|0)>0&&k%100<=5&&Math.random()*100<ST.harv){n++;bonus=1}inv[k]=(inv[k]||0)+n;p.push(i.e+' '+i.n+' ×'+n)}
   for(const k in seeds){const n=seeds[k]|0;if(!CROPS[k]||n<1)continue;sd[k]=(sd[k]||0)+n;p.push('🌱 Biji '+CROPS[k].n+' ×'+n)}
   if(p.length)say((msg||'Dapat')+': '+p.join(' · ')+(bonus?' 🌾 Bonus panen!':''));hud()}
@@ -2683,7 +2683,7 @@ function v12hud(){const bx=boxCount(),m=$('moreB');if(m){m.classList.toggle('has
   const pr=$('pdrow');if(pr)put('pdrow',pd.length?[0,1].map(i=>{const p=pd.find(x=>x.id===eq[i]);return p?`<button class="pdc r${p.g}" onclick="bagTab='pd';openModal('bag')" title="${esc(PN[p.t])}">${STATS[p.t].e}<b>${GL[p.g]}</b></button>`:`<button class="pdc" onclick="bagTab='pd';openModal('bag')" title="Slot pendant kosong">📿</button>`}).join(''):'');
   if(modal==='daily')renderDaily()}
 const _hud12=hud;hud=function(){_hud12.apply(this,arguments);v12hud()};
-const _begin12=begin;begin=function(){_begin12.apply(this,arguments);setTimeout(()=>{if(started&&!modal&&!claimedToday())openModal('daily')},1200)};
+const _begin12=begin;begin=function(){_begin12.apply(this,arguments)};
 
 /* ===================== v13: MULTI-MAP — Salju, Bukit, Gurun + Rumah Game (hanya di Salju) ===================== */
 /* Tata letak: Gurun ← Kebun → Salju → Bukit. Gerbang ada di tepi kiri/kanan, baris tile y=5..6. */
@@ -2923,7 +2923,7 @@ function zNodesDraw(E,time){const now=Date.now();
 /* ====================== interaksi zona ====================== */
 function digSpots(){const slot=Math.floor(Date.now()/90000);if(DIG.slot!==slot){const rr=rng(hash('dig'+slot)),L=[];for(let i=0;i<60&&L.length<5;i++){const x=3+rr()*26,y=8+rr()*11;if(solid(x*T,y*T)||solid(x*T-14,y*T)||solid(x*T+14,y*T)||wet(x*T,y*T)||wet(x*T,y*T-14)||Math.hypot(x-22,y-15)<4.6)continue;L.push({x,y,dug:0})}DIG={slot,L};const pr=DGP[slot];if(pr)for(const i in pr)if(L[i])L[i].dug=1}return DIG.L}
 const fishWater=(x,y)=>wet(x,y)||FS.some(([a,b2,r])=>Math.hypot(x/T-a,y/T-b2)<r+.35);
-const fishId=()=>zone===1?(Math.random()<.8?14:15):(Math.random()<.62?6:7);
+const fishId=()=>zone===1?(Math.random()<.8-.07*(up.rod|0)?14:15):(Math.random()<.62-.07*(up.rod|0)?6:7);
 const zcool=(id,t)=>{const m=(id[t]||0)-Date.now();return m>0?Math.ceil(m/1000):0};
 function nodeAct(nd){const now=Date.now();if(nd.u>now){say('Masih kosong — coba lagi '+Math.ceil((nd.u-now)/1000)+' detik lagi');return}
   if(nd.t==='ore'){nd.u=now+90000;puff(nd.x,nd.y-.3,'hit');sfx('hit');const r=Math.random();
@@ -6444,7 +6444,7 @@ const _dsp=dispatch;dispatch=function(a){
 
 /* ---------- tombol ❓ + panel bantuan ---------- */
 const HELP=[
-['🌱','Bertani','Gali tanah dengan ⛏️ → pilih biji (slot 4-8) → Pakai untuk menanam → 🫗 siram pakai Penyiram TIAP HARI → 🧺 panen. Makin rajin disiram, makin bagus grade (Biasa / ⭐ Bagus / 🌟 Prima). Tanaman yang lupa disiram berhenti tumbuh. Biji dibeli di Toko; panen kadang memberi biji lagi.'],
+['🌱','Bertani','Gali tanah dengan ⛏️ → pilih biji (slot 4-8) → Pakai untuk menanam → 🫗 siram pakai Penyiram TIAP HARI (isi ulang di air dengan E; upgrade alat di Toko) → 🧺 panen. Makin rajin disiram, makin bagus grade (Biasa / ⭐ Bagus / 🌟 Prima). Tanaman yang lupa disiram berhenti tumbuh. Biji dibeli di Toko; panen kadang memberi biji lagi.'],
 ['🌦️','Cuaca & Musim','1 musim = 7 hari (🌸 Semi · ☀️ Panas · 🍂 Gugur · ❄️ Dingin). Hujan/salju menyiram semua tanaman. ⛈️ Badai bisa merusak tanaman — cek 🌤️ dan panen dulu. Tiap tanaman laku +50% di musimnya (Wortel 🌸, Tomat & Bunga Matahari ☀️, Jagung 🍂, Labu ❄️).'],
 ['❤️','Bertahan hidup','❤️ Darah · 🍗 Lapar · 💧 Haus. Makan dari 🎒 Tas (atau tekan G / ketuk 🍗), minum langsung dengan E di dekat air, atau pakai 🧴 Botol Air (slot 0): Spasi untuk minum, dekat air untuk isi ulang. Lapar/haus habis = darah berkurang; tidur memulihkan darah. ❄️ Salju bikin cepat lapar, 🏜️ Gurun bikin cepat haus.'],
 ['🏠','Rumah & Tidur','Dekati pintu rumah lalu E. Di dalam ada 🛏️ kasur (tidur setelah 18:00 untuk ganti hari), 📦 peti, 🍳 kompor, 🚿 kamar mandi. Waktu: Pagi 06-11 · Siang 11-15 · Sore 15-18 · Malam 18-24.'],
@@ -6462,7 +6462,7 @@ function buildHelp(){
   m.innerHTML=`<div class="panel mcard"><div class="mh"><b>❓ Bantuan & Cara Main</b><button class="x" onclick="closeModal()">✕</button></div>
    <div class="hbody">${HELP.map((h,i)=>`<details ${i===0?'open':''}><summary><span>${h[0]}</span>${h[1]}</summary><p>${E(h[2])}</p></details>`).join('')}</div>
    <div class="hft"><button class="mb sec sm" id="h2rt">🔁 Ulangi tooltip tutorial</button><button class="mb sm" onclick="closeModal()">Tutup</button></div></div>`;
-  $('h2rt').onclick=()=>{seen={};sv(TIPK,seen);say('🔁 Tooltip tutorial akan muncul lagi sesuai situasi')};
+  $('h2rt').onclick=()=>{seen={};sv(TIPK,seen);try{COACH.reset()}catch(e){}say('🔁 Panduan & tooltip akan muncul lagi')};
   addEventListener('keydown',e=>{if(!started||document.activeElement===$('ci'))return;
     if((e.key==='h'||e.key==='H')&&!e.ctrlKey&&!e.metaKey&&!e.altKey){if(modal==='h2help'){closeModal();e.stopImmediatePropagation()}else if(!modal){openModal('h2help');e.stopImmediatePropagation()}}},true)}
 
@@ -6477,12 +6477,12 @@ const farmHere=()=>zone===0&&me.x/T>=FX0-1&&me.x/T<=FX1+1&&me.y/T>=FY0-1&&me.y/T
 const hr=()=>6+Math.min(1,S.t/DAY)*18;
 const cropsInBag=()=>{let n=0;for(const k in inv)if(+k%100>=1&&+k%100<=5)n+=inv[k]|0;return n};
 const TIPS=[
- {id:'welcome',i:'👋',t:'Selamat datang di Lembah! Jalan dengan WASD / joystick. Cari NPC bertanda ❗ — Pak Joko punya misi pertamamu. Panah emas akan menuntunmu.',c:()=>true},
+ {id:'welcome',i:'👋',t:'Selamat datang di Lembah! Jalan dengan WASD / joystick. Cari NPC bertanda ❗ — Pak Joko punya misi pertamamu. Panah emas akan menuntunmu.',c:()=>false},
  {id:'hoe',i:'⛏️',t:'Gali tanah kosong di kebun dengan ⛏️ (Spasi / tombol Pakai). Lalu pilih biji di slot 4-8 dan Pakai untuk menanam.',c:()=>farmHere()&&!S.tiles.some(t=>t[0])},
  {id:'water',i:'🫗',t:'Siram tanaman TIAP HARI: pilih 🫗 Penyiram (slot 2) lalu Pakai. Penanda 💧 biru di petak berarti tanaman itu butuh air.',c:()=>plantStats().need>0},
  {id:'ready',i:'🧺',t:'Ada yang siap panen! Penanda 🧺 emas muncul di petak. Pilih 🧺 (slot 3) lalu Pakai.',c:()=>plantStats().rdy>0},
  {id:'sell',i:'🏪',t:'Jual hasil panen di Toko (atas kebun, tekan E). Cek juga 📋 Pesanan Harian — selesaikan 3 pesanan untuk bonus!',c:()=>cropsInBag()>0},
- {id:'daily',i:'📅',t:'Absen harian punya hadiah! Ketuk 📅 di kanan atas untuk klaim — jangan putus streak-nya.',c:()=>seen.welcome&&!claimedToday()},
+ {id:'daily',i:'📅',t:'Absen harian punya hadiah! Ketuk 📅 di kanan atas untuk klaim — jangan putus streak-nya.',c:()=>false},
  {id:'hungry',i:'🍗',t:'Mulai lapar/haus. Tekan G untuk makan cepat dari tas; minum dengan E di dekat air. Kalau habis, darah berkurang.',c:()=>vit.food<45||vit.water<45},
  {id:'night',i:'🌙',t:'Sudah malam. Masuk rumah (E di pintu), lalu tekan E di 🛏️ kasur untuk tidur dan ganti hari — kamu akan dapat ringkasan harian.',c:()=>hr()>=18},
  {id:'storm',i:'⛈️',t:'Badai bisa merusak tanaman! Cek 🌤️ untuk prakiraan, dan panen yang sudah matang lebih dulu.',c:()=>wxInfo(S.d).storm||wxInfo(S.d+1).storm},
@@ -6496,6 +6496,7 @@ function showTip(tp){
   seen[tp.id]=1;sv(TIPK,seen);tipShown=performance.now();clearTimeout(b._t);b._t=setTimeout(hideTip,10000);try{sfx('click')}catch(e){}}
 function hideTip(){const b=$('h2tip');if(b)b.classList.remove('on');tipShown=performance.now()}
 function tipTick(){
+  if(window.COACH&&COACH.active()){hideTip();return}
   const b=$('h2tip');if(b&&b.classList.contains('on')){if(modal)hideTip();return}
   if(modal||scene||trans||performance.now()-tipShown<7000)return;
   for(const tp of TIPS){if(seen[tp.id])continue;let ok2=false;try{ok2=tp.c()}catch(e){}if(ok2){showTip(tp);return}}}
@@ -6966,4 +6967,393 @@ window.show=function(id){
 window.PFROOMS={enter:enter,refresh:refresh};
 })();
 </script>
+
+<style id="coach-css">
+#coach{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(var(--hotH,56px) + var(--sb,0px) + 66px);z-index:5;display:none;align-items:center;gap:10px;max-width:min(94vw,430px);padding:8px 10px;pointer-events:auto;color:#ffeccc;font:600 13px/1.35 system-ui,sans-serif}
+#coach.on{display:flex}
+#coach .cn{flex:none;width:32px;height:32px;border-radius:10px;background:#ffd24a;color:#3a2410;display:grid;place-items:center;font-weight:800;font-size:14px}
+#coach .ct{flex:1;min-width:0}
+#coach .c2{display:block;opacity:.75;font-weight:500;font-size:11.5px;margin-top:1px}
+#coach .cd{display:flex;gap:3px;margin-top:5px}#coach .cd i{width:14px;height:4px;border-radius:2px;background:rgba(255,255,255,.2)}#coach .cd i.on{background:#ffd24a}
+#coach .cx{flex:none;background:none;border:0;color:#ffeccc;opacity:.55;font-size:11px;cursor:pointer;padding:6px 4px}
+.slot.coach{border-color:#ffd24a!important;animation:coachPulse 1s infinite alternate}
+.slot.coach::after{content:'';position:absolute;left:50%;top:-14px;margin-left:-6px;border:6px solid transparent;border-top:8px solid #ffd24a;border-bottom:0;animation:coachBob .7s infinite alternate;filter:drop-shadow(0 1px 1px #000)}
+@keyframes coachPulse{to{box-shadow:0 0 0 3px rgba(255,210,74,.55),0 0 14px rgba(255,210,74,.7)}}
+@keyframes coachBob{to{top:-19px}}
+#hudminb{display:grid;place-items:center}#hudminb svg{width:18px;height:18px;stroke:#ffeccc;fill:none;stroke-width:2;stroke-linecap:round}
+#hudminb.on{border-color:#ffd24a}#hudminb.on svg{stroke:#ffd24a}
+#ui.hudmin #h3day,#ui.hudmin #h2strip,#ui.hudmin #h2strip2,#ui.hudmin #roster,#ui.hudmin #pdrow,#ui.hudmin #mmcap{display:none!important}
+@media (max-width:480px){#coach{font-size:12.5px;padding:7px 8px}}
+@media (max-width:480px){#hot #hs{gap:4px!important}}@media (max-width:400px){#hot #hs .slot{width:34px!important}}
+</style>
+<script id="coach-v1">
+(function(){"use strict";
+const $=id=>document.getElementById(id);
+const HK='pfc_hudmin',K=()=>'pfc_coach_'+code;
+const lg=(k,d)=>{try{const v=localStorage.getItem(k);return v==null?d:v}catch(e){return d}};
+const sg=(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}};
+let st=null,loadedFor='',lastKey='',announced=0,btn=0;
+const save=()=>sg(K(),JSON.stringify(st));
+function load(){if(loadedFor===code&&st)return;loadedFor=code;let o=null;try{o=JSON.parse(lg(K(),'null'))}catch(e){}
+  if(!o){o={i:0,done:0,b:null};if(S.d>=2||S.tiles.some(t=>t[1]))o.done=1}st=o;save()}
+const crops=()=>{let n=0;for(const k in inv)if(+k%100>=1&&+k%100<=5)n+=inv[k]|0;return n};
+const inFarm=()=>zone===0&&!scene&&me.x/T>=FX0-1&&me.x/T<=FX1+2&&me.y/T>=FY0-1&&me.y/T<=FY1+2;
+const seedSlot=()=>{for(let q=3;q<=7;q++)if(sd[q-2]>0)return q;return -1};
+const firstPlant=()=>S.tiles.find(t=>t[1]&&CROPS[t[1]]);
+const ready=()=>S.tiles.some(t=>t[1]&&CROPS[t[1]]&&t[2]>=CROPS[t[1]].g);
+function dirTxt(){const dx=(FX0+FX1)/2*T-me.x,dy=(FY0+FY1)/2*T-me.y,d=Math.hypot(dx,dy);
+  const dirs=['timur','tenggara','selatan','barat daya','barat','barat laut','utara','timur laut'],a=Math.round(Math.atan2(dy,dx)/(Math.PI/4));
+  return zone!==0?'Kembali ke map desa':'Kebun ± '+Math.round(d/T)+' petak ke arah '+dirs[(a+8)%8]}
+const ST=[
+ {t:()=>'Jalan ke kebun',s:dirTxt,hi:()=>-1,done:()=>inFarm()},
+ {t:()=>'Gali tanah dengan ⛏️ Cangkul',s:()=>'Pilih slot 1, hadap tanah kebun, tekan Spasi / Pakai',hi:()=>0,done:()=>S.tiles.some(t=>t[0])},
+ {t:()=>'Tanam biji 🌱',s:()=>seedSlot()<0?'Biji habis — beli di Toko 🏪':'Pilih biji di hotbar, hadap tanah yang digali, tekan Spasi',hi:()=>seedSlot(),done:()=>S.tiles.some(t=>t[1])},
+ {t:()=>'Siram dengan 🫗 Penyiram',s:()=>'Pilih slot 2, hadap tanaman, tekan Spasi · air habis? isi ulang di air (E)',hi:()=>1,done:()=>S.tiles.some(t=>t[1]&&t[3])},
+ {t:()=>'Tidur supaya hari berganti',s:()=>'Masuk rumah (E di pintu), lalu E di 🛏️ kasur setelah 18:00',hi:()=>-1,init:()=>S.d,done:()=>S.d>st.b},
+ {t:()=>ready()?'Panen 🧺':'Rawat tanamanmu',
+  s:()=>{if(ready())return'Pilih slot 3, hadap tanaman matang, tekan Spasi';const p=firstPlant();return p?'Siram tiap hari · tumbuh '+p[2]+'/'+CROPS[p[1]].g+' hari':'Tanam biji dan siram lagi'},
+  hi:()=>ready()?2:(S.tiles.some(t=>t[1]&&!t[3]&&t[2]<CROPS[t[1]].g)?1:-1),init:()=>crops(),done:()=>crops()>st.b}];
+function setHi(i){if(window.coachHi!==i){window.coachHi=i;try{hud()}catch(e){}}}
+function build(){let b=$('coach');if(b)return b;b=document.createElement('div');b.id='coach';b.className='panel';
+  b.innerHTML='<div class="cn"></div><div class="ct"><span class="c1"></span><span class="c2"></span><div class="cd"></div></div><button class="cx" type="button">Lewati</button>';
+  $('ui').appendChild(b);b.querySelector('.cx').onclick=()=>{st.done=1;save();setHi(-1);b.classList.remove('on');say('Panduan dilewati — buka lagi lewat Jeda → Ulangi tooltip')};return b}
+function announceDaily(){if(announced)return;announced=1;setTimeout(()=>{try{if(!claimedToday())say('📅 Absen harian siap diklaim — ketuk 📅 di kanan atas')}catch(e){}},1800)}
+function hudMin(){const v=lg(HK,null);return v==null?!(st&&st.done):v==='1'}
+function applyHud(){const u=$('ui');if(u)u.classList.toggle('hudmin',hudMin());const b=$('hudminb');if(b)b.classList.toggle('on',hudMin())}
+function toggleHud(){sg(HK,hudMin()?'0':'1');applyHud();say(hudMin()?'HUD ringkas aktif — tekan H untuk tampilan lengkap':'HUD lengkap')}
+function buildBtn(){if(btn||!$('side'))return;btn=1;const b=document.createElement('button');b.className='panel ib';b.id='hudminb';b.title='HUD ringkas (H)';
+  b.innerHTML='<svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h10M4 17h5"/></svg>';b.onclick=toggleHud;$('side').appendChild(b)}
+function tick(){
+  if(!started||!window.PFQ||!PFQ.state||typeof S==='undefined'||!$('ui'))return;
+  load();buildBtn();applyHud();
+  if(st.done){setHi(-1);const b=$('coach');if(b)b.classList.remove('on');announceDaily();return}
+  const q=PFQ.state,sp=q.sp||{};
+  if(!((sp.tut|0)>=3||(q.done&&q.done.m0))){setHi(-1);const b=$('coach');if(b)b.classList.remove('on');return}
+  let s=ST[st.i];if(st.b==null&&s.init){st.b=s.init();save()}
+  if(s.done()){st.i++;st.b=null;save();try{sfx('chime')}catch(e){}
+    if(st.i>=ST.length){st.done=1;save();setHi(-1);const b=$('coach');if(b)b.classList.remove('on');say('🎉 Panduan awal selesai! HUD lengkap dibuka');applyHud();announceDaily();return}
+    s=ST[st.i];if(s.init){st.b=s.init();save()}}
+  const vis=!modal&&!scene&&!trans&&!(typeof NB!=='undefined'&&NB.cur);
+  let hi=s.hi();if(hi===hot)hi=-1;if(!vis)hi=-1;setHi(hi);
+  const b=build(),t=s.t(),sub=s.s(),key=[st.i,t,sub,vis].join('|');b.classList.toggle('on',vis);
+  if(key!==lastKey){lastKey=key;b.querySelector('.cn').textContent=(st.i+1)+'/'+ST.length;b.querySelector('.c1').textContent=t;b.querySelector('.c2').textContent=sub;
+    b.querySelector('.cd').innerHTML=ST.map((_,i)=>'<i class="'+(i<=st.i?'on':'')+'"></i>').join('')}}
+setInterval(()=>{try{tick()}catch(e){console.warn('[coach]',e)}},300);
+addEventListener('keydown',e=>{if((e.key==='h'||e.key==='H')&&started&&!modal&&document.activeElement!==$('ci')&&!e.ctrlKey&&!e.metaKey)toggleHud()});
+window.COACH={active:()=>!!(st&&!st.done),reset:()=>{st={i:0,done:0,b:null};save();lastKey=''},toggleHud};
+})();
+</script>
+
+<script id="upgrade-v1">
+(function(){"use strict";
+const $=id=>document.getElementById(id);
+const UPMAX=3,UPN={hoe:['⛏️','Cangkul'],can:['🫗','Penyiram'],rod:['🎣','Joran']};
+const UPCOST={hoe:[150,500,1400],can:[150,500,1400],rod:[120,400,1000]};
+const UPD={
+ hoe:['Gali 1 petak','Gali 2 petak lurus','Gali 3 petak selebar','Gali 6 petak (3×2)'],
+ can:['Air 6 · 1 petak','Air 10 · 2 petak lurus','Air 16 · 3 petak selebar','Air 24 · 6 petak (3×2)'],
+ rod:['Dasar','Ikan lebih cepat, jendela tarik +0,25 dtk','Lebih cepat lagi, ikan langka +14%','Tercepat, ikan langka +21%']};
+const FV=()=>({up:[0,-1],down:[0,1],left:[-1,0],right:[1,0]}[me.f]||[0,1]);
+function pola(L){const[fx,fy]=FV(),px=-fy,py=fx,o=[[0,0]];
+  if(L===1)o.push([fx,fy]);else if(L===2)o.push([px,py],[-px,-py]);else if(L>=3)o.push([px,py],[-px,-py],[fx,fy],[fx+px,fy+py],[fx-px,fy-py]);return o}
+const tilesAt=(L,x,y)=>pola(L).map(([a,b])=>[x+a,y+b]).filter(([a,b])=>farm(a,b));
+const okW=t=>t&&t[0]&&t[1]&&CROPS[t[1]]&&t[2]<CROPS[t[1]].g&&!t[3];
+window.isiCan=function(){const n=Date.now();if(n<drinkAt)return;if(canIsi>=canMax()){say('🫗 Penyiram sudah penuh');return}drinkAt=n+450;canIsi=canMax();puff(me.x/T,me.y/T-.6,'water');say('🫗 Penyiram diisi penuh · '+canMax()+' air');sfx('water');hud()};
+function useCan(){navigator.vibrate&&navigator.vibrate(8);const[x,y]=target();
+  if(!farm(x,y)){if(drinkSpot()){isiCan();return}say('Arahkan ke lahan kebun 🌱');return}
+  const ts=tilesAt(up.can|0,x,y).filter(([a,b])=>okW(S.tiles[a+b*W]));
+  if(!ts.length){const t=S.tiles[x+y*W];say(!t[0]?'Gali dulu pakai Cangkul':!t[1]?'Tanam biji dulu, baru disiram':t[2]>=CROPS[t[1]].g?'Sudah siap panen!':'Sudah disiram hari ini 💧');return}
+  if(canIsi<=0){say('🫗 Penyiram kosong — isi ulang di dekat air (tekan E)');return}
+  for(const[a,b]of ts){if(canIsi<=0)break;puff(a,b,'water');dispatch({t:'water',x:a,y:b,c:sel});canIsi--}
+  sfx('water');if(canIsi<=0)say('🫗 Air habis — isi ulang di dekat air (E)');hud()}
+function useHoe(){navigator.vibrate&&navigator.vibrate(8);const[x,y]=target();
+  if(!farm(x,y)){say('Arahkan ke lahan kebun 🌱');return}
+  const ts=tilesAt(up.hoe|0,x,y).filter(([a,b])=>!S.tiles[a+b*W][0]);
+  if(!ts.length){say(S.tiles[x+y*W][1]?'Ada tanaman di sini':'Tanah sudah digali');return}
+  for(const[a,b]of ts){puff(a,b,'dirt');dispatch({t:'hoe',x:a,y:b,c:sel})}sfx('hoe')}
+const _useUp=use;use=function(){
+  if(trans||scene||zone||me.sit>=100)return _useUp.apply(this,arguments);
+  if(tool===1){useCan();return}
+  if(tool===0&&(up.hoe|0)>0){useHoe();return}
+  return _useUp.apply(this,arguments)};
+window.beliUp=function(k){const L=up[k]|0;if(L>=UPMAX)return;const c=UPCOST[k][L];if(!spend(c))return;up[k]=L+1;if(k==='can')canIsi=canMax();sfx('coin');say('🛠️ '+UPN[k][1]+' naik ke Lv '+up[k]+' · '+UPD[k][up[k]]);hud()};
+function upHtml(){return '<div class="upg"><div class="tst" style="margin-top:10px">🛠️ Upgrade Alat · dibayar dari kas bersama</div>'+['hoe','can','rod'].map(k=>{const L=up[k]|0,mx=L>=UPMAX,[e,n]=UPN[k];
+  return `<div class="srow"><span class="se">${e}</span><div class="si"><b>${n} Lv ${L}${mx?' · MAKS':''}</b><small>${mx?UPD[k][L]:UPD[k][L]+' → '+UPD[k][L+1]}</small></div>${mx?'':`<button class="mb sm" ${S.gold<UPCOST[k][L]?'disabled':''} onclick="beliUp('${k}')">🪙${UPCOST[k][L]}</button>`}</div>`}).join('')+'</div>'}
+const _rsU=renderShop;renderShop=function(){_rsU.apply(this,arguments);if(modal!=='shop')return;const sb=$('sb');if(!sb)return;const o=sb.querySelector('.upg');if(o)o.remove();sb.insertAdjacentHTML('beforeend',upHtml())};
+})();
+</script>
+<style id="hud4-css">
+/* ===== HUD v4: tooltip XP + "Target besok" + rekor harian =====
+   Satu modul mandiri, tidak mengubah lapisan HUD lama. */
+#qlv{position:relative;pointer-events:auto;cursor:pointer;-webkit-tap-highlight-color:transparent}
+#qlv::before{content:"";position:absolute;inset:-7px -4px}
+#qlv i{height:6px!important}
+@media (pointer:coarse),(max-width:700px){#qlv i{display:block!important;height:6px!important;min-width:34px}}
+#h4xp{position:fixed;z-index:7;display:none;width:max-content;max-width:min(262px,78vw);padding:9px 11px;border-radius:12px;
+  font:600 12px/1.45 system-ui,sans-serif;color:#ffeccc;pointer-events:auto}
+#h4xp.on{display:block}
+#h4xp .h{display:flex;justify-content:space-between;gap:12px;color:#ffd24a;font-weight:700}
+#h4xp .b{height:6px;border-radius:3px;background:rgba(0,0,0,.45);margin:6px 0;overflow:hidden}
+#h4xp .b u{display:block;height:100%;background:linear-gradient(90deg,#7ad07a,#d6f06a)}
+#h4xp .m{opacity:.7;font-size:11px;margin-top:3px}
+.h4t{margin-top:8px;padding:7px 9px;border-radius:10px;background:rgba(0,0,0,.28);border:1px solid rgba(232,190,104,.35)}
+.h4t b{display:block;color:#ffd24a;font:700 12px system-ui,sans-serif;margin-bottom:3px}
+.h4t div{font:600 12px/1.5 system-ui,sans-serif;color:#ffeccc}
+.h4t .rec{color:#9ff0a0}
+</style>
+<script id="hud4">
+(function(){"use strict";
+/* Semua dibungkus try/catch: kalau modul ini gagal, game tetap jalan. */
+const $=id=>document.getElementById(id);
+const MAXLV=30,BK='pfc4_best',ORK='pfc2_orders';
+const nf=n=>String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g,'.');
+const ok=()=>{try{return !!(started&&window.PFQ&&PFQ.state)}catch(e){return false}};
+const bkey=()=>{try{return BK+'_'+code}catch(e){return BK}};
+const rd=(k,d)=>{try{const v=JSON.parse(localStorage.getItem(k)||'null');return v&&typeof v==='object'?v:d}catch(e){return d}};
+const wr=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
+
+/* ---------- hadiah level (salinan rumus lvRw milik quest-system) ---------- */
+function lvRw(l){const r={g:30+l*12,seeds:{},xi:{}};r.seeds[(l%5)+1]=2+((l>>1)%4);
+  if(l%3===0)r.xi[l%2?'x1':'x2']=1;if(l%5===0)r.xi.b2=1;if(l%10===0)r.xi.b3=1;if(l===MAXLV)r.xi.x4=1;return r}
+function rwText(l){const r=lvRw(l),p=['🪙'+nf(r.g)];
+  try{for(const k in r.seeds){const c=CROPS[+k];p.push((c?c.e:'🌱')+'×'+r.seeds[k])}
+    for(const k in r.xi){const s=SPD[k];p.push(s?s.e+' '+s.n:'🎁')}}catch(e){}
+  return p.join(' · ')}
+
+/* ---------- tooltip XP: ketuk bar level ---------- */
+let hideT=0;
+function hideXp(){const b=$('h4xp');if(b)b.classList.remove('on');clearTimeout(hideT)}
+function showXp(){
+  if(!ok()||modal)return;const a=$('qlv');if(!a)return;
+  const s=PFQ.state,mx=s.lv>=MAXLV,n=mx?1:PFQ.need(s.lv),pct=mx?100:Math.min(100,s.xp/n*100),nx=Math.min(MAXLV,s.lv+1);
+  let b=$('h4xp');if(!b){b=document.createElement('div');b.id='h4xp';b.className='panel';($('ui')||document.body).appendChild(b)}
+  b.innerHTML=mx
+    ?`<div class="h"><span>Lv ${s.lv} · MAX</span><span>🏆</span></div><div class="m">${PFQ.title(s.lv)} — level tertinggi tercapai.</div>`
+    :`<div class="h"><span>Lv ${s.lv} → ${nx}</span><span>${pct.toFixed(0)}%</span></div>
+      <div class="b"><u style="width:${pct.toFixed(1)}%"></u></div>
+      <div>⭐ ${nf(s.xp)} / ${nf(n)} XP · kurang ${nf(Math.max(0,n-s.xp))}</div>
+      <div>🎁 Lv ${nx}: ${rwText(nx)}</div>
+      <div class="m">XP dari misi, panen & pesanan harian</div>`;
+  b.classList.add('on');
+  const r=a.getBoundingClientRect(),w=b.offsetWidth;
+  b.style.left=Math.max(6,Math.min(r.left,innerWidth-w-6))+'px';b.style.top=(r.bottom+8)+'px';
+  clearTimeout(hideT);hideT=setTimeout(hideXp,6000);try{sfx('click')}catch(e){}}
+document.addEventListener('click',e=>{try{
+  if(e.target.closest('#qlv')){const b=$('h4xp');b&&b.classList.contains('on')?hideXp():showXp();return}
+  if(!e.target.closest('#h4xp'))hideXp()}catch(_){}},true);
+
+/* ---------- ringkasan tidur: tambah "Target besok" + rekor ---------- */
+function orderLeft(){const o=rd(ORK,null);return o&&Array.isArray(o.list)?o.list.filter(x=>!x.done).length:0}
+function recordLine(){
+  let D=null;try{D=HUD2.dbg.D}catch(e){}
+  const b=rd(bkey(),{net:0,day:0,last:0});
+  if(D&&typeof D.day==='number'&&D.day<S.d&&D.day>(b.last|0)){
+    const net=(D.e|0)-(D.sp|0);b.last=D.day;
+    if(net>0&&net>(b.net|0)){b.net=net;b.day=D.day;wr(bkey(),b);return`🏆 Rekor harian baru: +${nf(net)} gold bersih!`}
+    wr(bkey(),b)}
+  return b.net>0?`🏅 Rekor harianmu: +${nf(b.net)} (hari ${b.day})`:''}
+function extendSummary(){
+  const el=$('h2slp');if(!el||!ok())return;
+  const box=el.querySelector('.snext');if(!box||box.querySelector('.h4t'))return;
+  const s=PFQ.state,nd=S.d,L=[],rec=recordLine();
+  if(s.lv<MAXLV)L.push(`⭐ ${nf(PFQ.need(s.lv)-s.xp)} XP lagi ke Lv ${s.lv+1} → ${rwText(s.lv+1)}`);
+  const ol=orderLeft();if(ol>0)L.push(`📋 ${ol} pesanan harian belum selesai (Toko)`);
+  try{if(!claimedToday())L.push('📅 Absen harian belum diklaim (ketuk 📅 di kanan atas)')}catch(e){}
+  try{if(nd>1&&dayInSeason(nd)===1)L.push('🎣 Hari ini Festival Lomba Mancing · 10:30–16:00');
+    else if(dayInSeason(nd+1)===1)L.push('🎣 Besok Festival Lomba Mancing — siapkan joranmu')}catch(e){}
+  if(!L.length&&!rec)return;
+  box.insertAdjacentHTML('beforeend',`<div class="h4t"><b>🎯 Target hari ini</b>${L.map(x=>`<div>${x}</div>`).join('')}${rec?`<div class="rec">${rec}</div>`:''}</div>`)}
+const _om=openModal;
+openModal=function(m){const r=_om.apply(this,arguments);try{if(m==='h2slp')extendSummary();else hideXp()}catch(e){console.warn('[hud4]',e)}return r};
+
+window.HUD4={showXp,hideXp,rwText,extendSummary};
+})();
+</script>
+
+<script id="olahan-v1">
+(function(){"use strict";
+/* ===== Dapur Olahan: hasil panen/tangkapan diolah jadi barang bernilai tinggi.
+   - Resep muncul di menu Kompor (rumah), dibuka lewat upgrade "Mesin Olahan" di Toko.
+   - Upgrade dibayar dari kas bersama (sama seperti upgrade alat), level disimpan per pemain per world.
+   - Item baru memakai ID 29-34 (tepat setelah resep bond NPC). Kalau ID bentrok, modul dilewati. */
+const $=id=>document.getElementById(id);
+const BASE=29,MAXL=3,COST=[300,900,2000];
+const NEW=[
+  {n:'Keju Kambing',e:'🧀',s:80},{n:'Selai Beri',e:'🍯',s:70},{n:'Ikan Asin',e:'🧂',s:55},
+  {n:'Acar Sayur',e:'🥒',s:100},{n:'Popcorn Jagung',e:'🍿',s:110},{n:'Manisan Labu',e:'🍬',s:88}];
+/* o = item hasil · lv = level mesin minimal · need = {id bahan: jumlah} */
+const RC=[
+  {o:29,lv:1,need:{23:2}},{o:30,lv:1,need:{19:3}},{o:31,lv:1,need:{6:2}},
+  {o:32,lv:2,need:{1:2,2:2}},{o:33,lv:2,need:{3:2}},{o:34,lv:2,need:{4:1}}];
+const DESC=[
+  '🧀 Keju · 🍯 Selai · 🧂 Ikan Asin',
+  '🥒 Acar · 🍿 Popcorn · 🍬 Manisan Labu',
+  'Olah ×5 sekaligus sekali tekan'];
+
+if(CROPS.length===BASE)NEW.forEach(x=>CROPS.push({n:x.n,c:0,s:x.s,g:0,e:x.e}));
+if(!(CROPS[BASE]&&CROPS[BASE].n===NEW[0].n)){console.warn('[olahan] ID item bentrok, modul dilewati');return}
+
+/* ---------- level mesin (per pemain, per world) ---------- */
+let M=null,mc='';
+const key=()=>'pfc4_mesin_'+code;
+const lv=()=>{if(M===null||mc!==code){mc=code;let v=0;try{v=JSON.parse(localStorage.getItem(key())||'0')|0}catch(e){}M=Math.max(0,Math.min(MAXL,v))}return M};
+const save=()=>{try{localStorage.setItem(key(),String(M))}catch(e){}};
+const can=(r,n)=>Object.keys(r.need).every(k=>cnt(+k)>=r.need[k]*n);
+const nf=n=>String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g,'.');
+const need=r=>Object.keys(r.need).map(k=>CROPS[k].e+' '+CROPS[k].n+' '+cnt(+k)+'/'+r.need[k]).join(' + ');
+
+/* ---------- aksi ---------- */
+window.olhGo=function(i,n){
+  const r=RC[i],L=lv();if(!r||r.lv>L)return;
+  n=(n===5&&L>=MAXL)?5:1;
+  if(!can(r,n)){say('Bahan kurang');return}
+  for(const k in r.need)take(+k,r.need[k]*n);
+  inv[r.o]=(inv[r.o]|0)+n;
+  sfx('chime');try{crackle(1)}catch(e){}
+  try{PFQ.addXp(2*n)}catch(e){}
+  say('🏭 Jadi: '+CROPS[r.o].e+' '+CROPS[r.o].n+(n>1?' ×'+n:''));hud();renderCook()};
+window.beliMesin=function(){
+  const L=lv();if(L>=MAXL)return;
+  if(!spend(COST[L]))return;
+  M=L+1;save();sfx('coin');
+  say('🏭 Mesin Olahan naik ke Lv '+M+' · '+DESC[M-1]);
+  if(typeof renderShop==='function')renderShop()};
+
+/* ---------- tampilan di menu Kompor ---------- */
+function cookHtml(){
+  const L=lv();
+  let h=`<div class="tst" style="margin-top:10px">🏭 Dapur Olahan · Mesin Lv ${L}/${MAXL}</div>`;
+  if(!L)return h+`<div class="srow"><span class="se">🏭</span><div class="si"><b>Belum punya Mesin Olahan</b><small>Beli di Toko (🪙${nf(COST[0])}) · ubah hasil panen jadi barang mahal</small></div></div>`;
+  RC.forEach((r,i)=>{
+    const o=CROPS[r.o];
+    if(r.lv>L){h+=`<div class="srow" style="opacity:.55"><span class="se">🔒</span><div class="si"><b>${o.n}</b><small>Butuh Mesin Lv ${r.lv}</small></div></div>`;return}
+    h+=`<div class="srow"><span class="se">${o.e}</span><div class="si"><b>${o.n}</b><small>${need(r)} → 🪙${o.s}</small></div>`
+      +`<button class="mb sm" ${can(r,1)?'':'disabled'} onclick="olhGo(${i},1)">Olah</button>`
+      +(L>=MAXL?`<button class="mb sm" ${can(r,5)?'':'disabled'} onclick="olhGo(${i},5)">×5</button>`:'')+`</div>`});
+  return h}
+const _rc=renderCook;
+renderCook=function(){
+  _rc.apply(this,arguments);
+  try{
+    if(modal!=='cook')return;const kb=$('kb');if(!kb)return;
+    let o=$('olh');
+    if(!o||o.parentNode!==kb){o=document.createElement('div');o.id='olh';kb.appendChild(o)}
+    const h=cookHtml();if(o._h!==h){o.innerHTML=h;o._h=h}
+  }catch(e){console.warn('[olahan]',e)}};
+
+/* ---------- upgrade di Toko ---------- */
+function shopHtml(){
+  const L=lv(),mx=L>=MAXL,c=COST[L];
+  return `<div class="olhs"><div class="tst" style="margin-top:10px">🏭 Mesin Olahan · dibayar dari kas bersama</div>`
+    +`<div class="srow"><span class="se">🏭</span><div class="si"><b>Mesin Olahan Lv ${L}${mx?' · MAKS':''}</b><small>${mx?DESC[L-1]:'Berikutnya: '+DESC[L]}</small></div>`
+    +(mx?'':`<button class="mb sm" ${S.gold<c?'disabled':''} onclick="beliMesin()">🪙 ${nf(c)}</button>`)+`</div></div>`}
+const _rs=renderShop;
+renderShop=function(){
+  _rs.apply(this,arguments);
+  try{
+    if(modal!=='shop')return;const sb=$('sb');if(!sb)return;
+    const o=sb.querySelector('.olhs');if(o)o.remove();
+    sb.insertAdjacentHTML('beforeend',shopHtml());
+  }catch(e){console.warn('[olahan]',e)}};
+
+/* ---------- tas: olahan masuk tab Masakan, bukan Zona ---------- */
+const _be=bagEntries;
+bagEntries=function(){
+  const o=_be.apply(this,arguments);
+  try{o.forEach(x=>{if(x.cat==='zn'&&(+x.k%100)>=BASE)x.cat='cook'})}catch(e){}
+  return o};
+
+/* muat ulang level saat pindah world */
+const _bg=begin;begin=function(){M=null;return _bg.apply(this,arguments)};
+window.OLAHAN={RC,lv,cookHtml};
+})();
+</script>
+
+<style id="bperk-css">
+.bperk{margin:6px 0;padding:6px 9px;border-radius:10px;background:rgba(0,0,0,.28);border:1px solid rgba(232,190,104,.35);
+  font:600 11.5px/1.5 system-ui,sans-serif;color:#ffeccc}
+.bperk b{display:block;color:#ffd24a;font-size:11.5px}
+.bperk .on{color:#9ff0a0}.bperk .off{opacity:.62}
+</style>
+<script id="bond-perk-v1">
+(function(){"use strict";
+/* ===== Bonus Kedekatan NPC =====
+   ❤3 dan ❤5 memberi bonus stat permanen lewat sistem ST bawaan game (sama seperti liontin):
+   Dagang, Panen Melimpah, Kenyang, Segar, Pemulih, Kecepatan, Tahan Banting.
+   ❤4 ke atas: hadiah gold harian saat ngobrol (1× per hari per NPC).
+   Murni sisi-pemain (tidak mengubah harga/gold di host), jadi aman untuk multiplayer. */
+const KEY='pfc2_bond',GK='pfc4_bgift',HT=[0,25,70,140,240,380];
+/* id NPC: [stat, bonus ❤3, bonus ❤5 (total, bukan tambahan)] */
+const PERK={
+  joko:['harv',3,8],rina:['gold',3,8],sari:['hun',4,10],ratmi:['reg',4,10],udin:['spd',2,4],
+  tono:['thr',4,10],dodi:['def',3,8],haji:['harv',2,5],wati:['reg',3,8],bayu:['thr',3,8],
+  lina:['spd',2,4],guru:['gold',2,5],rt:['def',2,6]};
+const GIFT=[0,0,0,0,15,25];
+const hOf=p=>{let h=0;for(let i=1;i<6;i++)if(p>=HT[i])h=i;return h};
+const rd=k=>{try{return JSON.parse(localStorage.getItem(k)||'{}')||{}}catch(e){return {}}};
+const lvOf=id=>{const o=rd(KEY)[id];return o?hOf(o.p|0):0};
+const val=(id,l)=>{const P=PERK[id];return P?(l>=5?P[2]:l>=3?P[1]:0):0};
+
+/* ---------- bonus stat: tambahkan ke ST setiap calcST() ---------- */
+function bonus(){const b={},D=rd(KEY);
+  for(const id in PERK){const o=D[id];if(!o)continue;const v=val(id,hOf(o.p|0));if(v)b[PERK[id][0]]=(b[PERK[id][0]]|0)+v}
+  return b}
+const _cs=calcST;
+calcST=function(){_cs.apply(this,arguments);
+  try{const b=bonus();for(const k in b)ST[k]=Math.min(60,(ST[k]|0)+b[k])}catch(e){console.warn('[bondperk]',e)}};
+
+/* ---------- pantau naik level: hitung ulang stat + kabari pemain ---------- */
+let prev=null;
+function watch(){try{
+  if(!started)return;
+  const D=rd(KEY),cur={};
+  for(const id in PERK)cur[id]=D[id]?hOf(D[id].p|0):0;
+  if(prev){let ch=false;
+    for(const id in cur){if(cur[id]===prev[id])continue;ch=true;
+      const l=cur[id],v=val(id,l),s=STATS[PERK[id][0]];
+      if(l>prev[id]&&v&&(l===3||l===5))say('✨ '+((D[id]&&D[id].nm)||id)+' ❤'+l+' → '+s.e+' '+s.n+' +'+v+'%')}
+    if(ch)calcST()}
+  prev=cur}catch(e){}}
+setInterval(watch,1500);
+
+/* ---------- hadiah harian (❤4+) saat ngobrol ---------- */
+let cur=null;
+const _ob=window.openBond;
+window.openBond=function(id){cur=id;return _ob.apply(this,arguments)};
+function gift(id,l){
+  const g=GIFT[l]|0;if(!g)return;
+  const G=rd(GK),dk=dkey(todayD());if(G[id]===dk)return;
+  G[id]=dk;try{localStorage.setItem(GK,JSON.stringify(G))}catch(e){}
+  grantReward({g});
+  const o=rd(KEY)[id];say('🎁 '+((o&&o.nm)||id)+' memberi hadiah harian 🪙'+g)}
+const _bt=window.bondTalk;
+window.bondTalk=function(){
+  const id=cur,p0=id?((rd(KEY)[id]||{}).p|0):0;
+  const r=_bt.apply(this,arguments);
+  try{if(id){const p1=(rd(KEY)[id]||{}).p|0;if(p1>p0)gift(id,hOf(p1))}}catch(e){console.warn('[bondperk]',e)}
+  return r};
+
+/* ---------- kartu kedekatan: tampilkan bonus ---------- */
+function perkHtml(id){
+  const l=lvOf(id),P=PERK[id];let h='<div class="bperk"><b>✨ Bonus kedekatan</b>';
+  if(P){const s=STATS[P[0]];
+    [[3,P[1]],[5,P[2]]].forEach(([lv,v])=>{h+=`<div class="${l>=lv?'on':'off'}">${l>=lv?'✔':'🔒'} ❤${lv}: ${s.e} ${s.n} +${v}%</div>`})}
+  h+=`<div class="${l>=4?'on':'off'}">${l>=4?'✔':'🔒'} ❤4: hadiah harian 🪙${GIFT[4]} saat ngobrol (❤5: 🪙${GIFT[5]})</div></div>`;
+  return h}
+const _rb=window.renderBond;
+window.renderBond=function(){
+  const r=_rb.apply(this,arguments);
+  try{
+    const el=document.getElementById('bb');
+    if(!el||!cur||!/bmain/.test(el.className))return r;
+    const f=el.querySelector('.bfav');
+    if(f&&!el.querySelector('.bperk'))f.insertAdjacentHTML('afterend',perkHtml(cur));
+  }catch(e){console.warn('[bondperk]',e)}
+  return r};
+
+const _bg=begin;begin=function(){prev=null;return _bg.apply(this,arguments)};
+window.BONDPERK={PERK,bonus,lvOf};
+})();
+</script>
+
 </body></html>
