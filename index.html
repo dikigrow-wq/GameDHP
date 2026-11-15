@@ -836,6 +836,7 @@ button .ic,.cell .ic,.slot .ic{vertical-align:middle}
 #ubar b{color:#ffe08a!important}
 #ubar button{background:#81bd55!important;color:#0f3725!important;border:2px solid #0f3725!important;border-radius:0!important;box-shadow:0 3px 0 #0f3725;font:600 13px Fredoka,system-ui,sans-serif;padding:5px 10px!important}
 #ubar button:active{transform:translateY(2px);box-shadow:0 1px 0 #0f3725}
+.modnick:before{content:''!important;display:inline-block;width:21px;height:16px;margin-right:5px;vertical-align:-2px;background:url(https://zvsvftphialhaolinldx.supabase.co/storage/v1/object/public/sprites/ic_crown.png) center/100% 100% no-repeat!important;image-rendering:pixelated;-webkit-text-fill-color:initial}
 @media (orientation:landscape) and (max-height:560px){:root{--us:1}#mbox .mb .pxi{--ik:.5}#mbox .mb{font-size:15px!important;min-height:34px!important}#m0 .mb{font-size:15px!important;padding:5px 8px!important}}
 </style>
 </head><body>
@@ -2060,7 +2061,7 @@ async function pullCloud(){if(!sba)return;try{const{data,error}=await sba.from('
     else await pushCloud(true)}catch(e){}}
 function applyChar(){try{const sv=JSON.parse(localStorage.getItem('pfc2_char')||'null');if(sv){pick.g=sv.g==='f'?'f':'m';if(COLS.includes(sv.col))pick.col=sv.col;if(sv.n)$('nm1').value=$('nm2').value=sv.n}}catch(e){}
   if(!$('nm1').value)$('nm1').value=$('nm2').value=AUTH.name.slice(0,12);renderPick();try{$('cont').disabled=!localStorage.getItem('pfc2_SOLO')}catch(e){}}
-function updUbar(){$('ubar').innerHTML=AUTH.mode==='acct'?`<span>${AUTH.mod?'<i class="pxi pxi-shield"></i><b class="modnick">'+esc(AUTH.nick)+'</b> · moderator':'<i class="pxi pxi-avatar"></i><b>'+esc(AUTH.name)+'</b> · akun'}</span><button onclick="authOut()">Keluar</button>`:`<span><i class="pxi pxi-avatar"></i><b>${esc(AUTH.name)}</b> · tamu</span><button onclick="authOut()">Ganti</button>`}
+function updUbar(){$('ubar').innerHTML=AUTH.mode==='acct'?`<span>${AUTH.mod?'<b class="modnick">'+esc(AUTH.nick)+'</b> · moderator':'<i class="pxi pxi-avatar"></i><b>'+esc(AUTH.name)+'</b> · akun'}</span><button onclick="authOut()">Keluar</button>`:`<span><i class="pxi pxi-avatar"></i><b>${esc(AUTH.name)}</b> · tamu</span><button onclick="authOut()">Ganti</button>`}
 async function authSubmit(){if(!sba){aMsg('Server belum terhubung. Main sebagai Tamu dulu.');return}
   const u=$('au').value.trim(),p=$('ap').value,up=AUTH.tab==='up';
   if(!u.includes('@')&&!/^[A-Za-z0-9_]{3,16}$/.test(u)){aMsg('Username 3–16 karakter: huruf, angka, underscore');return}
