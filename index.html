@@ -1118,7 +1118,7 @@ function predict(a){if(!farm(a.x,a.y))return;const t=S.tiles[a.x+a.y*W];
   else if(a.t==='water'&&t[0]&&t[1]&&!t[3]&&t[2]<CROPS[t[1]].g)t[3]=1;
   else if(a.t==='seed'&&a.c>=1&&a.c<=5&&t[0]&&!t[1]){t[1]=a.c|0;t[2]=t[3]=t[4]=t[5]=0}
   else if(a.t==='harvest'&&t[1]&&t[2]>=CROPS[t[1]].g){t[1]=t[2]=t[3]=t[4]=t[5]=0}}
-function dispatch(a){if(isHost()){if(applyA(a,myId))bcast(a.t==='sleep'||a.t==='fert'||a.t==='unlock'?1:0);else if(a.t==='seed'){sd[a.c]=(sd[a.c]||0)+1;say('Gagal menanam, biji dikembalikan');hud()}}else{predict(a);send('act',{a,by:myId})}}
+function dispatch(a){if(isHost()){if(applyA(a,myId))bcast(a.t==='sleep'||a.t==='fert'||a.t==='unlock'||/^pfx/.test(a.t)?1:0);else if(a.t==='seed'){sd[a.c]=(sd[a.c]||0)+1;say('Gagal menanam, biji dikembalikan');hud()}}else{predict(a);send('act',{a,by:myId})}}
 async function connect(){
   if(!/^https?:/.test(SB_URL)||!window.supabase){$('st').textContent='⚠ Supabase belum diisi (SB_URL & SB_KEY) / jalankan supabase_setup.sql.';return false}
   try{sb=supabase.createClient(SB_URL,SB_KEY,{realtime:{params:{eventsPerSecond:40}}});
@@ -1133,7 +1133,7 @@ async function connect(){
     ch.on('broadcast',{event:'state'},({payload:p})=>{if(p.h!==roster[0]||p.h===myId)return;const t=S.t;S=fixS(p.s);if(Math.abs(S.t-t)<.6)S.t=t;hud()});
     ch.on('broadcast',{event:'sync'},({payload:p})=>{if(p.h!==roster[0]||p.h===myId)return;tSync(p);S.gold=p.g;if(p.pv!=null)S.pvp=p.pv;hud()});
     ch.on('broadcast',{event:'delta'},({payload:p})=>{if(p.h!==roster[0]||p.h===myId)return;(p.tl||[]).forEach(([i,t])=>{if(S.tiles[i]&&Array.isArray(t)){tileSfx(i,S.tiles[i],t);S.tiles[i]=t}});S.gold=p.gold;tSync(p);hud()});
-    ch.on('broadcast',{event:'act'},({payload:p})=>{if(!isHost())return;const a=p.a||{};if(applyA(a,p.by)){actSfx(a);bcast(a.t==='sleep'||a.t==='fert'||a.t==='unlock'?1:0)}else{if(a.t==='seed')lootTo(p.by,{},{[a.c]:1},'Biji dikembalikan');if(Number.isInteger(a.x)&&Number.isInteger(a.y)&&farm(a.x,a.y)){dirty.add(a.x+a.y*W);bdelta()}}});
+    ch.on('broadcast',{event:'act'},({payload:p})=>{if(!isHost())return;const a=p.a||{};if(applyA(a,p.by)){actSfx(a);bcast(a.t==='sleep'||a.t==='fert'||a.t==='unlock'||/^pfx/.test(a.t)?1:0)}else{if(a.t==='seed')lootTo(p.by,{},{[a.c]:1},'Biji dikembalikan');if(Number.isInteger(a.x)&&Number.isInteger(a.y)&&farm(a.x,a.y)){dirty.add(a.x+a.y*W);bdelta()}}});
     ch.on('broadcast',{event:'loot'},({payload:p})=>{if(p.to===myId)addLoot(p.items||{},p.seeds||{},p.msg)});
     ch.on('broadcast',{event:'atk'},({payload:p})=>onAtk(p));
     ch.on('broadcast',{event:'ck'},({payload:p})=>onCk(p));
@@ -1624,7 +1624,7 @@ function loop(now){
 function loopUpd(now){const dt=Math.min(.05,(now-last)/1000);last=now;
   let dx=(keys.right?1:0)-(keys.left?1:0),dy=(keys.down?1:0)-(keys.up?1:0);me.mv=0;if(jv){dx=jv.x;dy=jv.y}const ox0=me.x,oy0=me.y;
   if(me.sit>=0&&me.sit<100&&scene!==60)me.sit=-1;if(me.sit>=100&&(scene||zone))me.sit=-1;if(me.sit>=0&&started&&(dx||dy)){standUp();dx=dy=0}
-  if(started&&!trans&&(dx||dy)){const l=Math.hypot(dx,dy),sp=150*dt*Math.min(1,l)*(wet(me.x,me.y)?.6:1)*(1+(ST.spd|0)/100);dx=dx/l*sp;dy=dy/l*sp;me.mv=1;me.ph+=dt*12;
+  if(started&&!trans&&(dx||dy)){const l=Math.hypot(dx,dy),sp=150*dt*Math.min(1,l)*(wet(me.x,me.y)?.6:1)*(1+((ST.spd|0)+(window.PFX?PFX.buff('spd'):0))/100);dx=dx/l*sp;dy=dy/l*sp;me.mv=1;me.ph+=dt*12;
     const ok=(x,y)=>!solid(x-10,y)&&!solid(x+10,y)&&!solid(x-10,y-10)&&!solid(x+10,y-10);
     if(ok(me.x+dx,me.y+dy)){me.x+=dx;me.y+=dy}else if(ok(me.x+dx,me.y))me.x+=dx;else if(ok(me.x,me.y+dy))me.y+=dy;
     me.f=Math.abs(dx)>Math.abs(dy)?(dx>0?'right':'left'):(dy>0?'down':'up')}
@@ -1736,7 +1736,7 @@ function IT(k){k=+k;const c=CROPS[k%100];if(!c||!(k>0))return null;const q=k/100
 function qOf(t){const g=CROPS[t[1]].g,d=t[5]|0;return d===0?2:d<=(g>=5?2:1)?1:0}
 let sd={1:5,2:3},lastInv='',xi={},pd=[],eq=[],ST={};
 function loadInv(){stash={};xi={};pd=[];eq=[];vit={hp:100,food:85,water:85};botolIsi=BOTOL_MAX;up={hoe:0,can:0,rod:0};canIsi=CANCAP[0];try{const v=JSON.parse(localStorage.getItem('pfc2_inv_'+code)||'null');if(v&&v.inv){inv=v.inv;sd=v.sd||{};xi=v.xi||{};pd=v.pd||[];eq=v.eq||[];stash=v.st||{};if(v.vit)Object.assign(vit,v.vit);if(v.bt!=null)botolIsi=Math.max(0,Math.min(BOTOL_MAX,v.bt|0));if(v.up)for(const k in up)up[k]=Math.max(0,Math.min(3,v.up[k]|0));canIsi=v.cn!=null?Math.max(0,Math.min(canMax(),v.cn|0)):canMax();if(vit.hp<20)vit.hp=20}else{inv={};sd={1:5,2:3}}}catch(e){}calcST();lastInv=snapInv()}
-function addLoot(items,seeds,msg){const p=[];let bonus=0;for(const k in items){let n=items[k]|0;const i=IT(k);if(!i||n<1)continue;if(!msg&&(ST.harv|0)>0&&k%100<=5&&Math.random()*100<ST.harv){n++;bonus=1}inv[k]=(inv[k]||0)+n;p.push(i.e+' '+i.n+' ×'+n)}
+function addLoot(items,seeds,msg){const p=[];let bonus=0;for(const k in items){let n=items[k]|0;const i=IT(k);if(!i||n<1)continue;if(!msg&&((ST.harv|0)+(window.PFX?PFX.buff('hv'):0))>0&&k%100<=5&&Math.random()*100<((ST.harv|0)+(window.PFX?PFX.buff('hv'):0))){n++;bonus=1}inv[k]=(inv[k]||0)+n;p.push(i.e+' '+i.n+' ×'+n)}
   for(const k in seeds){const n=seeds[k]|0;if(!CROPS[k]||n<1)continue;sd[k]=(sd[k]||0)+n;p.push('🌱 Biji '+CROPS[k].n+' ×'+n)}
   if(p.length)say((msg||'Dapat')+': '+p.join(' · ')+(bonus?' 🌾 Bonus panen!':''));hud()}
 function lootTo(by,items,seeds,msg){if(by===myId||!ch)addLoot(items,seeds,msg);else send('loot',{to:by,items,seeds,msg})}
@@ -1746,7 +1746,7 @@ function renderShop(){if(modal!=='shop')return;let tot=0,cnt=0;for(const k in in
     return `<div class="srow"><span class="se">${o.e}</span><div class="si"><b>Biji ${o.n}</b><small>Tumbuh ${o.g} hari · panen ${Math.round(o.s*seasMul(c))}g${CROP_SEASON[c]===seasonOf(S.d)?' 🔥':''} (⭐${Math.round(o.s*1.5*seasMul(c))}g · 🌟${Math.round(o.s*2.2*seasMul(c))}g) · punya ${sd[c]|0}</small></div><button class="mb sm" ${S.gold<o.c?'disabled':''} onclick="buy(${c},1)">🪙${o.c}</button><button class="mb sm" ${S.gold<o.c*5?'disabled':''} onclick="buy(${c},5)">×5</button></div>`}).join('')
   +`<button class="mb" ${cnt?'':'disabled'} onclick="sellAll()">💰 Jual semua panen (${cnt} item · 🪙${tot})</button>`;put('sb',h)}
 function buy(c,n){const o=CROPS[c];if(S.gold<o.c*n){say('Kas bersama tidak cukup');return}dispatch({t:'buy',c,n});sfx('coin');renderShop()}
-function sellAll(){let v=0,n=0;for(const k in inv){v+=inv[k]*IT(k).s;n+=inv[k]}if(!n){say('Belum ada hasil panen');return}const bn=Math.round(v*(ST.gold|0)/100);v+=bn;dispatch({t:'sell',v});sfx('coin');inv={};say('Terjual '+n+' item +'+v+'g'+(bn?' (bonus Dagang +'+bn+')':''));hud()}
+function sellAll(){let v=0,n=0;for(const k in inv){v+=inv[k]*IT(k).s;n+=inv[k]}if(!n){say('Belum ada hasil panen');return}const bn=Math.round(v*((ST.gold|0)+(window.PFX?PFX.buff('gold'):0))/100);v+=bn;dispatch({t:'sell',v});sfx('coin');inv={};say('Terjual '+n+' item +'+v+'g'+(bn?' (bonus Dagang +'+bn+')':''));hud()}
 /* partikel */
 const parts=[];
 function puff(x,y,k){const cols={dirt:['#6e4a2a','#3f2a19','#9a6d40'],water:['#8fd4f4','#cfeeff'],seed:['#6fc04e','#fff'],star:['#ffd24a','#fff3a0'],hit:['#ff5a4a','#ffd24a','#ffffff']}[k],n=k==='water'?12:9;
@@ -2234,7 +2234,7 @@ function mv(k,n,toChest){const from=toChest?inv:stash,to=toChest?stash:inv;n=Mat
 const REC=[{o:10,n:'Ayam Bakar',need:{9:1}},{o:11,n:'Ikan Bakar',need:{6:1}},{o:12,n:'Telur Dadar',need:{8:2}},{o:13,n:'Sup Sayur',need:{1:1,2:1}}];
 const canR=r=>Object.keys(r.need).every(k=>cnt(+k)>=r.need[k]);
 function renderCook(){if(modal!=='cook')return;
-  put('kb','<div class="tst">Kompor menyala 🔥 — pilih resep</div>'+REC.map((r,i)=>{const o=CROPS[r.o],f=FD[r.o];return `<div class="srow"><span class="se">${o.e}</span><div class="si"><b>${r.n}</b><small>${Object.keys(r.need).map(k=>CROPS[k].e+' '+CROPS[k].n+' '+cnt(+k)+'/'+r.need[k]).join(' + ')} → +${f.f} lapar${f.w?' · +'+f.w+' haus':''}</small></div><button class="mb sm" ${canR(r)?'':'disabled'} onclick="cookR(${i})">Masak</button></div>`}).join(''))}
+  put('kb','<div class="tst">Kompor menyala 🔥 — pilih resep</div>'+REC.map((r,i)=>{const o=CROPS[r.o],f=FD[r.o];return `<div class="srow"><span class="se">${o.e}</span><div class="si"><b>${r.n}</b><small>${Object.keys(r.need).map(k=>CROPS[k].e+' '+CROPS[k].n+' '+cnt(+k)+'/'+r.need[k]).join(' + ')} → +${f.f} lapar${f.w?' · +'+f.w+' haus':''}${window.PFX?PFX.buffTxt(r.o):''}</small></div><button class="mb sm" ${canR(r)?'':'disabled'} onclick="cookR(${i})">Masak</button></div>`}).join(''))}
 function cookR(i){const r=REC[i];if(!canR(r)){say('Bahan kurang');return}for(const k in r.need)take(+k,r.need[k]);inv[r.o]=(inv[r.o]|0)+1;sfx('chime');crackle(1);crackle(1);say('🍳 Jadi: '+CROPS[r.o].e+' '+r.n);hud();renderCook()}
 /* interior: prerender */
 const IBG={};
@@ -6608,10 +6608,11 @@ function plant(){let need=0,rdy=0,grow=0;
 /* ============ 1) CHECKLIST HARI INI ============ */
 const DK='pfc2_h3day';
 const GOALS=[
-  {k:'w',e:'🫗',l:'Siram tanaman',n:6},
+  {k:'w',e:'🫗',l:'Siram tanaman',get n(){try{return window.PFX?PFX.wgoal():6}catch(e){return 6}}},
   {k:'h',e:'🧺',l:'Panen hasil kebun',n:4},
   {k:'f',e:'🎣',l:'Dapat ikan',n:2},
   {k:'o',e:'📋',l:'Selesaikan pesanan',n:2},
+  {k:'v',e:'🏛️',l:'Setor ke Balai Desa',n:1},
   {k:'a',e:'📅',l:'Klaim absen harian',n:1}];
 const RW={g:200,seed:[2,3],xp:50},GXP=10;
 let G=null;
@@ -6757,7 +6758,7 @@ setInterval(tick,400);
 setInterval(()=>{try{fitH3()}catch(e){}},900);
 addEventListener('resize',()=>setTimeout(()=>{try{fitH3()}catch(e){}},80));
 addEventListener('pagehide',()=>{try{if(G)gsave()}catch(e){}});
-window.HUD3={goals:()=>GOALS.map(o=>[o.k,val(o.k),o.n]),state:()=>gload(),alerts,fitH3};
+window.HUD3={bump,goals:()=>GOALS.map(o=>[o.k,val(o.k),o.n]),state:()=>gload(),alerts,fitH3};
 })();
 </script>
 <script id="flow-v2">
@@ -7036,7 +7037,7 @@ function tick(){
   if(s.done()){st.i++;st.b=null;save();try{sfx('chime')}catch(e){}
     if(st.i>=ST.length){st.done=1;save();setHi(-1);const b=$('coach');if(b)b.classList.remove('on');say('🎉 Panduan awal selesai! HUD lengkap dibuka');applyHud();announceDaily();return}
     s=ST[st.i];if(s.init){st.b=s.init();save()}}
-  const vis=!modal&&!scene&&!trans&&!(typeof NB!=='undefined'&&NB.cur);
+  const vis=!modal&&!scene&&!trans&&!(typeof NB!=='undefined'&&NB.cur)&&!(window.PFX&&PFX.story());
   let hi=s.hi();if(hi===hot)hi=-1;if(!vis)hi=-1;setHi(hi);
   const b=build(),t=s.t(),sub=s.s(),key=[st.i,t,sub,vis].join('|');b.classList.toggle('on',vis);
   if(key!==lastKey){lastKey=key;b.querySelector('.cn').textContent=(st.i+1)+'/'+ST.length;b.querySelector('.c1').textContent=t;b.querySelector('.c2').textContent=sub;
@@ -7067,7 +7068,7 @@ function useCan(){navigator.vibrate&&navigator.vibrate(8);const[x,y]=target();
   const ts=tilesAt(up.can|0,x,y).filter(([a,b])=>okW(S.tiles[a+b*W]));
   if(!ts.length){const t=S.tiles[x+y*W];say(!t[0]?'Gali dulu pakai Cangkul':!t[1]?'Tanam biji dulu, baru disiram':t[2]>=CROPS[t[1]].g?'Sudah siap panen!':'Sudah disiram hari ini 💧');return}
   if(canIsi<=0){say('🫗 Penyiram kosong — isi ulang di dekat air (tekan E)');return}
-  for(const[a,b]of ts){if(canIsi<=0)break;puff(a,b,'water');dispatch({t:'water',x:a,y:b,c:sel});canIsi--}
+  for(const[a,b]of ts){if(canIsi<=0)break;puff(a,b,'water');dispatch({t:'water',x:a,y:b,c:sel});canIsi-=(window.PFX&&PFX.buff('wsv')&&Math.random()*100<PFX.buff('wsv')?0:1)}
   sfx('water');if(canIsi<=0)say('🫗 Air habis — isi ulang di dekat air (E)');hud()}
 function useHoe(){navigator.vibrate&&navigator.vibrate(8);const[x,y]=target();
   if(!farm(x,y)){say('Arahkan ke lahan kebun 🌱');return}
@@ -8060,7 +8061,7 @@ function nextTask(){
   return null}
 function chip(){const hb=$('hot'),ui=$('ui');if(!hb||!ui)return;let c=$('h5next');
   if(!c){c=mk('div','h5next','panel');c.innerHTML='<i style="font-style:normal"></i><small>Berikutnya</small><b></b>';hb.appendChild(c);c.onclick=()=>{if(c._a)try{c._a()}catch(e){}}}
-  const co=$('coach'),show=ok()&&!modal&&!(co&&co.classList.contains('on')),t=show?nextTask():null;
+  const co=$('coach'),show=ok()&&!modal&&!(co&&co.classList.contains('on')),t0=show?nextTask():null,t=(t0&&window.PFX&&PFX.story()&&!t0[2])?null:t0;
   c.classList.toggle('on',!!t);ui.classList.toggle('h5c',!!t);if(!t)return;
   const k=t[0]+t[1];if(c._k!==k){c._k=k;c.firstChild.textContent=t[0];c.lastChild.textContent=t[1]}
   c._a=t[3]||null;c.classList.toggle('act',!!t[3]);c.classList.toggle('urg',!!t[2])}
@@ -8129,4 +8130,256 @@ const _bg=begin;begin=function(){const r=_bg.apply(this,arguments);try{lS=null;l
 setInterval(()=>{try{build();btns();dlg();if(!ok())return;gold();xp();items();flush();chip();toolPill();dayWatch()}catch(e){console.warn('[hud5]',e)}},250);
 })();
 </script>
+<style id="pfx-css">
+/* ===== PFX v1: Balai Desa + Irigasi Otomatis + petunjuk terpadu ===== */
+#pfxvh .mcard{max-width:440px;width:94vw;max-height:92vh;overflow:auto}
+.pfx-st{display:flex;gap:6px;margin:2px 0 8px}
+.pfx-st i{flex:1;height:6px;border-radius:3px;background:rgba(255,255,255,.16)}
+.pfx-st i.on{background:#ffd24a}.pfx-st i.cur{background:linear-gradient(90deg,#ffd24a 50%,rgba(255,255,255,.16) 50%)}
+.pfx-h{display:flex;align-items:center;gap:10px;margin:4px 0 6px}
+.pfx-h .big{font-size:30px}.pfx-h b{display:block;font-size:15px;color:#ffd24a}.pfx-h small{opacity:.75;font-size:11.5px}
+.pfx-r{display:grid;grid-template-columns:28px 1fr auto;align-items:center;gap:4px 8px;padding:7px 8px;margin:5px 0;border-radius:10px;background:rgba(0,0,0,.28);border:1px solid rgba(232,190,104,.22)}
+.pfx-r.ok{opacity:.6}
+.pfx-r .e{font-size:20px;text-align:center}
+.pfx-r .l{font:600 13px/1.2 system-ui,sans-serif;color:#ffeccc}
+.pfx-r .l small{display:block;font-weight:500;opacity:.7;font-size:11px}
+.pfx-r .bar{grid-column:1/-1;height:6px;border-radius:3px;background:rgba(0,0,0,.45);overflow:hidden}
+.pfx-r .bar u{display:block;height:100%;background:linear-gradient(90deg,#7ad07a,#d6f06a);transition:width .4s}
+.pfx-perk{margin-top:8px;padding:8px 10px;border-radius:10px;background:rgba(122,208,122,.1);border:1px dashed rgba(122,208,122,.45);font:600 12px/1.5 system-ui,sans-serif;color:#d9f5d0}
+.pfx-perk .off{opacity:.45}
+.pfx-top{margin-top:8px;font:600 12px/1.6 system-ui,sans-serif;color:#ffeccc}
+.pfx-top b{color:#ffd24a}
+#pfxpop{position:fixed;left:50%;top:22%;transform:translate(-50%,-14px);z-index:60;opacity:0;pointer-events:none;transition:.35s;max-width:min(92vw,360px);text-align:center;padding:16px 18px;color:#ffeccc;font:600 13px/1.5 system-ui,sans-serif}
+#pfxpop.on{opacity:1;transform:translate(-50%,0);pointer-events:auto}
+#pfxpop h3{margin:0 0 4px;color:#ffd24a;font-size:17px}
+#pfxpop .em{font-size:38px}
+#pfxpop .rw{margin-top:8px;display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
+#pfxpop .rw span{padding:3px 8px;border-radius:9px;background:rgba(0,0,0,.35);border:1px solid rgba(232,190,104,.4)}
+.pfx-irr small{display:block}
+#pfxbuf{display:none;flex-wrap:wrap;gap:4px;margin:4px 0 0;pointer-events:auto}
+#pfxbuf span{padding:2px 7px;border-radius:9px;background:rgba(20,14,8,.78);border:1px solid rgba(255,210,74,.55);color:#ffeccc;font:600 11px/1.5 system-ui,sans-serif;cursor:pointer}
+#pfxbuf span b{color:#ffd24a;font-variant-numeric:tabular-nums}#pfxbuf span.lo{animation:pfxbl 1s infinite}
+@keyframes pfxbl{50%{opacity:.45}}
+.pfxn{position:absolute;top:-5px;right:-5px;min-width:16px;height:16px;border-radius:9px;background:#e5484d;color:#fff;font:700 10px/16px system-ui,sans-serif;text-align:center;border:1.5px solid #2a1c10;padding:0 3px;font-style:normal;pointer-events:none}
+.pfxh .nb{display:none!important}#h3menuB.pfxh::after,#h3menuB.pfxh.h5dot::after,#h3menuB.pfxh.has::after{display:none!important}
+.h3t i.pfxn2{width:auto;height:auto;min-width:16px;border-radius:9px;font:700 10px/16px system-ui,sans-serif;color:#fff;text-align:center;padding:0 4px;font-style:normal}
+.h4t.pfxs div{font-size:12px}
+#h2slp .slp{max-height:94vh;overflow:auto}
+</style>
+<script id="pfx-v1">
+(function(){"use strict";
+/* Semua dibungkus try/catch: kalau modul ini gagal, game asli tetap jalan. */
+const $=id=>document.getElementById(id);
+const mk=(t,id,c)=>{const e=document.createElement(t);if(id)e.id=id;if(c)e.className=c;return e};
+const E=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const nf=n=>String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g,'.');
+const lg=k=>{try{return localStorage.getItem(k)}catch(e){return null}},sg=(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}};
+const ok=()=>{try{return started&&typeof S!=='undefined'&&S&&S.tiles}catch(e){return false}};
+
+/* ============ DATA ============ */
+/* Irigasi otomatis: dibeli dari kas bersama. Tiap malam menyiram tanaman yang lupa disiram (sebanyak kapasitas). */
+const SPC=[800,2200,5000],SPCAP=[10,24,48];
+/* Balai Desa: 4 tahap, setoran bersama. Perk kumulatif. */
+const VH=[
+ {n:'Lumbung Desa',e:'🌾',req:[{k:1,n:20},{k:2,n:12}],gold:400,rw:{xp:80,seeds:{2:3}}},
+ {n:'Dapur Umum',e:'🍲',req:[{k:3,n:16},{k:8,n:10},{k:6,n:8}],gold:700,rw:{xp:120,seeds:{3:3}}},
+ {n:'Pasar Mingguan',e:'🛖',req:[{k:4,n:12},{k:5,n:12},{k:13,n:4}],gold:1200,rw:{xp:180,seeds:{4:2,5:3}}},
+ {n:'Balai Desa Megah',e:'🏛️',req:[{k:7,n:6},{k:10,n:6},{k:4,n:16},{k:0,n:1500}],gold:2000,rw:{xp:300,seeds:{4:4,5:4}}}];
+const BER=[0,.08,.14,.20,.28],VHCAP=[0,6,12,20,30];
+const PERK=['🍀 Berkah Tanam: 8% tanaman tumbuh +1 hari tiap malam · 💦 Irigasi +6 petak',
+ '🍀 Berkah Tanam jadi 14% · 💦 Irigasi +12 petak',
+ '🍀 Berkah Tanam jadi 20% · 💦 Irigasi +20 petak',
+ '🍀 Berkah Tanam jadi 28% · 💦 Irigasi +30 petak · 🏅 Gelar Desa Makmur'];
+const q4=l=>Math.max(0,Math.min(VH.length,l|0));
+function vh(){if(!S.vh||typeof S.vh!=='object')S.vh={lv:0,p:{},by:{}};const v=S.vh;if(!v.p)v.p={};if(!v.by)v.by={};v.lv=q4(v.lv);return v}
+const ptOf=(k,x)=>k>=1&&k<=5?1+(((+x/100)|0)):1;
+const held=k=>{let n=0;for(const x in inv)if((+x)%100===k&&inv[x]>0)n+=inv[x]*ptOf(k,x);return n};
+
+/* ============ ATURAN (dijalankan host lewat apply) ============ */
+function vhApply(a){const v=vh();if(v.lv>=VH.length)return 0;const T=VH[v.lv],k=a.k|0,r=T.req.find(x=>x.k===k);if(!r)return 0;
+  const have=v.p[k]|0,need=r.n-have;if(need<=0)return 0;const pt=Math.max(1,Math.min(need,Math.min(300,a.pt|0)));
+  if(k===0){if((S.gold|0)<pt)return 0;S.gold-=pt}
+  v.p[k]=have+pt;
+  if(k!==0){const nm=String(a.nm||'Teman').replace(/[<>&"]/g,'').slice(0,12)||'Teman';v.by[nm]=(v.by[nm]|0)+pt;
+    const ks=Object.keys(v.by);if(ks.length>20)delete v.by[ks[0]]}
+  if(T.req.every(x=>(v.p[x.k]|0)>=x.n)){S.gold=Math.min(99999999,(S.gold|0)+T.gold);v.lv++;v.p={};S.vhEv={lv:v.lv,d:S.d}}
+  return 1}
+const _ap=apply;apply=function(a,by){
+  if(a&&a.t==='pfxspr'){const L=S.spr|0;if(L>=3)return 0;const c=SPC[L];if((S.gold|0)<c)return 0;S.gold-=c;S.spr=L+1;return 1}
+  if(a&&a.t==='pfxvh')return vhApply(a);
+  return _ap.apply(this,arguments)};
+
+/* malam hari (host): irigasi + Berkah Desa */
+function night(){const L=S.spr|0,v=vh();let n=0,b=0;
+  if(L>0){const cap=SPCAP[L-1]+VHCAP[v.lv];
+    for(let i=0;i<S.tiles.length&&n<cap;i++){const t=S.tiles[i];if(t[0]&&t[1]&&CROPS[t[1]]&&t[2]<CROPS[t[1]].g&&!t[3]){t[3]=1;n++}}}
+  const bp=BER[v.lv];
+  if(bp>0)for(const t of S.tiles){if(t[0]&&t[1]&&CROPS[t[1]]&&t[3]&&t[2]+1<CROPS[t[1]].g&&Math.random()<bp){t[2]++;b++}}
+  S.sprN=n;S.sprB=b;S.sprD=(S.d|0)+1}
+const _nd=nextDay;nextDay=function(){try{if(isHost())night()}catch(e){console.warn('[pfx]',e)}return _nd.apply(this,arguments)};
+
+/* ============ AKSI PEMAIN ============ */
+function buyIrr(){const L=S.spr|0;if(L>=3)return;const c=SPC[L];if((S.gold|0)<c){say('Kas bersama belum cukup 🪙');return}
+  dispatch({t:'pfxspr'});try{sfx('coin')}catch(e){}say('💦 Irigasi Otomatis naik ke Lv '+(L+1));
+  if(!isHost())S.spr=L+1;setTimeout(()=>{try{renderShop()}catch(e){}},350)}
+window.pfxBuyIrr=buyIrr;
+function deposit(k){const v=vh(),T=VH[v.lv];if(!T)return;const r=T.req.find(x=>x.k===k);if(!r)return;const need=r.n-(v.p[k]|0);if(need<=0)return;
+  let pts=0;
+  if(k===0){pts=Math.min(need,100,S.gold|0);if(pts<=0){say('Kas bersama belum cukup 🪙');return}}
+  else{const keys=Object.keys(inv).filter(x=>(+x)%100===k&&inv[x]>0).sort((a,b)=>a-b);
+    for(const x of keys){const w=ptOf(k,x);while(inv[x]>0&&pts<need){inv[x]--;pts+=w}if(pts>=need)break}
+    if(!pts){say('Kamu belum punya '+CROPS[k].n+' 🧺');return}}
+  dispatch({t:'pfxvh',k,pt:pts,nm:me.n});
+  if(!isHost()){v.p[k]=Math.min(r.n,(v.p[k]|0)+pts);if(k===0)S.gold-=pts}
+  try{sfx('coin')}catch(e){}say((k===0?'🪙':CROPS[k].e)+' Disetor '+nf(pts)+' ke Balai Desa');
+  try{HUD3.bump('v')}catch(e){}
+  try{hud()}catch(e){}render()}
+window.pfxDeposit=deposit;
+
+/* ============ MODAL BALAI DESA ============ */
+function build(){const ui=$('ui');if(!ui||$('pfxvh'))return;
+  const m=mk('div','pfxvh','modal');
+  m.innerHTML='<div class="panel mcard"><div class="mh"><b>🏛️ Balai Desa</b><span class="meta" id="pfxvm"></span><button class="x" onclick="closeModal()">✕</button></div><div id="pfxvb" style="display:flex;flex-direction:column"></div></div>';
+  ui.appendChild(m);
+  m.addEventListener('click',ev=>{const b=ev.target.closest('[data-k]');if(b)deposit(+b.dataset.k)});
+  const p=mk('div','pfxpop','panel');document.body.appendChild(p);p.onclick=()=>p.classList.remove('on')}
+let lastH='';
+function render(){if(modal!=='pfxvh'||!ok())return;const v=vh(),T=VH[v.lv];
+  const dots='<div class="pfx-st">'+VH.map((x,i)=>'<i class="'+(i<v.lv?'on':i===v.lv?'cur':'')+'"></i>').join('')+'</div>';
+  let h=dots;
+  if(!T){h+='<div class="pfx-h"><span class="big">🏆</span><div><b>Desa Makmur!</b><small>Semua tahap Balai Desa selesai. Terima kasih sudah bahu-membahu 💛</small></div></div>'}
+  else{h+='<div class="pfx-h"><span class="big">'+T.e+'</span><div><b>Tahap '+(v.lv+1)+'/'+VH.length+' · '+E(T.n)+'</b><small>Setor bersama · hadiah: 🪙'+nf(T.gold)+' ke kas + hadiah pribadi tiap pemain</small></div></div>';
+    h+=T.req.map(r=>{const have=Math.min(r.n,v.p[r.k]|0),done=have>=r.n,own=r.k===0?(S.gold|0):held(r.k),c=r.k===0?{e:'🪙',n:'Kas bersama'}:CROPS[r.k];
+      const sub=r.k===0?'Diambil dari kas bersama · per 100':(r.k<=5?'⭐ Bagus = 2 poin · 🌟 Prima = 3 poin · ':'')+'punya '+nf(own);
+      return '<div class="pfx-r '+(done?'ok':'')+'"><span class="e">'+c.e+'</span><span class="l">'+E(c.n)+' <b>'+nf(have)+'/'+nf(r.n)+'</b><small>'+sub+'</small></span>'+
+        (done?'<span>✅</span>':'<button class="mb sm gold" data-k="'+r.k+'" '+(own>0?'':'disabled')+'>Setor</button>')+
+        '<div class="bar"><u style="width:'+(have/r.n*100)+'%"></u></div></div>'}).join('')}
+  h+='<div class="pfx-perk"><b>Berkah Desa aktif</b><br>'+(v.lv?PERK.slice(0,v.lv).slice(-1)[0]:'<span class="off">Belum ada — selesaikan Tahap 1</span>')+
+    (v.lv<VH.length?'<br><span class="off">Tahap berikut: '+PERK[v.lv]+'</span>':'')+'</div>';
+  const top=Object.entries(v.by).sort((a,b)=>b[1]-a[1]).slice(0,3);
+  if(top.length)h+='<div class="pfx-top">🤝 Penyumbang terbanyak: '+top.map((x,i)=>['🥇','🥈','🥉'][i]+' <b>'+E(x[0])+'</b> '+nf(x[1])).join(' · ')+'</div>';
+  const mt=$('pfxvm');if(mt)mt.textContent=v.lv>=VH.length?'Selesai':'Tahap '+(v.lv+1)+'/'+VH.length;
+  if(h!==lastH){lastH=h;$('pfxvb').innerHTML=h}}
+const MY=['pfxvh'];
+const _om=openModal;openModal=function(m){_om.apply(this,arguments);MY.forEach(i=>{const e=$(i);if(e)e.style.display=m===i?'flex':'none'});
+  try{if(m==='pfxvh'){lastH='';render()}
+    if(m==='h3menu'){const g=$('h3grid');if(g&&!g.querySelector('.pfxt')){const t=mk('button',null,'h3t pfxt');const v=vh();
+      t.innerHTML='<span>🏛️</span>Balai Desa'+(v.lv<VH.length?'<i></i>':'');t.onclick=()=>{closeModal();setTimeout(()=>openModal('pfxvh'),40)};g.insertBefore(t,g.firstChild)}}}catch(e){console.warn('[pfx]',e)}};
+const _cm=closeModal;closeModal=function(){_cm.apply(this,arguments);MY.forEach(i=>{const e=$(i);if(e)e.style.display='none'})};
+
+/* ============ TOKO: Irigasi + akses Balai ============ */
+function shopHtml(){const L=S.spr|0,v=vh(),cap=L?SPCAP[L-1]+VHCAP[v.lv]:0,mx=L>=3;
+  return '<div class="pfx-irr"><div class="tst" style="margin-top:10px">💦 Irigasi Otomatis · dibayar dari kas bersama</div>'+
+   '<div class="srow"><span class="se">💦</span><div class="si"><b>Irigasi Lv '+L+(mx?' · MAKS':'')+'</b><small>'+(L?'Tiap malam menyiram '+cap+' tanaman yang lupa disiram':'Belum ada — tanaman harus disiram manual')+(mx?'':' → '+SPCAP[L]+' petak')+'</small></div>'+
+   (mx?'':'<button class="mb sm" '+((S.gold|0)<SPC[L]?'disabled':'')+' onclick="pfxBuyIrr()">🪙'+nf(SPC[L])+'</button>')+'</div>'+
+   '<div class="srow"><span class="se">🏛️</span><div class="si"><b>Balai Desa</b><small>'+(v.lv>=VH.length?'Semua tahap selesai 🏆':'Tahap '+(v.lv+1)+'/'+VH.length+' · '+VH[v.lv].n)+'</small></div><button class="mb sm sec" onclick="openModal(\'pfxvh\')">Buka</button></div></div>'}
+const _rs=renderShop;renderShop=function(){_rs.apply(this,arguments);if(modal!=='shop')return;const sb=$('sb');if(!sb)return;const o=sb.querySelector('.pfx-irr');if(o)o.remove();sb.insertAdjacentHTML('beforeend',shopHtml())};
+
+/* ============ NOTIF: malam, hadiah tahap, kenalan ============ */
+let seenD=null,pops=[],popBusy=0;
+function pop(h){pops.push(h);if(!popBusy)nextPop()}
+function nextPop(){const h=pops.shift();const p=$('pfxpop');if(!h||!p){popBusy=0;return}popBusy=1;
+  if(modal&&modal!=='pfxvh'){pops.unshift(h);setTimeout(nextPop,900);return}p.innerHTML=h;void p.offsetWidth;p.classList.add('on');try{sfx('chime')}catch(e){}
+  setTimeout(()=>{p.classList.remove('on');setTimeout(nextPop,500)},5200)}
+function giveReward(l){const T=VH[l];if(!T)return;const r=T.rw,chips=['<span>🪙 '+nf(T.gold)+' kas bersama</span>'];
+  for(const k in r.seeds){sd[k]=(sd[k]||0)+r.seeds[k];chips.push('<span>'+CROPS[k].e+' ×'+r.seeds[k]+'</span>')}
+  if(r.xp){try{PFQ.addXp(r.xp)}catch(e){}chips.push('<span>✨ '+r.xp+' XP</span>')}
+  pop('<div class="em">'+T.e+'</div><h3>Balai Desa · Tahap '+(l+1)+' selesai!</h3>'+E(T.n)+' berdiri berkat kerja bareng.<div class="rw">'+chips.join('')+'</div><div style="margin-top:8px;font-size:12px;color:#d9f5d0">'+PERK[l]+'</div>');
+  try{hud()}catch(e){}}
+function watch(){if(!ok()){seenD=null;return}
+  /* malam */
+  const d=S.sprD|0;if(seenD===null)seenD=d;else if(d!==seenD){seenD=d;const m=[];
+    if(S.sprN)m.push('💦 Irigasi menyiram '+S.sprN+' tanaman');if(S.sprB)m.push('🍀 Berkah Desa: '+S.sprB+' tanaman tumbuh lebih cepat');
+    if(m.length)setTimeout(()=>{try{say(m.join(' · '))}catch(e){}},1600)}
+  /* hadiah tahap (per pemain, sekali) */
+  const ck='pfx_vhc_'+code,lv=vh().lv,c=lg(ck);
+  if(c==null){sg(ck,String(lv))}else if(lv>(+c|0)){const from=+c|0;sg(ck,String(lv));for(let l=from;l<lv&&l<VH.length;l++)giveReward(l)}
+  /* kenalan sekali */
+  const ik='pfx_intro_'+code;if(S.d>=2&&lg(ik)==null&&!modal){sg(ik,'1');setTimeout(()=>{try{say('🏛️ Balai Desa terbuka — ☰ Menu → Balai Desa, setor hasil panen bersama!')}catch(e){}},2500)}
+  if(modal==='pfxvh')render()}
+
+/* ============ PETUNJUK TERPADU ============ */
+/* Satu suara: saat misi utama sedang minta "temui / kunjungi / minum / kumpulkan gold", panel Berikutnya
+   & panduan awal diam — pelacak misi yang bicara. Kalau misinya soal kebun (cangkul/tanam/siram/panen), mereka boleh tampil. */
+function story(){try{const s=PFQ.state;if(!s||!s.act)return false;
+  let q=s.tr&&s.act[s.tr]?PFQ.byId[s.tr]:null;if(!q)q=PFQ.MAINS.find(x=>s.act[x.id])||PFQ.Q.find(x=>s.act[x.id]);
+  if(!q||!q.main)return false;
+  if(PFQ.qReady(q))return true;
+  const i=q.ob.findIndex((o,j)=>PFQ.pv(q,j)<(o.n||1));if(i<0)return true;
+  const o=q.ob[i],t=o.t;
+  if(t==='hoe'||t==='seed'||t==='water'||t==='sold')return false;
+  if(t==='get'&&Array.isArray(o.k)&&o.k.some(k=>k>=1&&k<=5))return false;
+  return true}catch(e){return false}}
+
+/* ============ TARGET HARI INI: klik baris untuk menuju ============ */
+document.addEventListener('click',ev=>{try{const r=ev.target.closest('#h3dl .h3r');if(!r||!window.HUD3||modal)return;
+  const i=[...r.parentNode.querySelectorAll('.h3r')].indexOf(r),g=HUD3.goals()[i];if(!g)return;
+  if(g[0]==='o')openModal('orders');else if(g[0]==='a')openModal('daily');else if(g[0]==='v')openModal('pfxvh')}catch(e){}},true);
+
+/* ============ BUFF MAKANAN ============ */
+/* Hidangan matang memberi buff sementara (hanya untuk yang makan). Efeknya dibaca lewat PFX.buff(kunci). */
+const BUF={
+ 12:{k:'spd',v:20,n:'Gesit',e:'💨',d:'Jalan +20% lebih cepat'},
+ 13:{k:'wsv',v:50,n:'Rajin',e:'🫗',d:'50% peluang menyiram tanpa memakai air'},
+ 10:{k:'hv',v:25,n:'Panen Ekstra',e:'🧺',d:'+25% peluang hasil panen bertambah 1'},
+ 11:{k:'gold',v:15,n:'Rejeki',e:'💰',d:'Harga "Jual semua" +15%'}};
+const BDUR=300;
+const bkey=()=>'pfx_buff_'+code;
+let BF={};
+function bload(){try{const o=JSON.parse(lg(bkey())||'null');BF=o&&typeof o==='object'?o:{}}catch(e){BF={}}bprune()}
+function bsave(){sg(bkey(),JSON.stringify(BF))}
+function bprune(){const n=Date.now();for(const k in BF)if(!(BF[k]>n)||!BUF[k])delete BF[k]}
+function buff(key){let v=0;const n=Date.now();for(const id in BF)if(BF[id]>n&&BUF[id]&&BUF[id].k===key)v=Math.max(v,BUF[id].v);return v}
+function applyBuff(id){const b=BUF[id];if(!b)return;BF[id]=Date.now()+BDUR*1000;bsave();setTimeout(()=>{try{say(b.e+' Buff '+b.n+' aktif · '+b.d+' · 5 menit')}catch(e){}},700);renderBuf()}
+const buffTxt=id=>BUF[id]?' · ✨ '+BUF[id].n+': '+BUF[id].d+' (5 mnt)':'';
+const _eat=eat;eat=function(k){const b=inv[+k]|0;const r=_eat.apply(this,arguments);try{if((inv[+k]|0)<b)applyBuff((+k)%100)}catch(e){}return r};
+function dayCardHide(){if(modal==='h2slp'){const c=$('h5day');if(c&&c.classList.contains('on'))c.classList.remove('on')}}
+function renderBuf(){let el=$('pfxbuf');const v=$('h3vit');if(!el){if(!v)return;el=mk('div','pfxbuf');v.insertAdjacentElement('afterend',el);
+  el.addEventListener('click',ev=>{const c=ev.target.closest('[data-b]');if(c){const b=BUF[c.dataset.b];if(b)say(b.e+' '+b.n+': '+b.d)}})}
+  bprune();const n=Date.now(),h=ok()?Object.keys(BF).map(id=>{const b=BUF[id],s=Math.max(0,Math.ceil((BF[id]-n)/1000));return '<span data-b="'+id+'" class="'+(s<30?'lo':'')+'">'+b.e+' '+b.n+' <b>'+Math.floor(s/60)+':'+String(s%60).padStart(2,'0')+'</b></span>'}).join(''):'';
+  if(el._h!==h){el._h=h;el.innerHTML=h}el.style.display=h?'flex':'none'}
+
+/* ============ BADGE ANGKA ============ */
+const baseCnt=id=>{let n=0;for(const k in inv)if((+k)%100===id)n+=inv[k]|0;return n};
+function ordReady(){try{const O=JSON.parse(lg('pfc2_orders')||'null');if(!O||!Array.isArray(O.list))return 0;return O.list.filter(o=>!o.done&&baseCnt(o.id)>=o.n).length}catch(e){return 0}}
+function balaiReady(){try{const v=vh(),T=VH[v.lv];if(!T)return 0;return T.req.filter(r=>r.k!==0&&(v.p[r.k]|0)<r.n&&held(r.k)>0).length}catch(e){return 0}}
+function ranchN(){try{const v=RANCH.load();let n=0;['ayam','sapi','domba'].forEach(t=>{const a=v.an[t];if(a&&a.own&&a.n){n+=a.rdy[0]+a.rdy[1]+a.rdy[2];if(!a.fed)n++}});return n}catch(e){return 0}}
+function counts(){const c={};
+  try{c.abs=claimedToday()?0:1}catch(e){c.abs=0}
+  c.ord=ordReady();c.dex=$('dexb2')&&$('dexb2').classList.contains('has')?1:0;c.wx=$('wxb2')&&$('wxb2').classList.contains('has')?1:0;
+  const u=$('unread');c.chat=u&&u.style.display==='block'?(parseInt(u.textContent)||1):0;
+  c.help=$('h2helpb')&&$('h2helpb').classList.contains('has')?1:0;c.bal=balaiReady();c.ranch=ranchN();return c}
+function badge(btn,n){if(!btn)return;let e=btn.querySelector('.pfxn');
+  if(n>0){if(!e){e=document.createElement('em');e.className='pfxn';btn.appendChild(e)}const t=n>99?'99+':String(n);if(e.textContent!==t)e.textContent=t;btn.classList.add('pfxh')}
+  else{if(e)e.remove();btn.classList.remove('pfxh')}}
+function badges(){if(!ok())return;const c=counts();
+  badge($('h3menuB'),c.abs+c.ord+c.dex+c.wx+c.chat+c.help+c.bal);badge($('ranchB'),c.ranch)}
+const MAPL=[['Absen','abs'],['Pesanan','ord'],['Koleksi','dex'],['Cuaca','wx'],['Chat','chat'],['Bantuan','help'],['Balai Desa','bal']];
+function menuBadges(){const g=$('h3grid');if(!g)return;const c=counts();
+  g.querySelectorAll('.h3t').forEach(t=>{const m=MAPL.find(x=>t.textContent.includes(x[0]));if(!m)return;const n=c[m[1]]|0;let i=t.querySelector('i');
+    if(n>0){if(!i){i=document.createElement('i');t.appendChild(i)}i.className='pfxn2';i.textContent=n>99?'99+':n}else if(i)i.remove()})}
+
+/* ============ LAPORAN MALAM di ringkasan tidur ============ */
+function nightReport(){const el=$('h2slp');if(!el||!ok())return;const box=el.querySelector('.snext');if(!box||box.querySelector('.pfxs'))return;
+  const L=[];
+  try{const w=[...box.querySelectorAll('.sn.warn')].find(e=>/tidak tumbuh/.test(e.textContent));
+    if(w&&(S.sprD|0)===(S.d|0)&&S.sprN){const m=/(\d+)/.exec(w.textContent),n=(m?+m[1]:0)-S.sprN;if(n<=0)w.remove();else w.textContent='⚠️ '+n+' tanaman tidak tumbuh karena belum disiram.'}}catch(e){}
+  if((S.sprD|0)===(S.d|0)){if(S.sprN)L.push('💦 Irigasi menyiram '+S.sprN+' tanaman semalam');if(S.sprB)L.push('🍀 Berkah Desa mempercepat '+S.sprB+' tanaman')}
+  let r1=0;for(const t of S.tiles)if(t[0]&&t[1]&&CROPS[t[1]]&&t[2]===CROPS[t[1]].g-1)r1++;
+  if(r1)L.push('🧺 '+r1+' tanaman matang besok — siram hari ini!');
+  try{const v=vh(),T=VH[v.lv];if(T){let a=0,b=0;T.req.forEach(r=>{a+=Math.min(r.n,v.p[r.k]|0);b+=r.n});L.push('🏛️ Balai Desa Tahap '+(v.lv+1)+'/'+VH.length+' · '+Math.round(a/b*100)+'%')}else L.push('🏆 Balai Desa selesai — Desa Makmur!')}catch(e){}
+  try{const g=HUD3.goals(),d=g.filter(x=>x[1]>=x[2]).length;L.push('🎯 Target harian '+d+'/'+g.length+(d===g.length?' ✔':''))}catch(e){}
+  bprune();const bs=Object.keys(BF).map(id=>BUF[id].e+' '+BUF[id].n);if(bs.length)L.push('✨ Buff aktif: '+bs.join(', '));
+  if(L.length)box.insertAdjacentHTML('beforeend','<div class="h4t pfxs"><b>🌙 Laporan malam</b>'+L.map(x=>'<div>'+x+'</div>').join('')+'</div>')}
+const _om3=openModal;openModal=function(m){const r=_om3.apply(this,arguments);try{if(m==='h2slp')nightReport();else if(m==='h3menu')menuBadges()}catch(e){console.warn('[pfx]',e)}return r};
+
+const _bg=begin;begin=function(){const r=_bg.apply(this,arguments);try{seenD=null;lastH='';bload()}catch(e){}return r};
+window.PFX={story,vh,VH,deposit,buyIrr,buff,buffTxt,wgoal:()=>{const k='pfx_wg',t=(typeof dkey==='function'&&typeof todayD==='function')?dkey(todayD()):'';
+  try{const o=JSON.parse(lg(k)||'null');if(o&&o.d===t&&o.c===code)return o.n}catch(e){}
+  let p=0;try{for(let y=FY0;y<=FY1;y++)for(let x=FX0;x<=FX1;x++){const q=S.tiles[x+y*W];if(q&&q[0]&&q[1])p++}}catch(e){}
+  if(p<=0)return 6;const n=Math.max(4,Math.min(12,Math.round(p*.5)));sg(k,JSON.stringify({d:t,c:code,n}));return n}};
+bload();setInterval(()=>{try{build();watch();renderBuf();badges();dayCardHide()}catch(e){console.warn('[pfx]',e)}},400);
+})();
+</script>
+
 </body></html>
