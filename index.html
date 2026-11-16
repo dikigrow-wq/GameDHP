@@ -926,7 +926,7 @@ button .ic,.cell .ic,.slot .ic{vertical-align:middle}
 <div id="m0" class="mp"><div id="ubar"></div><button class="mb" onclick="show('sp')"><i class="pxi pxi-single"></i><span>Single Player</span></button><button class="mb" onclick="show('mp')"><i class="pxi pxi-multi"></i><span>Multiplayer</span></button><button class="mb sec" onclick="show('how')"><i class="pxi pxi-howto"></i><span>Cara Main</span></button><button class="mb sec inst-btn" onclick="installApp()" style="display:none"><i class="pxi pxi-install"></i><span>Pasang ke Layar Utama</span></button></div>
 <div id="sp" class="mp"><h2>Single Player</h2><input id="nm1" placeholder="Nama kamu" maxlength="12"><div id="pk1" class="pk"></div><button class="mb" id="cont">Lanjutkan</button><button class="mb" id="newg">Game Baru</button><button class="mb sec" onclick="show('m0')">← Kembali</button></div>
 <div id="mp" class="mp"><h2>Multiplayer</h2><input id="nm2" placeholder="Nama kamu" maxlength="12"><div id="pk2" class="pk"></div><button class="mb" type="button" onclick="show('mpc')"><span>Buat Room</span></button><button class="mb" type="button" onclick="show('mpj')"><span>Cari / Gabung Room</span></button><small id="st"></small><button class="mb sec" onclick="show('m0')">← Kembali</button></div><div id="mpc" class="mp"><h2>Buat Room</h2><small>Terbuka: cukup nama world, langsung buat atau masuk. Dikunci: wajib pakai kode.</small><div class="row"><input id="rm" placeholder="Nama world (min. 3 huruf/angka)" maxlength="24" autocomplete="off"><button class="mb sm" id="rnd" type="button">Acak</button></div><button class="mb sec" id="rlk" type="button"><span>🔓 Terbuka - cukup nama world</span></button><input id="rpw" type="password" placeholder="Kode kunci (min. 4 karakter)" maxlength="32" autocomplete="off" style="display:none"><button class="mb" id="join" type="button"><span>Buat &amp; Masuk</span></button><small id="rcst"></small><button class="mb sec" type="button" onclick="show('mp')">← Kembali</button></div><div id="mpj" class="mp"><h2>Cari Room</h2><small id="rjh"></small><div id="rjl"></div><div class="row"><input id="rjc" placeholder="Nama world" maxlength="24" autocomplete="off"><button class="mb sm" id="rjg" type="button"><span>Gabung</span></button></div><input id="rjp" type="password" placeholder="Kode kunci" maxlength="32" autocomplete="off" style="display:none"><small id="stj"></small><div class="row"><button class="mb sec sm" id="rjr" type="button"><span>↻</span></button><button class="mb sec" type="button" style="flex:1" onclick="show('mp')">← Kembali</button></div></div>
-<div id="how" class="mp"><h2>Cara Main</h2><ul><li>🏠 Rumah: dekati pintu lalu tekan E. Di dalam ada 🛏️ kasur (tidur setelah 18:00), 📦 peti, 🍳 kompor, 🚿 kamar mandi, dan 🚪 pintu keluar.</li><li>🌱 Bertani: ⛏️ gali tanah → pilih biji (slot 4-8) → Pakai buat tanam → 💧 siram TIAP HARI → 🧺 panen. Makin rajin disiram, makin bagus grade (Biasa / ⭐ Bagus / 🌟 Prima). Biji dibeli di Toko, dan panen bisa ngasih biji lagi.</li><li>🌦️ Cuaca &amp; Musim: 1 musim = 7 hari (🌸 Semi · ☀️ Panas · 🍂 Gugur · ❄️ Dingin). Hujan/salju menyiram semua tanaman otomatis. ⛈️ Badai bisa merusak tanaman, jadi lihat prakiraan di tombol 🌤️ dan panen dulu. Tiap tanaman laku +50% di musimnya (Wortel 🌸, Tomat &amp; Bunga Matahari ☀️, Jagung 🍂, Labu ❄️).</li><li>🏛️ Aula Meeting (pojok kanan atas Kebun, tempat kamu muncul): masuk lewat pintu, tekan E di dekat kursi untuk duduk (8 kursi), E di dekat Pelayan Dewi untuk minum teh. Di dalam, musik berubah jadi fancy.</li><li>HP: joystick kiri untuk jalan, tombol ⛏️ pakai alat (tahan = ulang), tombol kanan = aksi (bicara/tidur/jual)</li><li>WASD / panah: jalan</li><li>1-8: pilih alat &amp; bibit · Q/Z/scroll: ganti slot</li><li>Spasi: pakai alat di tile depan</li><li>E: bicara NPC, tidur di rumah, jual di toko</li><li>🎣 (slot 9): hadap air, Pakai, tunggu ❗ lalu Pakai lagi · berenang di kolam/danau · E dekat ayam = telur</li><li>Trade: dekati pemain lain lalu E, atau tombol 🤝</li><li>⚔️ F / tombol Serang: pukul pemain lain (friendly fire, host bisa mematikannya di menu ⏸). 🎵 Musik latar diunduh otomatis saat masuk game. Atur volume atau ganti lagu di menu ⏸.</li><li>❤️ Darah · 🍗 Lapar · 💧 Haus: makan panen/ikan/telur dari 🎒 Tas (pilih item → Makan), minum dengan E di dekat air / air mancur. Kalau lapar atau haus habis, darah berkurang. Tidur di rumah memulihkan darah.</li><li>Waktu: Pagi 06-11 · Siang 11-15 · Sore 15-18 · Malam 18-24 (lampu menyala, kunang-kunang muncul)</li><li>🗺️ Jelajah: jalan ke tepi kiri/kanan peta (jalan setapak) untuk pindah map. Kebun ← → ❄️ Salju → ⛰️ Bukit, dan 🏜️ Gurun di sebelah barat Kebun. Tiap map punya NPC dan fitur sendiri: Salju = mancing es, Kedai Hangat &amp; 🎮 Rumah Game (hanya ada di Salju); Bukit = tambang, beri liar, susu kambing; Gurun = gali harta, kaktus, oasis, Kafilah. Salju bikin cepat lapar, Gurun bikin cepat haus.</li><li>📜 Misi &amp; Level: cari NPC bertanda ❗ (misi baru) atau ❓ (siap dilapor), tekan E untuk bicara. J / tombol 📜: buka jurnal misi. Misi Utama membawamu keliling Kebun → Salju → Bukit → Gurun, Misi Sampingan ada di tiap NPC. Selesaikan misi &amp; panen untuk XP, naik level, dan dapat gold + hadiah.</li><li>🪑 Bangku taman: dekati lalu tekan E untuk duduk (bangku tidak bisa ditembus). Gerak atau tekan E lagi untuk berdiri. ⛲ Air mancur juga bisa diminum dengan E.</li><li>I: buka tas · Enter / 💬: chat (multiplayer) · Esc: jeda</li></ul><button class="mb sec" onclick="show('m0')">← Kembali</button></div>
+<div id="how" class="mp"><h2>Cara Main</h2><ul><li>🏠 Rumah: dekati pintu lalu tekan E. Di dalam ada 🛏️ kasur (tidur setelah 18:00), 📦 peti, 🍳 kompor, 🚿 kamar mandi, dan 🚪 pintu keluar.</li><li>🌱 Bertani: ⛏️ gali tanah → pilih biji (slot 4-8) → Pakai buat tanam → 💧 siram TIAP HARI → 🧺 panen. Makin rajin disiram, makin bagus grade (Biasa / ⭐ Bagus / 🌟 Prima). Biji dibeli di Toko, dan panen bisa ngasih biji lagi.</li><li>🌦️ Cuaca &amp; Musim: 1 musim = 7 hari (🌸 Semi · ☀️ Panas · 🍂 Gugur · ❄️ Dingin). Hujan/salju menyiram semua tanaman otomatis. ⛈️ Badai bisa merusak tanaman, jadi lihat prakiraan di tombol 🌤️ dan panen dulu. Tiap tanaman laku +50% di musimnya (Wortel 🌸, Tomat &amp; Bunga Matahari ☀️, Jagung 🍂, Labu ❄️).</li><li>🏛️ Aula Meeting (pojok kanan atas Kebun, tempat kamu muncul): masuk lewat pintu, tekan E di dekat kursi untuk duduk (8 kursi), E di dekat Pelayan Dewi untuk minum teh. Di dalam, musik berubah jadi fancy.</li><li>HP: joystick kiri untuk jalan, tombol ⛏️ pakai alat (tahan = ulang), tombol kanan = aksi (bicara/tidur/jual)</li><li>WASD / panah: jalan</li><li>1-8: pilih alat &amp; bibit · Q/Z/scroll: ganti slot</li><li>Spasi: pakai alat di tile depan</li><li>E: bicara NPC, tidur di rumah, jual di toko</li><li>🎣 (slot 9): hadap air, Pakai, tunggu ❗ lalu Pakai lagi · berenang di kolam/danau · E dekat ayam = telur</li><li>Trade: dekati pemain lain lalu E, atau tombol 🤝</li><li>⚔️ F / tombol Serang: pukul pemain lain (friendly fire, host bisa mematikannya di menu ⏸). 🎵 Musik latar diunduh otomatis saat masuk game. Atur volume atau ganti lagu di menu ⏸.</li><li>❤️ Darah · 🍗 Lapar · 💧 Haus: makan panen/ikan/telur dari 🎒 Tas (pilih item → Makan), minum dengan E di dekat air / air mancur. Kalau lapar atau haus habis, darah berkurang. Tidur di rumah memulihkan darah.</li><li>Waktu: Pagi 06-11 · Siang 11-15 · Sore 15-18 · Malam 18-24 (lampu menyala, kunang-kunang muncul)</li><li>🗺️ Jelajah: jalan ke tepi kiri/kanan peta (jalan setapak) untuk pindah map. Kebun ← → ❄️ Salju → ⛰️ Bukit, dan 🏜️ Gurun di sebelah barat Kebun. Tiap map punya NPC dan fitur sendiri: Salju = mancing es, Kedai Hangat &amp; 🎮 Rumah Game (hanya ada di Salju); Bukit = tambang, beri liar, susu kambing; Gurun = gali harta, kaktus, oasis, Kafilah. Salju bikin cepat lapar, Gurun bikin cepat haus.</li><li>📜 Misi &amp; Level: cari NPC bertanda ❗ (misi baru) atau ❓ (siap dilapor), tekan E untuk bicara. J / tombol 📜: buka jurnal misi. Misi Utama membawamu keliling Kebun → Salju → Bukit → Gurun, Misi Sampingan ada di tiap NPC. Selesaikan misi &amp; panen untuk XP, naik level, dan dapat gold + hadiah.</li><li>🪑 Bangku taman: dekati lalu tekan E untuk duduk (bangku tidak bisa ditembus). Gerak atau tekan E lagi untuk berdiri. ⛲ Air mancur juga bisa diminum dengan E.</li><li>I: buka tas · Enter / 💬: chat (multiplayer) · Esc: jeda</li><li>🐔🐄🐑 Peternakan: kandang ada di padang barat daya (di bawah Kebun). Dekati pintu kandang lalu tekan E untuk membangun, memberi makan, dan mengambil hasil.</li><li>💞 Keluarga: capai ❤4 untuk pacaran, ❤5 untuk melamar, lalu menikah dengan warga atau pemain co-op (☰ Menu → Keluarga). Pasangan membantu tiap pagi.</li><li>🌟 Warisan: target musiman tanpa akhir. Game ini tidak punya tamat.</li></ul><button class="mb sec" onclick="show('m0')">← Kembali</button></div>
 </div></div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.57.4/dist/umd/supabase.min.js"></script>
@@ -2064,7 +2064,7 @@ if(!/^https?:/.test(SB_URL))$('st').textContent='⚠ Supabase belum diisi di fil
 try{const sv=JSON.parse(localStorage.getItem('pfc2_char')||'null');if(sv){pick.g=sv.g==='f'?'f':'m';if(COLS.includes(sv.col))pick.col=sv.col;if(sv.n)$('nm1').value=$('nm2').value=sv.n}}catch(e){}
 renderPick();
 /* ===== v16: sistem akun (Supabase Auth) + mode tamu + sinkron cloud ===== */
-let sba=null;const AUTH={mode:'',name:'',uid:'',last:'',tab:'in',mod:false,nick:''},SYNC_RE=/^pfc2_(char|prolog|SOLO|daily|cal30|orders|bond|dex|fish|fest|inv_.+|quest_.+|ranch_.+)$/;
+let sba=null;const AUTH={mode:'',name:'',uid:'',last:'',tab:'in',mod:false,nick:''},SYNC_RE=/^pfc2_(char|prolog|SOLO|daily|cal30|orders|bond|dex|fish|fest|inv_.+|quest_.+|ranch_.+|life_.+)$/;
 try{if(window.supabase&&/^https?:/.test(SB_URL))sba=supabase.createClient(SB_URL,SB_KEY,{auth:{persistSession:true,autoRefreshToken:true}})}catch(e){sba=null}
 const RURL=()=>/^https?:/.test(location.protocol)?location.origin+location.pathname:undefined;
 const uMail=u=>u.includes('@')?u:u.toLowerCase()+'@pixelfarm.game';
@@ -4714,7 +4714,7 @@ function accept(id){const q=byId[id];if(!q||st(q)!=='avail')return;const a={p:q.
 function complete(id){const q=byId[id];if(!q||!QS.act[id]||!qReady(q))return false;
   delete QS.act[id];QS.done[id]=q.rep?S.d:1;if(QS.tr===id)QS.tr='';
   const r=q.r||{};const got=grantReward({g:r.g,seeds:r.seeds,xi:r.xi,items:r.items});qSnap();
-  let nx='';if(q.main){const n=MAINS.find(x=>!QS.done[x.id]);nx=n?'Selanjutnya: "'+n.nm+'" — temui '+where(n.g)+(n.lv&&QS.lv<n.lv?' (butuh Level '+n.lv+')':''):'🏆 Seluruh Misi Utama tuntas! Kamu kini Juragan Lembah.'}
+  let nx='';if(q.main){const n=MAINS.find(x=>!QS.done[x.id]);nx=n?'Selanjutnya: "'+n.nm+'" — temui '+where(n.g)+(n.lv&&QS.lv<n.lv?' (butuh Level '+n.lv+')':''):'🏆 Seluruh Misi Utama tuntas! Tapi Lembah tak pernah berakhir: buka ☰ Menu → Keluarga → 🌟 Warisan untuk target tanpa akhir, atau menikah & bangun peternakan.'}
   const rows=got.filter(Boolean).map(x=>({e:x.e,t:x.nm,r:x.r}));if(r.xp)rows.push({e:'⭐',t:'+'+r.xp+' XP',r:2});
   QQ.push({k:'q',main:!!q.main,title:q.main?'MISI UTAMA SELESAI':'MISI SELESAI',name:q.nm,txt:nx,rows});
   addXp(r.xp|0);dirty();qUI();return true}
@@ -8382,4 +8382,489 @@ bload();setInterval(()=>{try{build();watch();renderBuf();badges();dayCardHide()}
 })();
 </script>
 
+
+<script id="rw">
+/* ===== Peternakan di Peta (ranch-world) =====
+   Menggambar Kandang Ayam / Sapi / Domba + hewannya langsung di dunia (padang barat daya, di bawah Kebun).
+   Data tetap dari modul 🏡 Lembah Saya (RANCH). Tekan E di pintu kandang -> panel Kandang.
+   Semua dibungkus try/catch; kalau gagal, game asli tetap jalan. */
+(function(){"use strict";
+if(typeof RANCH==='undefined'||typeof g==='undefined'||typeof T==='undefined'){console.warn('[rw] dependensi tidak ada');return}
+const KEYS=['ayam','sapi','domba'];
+const BD={ayam:{cx:2.4,w:2.2,by:16},sapi:{cx:5,w:3,by:16},domba:{cx:7.75,w:2.5,by:16}};
+const YARD={x0:.95,x1:9.05,y0:16,y1:17.95},GATE={sx0:6.3,sx1:7.5,ey0:16.8,ey1:17.7},FT=.13;
+const EMO='"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif';
+/* ---------- tabrakan (pixel rect, satuan petak) ---------- */
+const SR=[];
+KEYS.forEach(k=>{const b=BD[k];SR.push([b.cx-b.w/2+.06,b.by-.95,b.cx+b.w/2-.06,b.by])});
+SR.push([YARD.x0-FT,YARD.y0,YARD.x0+FT,YARD.y1+FT],[YARD.x1-FT,YARD.y0,YARD.x1+FT,GATE.ey0],[YARD.x1-FT,GATE.ey1,YARD.x1+FT,YARD.y1+FT],
+  [YARD.x0-FT,YARD.y1-FT,GATE.sx0,YARD.y1+FT],[GATE.sx1,YARD.y1-FT,YARD.x1+FT,YARD.y1+FT]);
+const inSR=(px,py)=>{if(zone!==0||scene)return false;const x=px/T,y=py/T;for(const r of SR)if(x>=r[0]&&x<=r[2]&&y>=r[1]&&y<=r[3])return true;return false};
+const _bs=window.benchSolid;
+window.benchSolid=function(px,py){return (typeof _bs==='function'&&_bs.apply(this,arguments))||inSR(px,py)};
+
+/* ---------- bersihkan pohon di area kandang, geser ayam liar ---------- */
+function ensure(){if(zone!==0)return;
+  try{if(!TL.__rw){TL.__rw=1;for(let i=TL.length-1;i>=0;i--){const t=TL[i],x=t.x/T,y=t.y/T;
+    if(x>.9&&x<9.1&&y>14.2&&y<18.3){TS.delete(Math.floor(x)+Math.floor(y)*W);TL.splice(i,1)}}}}catch(e){}
+  try{const a=NPC.find(n=>n.id==='ayam4');if(a&&!a.__rw){a.__rw=1;a.home=[12.6,19.2];a.r=2}}catch(e){}}
+
+const night=()=>{const h=6+Math.min(1,S.t/DAY)*18;return h>=19.5||h<5.5};
+const rrect=(x,y,w,h,r)=>{g.beginPath();if(g.roundRect)g.roundRect(x,y,w,h,r);else g.rect(x,y,w,h)};
+
+/* ---------- gambar tanah & pagar ---------- */
+function drawGround(t){const x0=YARD.x0*T,y0=(YARD.y0-.15)*T,w=(YARD.x1-YARD.x0)*T,h=(YARD.y1-YARD.y0+.15)*T;
+  g.save();g.fillStyle='rgba(122,94,52,.55)';rrect(x0,y0,w,h,10);g.fill();
+  g.fillStyle='rgba(168,134,78,.35)';rrect(x0+5,y0+5,w-10,h-10,8);g.fill();
+  const R=rng(77);for(let i=0;i<70;i++){const px=x0+8+R()*(w-16),py=y0+8+R()*(h-16);g.fillStyle=R()<.5?'rgba(214,180,96,.55)':'rgba(92,66,36,.45)';g.fillRect(px,py,3+R()*4,2)}
+  /* jalan setapak gerbang timur -> gerbang selatan */
+  g.fillStyle='rgba(196,164,108,.5)';rrect(5.6*T,17.05*T,(YARD.x1-5.6)*T+6,.62*T,8);g.fill();rrect(6.3*T,17.05*T,1.2*T,(YARD.y1-17.05)*T+6,8);g.fill();
+  g.restore()}
+function post(x,y,h,col){g.fillStyle='rgba(0,0,0,.22)';g.fillRect(x-3,y-1,9,3);g.fillStyle=col||'#8a5a30';g.fillRect(x-3,y-h,7,h);g.fillStyle='#c08a52';g.fillRect(x-3,y-h,7,3)}
+function railH(x0,x1,y){const col=['#a8723c','#96622f'];
+  for(let x=x0;x<x1-4;x+=34)post(x,y,24);post(x1-4,y,24);
+  g.fillStyle=col[0];g.fillRect(x0,y-19,x1-x0,4);g.fillStyle=col[1];g.fillRect(x0,y-10,x1-x0,4);g.fillStyle='rgba(255,255,255,.18)';g.fillRect(x0,y-19,x1-x0,1)}
+function railV(x,y0,y1){
+  g.fillStyle='#96622f';g.fillRect(x-2,y0-18,4,y1-y0+2);
+  for(let y=y0;y<y1;y+=34)post(x,y+10,26);post(x,y1,26)}
+function drawFences(){g.save();
+  railH(YARD.x0*T-3,GATE.sx0*T,YARD.y1*T);railH(GATE.sx1*T,YARD.x1*T+3,YARD.y1*T);
+  railV(YARD.x0*T,YARD.y0*T,YARD.y1*T);
+  railV(YARD.x1*T,YARD.y0*T,GATE.ey0*T);railV(YARD.x1*T,GATE.ey1*T,YARD.y1*T);
+  /* tiang gerbang */
+  [[GATE.sx0*T,YARD.y1*T],[GATE.sx1*T,YARD.y1*T],[YARD.x1*T,GATE.ey0*T],[YARD.x1*T,GATE.ey1*T]].forEach(([x,y])=>{g.fillStyle='#6f4524';g.fillRect(x-4,y-34,9,34);g.fillStyle='#d6a15f';g.fillRect(x-5,y-37,11,4)});
+  g.restore()}
+function drawSign(t){const x=10.05*T,y=15.55*T;g.save();
+  g.fillStyle='rgba(0,0,0,.22)';g.beginPath();g.ellipse(x,y,16,5,0,0,7);g.fill();
+  g.fillStyle='#6f4524';g.fillRect(x-3,y-44,6,44);
+  g.fillStyle='#b9843f';rrect(x-52,y-72,104,34,6);g.fill();g.strokeStyle='#5a3a1c';g.lineWidth=2.5;g.stroke();
+  g.font='700 13px sans-serif';g.textAlign='center';g.fillStyle='#3a2410';g.fillText('PETERNAKAN',x,y-51);g.font='11px '+EMO;g.fillText('🐔 🐄 🐑',x,y-40);g.restore()}
+
+/* ---------- bangunan ---------- */
+function lit(on){return on?'#ffd86a':'#6a8aa0'}
+function drawCoop(kv,on){
+  g.fillStyle='rgba(0,0,0,.25)';g.beginPath();g.ellipse(0,3,60,9,0,0,7);g.fill();
+  /* tiang pendek */
+  g.fillStyle='#6f4a28';g.fillRect(-42,-8,7,8);g.fillStyle='#6f4a28';g.fillRect(35,-8,7,8);
+  /* nest box kiri */
+  g.fillStyle='#a47642';g.fillRect(-58,-34,18,26);g.fillStyle='#e6c25c';g.fillRect(-56,-24,14,14);g.fillStyle='#fff3cf';g.beginPath();g.ellipse(-49,-22,4,5,0,0,7);g.fill();
+  g.fillStyle='#8a5e30';g.fillRect(-60,-38,22,5);
+  /* badan */
+  g.fillStyle='#bd8d55';g.fillRect(-44,-60,88,52);
+  g.fillStyle='rgba(78,48,20,.35)';for(let i=-40;i<=40;i+=8)g.fillRect(i,-60,1.5,52);
+  g.fillStyle='#7a5530';g.fillRect(-46,-12,92,5);g.fillRect(-46,-62,92,3);
+  /* atap pelana */
+  g.fillStyle='#a8392f';g.beginPath();g.moveTo(-60,-58);g.lineTo(0,-102);g.lineTo(60,-58);g.closePath();g.fill();
+  g.strokeStyle='rgba(60,12,8,.45)';g.lineWidth=1.5;for(let r=1;r<5;r++){const yy=-58-r*9,w=60-r*13.5;g.beginPath();g.moveTo(-w,yy);g.lineTo(w,yy);g.stroke()}
+  g.fillStyle='#7e2a24';g.fillRect(-62,-60,124,4);
+  g.fillStyle='#e8d6a8';g.fillRect(-2,-106,4,8);
+  /* pintu + jendela */
+  g.fillStyle='#3a2616';g.fillRect(-10,-38,20,30);g.beginPath();g.arc(0,-38,10,Math.PI,0);g.fill();
+  g.fillStyle='#8f6a3c';g.beginPath();g.moveTo(-9,-8);g.lineTo(9,-8);g.lineTo(15,5);g.lineTo(-15,5);g.closePath();g.fill();
+  g.strokeStyle='#6a4a26';g.lineWidth=1.5;for(let i=-1;i<=2;i++){g.beginPath();g.moveTo(-11+i*7,-6+(i+1)*0);g.lineTo(-13+i*9,4);g.stroke()}
+  g.fillStyle=lit(on);g.fillRect(22,-50,14,14);g.strokeStyle='#5a3a1c';g.lineWidth=2;g.strokeRect(22,-50,14,14);g.beginPath();g.moveTo(29,-50);g.lineTo(29,-36);g.moveTo(22,-43);g.lineTo(36,-43);g.stroke();
+  g.fillStyle='#f3e2b0';rrect(-16,-70,32,16,4);g.fill();g.font='12px '+EMO;g.textAlign='center';g.fillText('🥚',0,-57)}
+function drawBarn(kv,on){
+  g.fillStyle='rgba(0,0,0,.28)';g.beginPath();g.ellipse(0,3,84,10,0,0,7);g.fill();
+  /* silo kecil di kiri */
+  g.fillStyle='#c9c4b6';g.fillRect(-84,-88,22,86);g.fillStyle='rgba(0,0,0,.12)';g.fillRect(-72,-88,10,86);
+  g.fillStyle='#7d8590';g.beginPath();g.ellipse(-73,-88,11,8,0,Math.PI,0);g.fill();
+  g.fillStyle='rgba(0,0,0,.18)';for(let i=-80;i<-4;i+=14)g.fillRect(-84,i,22,2);
+  /* badan merah */
+  g.fillStyle='#b23a30';g.beginPath();g.moveTo(-66,-2);g.lineTo(-66,-70);g.lineTo(-58,-96);g.lineTo(-30,-116);g.lineTo(30,-116);g.lineTo(58,-96);g.lineTo(66,-70);g.lineTo(66,-2);g.closePath();g.fill();
+  g.fillStyle='rgba(58,10,8,.35)';for(let i=-62;i<=62;i+=9)g.fillRect(i,-68,1.5,66);
+  /* atap abu */
+  g.strokeStyle='#4f5560';g.lineWidth=9;g.lineJoin='round';g.beginPath();g.moveTo(-70,-68);g.lineTo(-58,-96);g.lineTo(-30,-118);g.lineTo(30,-118);g.lineTo(58,-96);g.lineTo(70,-68);g.stroke();
+  g.strokeStyle='#e9e3d0';g.lineWidth=2.5;g.beginPath();g.moveTo(-64,-70);g.lineTo(-54,-95);g.lineTo(-29,-113);g.lineTo(29,-113);g.lineTo(54,-95);g.lineTo(64,-70);g.stroke();
+  /* jendela loteng */
+  g.fillStyle='#f2ecd8';g.fillRect(-14,-102,28,24);g.fillStyle=on?'#ffd86a':'#6b4a24';g.fillRect(-11,-99,22,18);g.fillStyle='#d9b24a';g.fillRect(-11,-90,22,9);
+  g.strokeStyle='#f2ecd8';g.lineWidth=2.5;g.beginPath();g.moveTo(-14,-102);g.lineTo(14,-78);g.moveTo(14,-102);g.lineTo(-14,-78);g.stroke();
+  /* pintu ganda */
+  g.fillStyle='#8a2a24';g.fillRect(-28,-54,56,52);g.fillStyle='#f2ecd8';g.fillRect(-30,-56,60,3);g.fillRect(-30,-56,3,54);g.fillRect(27,-56,3,54);g.fillRect(-1.5,-54,3,52);
+  g.strokeStyle='#f2ecd8';g.lineWidth=2.5;g.beginPath();g.moveTo(-27,-52);g.lineTo(-2,-4);g.moveTo(-2,-52);g.lineTo(-27,-4);g.moveTo(2,-52);g.lineTo(27,-4);g.moveTo(27,-52);g.lineTo(2,-4);g.stroke();
+  /* tumpukan jerami kanan */
+  g.fillStyle='#d9b24a';g.fillRect(40,-26,22,24);g.fillRect(44,-48,16,22);g.fillStyle='rgba(120,84,20,.5)';for(let i=0;i<4;i++){g.fillRect(40,-24+i*6,22,1.5)}g.fillRect(44,-40,16,1.5);
+  /* penunjuk arah angin */
+  g.fillStyle='#3a3f48';g.fillRect(-1,-132,2,16);g.beginPath();g.moveTo(1,-130);g.lineTo(12,-126);g.lineTo(1,-122);g.fill()}
+function drawShed(kv,on){
+  g.fillStyle='rgba(0,0,0,.25)';g.beginPath();g.ellipse(0,3,66,9,0,0,7);g.fill();
+  /* dinding belakang gelap */
+  g.fillStyle='#4a3724';g.fillRect(-52,-62,104,58);
+  g.fillStyle='rgba(0,0,0,.25)';for(let i=-48;i<=48;i+=9)g.fillRect(i,-62,1.5,58);
+  /* jerami & karung wol */
+  g.fillStyle='#d9b24a';g.fillRect(-46,-26,40,22);g.fillStyle='rgba(120,84,20,.5)';g.fillRect(-46,-18,40,1.5);g.fillRect(-46,-11,40,1.5);
+  g.fillStyle='#f1ede2';g.beginPath();g.arc(24,-18,15,0,7);g.arc(36,-20,12,0,7);g.arc(14,-14,11,0,7);g.fill();
+  g.fillStyle='#e0d9c8';g.beginPath();g.arc(28,-11,10,0,Math.PI);g.fill();
+  /* tiang */
+  g.fillStyle='#7a5530';g.fillRect(-58,-66,8,66);g.fillRect(50,-66,8,66);g.fillStyle='#a67a45';g.fillRect(-58,-66,3,66);g.fillRect(50,-66,3,66);
+  /* atap jerami */
+  g.fillStyle='#8aa04e';g.beginPath();g.moveTo(-68,-58);g.lineTo(-52,-96);g.lineTo(52,-96);g.lineTo(68,-58);g.closePath();g.fill();
+  g.strokeStyle='rgba(50,70,20,.5)';g.lineWidth=1.5;for(let r=0;r<5;r++){const yy=-62-r*7.5;g.beginPath();g.moveTo(-66+r*3,yy);g.lineTo(66-r*3,yy);g.stroke()}
+  g.fillStyle='#6a7e38';g.fillRect(-70,-62,140,5);
+  /* papan nama */
+  g.fillStyle='#e8d6a0';rrect(-16,-90,32,16,4);g.fill();g.strokeStyle='#8a5e30';g.lineWidth=2;g.stroke();g.font='12px '+EMO;g.textAlign='center';g.fillText('🧶',0,-77)}
+function drawRank(kv,top){ /* bintang level kandang */
+  if(!kv)return;g.save();g.font='15px '+EMO;g.textAlign='center';g.fillText(kv>=2?'🌟':'⭐',0,top);g.restore()}
+function drawPlot(k,AN,t){const b=BD[k],W2=b.w*T/2;g.save();
+  g.fillStyle='rgba(255,240,170,.16)';g.strokeStyle='rgba(255,236,150,.8)';g.lineWidth=2;g.setLineDash([7,5]);rrect(-W2+4,-46,W2*2-8,44,6);g.fill();g.stroke();g.setLineDash([]);
+  [[-W2+8,-4],[W2-8,-4],[-W2+8,-46],[W2-8,-46]].forEach(([x,y])=>{g.fillStyle='#8a5a30';g.fillRect(x-2,y-14,4,16);g.fillStyle='#e04b3a';g.fillRect(x-4,y-18,8,5)});
+  const bob=Math.sin(t/400)*2;
+  g.fillStyle='#b9843f';rrect(-46,-80+bob,92,36,6);g.fill();g.strokeStyle='#5a3a1c';g.lineWidth=2.5;g.stroke();
+  g.fillStyle='#6f4524';g.fillRect(-2,-44+bob,4,42);
+  g.textAlign='center';g.fillStyle='#3a2410';g.font='700 11px sans-serif';g.fillText('🏗️ '+AN.k,0,-66+bob);g.font='700 12px sans-serif';g.fillText('🪙 '+String(AN.kc).replace(/\B(?=(\d{3})+(?!\d))/g,'.'),0,-51+bob);
+  g.restore()}
+function bubble(x,y,txt,t){g.save();const bob=Math.sin(t/300)*3;g.font='15px '+EMO;const w=g.measureText(txt).width+16;
+  g.fillStyle='rgba(255,255,255,.96)';rrect(x-w/2,y-13+bob,w,24,10);g.fill();g.strokeStyle='rgba(60,40,20,.5)';g.lineWidth=1.5;g.stroke();
+  g.fillStyle='rgba(255,255,255,.96)';g.beginPath();g.moveTo(x-4,y+10+bob);g.lineTo(x+4,y+10+bob);g.lineTo(x,y+16+bob);g.fill();
+  g.fillStyle='#2a1c10';g.textAlign='center';g.fillText(txt,x,y+5+bob);g.restore()}
+
+/* ---------- hewan ---------- */
+function drawCow(x,y,dir,t,mv,sd){g.save();g.translate(x,y);g.scale(dir,1);
+  g.fillStyle='rgba(0,0,0,.25)';g.beginPath();g.ellipse(0,2,30,7,0,0,7);g.fill();
+  const leg=(lx,ph,c)=>{const o=mv?Math.sin(t/130+sd+ph)*4:0;g.fillStyle=c;g.fillRect(lx+o-3,-17,6,14);g.fillStyle='#2a2320';g.fillRect(lx+o-3,-4,6,4)};
+  leg(-18,0,'#d9d4c8');leg(14,Math.PI,'#d9d4c8');
+  g.strokeStyle='#ebe6da';g.lineWidth=3;g.beginPath();g.moveTo(-28,-36);g.quadraticCurveTo(-36,-28+Math.sin(t/300+sd)*3,-32,-15);g.stroke();g.fillStyle='#2a2320';g.fillRect(-34,-16,5,6);
+  g.fillStyle='#f7f4ed';rrect(-29,-43,58,29,9);g.fill();
+  g.fillStyle='#2f2a28';const P=[[-20,-38,12,9],[2,-40,14,10],[-6,-26,10,8],[16,-30,9,9]];P.forEach(([px,py,w,h],i)=>{if((sd+i)%3!==0){g.beginPath();g.ellipse(px+w/2,py+h/2,w/2,h/2,0,0,7);g.fill()}});
+  g.fillStyle='#f2a9b2';g.fillRect(-4,-16,10,5);
+  leg(-9,Math.PI,'#f7f4ed');leg(21,0,'#f7f4ed');
+  const graze=!mv&&Math.sin(t/2300+sd*3)>.15;g.save();g.translate(27,-40+(graze?13:Math.sin(t/500+sd)*1));
+  g.fillStyle='#f7f4ed';rrect(-2,-5,23,21,6);g.fill();
+  g.fillStyle='#2f2a28';g.fillRect(2,-6,7,6);
+  g.fillStyle='#efe0b0';g.fillRect(-1,-9,4,5);g.fillRect(14,-9,4,5);
+  g.fillStyle='#f2a9b2';rrect(10,6,13,10,4);g.fill();g.fillStyle='#8a4a52';g.fillRect(14,10,2,2);g.fillRect(19,10,2,2);
+  g.fillStyle='#1b1512';g.fillRect(7,1,3,3);g.restore();g.restore()}
+function drawSheep(x,y,dir,t,mv,sd){g.save();g.translate(x,y);g.scale(dir,1);
+  g.fillStyle='rgba(0,0,0,.25)';g.beginPath();g.ellipse(0,2,23,6,0,0,7);g.fill();
+  const leg=(lx,ph)=>{const o=mv?Math.sin(t/120+sd+ph)*3:0;g.fillStyle='#3b312d';g.fillRect(lx+o-2,-14,4,13)};
+  leg(-12,0);leg(8,Math.PI);
+  const wool=(cx,cy,r,c)=>{g.fillStyle=c;g.beginPath();g.arc(cx,cy,r,0,7);g.fill()};
+  wool(-14,-24,9,'#e3ddcf');wool(0,-20,11,'#e3ddcf');wool(14,-23,9,'#e3ddcf');
+  wool(-15,-29,10,'#f6f2e8');wool(-3,-31,12,'#f6f2e8');wool(11,-30,11,'#f6f2e8');wool(2,-24,12,'#f6f2e8');wool(-8,-22,9,'#f6f2e8');wool(16,-24,8,'#f6f2e8');
+  leg(-6,Math.PI);leg(14,0);
+  const graze=!mv&&Math.sin(t/2000+sd*5)>.2;g.save();g.translate(24,-26+(graze?9:0));
+  g.fillStyle='#4a3f3a';g.beginPath();g.ellipse(2,2,8,9,0,0,7);g.fill();g.fillStyle='#3b312d';g.fillRect(-9,-2,4,8);g.fillRect(-2,-6,3,5);
+  g.fillStyle='#f6f2e8';g.beginPath();g.arc(-1,-7,6,0,7);g.fill();g.fillStyle='#fff';g.fillRect(3,0,3,3);g.fillStyle='#1b1512';g.fillRect(4,1,2,2);g.restore();g.restore()}
+
+/* ---------- gerak ---------- */
+function roam(id,now,z,seg,sp){const h=hash(id),o=h%seg,k=Math.floor((now+o)/seg),ph=(now+o)%seg;
+  const mix=n=>{n=Math.imul(n^(n>>>16),0x45d9f3b);n=Math.imul(n^(n>>>16),0x45d9f3b);return ((n^(n>>>16))>>>0)%2147483000+11};
+  const pt=i=>{const R=rng(mix(h*31+i*7919));return[z[0]+R()*(z[2]-z[0]),z[1]+R()*(z[3]-z[1])]};
+  const a=pt(k),b=pt(k+1),d=Math.hypot(b[0]-a[0],b[1]-a[1])*T,md=Math.min(seg*.8,d/sp),p=md>0?Math.min(1,ph/md):1;
+  return{x:(a[0]+(b[0]-a[0])*p)*T,y:(a[1]+(b[1]-a[1])*p)*T,mv:p<1,dir:b[0]>=a[0]?1:-1,f:Math.abs(b[0]-a[0])>Math.abs(b[1]-a[1])?(b[0]>a[0]?'right':'left'):(b[1]>a[1]?'down':'up')}}
+const ZN={ayam:[1.3,16.35,4.3,17.6],sapi:[3.3,16.45,6.2,17.55],domba:[5.6,16.4,8.8,17.6]};
+function animalPos(k,i,n,now){
+  if(night()){const b=BD[k],x=(b.cx+(i-(n-1)/2)*.5)*T,y=(b.by+.4+(i%2)*.28)*T;return{x,y,mv:0,dir:i%2?1:-1,f:'down'}}
+  const z=ZN[k],sp={ayam:.04,sapi:.026,domba:.03}[k],seg={ayam:5200,sapi:9500,domba:7500}[k];
+  return roam('rw_'+k+i,now,z,seg,sp)}
+
+/* ---------- entitas ---------- */
+function doorNear(){if(zone!==0||scene||typeof started==='undefined'||!started)return null;
+  for(const k of KEYS){const b=BD[k];if(Math.abs(me.x-b.cx*T)<b.w*T/2+10&&Math.abs(me.y-(b.by+.45)*T)<.62*T)return k}return null}
+function push(E,time){
+  if(zone!==0||scene)return;
+  if(cam.x>10.8*T||cam.y+VH/Z<12.5*T||cam.x+VW/Z<0)return;
+  ensure();let V;try{V=RANCH.load()}catch(e){return}
+  const now=Date.now(),nt=night();
+  E.push({y:-1e4,d:()=>drawGround(time)});
+  E.push({y:YARD.y1*T,d:()=>drawFences()});
+  E.push({y:15.55*T,d:()=>drawSign(time)});
+  const near=doorNear();
+  KEYS.forEach(k=>{const b=BD[k],a=V.an[k],AN=RANCH.AN[k],x=b.cx*T,y=b.by*T;
+    E.push({y,d:()=>{g.save();g.translate(x,y);
+      if(!a||!a.own)drawPlot(k,AN,time);
+      else{k==='ayam'?drawCoop(a.kv,nt):k==='sapi'?drawBarn(a.kv,nt):drawShed(a.kv,nt);
+        const top={ayam:-112,sapi:-136,domba:-100}[k];
+        if(a.kv){g.save();g.translate(0,0);drawRank(a.kv,top-4);g.restore()}
+        const rd=a.rdy[0]+a.rdy[1]+a.rdy[2];
+        if(rd>0)bubble(0,top-26,AN.pe+' ×'+rd,time);
+        else if(a.n>0&&!a.fed&&!nt)bubble(0,top-26,'🌾',time);
+        else if(!a.n)bubble(0,top-26,'➕🐾',time)}
+      if(near===k){g.strokeStyle='rgba(255,255,255,.85)';g.lineWidth=2;g.setLineDash([6,4]);rrect(-b.w*T/2+6,-4,b.w*T-12,.55*T,8);g.stroke();g.setLineDash([])}
+      g.restore()}});
+    if(a&&a.own){
+      /* palung pakan */
+      E.push({y:(b.by+.62)*T,d:()=>{const px=x,py=(b.by+.62)*T;g.fillStyle='rgba(0,0,0,.2)';g.fillRect(px-17,py,34,3);g.fillStyle='#8a5e30';g.fillRect(px-16,py-9,32,9);g.fillStyle='#d9b24a';g.fillRect(px-13,py-12,26,5);g.fillStyle='#6a4524';g.fillRect(px-16,py-9,32,2)}});
+      for(let i=0;i<a.n;i++){const p=animalPos(k,i,a.n,now),sd=i*7+k.length*13;
+        E.push({y:p.y,d:()=>{
+          if(k==='ayam'){try{chicken(p.x,p.y,p.f,time/80+hash('rwc'+i),p.mv)}catch(e){}}
+          else if(k==='sapi')drawCow(p.x,p.y,p.dir,time,p.mv,sd);
+          else drawSheep(p.x,p.y,p.dir,time,p.mv,sd);
+          if(nt){g.save();g.font='700 11px sans-serif';g.fillStyle='rgba(255,255,255,.85)';g.textAlign='center';g.fillText('z',p.x+10,p.y-34-Math.abs(Math.sin(time/600+i))*4);g.restore()}}})}}});
+}
+const _ed=window.__envDraw;
+window.__envDraw=function(E,time){if(typeof _ed==='function')_ed.apply(this,arguments);try{push(E,time)}catch(e){if(!push.err){push.err=1;console.warn('[rw]',e)}}};
+
+/* ---------- interaksi ---------- */
+const _near=near;
+near=function(){try{const k=doorNear();if(k&&!modal){const V=RANCH.load(),a=V.an[k],AN=RANCH.AN[k];
+    if(!a||!a.own)return['🏗️','Bangun','Bangun '+AN.k+' · 🪙'+AN.kc];
+    const rd=a.rdy[0]+a.rdy[1]+a.rdy[2];
+    return[AN.ke,'Kandang',AN.k+' · '+a.n+'/'+(2+2*a.kv)+' hewan'+(rd?' · '+AN.pe+'×'+rd+' siap':!a.fed&&a.n?' · belum diberi makan':'')]}}catch(e){}
+  return _near.apply(this,arguments)};
+const _inter=inter;
+inter=function(){try{if(started&&!scene&&!trans&&!modal&&doorNear()){RANCH.act.tab('kandang');window.openRanch();return}}catch(e){console.warn('[rw]',e)}
+  return _inter.apply(this,arguments)};
+setInterval(()=>{try{if(started)ensure()}catch(e){}},1000);
+window.RW={doorNear,YARD,BD,SR,night};
+})();
+
+</script>
+
+<style id="life">
+#famm .lfp{max-width:560px;width:calc(100vw - 20px);max-height:calc(100dvh - 24px);display:flex;flex-direction:column}
+.lftabs{display:flex;gap:6px;margin:6px 0}
+.lftabs button{flex:1;padding:9px 6px;border:0;border-radius:10px;background:rgba(255,255,255,.08);color:#f3e7cf;font-weight:700;font-size:14px;cursor:pointer}
+.lftabs button.on{background:linear-gradient(#f2b94b,#d98a1f);color:#2b1a05}
+.lfb{overflow-y:auto;padding:2px 2px 8px;-webkit-overflow-scrolling:touch}
+.lfc{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:10px 12px;margin:8px 0;color:#f3e7cf}
+.lfrow{display:flex;align-items:center;gap:10px}
+.lfav{width:46px;height:46px;border-radius:50%;background:rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;font-size:26px;flex:none}
+.lfav.sm{width:34px;height:34px;font-size:19px}
+.lfm{font-size:12px;opacity:.75;line-height:1.4}
+.lfbar{height:8px;border-radius:6px;background:rgba(0,0,0,.35);overflow:hidden;margin-top:3px}
+.lfbar i{display:block;height:100%;border-radius:6px;transition:width .4s}
+.lfbtn{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-top:10px}
+.lfperk{font-size:13px;padding:3px 0;opacity:.5}.lfperk.on{opacity:1}
+.lfgoal{padding:8px 0;border-top:1px solid rgba(255,255,255,.08)}
+.lfbond{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-top:8px;padding:8px 10px;border-radius:10px;background:rgba(255,120,160,.14);font-size:13px;color:#ffd9e6}
+#famcs{z-index:60}
+.lfcs{position:relative;overflow:hidden;width:min(520px,calc(100vw - 20px));padding:26px 18px 18px;border-radius:18px;text-align:center;color:#fff4e3;background:linear-gradient(160deg,#4a2346,#2a1a3f 55%,#1d2a4a);box-shadow:0 10px 40px rgba(0,0,0,.6);border:2px solid #f2b94b}
+.lfh i{position:absolute;top:-30px;font-style:normal;animation:lffall 6s linear infinite;opacity:.8;pointer-events:none}
+@keyframes lffall{to{transform:translateY(520px) rotate(40deg)}}
+.lfcp{position:relative;font-size:54px;display:flex;justify-content:center;align-items:center;gap:14px}
+.lfcp .mid{font-size:32px;animation:lfbeat 1s ease-in-out infinite}
+@keyframes lfbeat{50%{transform:scale(1.25)}}
+.lfct{position:relative;font-weight:800;font-size:18px;margin:10px 0 6px;color:#ffd47a}
+.lftx{position:relative;min-height:84px;font-size:15px;line-height:1.55;padding:6px 8px}
+.lfbt{position:relative;display:flex;gap:8px;justify-content:center;margin-top:10px}
+
+</style>
+
+<script id="life">
+/* ===== Keluarga & Warisan (life-v1) =====
+   - Pacaran -> Lamaran -> Pernikahan dengan warga Lembah (Bu Sari, Bang Udin, Tono, Mbak Rina, Mas Bayu, Mbak Lina, Bu Guru)
+   - Menikah dengan pemain co-op (lamar lewat panel, harus online bersama)
+   - Pasangan membantu tiap pagi (kasih makan hewan, menyiram ladang, sarapan, bonus kas)
+   - 🌟 Warisan Lembah: target musiman tanpa akhir, level tak terbatas -> game tidak punya "tamat".
+   Data: localStorage 'pfc2_life_<code>' (ikut sinkron akun). Semua dibungkus try/catch. */
+(function(){"use strict";
+const $=id=>document.getElementById(id);
+if(typeof NPC==='undefined'||typeof spend!=='function'||typeof RANCH==='undefined'||typeof openModal!=='function'){console.warn('[life] dependensi tidak ada');return}
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const nf=n=>String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g,'.');
+const ELIG=['sari','udin','tono','rina','bayu','lina','guru'];
+const AV={sari:'👩‍🌾',udin:'🧔',tono:'👦',rina:'👩‍🦰',bayu:'🧑',lina:'👩',guru:'👩‍🏫'};
+const YES={sari:'Aku mau, {n}! Seumur hidup kubuatkan pai labu untukmu.',udin:'Aku… mau. Tanah ini, kebun ini, dan kamu. Itu cukup buatku.',tono:'A-aku mau! Kita mancing bareng tiap sore, ya?',rina:'Ya! Pasar boleh tutup, tapi hatiku buka untukmu.',bayu:'Aku jarang bicara banyak. Tapi jawabanku: ya.',lina:'Tentu mau! Tapi umpan terbaik tetap punyaku, hehe.',guru:'Aku mau, {n}. Pelajaran terbaik dalam hidupku adalah kamu.'};
+const HT=[0,25,70,140,240,380],hOf=p=>{let h=0;HT.forEach((t,i)=>{if(p>=t)h=i});return h};
+const BUKET=600,CINCIN=3000,WAIT=3,TOGETHER_XP=12;
+const K=()=>'pfc2_life_'+code,KB='pfc2_bond',KR=()=>'pfc2_ranch_'+code;
+const rd=(k,d)=>{try{const v=JSON.parse(localStorage.getItem(k)||'null');return v&&typeof v==='object'?v:d}catch(e){return d}};
+const wr=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
+const fresh=()=>({sp:null,dt:null,eg:null,ha:0,td:0,lastDay:0,mar:0,orig:{},cnt:{harv:0,prod:0,gift:0,cook:0,fish:0,love:0},gl:null,lp:0,ll:0,seen:0});
+let Q=null,wc='',tab='pas',pend=null,asked=null;
+function load(){if(Q&&wc===code)return Q;wc=code;Q=Object.assign(fresh(),rd(K(),{}));Q.cnt=Object.assign(fresh().cnt,Q.cnt||{});
+  const d=S.d|0;if(!Q.lastDay||(Q.lastDay>d+1&&d<=2)){if(Q.lastDay>d+1&&d<=2){const k=Q.seen;Q=fresh();Q.seen=k}Q.lastDay=d}return Q}
+const save=()=>{if(Q)wr(K(),Q)};
+const addGold=v=>{v=Math.max(0,Math.min(99999,v|0));if(!v)return;if(!isHost())S.gold+=v;dispatch({t:'sell',v})};
+const xp=n=>{try{PFQ.addXp(n)}catch(e){}};
+const bondP=id=>{const d=rd(KB,{});return d[id]?(d[id].p|0):0};
+const npcOf=id=>{try{return NPC.find(n=>n.id===id&&n.k==='h')}catch(e){return null}};
+const nameOf=id=>{const n=npcOf(id);return n?n.n:id};
+const hlv=p=>{let n=0;while(25*(n+1)*(n+2)<=p)n++;return n};
+const hneed=p=>25*(hlv(p)+1)*(hlv(p)+2);
+const myEmo=()=>me.g==='f'?'👰':'🤵';
+const seasN=()=>{try{return SEAS[seasonOf(S.d)]}catch(e){return{n:'',e:''}}};
+const yearN=()=>Math.floor(((S.d|0)-1)/28)+1;
+function partnerId(){if(!Q.sp||Q.sp.k!=='p')return null;try{for(const k in pinfo){if(k!==myId&&pinfo[k]&&pinfo[k][0]&&pinfo[k][0].n===Q.sp.name)return k}}catch(e){}return null}
+
+/* ---------- pasangan NPC pindah ke rumah ---------- */
+const HOMESP=[[12.4,4.6,'look'],[11.2,5.4,'water'],[13.4,5.6,'sweep'],[9.6,5.3,'pick'],[8.3,6.6,'hoe'],[4.6,16.9,'feed'],[7.9,16.9,'feed'],[2.6,16.9,'feed']];
+function applySpouse(){try{load();if(zone!==0||!Q.sp||Q.sp.k!=='n')return;const n=npcOf(Q.sp.id);if(!n||n.__sp)return;
+  if(!Q.orig[n.id]){Q.orig[n.id]={home:n.home.slice(),r:n.r,sp:n.sp?JSON.parse(JSON.stringify(n.sp)):null};save()}
+  n.home=[11.6,5.4];n.r=2;n.sp=JSON.parse(JSON.stringify(HOMESP));n.__sp=1}catch(e){}}
+function releaseSpouse(id){try{const n=npcOf(id),o=Q.orig[id];if(n&&o){n.home=o.home;n.r=o.r;if(o.sp)n.sp=o.sp;else delete n.sp;delete n.__sp}delete Q.orig[id]}catch(e){}}
+
+/* ---------- UI: modal + cutscene ---------- */
+const MY=['famm','famcs'];
+function build(){if($('famm'))return;const ui=document.getElementById('ui')||document.body;
+  const a=document.createElement('div');a.id='famm';a.className='modal';a.innerHTML='<div class="panel mcard lfp"><div class="mh"><b>💞 Keluarga &amp; Warisan</b><button class="x" onclick="closeModal()">✕</button></div><div class="lftabs" id="lftabs"></div><div class="lfb" id="lfb"></div></div>';ui.appendChild(a);
+  const c=document.createElement('div');c.id='famcs';c.className='modal';c.innerHTML='<div class="lfcs"><div class="lfh" id="lfh"></div><div class="lfcp" id="lfcp"></div><div class="lfct" id="lfct"></div><div class="lftx" id="lftx"></div><div class="lfbt" id="lfbt"></div></div>';ui.appendChild(c);
+  a.addEventListener('click',e=>{const t=e.target.closest('[data-a]');if(!t)return;const f=ACT[t.dataset.a];if(f){try{f(t.dataset.v)}catch(x){console.warn('[life]',x)}}});
+  c.addEventListener('click',e=>{const t=e.target.closest('[data-c]');if(t&&CSK[t.dataset.c])CSK[t.dataset.c]()})}
+const CSK={};
+function hearts(on){const h=$('lfh');h.innerHTML=on?Array.from({length:16},(_,i)=>`<i style="left:${(i*37)%100}%;animation-delay:${(i*.43)%4}s;font-size:${14+(i*7)%18}px">${i%3?'💖':'🌸'}</i>`).join(''):''}
+function cs(o,done){build();openModal('famcs');hearts(o.hearts!==false);$('lfcp').innerHTML=`<span>${o.l||myEmo()}</span><span class="mid">${o.m||'💞'}</span><span>${o.r||'🧑'}</span>`;$('lfct').textContent=o.title||'';
+  let i=0;const L=o.lines;const show=()=>{$('lftx').innerHTML=esc(L[i]);$('lfbt').innerHTML=`<button class="mb gold" data-c="n">${i<L.length-1?'Lanjut ▶':(o.end||'Selesai 💖')}</button>`};
+  CSK.n=()=>{sfx('click');if(i<L.length-1){i++;show()}else{closeModal();try{done&&done()}catch(e){console.warn(e)}}};show()}
+function ask(o,yes,no){build();openModal('famcs');hearts(true);$('lfcp').innerHTML=`<span>${o.l||'💌'}</span><span class="mid">💞</span><span>${myEmo()}</span>`;$('lfct').textContent=o.title;$('lftx').innerHTML=esc(o.text);
+  $('lfbt').innerHTML=`<button class="mb gold" data-c="y">${o.yes||'Terima 💖'}</button><button class="mb sec" data-c="no">${o.no||'Tolak'}</button>`;
+  CSK.y=()=>{closeModal();yes&&yes()};CSK.no=()=>{closeModal();no&&no()}}
+
+/* ---------- aksi NPC ---------- */
+const busy=()=>modal||scene||trans;
+function eligible(id){return ELIG.includes(id)&&!!npcOf(id)}
+const ACT={
+ tab(v){tab=v;render()},
+ date(id){load();if(Q.sp||Q.eg)return say('Kamu sudah terikat 💍');if(Q.dt&&Q.dt.id!==id)return say('Kamu masih berpacaran dengan '+nameOf(Q.dt.id)+'. Putuskan dulu.');
+  if(hOf(bondP(id))<4)return say('Butuh ❤4 (Sahabat) dulu dengan '+nameOf(id));if(!spend(BUKET))return;
+  Q.dt={id,d:S.d};save();sfx('chime');
+  cs({r:AV[id],title:'💐 Buket untuk '+nameOf(id),lines:['Kamu memberikan buket bunga liar yang kamu petik sendiri.',nameOf(id)+' tersipu… "Jadi… kita sekarang pacaran?"','Kabar menyebar cepat di Lembah. Bu Wati sudah menebak dari kemarin.'],end:'Yay 💕'},()=>{try{bondAdd(id,4,'💐 Berpacaran')}catch(e){}xp(40);render();openModal('famm')})},
+ propose(id){load();if(Q.sp||Q.eg)return say('Kamu sudah terikat 💍');if(!Q.dt||Q.dt.id!==id)return say('Berpacaran dulu sebelum melamar');
+  if(hOf(bondP(id))<5)return say('Butuh ❤5 (Keluarga) untuk melamar');if(!spend(CINCIN))return;
+  Q.eg={id,wd:(S.d|0)+WAIT};save();sfx('chime');
+  cs({r:AV[id],m:'💍',title:'💍 Lamaran',lines:['Kamu menggenggam cincin, tanganmu sedikit gemetar.','"Maukah kamu tinggal bersamaku di Lembah ini?"',(YES[id]||'Aku mau!').replace('{n}',me.n),'Pernikahan akan digelar '+WAIT+' hari lagi. Warga sibuk menyiapkan bunga dan tumpeng!'],end:'Aku bahagia 💖'},()=>{try{bondAdd(id,6,'💍 Lamaran diterima')}catch(e){}xp(80);render();openModal('famm')})},
+ breakup(){load();if(!Q.dt||!confirm('Akhiri hubungan dengan '+nameOf(Q.dt.id)+'?'))return;if(Q.eg&&Q.eg.id===Q.dt.id)Q.eg=null;Q.dt=null;save();render()},
+ together(){load();if(!Q.sp)return;if(Q.td===(S.d|0))return say('Hari ini sudah menghabiskan waktu bersama 💞');Q.td=S.d|0;Q.ha+=5;Q.cnt.love++;xp(TOGETHER_XP);
+  if(Q.sp.k==='n'){try{bondAdd(Q.sp.id,2,'💞 Waktu bersama')}catch(e){}}sfx('chime');say('💞 Waktu berdua yang hangat. Harmoni +5');save();render();goalsCheck()},
+ divorce(){load();if(!Q.sp||!confirm('Akhiri pernikahan dengan '+(Q.sp.name)+'? Ini tidak bisa dibatalkan.'))return;
+  if(Q.sp.k==='n')releaseSpouse(Q.sp.id);Q.sp=null;Q.dt=null;Q.ha=0;save();say('💔 Pernikahan berakhir');render()},
+ coop(pid){load();if(Q.sp||Q.eg)return say('Kamu sudah terikat 💍');if(!ch)return say('Butuh mode co-op');
+  const n=(pinfo[pid]&&pinfo[pid][0]&&pinfo[pid][0].n)||'Teman',r=remote[pid];
+  if(!r||Math.hypot(r.x-me.x,r.y-me.y)>220)return say('Dekati '+n+' dulu untuk melamar 💞');
+  if(!spend(CINCIN))return;pend={to:pid,name:n};sendW({t:'prop',from:myId,fn:me.n,to:pid});say('💌 Lamaran terkirim ke '+n+'…');closeModal()},
+ open(){tab='pas';openModal('famm')}
+};
+function sendW(p){try{if(ch)ch.send({type:'broadcast',event:'wed',payload:p})}catch(e){console.warn('[life] kirim gagal',e)}}
+function onMsg(p){try{if(!p||!started)return;load();
+  if(p.t==='ann'){say('💒 '+p.text);try{addLog&&addLog(0,0,'💒 '+p.text,0,1)}catch(e){}return}
+  if(p.to!==myId)return;
+  if(p.t==='prop'){if(Q.sp||Q.eg){sendW({t:'no',from:myId,fn:me.n,to:p.from,why:'busy'});return}
+    ask({l:'💌',title:p.fn+' melamarmu!',text:p.fn+' berlutut dan menyodorkan cincin: "Maukah kamu menikah denganku dan mengelola Lembah ini bersama?"'},
+     ()=>{Q.sp={k:'p',name:p.fn,id:p.from,d:S.d|0};Q.mar=S.d|0;Q.dt=null;Q.eg=null;save();sendW({t:'yes',from:myId,fn:me.n,to:p.from});wedCoop(p.fn)},
+     ()=>{sendW({t:'no',from:myId,fn:me.n,to:p.from})})}
+  else if(p.t==='yes'&&pend&&pend.to===p.from){Q.sp={k:'p',name:p.fn,id:p.from,d:S.d|0};Q.mar=S.d|0;Q.dt=null;Q.eg=null;pend=null;save();sendW({t:'ann',text:me.n+' & '+p.fn+' resmi menikah! 🎉'});wedCoop(p.fn)}
+  else if(p.t==='no'){if(pend&&pend.to===p.from){pend=null;addGold(CINCIN)}say(p.why==='busy'?p.fn+' sudah terikat. Cincin dikembalikan.':'💔 '+p.fn+' menolak lamaranmu. Cincin dikembalikan.')}
+ }catch(e){console.warn('[life]',e)}}
+function wedCoop(name){addGold(1500);xp(120);Q.ha=Math.max(Q.ha,0);save();
+  cs({r:'🧑‍🌾',title:'💒 Pernikahan Co-op',lines:['Dua petani, satu Lembah. Warga berkumpul di alun-alun membawa bunga.','Pak RT: "Saudara '+me.n+' dan '+name+', kalian kini pasangan hidup di Lembah ini."','Ayam berkokok, kelopak bunga berjatuhan. Hadiah warga: 🪙1.500 masuk kas bersama.','Selama kalian online bersama, hati kalian saling menguatkan 💞'],end:'Selamat berbahagia 💖'},()=>{render();openModal('famm')})}
+function wedNPC(){const e=Q.eg;if(!e)return;const id=e.id,n=nameOf(id);
+  Q.sp={k:'n',id,name:n,d:S.d|0};Q.mar=S.d|0;Q.eg=null;Q.dt=null;Q.lastDay=S.d|0;applySpouse();addGold(1500);xp(150);try{bondAdd(id,10,'💒 Menikah!')}catch(x){}save();
+  cs({r:AV[id],m:'💒',title:'💒 Hari Pernikahan',lines:['Pagi ini Lembah berhias bunga. Warga berkumpul membawa tumpeng, ayam-ayam ikut berkokok.','Pak RT: "Saudara '+me.n+' dan '+n+', di hadapan seluruh warga kalian dinyatakan sah sebagai pasangan hidup."',n+': "'+(YES[id]||'Aku mau!').replace('{n}',me.n)+'"','Kelopak bunga turun. Warga bertepuk tangan. Hadiah: 🪙1.500 dari warga Lembah.',n+' kini tinggal bersamamu. Tiap pagi dia akan membantu merawat Lembah. 💞'],end:'Selamat berbahagia 💖'},()=>{sendW({t:'ann',text:me.n+' & '+n+' resmi menikah! 🎉'});render();openModal('famm')})}
+
+/* ---------- siklus harian ---------- */
+const PERK=[[0,'Memberi makan semua hewan tiap pagi'],[0,'Bonus kas pagi (🪙30 + 🪙15 per level)'],[1,'Menyiapkan sarapan (hidangan gratis)'],[3,'Menyiram semua petak 🌾 Ladang'],[5,'+15 XP tiap pagi'],[8,'Bonus kas pagi ×2'],[12,'Hadiah ulang tahun pernikahan makin besar']];
+function morning(n){if(!Q.sp)return;const L=hlv(Q.ha),m=[];
+  if(Q.sp.k==='n'){let V=null;try{V=RANCH.load()}catch(e){}
+    if(V){let f=0;['ayam','sapi','domba'].forEach(t=>{const a=V.an[t];if(a&&a.own&&a.n&&!a.fed){a.fed=1;f++}});if(f)m.push('memberi makan hewan');
+      if(L>=3&&V.ld&&V.ld.s){let w=0;V.ld.s.forEach(s=>{if(s&&!s.w){s.w=1;w++}});if(w)m.push('menyiram ladang')}
+      if(f||m.length)wr(KR(),V)}
+    if(L>=1&&CROPS&&CROPS[24]){const id=24+(Math.random()*5|0);if(CROPS[id]){inv[id]=(inv[id]|0)+1;m.push('menyiapkan sarapan')}}
+    const gold=(30+15*L)*(L>=8?2:1)*n;addGold(gold);m.push('+🪙'+nf(gold));if(L>=5)xp(15*n);Q.ha+=2*n;
+  }else{const pid=partnerId();if(!pid){say('💞 Pasangan co-op-mu belum online hari ini');return}
+    const gold=(60+25*L)*n;addGold(gold);xp(20+5*L);Q.ha+=2*n;m.push('hari bersama: +🪙'+nf(gold))}
+  say('💞 '+Q.sp.name+': '+m.join(', ')+'.');
+  const dd=(S.d|0)-(Q.mar|0);if(dd>0&&dd%28===0){const g2=500+200*L;addGold(g2);Q.ha+=10;setTimeout(()=>say('🎂 Ulang tahun pernikahan ke-'+dd/28+'! +🪙'+nf(g2)),3500)}}
+function newDay(){load();const d=S.d|0;if(!d)return;if(Q.lastDay>d){Q.lastDay=d;save();return}if(d===Q.lastDay)return;
+  try{const V=RANCH.load();if((V.lastDay|0)<d)return}catch(e){}
+  const n=Math.min(d-Q.lastDay,3);Q.lastDay=d;try{morning(n)}catch(e){console.warn('[life]',e)}goalsGen();save()}
+
+/* ---------- Warisan: target tanpa akhir ---------- */
+const GT={harv:['Panen hasil kebun','🧺',10],prod:['Kumpulkan produk ternak','🥚',6],gift:['Beri hadiah ke warga','🎁',4],cook:['Masak hidangan','🍳',4],fish:['Tangkap ikan','🎣',5],love:['Waktu berdua dengan pasangan','💞',4]};
+const TITLES=[[0,'Pendatang'],[1,'Petani Baru'],[3,'Petani Rajin'],[5,'Juragan Muda'],[8,'Juragan Lembah'],[12,'Tetua Lembah'],[16,'Legenda Lembah']];
+const lvOf=p=>{let n=0;while(80*(n+1)*(n+2)/2<=p)n++;return n};
+const lvNeed=n=>80*(n+1)*(n+2)/2;
+const titleOf=l=>{let t=TITLES[0][1];TITLES.forEach(([n,s])=>{if(l>=n)t=s});return l>16?t+' ✦'+(l-16):t};
+function inc(k,n){try{load();Q.cnt[k]=(Q.cnt[k]|0)+(n||1);save();goalsCheck()}catch(e){}}
+function goalsGen(force){load();const si=Math.floor(((S.d|0)-1)/7);if(!force&&Q.gl&&Q.gl.si===si)return;
+  if(Q.gl)Q.gl.g.forEach(g2=>{if(g2.done&&!g2.cl)claim(g2,true)});
+  const R=rng((si+3)*7919+11);R();R();let pool=Object.keys(GT).filter(k=>k!=='love'||Q.sp);const g=[];
+  const y=Math.floor(si/4),ps=[];
+  while(g.length<4&&pool.length){const k=pool.splice((R()*pool.length)|0,1)[0],b=GT[k][2];
+    const tg=Math.max(2,Math.round(b*(1+.35*y)*(.8+R()*.5)));g.push({k,tg,s0:Q.cnt[k]|0,done:0,cl:0,rw:Math.round(tg*(k==='prod'?45:k==='love'?70:30)),lp:Math.round(18+tg*1.5+y*4)})}
+  Q.gl={si,g};save()}
+function goalsCheck(){if(!Q||!Q.gl)return;let ch2=0;Q.gl.g.forEach(g2=>{if(!g2.done&&(Q.cnt[g2.k]|0)-g2.s0>=g2.tg){g2.done=1;ch2=1;say('🌟 Target selesai: '+GT[g2.k][0]+'! Buka ☰ Menu → Keluarga untuk klaim')}});if(ch2)save()}
+function claim(g2,silent){if(!g2.done||g2.cl)return;g2.cl=1;addGold(g2.rw);gainLp(g2.lp,silent);if(!silent){sfx('chime');say('🎁 +🪙'+nf(g2.rw)+' · +'+g2.lp+' Poin Warisan')}save()}
+function gainLp(n,silent){const l0=lvOf(Q.lp);Q.lp+=n;const l1=lvOf(Q.lp);if(l1>l0){const gold=200*l1;addGold(gold);xp(30*l1);Q.ll=l1;setTimeout(()=>say('🌟 Warisan naik! Lv '+l1+' · '+titleOf(l1)+' · +🪙'+nf(gold)),silent?4000:1400)}}
+ACT.claim=i=>{load();const g2=Q.gl&&Q.gl.g[i|0];if(g2)claim(g2);render()};
+
+/* ---------- render panel ---------- */
+function bar(p,c){return`<div class="lfbar"><i style="width:${Math.max(0,Math.min(100,p))}%;background:${c||'#e8a33d'}"></i></div>`}
+function pasHTML(){load();let h='';const d=S.d|0;
+  if(Q.sp){const L=hlv(Q.ha),emo=Q.sp.k==='n'?(AV[Q.sp.id]||'🧑'):'🧑‍🌾',nx=hneed(Q.ha),pv=L?25*L*(L+1):0,on=Q.sp.k==='p'?!!partnerId():true;
+    h+=`<div class="lfc"><div class="lfrow"><div class="lfav">${emo}</div><div style="flex:1"><b>${esc(Q.sp.name)}</b> <span class="lfm">💍 ${Q.sp.k==='p'?'pasangan co-op':'pasangan'}${Q.sp.k==='p'?(on?' · 🟢 online':' · ⚪ offline'):''}</span><div class="lfm">Menikah hari ke-${Q.mar} · ${d-Q.mar} hari bersama</div></div></div>
+    <div class="lfm" style="margin-top:8px">💞 Harmoni Lv ${L} <span style="float:right">${nf(Q.ha)} / ${nf(nx)}</span></div>${bar((Q.ha-pv)/(nx-pv)*100,'#ff6f91')}
+    <div class="lfbtn"><button class="mb gold" data-a="together" ${Q.td===d?'disabled':''}>💞 Waktu berdua ${Q.td===d?'(sudah hari ini)':'(+5 harmoni)'}</button>${Q.sp.k==='n'?'<span class="lfm">Beri hadiah lewat kartu ❤ saat Bicara dengannya.</span>':''}</div></div>
+    <div class="lfc"><b>Manfaat pasangan</b>${PERK.map(([l,t])=>`<div class="lfperk ${L>=l?'on':''}">${L>=l?'✅':'🔒 Lv'+l} ${esc(t)}</div>`).join('')}</div>
+    <div class="lfm" style="text-align:center"><a href="#" data-a="divorce" style="color:#c88">Akhiri pernikahan…</a></div>`}
+  else{
+    if(Q.eg){const left=Math.max(0,Q.eg.wd-d);h+=`<div class="lfc"><div class="lfrow"><div class="lfav">${AV[Q.eg.id]||'🧑'}</div><div><b>Tunangan: ${esc(nameOf(Q.eg.id))}</b><div class="lfm">💍 Pernikahan ${left>0?'dalam '+left+' hari (hari ke-'+Q.eg.wd+')':'hari ini — keluar dari menu agar upacara dimulai'}</div></div></div></div>`}
+    h+=`<div class="lfm" style="margin:6px 2px">Pacaran: ❤4 + 🪙${nf(BUKET)} · Lamaran: pacaran + ❤5 + 🪙${nf(CINCIN)} · Pernikahan ${WAIT} hari setelah diterima. Pria/wanita bebas memilih siapa pun.</div>`;
+    ELIG.forEach(id=>{if(!npcOf(id))return;const hh=hOf(bondP(id)),dt=Q.dt&&Q.dt.id===id,eg=Q.eg&&Q.eg.id===id;let b='';
+      if(eg)b='<span class="lfm">💍 Tunangan</span>';
+      else if(dt)b=`<button class="mb gold sm" data-a="propose" data-v="${id}" ${hh<5||Q.eg?'disabled':''}>💍 Lamar 🪙${nf(CINCIN)}</button><button class="mb sec sm" data-a="breakup">Putus</button>`;
+      else b=`<button class="mb sm" data-a="date" data-v="${id}" ${hh<4||Q.dt||Q.eg?'disabled':''}>💐 Pacaran 🪙${nf(BUKET)}</button>`;
+      h+=`<div class="lfc lfrow"><div class="lfav">${AV[id]}</div><div style="flex:1"><b>${esc(nameOf(id))}</b> ${dt?'<span class="lfm">💕 pacar</span>':''}<div class="lfm">❤ ${hh}/5</div></div><div class="lfbtn" style="margin:0">${b}</div></div>`});
+    /* co-op */
+    let ids=[];try{ids=ch?Object.keys(pinfo).filter(k=>k!==myId):[]}catch(e){}
+    h+=`<div class="lfc"><b>💒 Menikah dengan pemain co-op</b><div class="lfm">Dekati pemain, lalu lamar (🪙${nf(CINCIN)} dari kas bersama; dikembalikan kalau ditolak).</div>`+
+      (ids.length?ids.map(k=>{const n=(pinfo[k][0]&&pinfo[k][0].n)||'Teman',r=remote[k],near=r&&Math.hypot(r.x-me.x,r.y-me.y)<=220;return`<div class="lfrow" style="margin-top:6px"><div class="lfav sm">🧑‍🌾</div><b style="flex:1">${esc(n)}</b><button class="mb sm gold" data-a="coop" data-v="${esc(k)}" ${near&&!Q.eg?'':'disabled'}>💍 Lamar ${near?'':'(dekati dulu)'}</button></div>`}).join(''):'<div class="lfm" style="margin-top:6px">Belum ada pemain lain online.</div>')+'</div>'}
+  return h}
+function warHTML(){load();goalsGen();const l=lvOf(Q.lp),pv=l?lvNeed(l-1):0,nx=lvNeed(l),s=seasN(),d=S.d|0;
+  let h=`<div class="lfc"><div class="lfrow"><div class="lfav">🌟</div><div style="flex:1"><b>Warisan Lembah · Lv ${l}</b> <span class="lfm">${esc(titleOf(l))}</span><div class="lfm">Tahun ${yearN()} · ${s.e} Musim ${s.n} · Hari ke-${d}</div></div></div>
+  <div class="lfm" style="margin-top:8px">Poin ${nf(Q.lp)} / ${nf(nx)}</div>${bar((Q.lp-pv)/(nx-pv)*100)}
+  <div class="lfm" style="margin-top:6px">♾️ Lembah ini tidak punya akhir. Musim terus berganti, level tak berbatas, target makin besar tiap tahun.</div></div>
+  <div class="lfc"><b>🎯 Target Musim ${s.n}</b><div class="lfm">Berganti tiap musim (7 hari). Yang selesai tapi belum diklaim diklaim otomatis.</div>`;
+  Q.gl.g.forEach((g2,i)=>{const pr=Math.min(g2.tg,(Q.cnt[g2.k]|0)-g2.s0),t=GT[g2.k];
+    h+=`<div class="lfgoal"><div class="lfrow"><span style="font-size:22px">${t[1]}</span><div style="flex:1"><b>${t[0]}</b> <span class="lfm">${pr}/${g2.tg}</span>${bar(pr/g2.tg*100,g2.done?'#6fbf5f':'#e8a33d')}<div class="lfm">🪙${nf(g2.rw)} · +${g2.lp} poin</div></div>${g2.cl?'<span class="lfm">✅</span>':`<button class="mb sm gold" data-a="claim" data-v="${i}" ${g2.done?'':'disabled'}>Klaim</button>`}</div></div>`});
+  h+='</div>';const c=Q.cnt;
+  h+=`<div class="lfc"><b>📊 Rekor</b><div class="lfm">🧺 Panen ${nf(c.harv)} · 🥚 Produk ternak ${nf(c.prod)} · 🎁 Hadiah ${nf(c.gift)} · 🍳 Masak ${nf(c.cook)} · 🎣 Ikan ${nf(c.fish)} · 💞 Waktu berdua ${nf(c.love)}</div></div>`;return h}
+function render(){if(!$('famm'))return;load();
+  $('lftabs').innerHTML=`<button class="${tab==='pas'?'on':''}" data-a="tab" data-v="pas">💞 Pasangan</button><button class="${tab==='war'?'on':''}" data-a="tab" data-v="war">🌟 Warisan</button>`;
+  const h=tab==='war'?warHTML():pasHTML();const b=$('lfb');if(b._h!==h){b.innerHTML=h;b._h=h}}
+
+/* ---------- kartu Bond: tombol pacaran/lamar ---------- */
+function augBond(){try{const bb=$('bb'),bt=$('bt');if(!bb||!bt||bb.querySelector('.lfbond'))return;load();
+  const nm=bt.textContent.replace(/^[^\p{L}]+/u,'').trim(),n=NPC.find(x=>x.k==='h'&&x.n===nm);if(!n||!eligible(n.id))return;const id=n.id,hh=hOf(bondP(id));let t='',b='';
+  if(Q.sp&&Q.sp.id===id){t='💍 Pasanganmu · Harmoni Lv '+hlv(Q.ha);b='<button class="mb sm gold" data-lf="open">💞 Keluarga</button>'}
+  else if(Q.eg&&Q.eg.id===id){t='💍 Tunangan · menikah hari ke-'+Q.eg.wd}
+  else if(Q.dt&&Q.dt.id===id){t='💕 Berpacaran';b=hh>=5&&!Q.eg&&!Q.sp?`<button class="mb sm gold" data-lf="propose">💍 Lamar 🪙${nf(CINCIN)}</button>`:'<span class="lfm">butuh ❤5 untuk melamar</span>'}
+  else if(!Q.sp&&!Q.eg&&!Q.dt){if(hh>=4)b=`<button class="mb sm" data-lf="date">💐 Ajak Pacaran 🪙${nf(BUKET)}</button>`;else t='💞 Bisa dinikahi · butuh ❤4 untuk pacaran'}
+  else return;
+  const d=document.createElement('div');d.className='lfbond';d.innerHTML=`<span>${t}</span>${b}`;d.dataset.id=id;
+  d.addEventListener('click',e=>{const x=e.target.closest('[data-lf]');if(!x)return;const k=x.dataset.lf;if(k==='open'){tab='pas';openModal('famm')}else{ACT[k](id);try{renderBond()}catch(er){}}});
+  (bb.querySelector('.bc1')||bb).appendChild(d)}catch(e){console.warn('[life] bond',e)}}
+if(typeof window.renderBond==='function'){const _rb=window.renderBond;window.renderBond=function(){const r=_rb.apply(this,arguments);augBond();return r}}
+
+/* ---------- penanda 💍 di dunia ---------- */
+function mark(x,y,t,e){g.save();g.font='15px "Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif';g.textAlign='center';const b=Math.sin(t/350)*3;g.fillText(e,x,y+b);g.restore()}
+const _ed=window.__envDraw;
+window.__envDraw=function(E,time){if(typeof _ed==='function')_ed.apply(this,arguments);
+  try{if(!started||scene||!Q||!Q.sp)return;
+    if(Q.sp.k==='n'&&zone===0){const n=npcOf(Q.sp.id);if(n){const p=npcPos(n,Date.now());E.push({y:p.y+1,d:()=>mark(p.x,p.y-88,time,'💍')})}}
+    else if(Q.sp.k==='p'){const k=partnerId(),r=k&&remote[k];if(r){E.push({y:r.y+1,d:()=>mark(r.x,r.y-88,time,'💍')});
+      if(Math.hypot(r.x-me.x,r.y-me.y)<190)E.push({y:me.y+1,d:()=>mark((me.x+r.x)/2,Math.min(me.y,r.y)-100,time*1.3,'💖')})}}
+  }catch(e){}};
+
+/* ---------- hook hitung target ---------- */
+function hooks(){
+  try{const _dp=dispatch;dispatch=function(a){let pre=0;try{if(a&&a.t==='harvest'&&started){const t=S.tiles[a.x+a.y*W];if(t&&t[1]&&CROPS[t[1]]&&t[2]>=CROPS[t[1]].g)pre=1}}catch(e){}const r=_dp.apply(this,arguments);if(pre)inc('harv',1);return r}}catch(e){}
+  try{const _cr=cookR;cookR=function(i){let ok=0;try{ok=typeof canR==='function'&&REC[i]&&canR(REC[i])}catch(e){}const r=_cr.apply(this,arguments);if(ok)inc('cook',1);return r}}catch(e){}
+  try{if(typeof window.bondGive==='function'){const _bg=window.bondGive;window.bondGive=function(){const b0=JSON.stringify(inv);const r=_bg.apply(this,arguments);try{if(JSON.stringify(inv)!==b0)inc('gift',1)}catch(e){}return r}}}catch(e){}
+  try{const a=RANCH.act;if(a.take){const _t=a.take;a.take=function(){let n=0;try{const V=RANCH.load();for(const k in V.an){const x=V.an[k];if(x&&x.rdy)n+=x.rdy[0]+x.rdy[1]+x.rdy[2]}}catch(e){}const r=_t.apply(this,arguments);if(n)inc('prod',n);return r}}
+    if(a.harvAll){const _h=a.harvAll;a.harvAll=function(){let n=0;try{const V=RANCH.load();V.ld.s.forEach(s=>{if(s&&CROPS[s.c]&&s.g>=CROPS[s.c].g)n++})}catch(e){}const r=_h.apply(this,arguments);if(n)inc('harv',n);return r}}}catch(e){}
+}
+let fPrev=null;function fishWatch(){let n=0;for(const k in inv){if(inv[k]>0&&[6,7,14,15].includes(+k%100))n+=inv[k]}
+  if(fPrev!==null&&n>fPrev&&!['shop','chest','trade','gacha','zshop'].includes(modal))inc('fish',n-fPrev);fPrev=n}
+
+/* ---------- channel co-op ---------- */
+try{const sbn=window.supabase;if(sbn&&typeof sbn.createClient==='function'&&!sbn.__lw){const _cc=sbn.createClient,ns=Object.assign({},sbn);
+  ns.createClient=function(){const c=_cc.apply(this,arguments);try{const _ch=c.channel;c.channel=function(name){const k=_ch.apply(this,arguments);try{if(/^farm:/.test(String(name)))k.on('broadcast',{event:'wed'},m=>onMsg(m&&m.payload))}catch(e){}return k}}catch(e){}return c};
+  ns.__lw=1;ns.__rv=sbn.__rv;window.supabase=ns}}catch(e){console.warn('[life] hook channel gagal',e)}
+
+/* ---------- openModal / menu / tick ---------- */
+const _om=openModal;openModal=function(m){const r=_om.apply(this,arguments);try{MY.forEach(i=>{const e=$(i);if(e)e.style.display=m===i?'flex':'none'});if(m==='famm'){build();$('famm').style.display='flex';render()}
+  if(m==='h3menu'){const g=$('h3grid');if(g&&!g.querySelector('.lfmt')){const t=document.createElement('button');t.className='h3t lfmt';t.innerHTML='<span>💞</span>Keluarga';t.onclick=()=>{tab='pas';openModal('famm')};g.appendChild(t)}}}catch(e){console.warn('[life]',e)}return r};
+const _cm=closeModal;closeModal=function(){const r=_cm.apply(this,arguments);try{MY.forEach(i=>{const e=$(i);if(e)e.style.display='none'})}catch(e){}return r};
+let hk=0;
+function tick(){try{if(!started)return;build();load();if(!hk){hk=1;hooks();fishWatch();if(!Q.seen){Q.seen=1;save();setTimeout(()=>say('💞 Baru: Keluarga & Warisan — lihat ☰ Menu'),3500)}}
+  newDay();applySpouse();fishWatch();goalsGen();
+  if(Q.eg&&(S.d|0)>=Q.eg.wd&&!busy())wedNPC();
+  if(Q.sp&&Q.sp.k==='p'){const k=partnerId(),r=k&&remote[k];if(r&&Math.hypot(r.x-me.x,r.y-me.y)<190&&vit&&vit.hp<100&&Math.random()<.5)vit.hp=Math.min(100,vit.hp+1)}
+  if(modal==='famm')render()}catch(e){if(!tick.e){tick.e=1;console.warn('[life]',e)}}}
+setInterval(tick,1000);
+window.LIFE={get Q(){return load()},ACT,render,onMsg,cs,ask,hlv,lvOf,goalsGen,inc,wedNPC,eligible};
+})();
+
+</script>
 </body></html>
