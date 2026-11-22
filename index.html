@@ -9238,7 +9238,7 @@ buildBG=function(){_bb();try{extras()}catch(e){console.warn('[desa2]',e)}try{win
 const COST=5;
 const DEST=[
  ['🌾','Kebun Saya',17.5,4.7],['🛒','Pasar',17.5,16.0],['🐄','Peternakan',6.2,15.4],['🎣','Danau & Dermaga',24.4,17.5],
- ['🏛️','Alun-alun',27.5,13.9],['🕌','Surau',20.6,12.65],['🏘️','Kampung Timur',44,12.5],['🌾','Sawah',47.2,16.55],['👮','Markas Polsek',22.0,19.9],['🪖','Markas Koramil',41.0,19.8]];
+ ['🏛️','Alun-alun',27.5,13.9],['🕌','Surau',20.6,12.65],['🏘️','Kampung Timur',44,12.5],['🌾','Sawah',47.2,16.55],['👮','Markas Polsek',21.25,19.95],['🪖','Markas Koramil',41.15,19.95]];
 const safe=(x,y)=>{for(let r=0;r<=3;r+=.25)for(let a=0;a<6.3;a+=.7){const px=(x+Math.cos(a)*r)*T,py=(y+Math.sin(a)*r)*T;if(!solid(px,py)&&!wet(px,py))return[px,py]}return null};
 const OJK={go(i){const d=DEST[i];if(!d)return;const p=safe(d[2],d[3]);if(!p){return}
   if(!spend(COST))return;me.x=p[0];me.y=p[1];try{sfx('click')}catch(e){}closeModal();
@@ -9910,8 +9910,8 @@ const fineMul=()=>{ld();let m=polic().fm;if(G.rep<25)m*=1.25;if(G.pj.pos)m*=.8;r
 /* ---------- program desa (kontribusi pemain) ---------- */
 const PJ=[{id:'pos',n:'Pos Kamling Baru',e:'🏮',t:150,d:'Denda aparat −20%, wanted turun lebih cepat.'},{id:'lamp',n:'Lampu Jalan Desa',e:'💡',t:120,d:'Warga makin tenang: +4 reputasi saat selesai.'},{id:'lumbung',n:'Lumbung Desa',e:'🌾',t:200,d:'Dividen 30 🪙 setiap awal musim.'}];
 /* ---------- posisi bangunan & titik interaksi (koordinat tile) ---------- */
-const POS={x:22.0,y:18.6},KOR={x:41.0,y:18.6},BRD={x:29.95,y:9.95}; /* hud3_29: Polsek (barat daya, dekat pasar) & Koramil (tenggara) berdiri sendiri */
-SRp.push([POS.x-.85,POS.y-.5,POS.x+.85,POS.y+.45],[KOR.x-.85,KOR.y-.5,KOR.x+.85,KOR.y+.45]);
+const POS={x:21.25,y:18.6},KOR={x:41.15,y:18.6},BRD={x:29.95,y:9.95}; /* hud3_29: Polsek (barat daya, dekat pasar) & Koramil (tenggara) berdiri sendiri */
+SRp.push([POS.x-1.5,17.98,POS.x+1.5,19.25],[KOR.x-1.5,17.98,KOR.x+1.5,19.25]);
 const FRONT={pos:[POS.x,POS.y+1.0],kor:[KOR.x,KOR.y+1.0],brd:[BRD.x,BRD.y+.15]};
 const dTo=k=>Math.hypot(me.x/T-FRONT[k][0],(me.y/T-FRONT[k][1])*1.15);
 const atSpot=()=>{if(!started||scene||trans||modal||zone!==0)return null;let best=null,bd=1.35;for(const k in FRONT){const d=dTo(k);if(d<bd){bd=d;best=k}}return best};
@@ -10092,8 +10092,8 @@ const _ob=window.openBond;window.openBond=function(id){const r=_ob.apply(this,ar
 /* ---------- gambar ---------- */
 const _ed=window.__envDraw;window.__envDraw=function(E,time){if(typeof _ed==='function')_ed.apply(this,arguments);
   try{if(!started||scene||zone!==0)return;stepPol(time);
-    E.push({y:(POS.y+.45)*T,d:()=>house(POS.x,POS.y,'#2a4a8a','#d8d4c0','POLSEK',1,time)});
-    E.push({y:(KOR.y+.45)*T,d:()=>{house(KOR.x,KOR.y,'#4a5a30','#c8c4a0','KORAMIL',1,time);tentara(time)}});
+    E.push({y:19.2*T,d:()=>window.__markasDraw('pol',POS.x,time)});
+    E.push({y:19.2*T,d:()=>{window.__markasDraw('kor',KOR.x,time);tentara(time)}});
     E.push({y:BRD.y*T,d:()=>board(time)});
     E.push({y:POLI.y,d:()=>drawPol(time)})}catch(e){if(!window.__d5e){window.__d5e=1;console.warn('[desa5 draw]',e)}}};
 /* ---------- dialog politik tambahan untuk warga ---------- */
@@ -11023,7 +11023,7 @@ const em=(id,e)=>{try{window.__EMOTE(id,e,2000)}catch(x){}};
 /* ---------- titik penting (piksel, disnap ke area jalan) ---------- */
 let K=null;
 function pts(){if(K)return K;const D8=window.__D8;
-  K={pos:P(22.0,19.55),kor:P(41.0,19.45),brd:P(29.95,11.6),plaza:P(28.2,13.6),field:P(41.0,15.4),term:P(14.6,20.2),hangP:P(13.3,17.6),farmH:P(53.2,16.7,),gateE:P(43.4,12.4),gateW:P(10.6,12.4),eastH:P(44.2,12.4),
+  K={pos:P(21.25,19.65),kor:P(41.15,19.6),brd:P(29.95,11.6),plaza:P(28.2,13.6),field:P(41.0,15.4),term:P(14.6,20.2),hangP:P(13.3,17.6),farmH:P(53.2,16.7,),gateE:P(43.4,12.4),gateW:P(10.6,12.4),eastH:P(44.2,12.4),
    ps:[P(21.6,12.6),P(19.8,16.4),P(16.8,17.6),P(19.8,19.0),P(23.5,15.0),P(33.0,16.2)],
    pe:[P(33.2,12.4),P(37.5,12.4),P(41.5,12.4),P(36,15.2),P(32,15.0)],
    pw:[P(15.0,12.2),P(10.5,12.4),P(8.8,15.2),P(13.5,14.0),P(20,12.4)],
@@ -11274,13 +11274,13 @@ try{
   if(extra)extra();b.restore()}
  function markas(){
   /* Polsek: barat daya, dekat pasar & terminal */
-  clear(20.4,17.9,23.1,22.1);
-  yard(POS.x,20.5,17.95,23.0,20.95,'#2a4a8a','MARKAS POLSEK',()=>{
-   [[21.0,20.35],[22.6,20.35]].forEach(p=>{b.fillStyle='#f4f4f4';b.beginPath();b.moveTo(p[0]*T,p[1]*T-9);b.lineTo(p[0]*T-5,p[1]*T+3);b.lineTo(p[0]*T+5,p[1]*T+3);b.closePath();b.fill();b.fillStyle='#e8541f';b.fillRect(p[0]*T-3,p[1]*T-3,6,3)})});
+  clear(19.4,17.9,23.1,22.1);
+  yard(POS.x,19.55,17.95,23.0,20.95,'#2a4a8a','MARKAS POLSEK',()=>{
+   [[19.95,20.4],[22.55,20.4]].forEach(p=>{b.fillStyle='#f4f4f4';b.beginPath();b.moveTo(p[0]*T,p[1]*T-9);b.lineTo(p[0]*T-5,p[1]*T+3);b.lineTo(p[0]*T+5,p[1]*T+3);b.closePath();b.fill();b.fillStyle='#e8541f';b.fillRect(p[0]*T-3,p[1]*T-3,6,3)})});
   /* Koramil: tenggara, di tepi taman */
   clear(39.3,18.0,43.1,22.1);
   yard(KOR.x,39.3,17.95,43.0,20.95,'#4a5a30','MARKAS KORAMIL',()=>{
-   [[39.9,19.1],[42.4,19.1]].forEach(p=>{b.fillStyle='#8a7a52';for(let k=0;k<4;k++)b.fillRect(p[0]*T-14+k*7,p[1]*T,8,5);for(let k=0;k<3;k++)b.fillRect(p[0]*T-10+k*7,p[1]*T-5,8,5)})})}
+   [[39.75,20.35],[42.6,20.35]].forEach(p=>{b.fillStyle='#8a7a52';for(let k=0;k<4;k++)b.fillRect(p[0]*T-14+k*7,p[1]*T,8,5);for(let k=0;k<3;k++)b.fillRect(p[0]*T-10+k*7,p[1]*T-5,8,5)})})}
  const _bb=buildBG;buildBG=function(){_bb.apply(this,arguments);try{markas()}catch(e){console.warn('[markas]',e)}};
 }catch(e){console.warn('[markas]',e)}
 })();
@@ -11317,6 +11317,13 @@ setInterval(function(){var el=document.getElementById('pfRM');if(el&&!el._i){el.
  #ui.h29x #tlc>*{flex:none}
 }
 @media (pointer:fine) and (min-width:701px){#h29more{display:none}}
+@media (pointer:coarse),(max-width:700px){
+ #nbar .nb-h{display:none!important}
+ #nbar{padding:6px 28px 6px 10px!important;border-radius:12px!important}
+ #nbar .nb-t{font-size:11.5px!important;line-height:1.38!important;max-height:5.6em;overflow-y:auto}
+ #nbar .nb-s{font-size:11px!important;padding:3px 7px!important;margin-top:4px!important}
+}
+@media (pointer:coarse) and (orientation:landscape){#nbar{width:min(54%,430px)!important}}
 </style>
 <script id="hud29-js">
 (function(){
@@ -11330,6 +11337,49 @@ setInterval(function(){var el=document.getElementById('pfRM');if(el&&!el._i){el.
   if(mq()){ui.classList.remove('h5fold');var q=document.querySelectorAll('#qtrk .o'),cur=null;
    q.forEach(function(e){e.classList.remove('h29cur');if(!cur&&!e.classList.contains('ok'))cur=e});if(!cur&&q[0])cur=q[0];if(cur)cur.classList.add('h29cur')}
   else ui.classList.remove('h29x')},400);
+})();
+</script>
+
+<script id="markas-art">
+/* ===== hud3_29: bangunan Markas Polsek & Koramil (lebih besar, detail, tidak tertutup barisan apel) ===== */
+(function(){
+window.__markasDraw=function(kind,cx,time){
+ try{
+ const pol=kind==='pol',x0=(cx-1.5)*T,y0=17.98*T,W=3*T,dx=x0+W/2;
+ const wall=pol?'#e8e3d1':'#cbc59f',wallD=pol?'#cfc9b3':'#b3ad86',roof=pol?'#2a4a8a':'#4a5a30',roofL=pol?'#3d62ae':'#63763f',trim=pol?'#ffffff':'#ece5bd';
+ g.save();
+ g.fillStyle='rgba(0,0,0,.26)';g.beginPath();g.ellipse(dx,y0+1.3*T,W*.57,.16*T,0,0,7);g.fill();
+ g.fillStyle=wall;g.fillRect(x0,y0+.42*T,W,.86*T);
+ g.fillStyle=wallD;g.fillRect(x0,y0+1.16*T,W,.12*T);
+ g.fillStyle='rgba(255,255,255,.4)';g.fillRect(x0,y0+.42*T,W,3);
+ g.fillStyle=roof;g.beginPath();g.moveTo(x0-.14*T,y0+.46*T);g.lineTo(x0+.38*T,y0);g.lineTo(x0+W-.38*T,y0);g.lineTo(x0+W+.14*T,y0+.46*T);g.closePath();g.fill();
+ g.fillStyle=roofL;g.beginPath();g.moveTo(x0+.38*T,y0);g.lineTo(x0+W-.38*T,y0);g.lineTo(x0+W-.47*T,y0+.11*T);g.lineTo(x0+.47*T,y0+.11*T);g.closePath();g.fill();
+ g.strokeStyle='rgba(0,0,0,.16)';g.lineWidth=1;for(let i=2;i<5;i++){const yy=y0+i*.09*T,o=i*.05*T;g.beginPath();g.moveTo(x0-.14*T+o,yy);g.lineTo(x0+W+.14*T-o,yy);g.stroke()}
+ g.fillStyle='rgba(0,0,0,.22)';g.fillRect(x0-.05*T,y0+.46*T,W+.1*T,4);
+ const win=wx=>{g.fillStyle=trim;g.fillRect(wx-1,y0+.62*T-1,.4*T+2,.34*T+2);g.fillStyle='#a9d8ec';g.fillRect(wx,y0+.62*T,.4*T,.34*T);g.fillStyle='rgba(255,255,255,.55)';g.fillRect(wx+2,y0+.62*T+2,.12*T,.09*T);g.fillStyle=trim;g.fillRect(wx+.19*T,y0+.62*T,2,.34*T)};
+ win(x0+.22*T);win(x0+.76*T);win(x0+W-.22*T-.4*T);win(x0+W-.76*T-.4*T);
+ g.fillStyle='#3a2a1a';g.fillRect(dx-.29*T,y0+.7*T,.58*T,.58*T);g.fillStyle='#5a4028';g.fillRect(dx-.26*T,y0+.73*T,.24*T,.55*T);g.fillRect(dx+.02*T,y0+.73*T,.24*T,.55*T);g.fillStyle='#d4a020';g.fillRect(dx-.05*T,y0+1.0*T,3,5);g.fillRect(dx+.02*T,y0+1.0*T,3,5);
+ g.fillStyle='#bdb59f';g.fillRect(dx-.42*T,y0+1.28*T,.84*T,.06*T);
+ for(let i=0;i<6;i++){g.fillStyle=(i%2)?trim:roof;g.fillRect(dx-.42*T+i*.14*T,y0+.54*T,.14*T,.13*T)}
+ /* papan nama di atap */
+ const pw=1.5*T,ph=.23*T,px=dx-pw/2,py=y0+.14*T;
+ g.fillStyle=trim;g.fillRect(px,py,pw,ph);g.strokeStyle=roof;g.lineWidth=2;g.strokeRect(px+1,py+1,pw-2,ph-2);
+ g.fillStyle=roof;g.font='bold 11px sans-serif';g.textAlign='center';g.textBaseline='middle';g.fillText(pol?'POLSEK':'KORAMIL',dx,py+ph/2+1);g.textBaseline='alphabetic';
+ if(pol){
+  /* bintang lencana */
+  g.fillStyle='#d4a020';const sx=px-.16*T,sy=py+ph/2;g.beginPath();for(let i=0;i<10;i++){const r=i%2?3:7,a=-Math.PI/2+i*Math.PI/5;g.lineTo(sx+Math.cos(a)*r,sy+Math.sin(a)*r)}g.closePath();g.fill();
+  /* lampu strobo */
+  const on=Math.floor(time/350)%2,bx=dx,by=y0-.04*T;g.fillStyle='#2a2a2a';g.fillRect(bx-.12*T,by,.24*T,.07*T);
+  g.fillStyle=on?'#ff3b3b':'#3b7bff';g.fillRect(bx-.1*T,by-.08*T,.2*T,.09*T);
+  const gr=g.createRadialGradient(bx,by-.03*T,1,bx,by-.03*T,.5*T);gr.addColorStop(0,on?'rgba(255,60,60,.5)':'rgba(60,120,255,.5)');gr.addColorStop(1,'rgba(0,0,0,0)');g.fillStyle=gr;g.fillRect(bx-.5*T,by-.55*T,T,T);
+ }else{
+  /* antena radio */
+  const ax=x0+W-.55*T;g.fillStyle='#555';g.fillRect(ax,y0-.5*T,2,.55*T);g.fillRect(ax-6,y0-.4*T,14,2);g.fillRect(ax-4,y0-.28*T,10,2);
+  g.fillStyle='#ff4040';g.fillRect(ax-1,y0-.52*T,4,4);
+ }
+ /* tiang bendera */
+ const fx=x0+W+.18*T,sw=Math.sin(time/300)*3;g.fillStyle='#6a4a2c';g.fillRect(fx-1,y0-.1*T,2,1.45*T);g.fillStyle='#d42b2b';g.fillRect(fx+1,y0-.1*T,15+sw,5);g.fillStyle='#fff';g.fillRect(fx+1,y0-.1*T+5,15+sw,5);
+ g.restore()}catch(e){if(!window.__mke){window.__mke=1;console.warn('[markas-art]',e)}}};
 })();
 </script>
 </body></html>
