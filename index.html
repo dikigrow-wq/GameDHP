@@ -11053,13 +11053,14 @@ function build(){if(built)return;built=1;const k=pts();
   /* anak-anak */
   [['bagas','Bagas','#d04a3a'],['nina','Nina','#e07aa0',1],['cakra','Cakra','#4a7ad0'],['laras','Laras','#7ab04a',1]].forEach((a,i)=>mk('kid_'+a[0],a[1],'anak',{col:a[2],idx:i,home:P(41.0,15.4),kid:1,o:{fem:!!a[3],hair:'#222'},sp:84}));
   /* tukang bakso */
-  mk('bakso','Mang Ujang','bakso',{col:'#e8e8e8',idx:0,home:k.eastH,o:{hat:'#c02828',hair:'#111'},sp:38,cart:1})}
+  mk('bakso','Mang Ujang','bakso',{col:'#e8e8e8',idx:0,home:k.eastH,o:{hat:'#c02828',hair:'#111'},sp:38,cart:1});
+  {const sg=P(25.3,4.05);mk('satpam_sd','Pak Anton (Satpam)','satpam',{col:'#2a4a8a',idx:0,home:sg,gx:sg[0],gy:sg[1],gf:'down',o:{hat:'#1a2a5a',hair:'#111'},sp:50})}}
 /* bola */
 const BALL={x:0,y:0,vx:0,vy:0,z:0,vz:0,on:0};
 /* ---------- jadwal: station = {k,x,y,f,act} atau null ---------- */
 const leg=(n,per)=>Math.floor(performance.now()/per)%n;
 function polRoute(e,k){const R_=[k.ps,k.pe,k.pw][(e.idx)%3];return R_[(leg(R_.length,38000)+e.idx)%R_.length]}
-function sched(e,h,now){const k=pts();
+function sched(e,h,now){const k=pts();if(e.role==='satpam')return{k:'gate',x:e.gx,y:e.gy,f:e.gf||'down',act:'stand'};
   if(e.role==='petani'){if(h<6||h>=18.3||rainy()&&h>10.5)return null;const row=k.rows[e.idx%3];
     const span=k.sx1-k.sx0,off=k.sx0+((e.idx*1.7+(now/9000)*(e.idx%2?-1:1)*.9)%1+1)%1*span;
     if(h<10)return{k:'tanam'+e.idx,x:Math.min(k.sx1,Math.max(k.sx0,k.sx0+(e.idx*span/5+(now/1000)%5*4))),y:row,f:'down',act:'bend'};
@@ -11472,6 +11473,10 @@ try{
   {id:'hansip',n:'Petugas Ronda Desa',e:'🛡️',pay:380,bonus:20,req:{kebugaran:2},d:'Berkeliling menjaga keamanan kampung.',
    daily:[{k:'walk',n:120,l:'Ronda 120 petak'},{k:'talk',n:2,l:'Sapa 2 warga'}],month:[{k:'walk',n:800,l:'Ronda 800 petak'}]}
  ];
+ JOBS.push(
+  {id:'satpam',n:'Satpam Sekolah',e:'💂',pay:440,bonus:22,req:{kebugaran:2},d:'Menjaga gerbang SD Harapan Desa dan memeriksa tamu.',daily:[{k:'walk',n:80,l:'Patroli keliling sekolah 80 petak'},{k:'talk',n:3,l:'Sapa 3 orang (murid/tamu)'}],month:[{k:'walk',n:500,l:'Patroli 500 petak'}]},
+  {id:'polisi',n:'Polisi Desa',e:'👮',pay:620,bonus:30,req:{kebugaran:3},d:'Melayani laporan warga dan berpatroli di kantor polisi.',daily:[{k:'walk',n:100,l:'Patroli 100 petak'},{k:'talk',n:4,l:'Layani 4 warga/laporan'}],month:[{k:'walk',n:700,l:'Patroli 700 petak'}]},
+  {id:'prajurit',n:'Prajurit Koramil',e:'🪖',pay:600,bonus:30,req:{kebugaran:4},d:'Berjaga dan berlatih di Markas Koramil.',daily:[{k:'walk',n:120,l:'Siaga dan latihan 120 petak'},{k:'talk',n:2,l:'Lapor ke 2 atasan/rekan'}],month:[{k:'walk',n:900,l:'Latihan 900 petak'}]});
  JOBS.forEach(j=>{j.daily.push({k:'shift',n:1,l:'🎬 Jalani shift kerja (tombol Mulai Shift)'});j.month.push({k:'shiftA',n:2,l:'🎬 Raih rating A/S pada 2 shift'})});
  const jobById=id=>JOBS.find(j=>j.id===id);
  let C=null,lastS=null,lastCode=null,tab='job',saveT=0,payInfo=null;
@@ -11574,7 +11579,7 @@ try{
   m.addEventListener('click',e=>{const t=e.target.closest('[data-tab],[data-act]');if(!t)return;
    if(t.dataset.tab){tab=t.dataset.tab;render();return}
    const a=t.dataset.act,v=t.dataset.v;
-   if(a==='perk')buyPerk(v);else if(a==='join')joinJob(v);else if(a==='quit')quitJob();else if(a==='shift'){closeModal();setTimeout(()=>{if(window.__SHIFT)__SHIFT.start()},80)}});
+   if(a==='perk')buyPerk(v);else if(a==='join')joinJob(v);else if(a==='quit')quitJob();else if(a==='shift'){const w=window.__ZONES&&C.job?__ZONES.where(C.job.id):null;if(w&&!w.ok){say('📍 '+w.txt);return}closeModal();setTimeout(()=>{if(window.__SHIFT)__SHIFT.start()},80)}});
   return m}
  const pct=(a,b)=>Math.max(0,Math.min(100,Math.round(a/b*100)));
  const bar=(p,c)=>'<div class="ca-bar"><i style="width:'+p+'%;'+(c?'background:'+c:'')+'"></i></div>';
@@ -11594,8 +11599,8 @@ try{
   if(j){const p=payInfoCalc(j),left=Math.max(0,PAY_DAYS-(S.d-C.m.start));
    h+='<div class="ca-card"><div class="ca-row"><span class="ca-e">'+j.e+'</span><div class="ca-t"><b>'+j.n+' · '+RANK[C.job.rank-1]+'</b><small>'+j.d+'</small></div><button class="ca-btn sec" data-act="quit">Berhenti</button></div>'
     +'<div class="ca-note">Gajian dalam <b>'+left+' hari</b> · hadir '+(C.m.days|0)+'/'+PAY_DAYS+' hari · perkiraan gaji <b>🪙'+p.tot+'</b></div></div>';
-   {const sd=C.shiftDay===S.d,sh=C.shifts[j.id]||{n:0,best:-1},pk=window.__SHIFT?__SHIFT.peek(j.id):{title:'Shift Kerja',sub:''};
-    h+='<div class="ca-card" style="border-color:rgba(255,214,120,.6);background:linear-gradient(135deg,rgba(255,214,120,.14),rgba(0,0,0,.3))"><div class="ca-row"><span class="ca-e">🎬</span><div class="ca-t"><b>Shift: '+pk.title+'</b><small>'+pk.sub+'</small><small>'+(sd?'Sudah dijalani hari ini ✔':'Belum dijalani hari ini — selesaikan untuk tugas harian + tips + XP')+' · '+sh.n+'× shift'+(sh.best>=0?' · rekor '+['C','B','A','S'][sh.best]:'')+'</small></div><button class="ca-btn" data-act="shift">'+(sd?'🎭 Latihan':'🎬 Mulai Shift')+'</button></div></div>'}
+   {const sd=C.shiftDay===S.d,sh=C.shifts[j.id]||{n:0,best:-1},pk=window.__SHIFT?__SHIFT.peek(j.id):{title:'Shift Kerja',sub:''},wh=window.__ZONES?__ZONES.where(j.id):{ok:true};
+    h+='<div class="ca-card" style="border-color:rgba(255,214,120,.6);background:linear-gradient(135deg,rgba(255,214,120,.14),rgba(0,0,0,.3))"><div class="ca-row"><span class="ca-e">🎬</span><div class="ca-t"><b>Shift: '+pk.title+'</b><small>'+pk.sub+'</small><small style="color:'+(wh.ok?'#9be07a':'#ffd24a')+'">📍 '+(wh.ok?'Kamu sudah di lokasi kerja':wh.txt)+'</small><small>'+(sd?'Sudah dijalani hari ini ✔':'Belum dijalani hari ini — selesaikan untuk tugas harian + tips + XP')+' · '+sh.n+'× shift'+(sh.best>=0?' · rekor '+['C','B','A','S'][sh.best]:'')+'</small></div><button class="ca-btn" data-act="shift"'+(wh.ok?'':' style="opacity:.7"')+'>'+(wh.ok?(sd?'🎭 Latihan':'🎬 Mulai Shift'):'📍 Ke Lokasi')+'</button></div></div>'}
    h+='<div class="ca-card"><h4>📋 Tugas hari ini</h4>'+j.daily.map((t,i)=>{const v=C.dp['d'+i]|0,ok=v>=t.n;return'<div class="ca-task'+(ok?' ok':'')+'"><div class="l"><span>'+(ok?'✔ ':'')+t.l+'</span><span>'+v+'/'+t.n+'</span></div>'+bar(pct(v,t.n),ok?'#6fc04e':'#e0a526')+'</div>'}).join('')
     +'<div class="ca-note">Selesaikan semua tugas harian untuk bonus 🪙'+Math.round(j.bonus*RMULT[C.job.rank-1])+' dan menambah hari hadir.'+(C.dd.paid?' <b>Hari ini sudah beres ✔</b>':'')+'</div></div>';
    h+='<div class="ca-card"><h4>🏅 Target bulanan</h4>'+j.month.map((t,i)=>{const v=C.m.p['m'+i]|0,ok=v>=t.n;return'<div class="ca-task'+(ok?' ok':'')+'"><div class="l"><span>'+(ok?'✔ ':'')+t.l+'</span><span>'+v+'/'+t.n+'</span></div>'+bar(pct(v,t.n),ok?'#6fc04e':'#4aa3e0')+'</div>'}).join('')
@@ -11603,7 +11608,7 @@ try{
    h+='<h4>Lowongan lain</h4>'}
   else h+='<div class="ca-note">Pilih pekerjaan untuk dapat <b>gaji bulanan</b> (1 bulan = '+PAY_DAYS+' hari game). Tiap pekerjaan punya tugas harian dan target bulanan. Keahlian dilatih dari aktivitas sehari-hari.</div>';
   JOBS.filter(x=>!j||x.id!==j.id).forEach(x=>{const need=Object.keys(x.req||{}),miss=need.filter(k=>lvOf(k)<x.req[k]),hs=C.hist[x.id];
-   h+='<div class="ca-card"><div class="ca-row"><span class="ca-e">'+x.e+'</span><div class="ca-t"><b>'+x.n+' · 🪙'+x.pay+'/bulan</b><small>'+x.d+'</small><small>Syarat: '+(need.length?need.map(k=>SK[k].e+' '+SK[k].n+' Lv '+x.req[k]).join(', '):'tidak ada')+(hs?' · pernah jadi '+RANK[hs.rank-1]:'')+'</small></div><button class="ca-btn" data-act="join" data-v="'+x.id+'"'+(miss.length||j?' disabled':'')+'>Lamar</button></div>'
+   h+='<div class="ca-card"><div class="ca-row"><span class="ca-e">'+x.e+'</span><div class="ca-t"><b>'+x.n+' · 🪙'+x.pay+'/bulan</b><small>'+x.d+'</small><small>📍 '+((window.__ZONES&&__ZONES.boards.find(b=>b.id===x.id))||{label:'-'}).label+'</small><small>Syarat: '+(need.length?need.map(k=>SK[k].e+' '+SK[k].n+' Lv '+x.req[k]).join(', '):'tidak ada')+(hs?' · pernah jadi '+RANK[hs.rank-1]:'')+'</small></div><button class="ca-btn" data-act="join" data-v="'+x.id+'"'+(miss.length||j?' disabled':'')+'>Lamar</button></div>'
     +'<div class="ca-note">Tugas harian: '+x.daily.map(t=>t.l).join(' · ')+'</div></div>'});
   return h}
  function renderSkill(){let h='<div class="ca-note">Tiap naik level keahlian memberi 1 Poin Keahlian. Buka perk untuk buff permanen (perk harus berurutan dan butuh level tertentu).</div>';
@@ -11637,9 +11642,9 @@ try{
 #cash .c-tint{position:absolute;inset:0;pointer-events:none;transition:background 1s}
 #cash .c-vig{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at 50% 45%,rgba(0,0,0,0) 40%,rgba(0,0,0,.62) 100%)}
 #cash .c-bar{position:absolute;left:0;right:0;background:#000;z-index:3;transition:height .8s cubic-bezier(.2,.8,.2,1);height:0}
-#cash .c-bar.t{top:0}#cash .c-bar.b{bottom:0}
-#cash.cine .c-bar.t{height:calc(7vh + env(safe-area-inset-top,0px))}
-#cash.cine .c-bar.b{height:calc(5vh + env(safe-area-inset-bottom,0px))}
+#cash .c-bar.c-bt{top:0}#cash .c-bar.c-bb{bottom:0}
+#cash.cine .c-bar.c-bt{height:calc(7vh + env(safe-area-inset-top,0px))}
+#cash.cine .c-bar.c-bb{height:calc(5vh + env(safe-area-inset-bottom,0px))}
 #cash .c-hud{position:absolute;left:0;right:0;top:calc(env(safe-area-inset-top,0px) + 6px);z-index:6;display:flex;align-items:center;gap:8px;padding:0 10px;pointer-events:none}
 #cash .c-hud .jb{font:700 12px/1.1 system-ui;background:rgba(10,14,12,.62);border:1px solid rgba(255,220,140,.5);border-radius:999px;padding:4px 10px;display:flex;gap:6px;align-items:center;max-width:60%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 #cash .c-hud .pips{display:flex;gap:4px;margin-left:2px}
@@ -11647,9 +11652,10 @@ try{
 #cash .c-hud .pips i.d{background:#ffd24a;border-color:#ffd24a}#cash .c-hud .pips i.n{background:#fff;animation:cpip 1s infinite}
 @keyframes cpip{50%{transform:scale(1.35)}}
 #cash .c-hud .sc{margin-left:auto;font:800 13px system-ui;background:rgba(10,14,12,.62);border:1px solid rgba(255,220,140,.5);border-radius:999px;padding:4px 10px;color:#ffe58a;white-space:nowrap}
+#cash.talk .c-hud,#cash.talk .c-x{display:none}
 #cash .c-x{position:absolute;right:10px;top:calc(env(safe-area-inset-top,0px) + 36px);z-index:7;width:30px;height:30px;border-radius:50%;border:1px solid rgba(255,255,255,.4);background:rgba(0,0,0,.5);color:#fff;font-size:14px;cursor:pointer;padding:0}
 #cash .c-stage{position:absolute;inset:0;z-index:2;pointer-events:none}
-#cash .c-por{position:absolute;bottom:0;height:min(48vh,360px);display:flex;align-items:flex-end;transition:transform .35s,filter .35s,opacity .35s;opacity:0}
+#cash .c-por{position:absolute;bottom:0;height:min(37vh,340px);display:flex;align-items:flex-end;transition:transform .35s,filter .35s,opacity .35s;opacity:0}
 #cash .c-por.on{opacity:1}
 #cash .c-por img{height:100%;image-rendering:pixelated;filter:drop-shadow(0 6px 10px rgba(0,0,0,.55));animation:cbob 2.4s ease-in-out infinite}
 @keyframes cbob{50%{transform:translateY(-6px)}}
@@ -11712,8 +11718,9 @@ try{
 #cash .c-res{display:flex;flex-direction:column;gap:4px;font-size:clamp(13px,3.4vw,15px);background:rgba(255,255,255,.07);border:1px solid rgba(255,214,120,.4);border-radius:12px;padding:10px 16px;min-width:min(86vw,320px)}
 #cash .c-res div{display:flex;justify-content:space-between;gap:12px}
 #cash .c-btn{padding:11px 26px;border-radius:12px;border:2px solid #7a4a08;background:linear-gradient(#ffe58a,#e0a526 70%,#b8790e);color:#3a2412;font:800 15px system-ui;cursor:pointer;margin-top:4px}
+@media (orientation:portrait){#cash .c-por{height:min(30vh,280px)}#cash .c-por.L{left:-5vw}#cash .c-por.R{right:-5vw}}
 @media (orientation:landscape) and (max-height:520px){
- #cash .c-por{height:min(62vh,280px)}
+ #cash .c-por{height:min(58vh,270px)}
  #cash .c-dlg{width:min(70vw,640px);padding:10px 14px 9px;bottom:calc(5vh + 6px)}
  #cash .c-tx{min-height:2.6em;font-size:14px}
  #cash .mg-big{max-height:26vh;max-width:26vh;min-width:96px;min-height:96px}
@@ -11723,7 +11730,7 @@ try{
 }
 </style>
 
-<div id="cash"><canvas id="cashbg"></canvas><div class="c-tint" id="cashtint"></div><div class="c-vig"></div><div class="c-bar t"></div><div class="c-bar b"></div>
+<div id="cash"><canvas id="cashbg"></canvas><div class="c-tint" id="cashtint"></div><div class="c-vig"></div><div class="c-bar c-bt"></div><div class="c-bar c-bb"></div>
 <div class="c-hud"><div class="jb" id="cashjb"></div><div class="sc" id="cashsc">0</div></div>
 <button class="c-x" id="cashx" aria-label="Keluar dari shift">✕</button>
 <div class="c-stage"><div class="c-por L" id="porL"></div><div class="c-por R" id="porR"></div></div>
@@ -11757,8 +11764,8 @@ try{
  const TINT={dawn:'linear-gradient(rgba(255,170,90,.32),rgba(255,210,150,.08))',day:'rgba(255,255,255,0)',dusk:'linear-gradient(rgba(255,100,50,.32),rgba(120,40,90,.18))',night:'linear-gradient(rgba(8,14,56,.66),rgba(8,14,40,.5))'};
  function sizeBg(){const cv=$('cashbg');cv.width=Math.max(240,Math.round(innerWidth/2.2));cv.height=Math.max(240,Math.round(innerHeight/2.2))}
  function bgLoop(now){const cv=$('cashbg'),x=cv.getContext('2d');x.imageSmoothingEnabled=false;
-  try{const k=bg.width/((typeof WM!=='undefined'?WM:55)*T),wT=ep.loc[2]*(1+Math.sin(now/9000)*.035),hT=wT*cv.height/cv.width;
-   let cx=ep.loc[0]+Math.sin(now/7000)*.5,cy=ep.loc[1]+Math.cos(now/8300)*.3;
+  try{const k=bg.width/((typeof WZ0==='function'?WZ0():55)*T),wT=ep.loc[2]*(1+Math.sin(now/9000)*.035),hT=wT*cv.height/cv.width;
+   let cx=ep.loc[0]+Math.sin(now/7000)*.5,cy=ep.loc[1]+Math.cos(now/8300)*.3;const MW=(typeof WZ0==='function'?WZ0():55),MH=(typeof H!=='undefined'?H:22);cx=Math.max(wT/2,Math.min(MW-wT/2,cx));cy=Math.max(hT/2,Math.min(MH-hT/2,cy));
    x.fillStyle='#10161a';x.fillRect(0,0,cv.width,cv.height);
    x.drawImage(bg,(cx-wT/2)*T*k,(cy-hT/2)*T*k,wT*T*k,hT*T*k,0,0,cv.width,cv.height)}catch(e){}
   if(!parts.length)for(let i=0;i<30;i++)parts.push({x:R(),y:R(),vx:(R()-.5)*.02,vy:-.01-R()*.02,s:1+R()*2,p:R()*6});
@@ -11852,7 +11859,7 @@ try{
  function mgSpot(p){return new Promise(res=>{const mg=openMg();
   mg.innerHTML='<div class="mg-t">'+p.label+'</div><div class="mg-s">'+p.hint+'</div><div class="mg-spot" id="sp"><div class="mg-lamp" id="lp"></div></div><div class="mg-s" id="mgc"></div>';
   const sp=$('sp'),lp=$('lp'),info=$('mgc');const N=p.rounds||3;let r=0,sc=[],figs=[],raf=0,t0=0,lock=false,last=performance.now();
-  const norm=['🚶','🚶‍♀️','🧓','🧒','🚴','🧑‍🌾'];
+  const norm=p.norm||['🚶','🚶‍♀️','🧓','🧒','🚴','🧑‍🌾'];
   function mv(e){const b=sp.getBoundingClientRect();const x=((e.clientX-b.left)/b.width*100),y=((e.clientY-b.top)/b.height*100);sp.style.setProperty('--lx',x+'%');sp.style.setProperty('--ly',y+'%');lp.style.setProperty('--lx',x+'%');lp.style.setProperty('--ly',y+'%')}
   sp.addEventListener('pointermove',mv);sp.addEventListener('pointerdown',mv);
   function nr(){figs.forEach(f=>f.el.remove());figs=[];const n=5+r;const bad=Math.floor(R()*n);
@@ -11878,7 +11885,7 @@ try{
  const SY=(who,text,show)=>({t:'say',who,text,show}),CH=(who,text,opts,show)=>({t:'ch',who,text,opts,show}),MGB=(k,p)=>Object.assign({t:'mg',k},p);
  const EPS={
  petani:[
-  {title:'Hari Panen di Kebun',sub:'Fajar di kebun Pak Joko. Pasar menunggu kiriman sebelum siang.',loc:[9.5,9.2,9],tint:'dawn',cast:['pakJoko',null],beats:[
+  {title:'Hari Panen di Kebun',sub:'Fajar di kebun Pak Joko. Pasar menunggu kiriman sebelum siang.',loc:[10.5,10.9,9],tint:'dawn',cast:['pakJoko',null],beats:[
    SY('nar','Fajar baru merekah. Embun masih menempel di ujung daun saat kamu melangkah ke kebun, caping terpasang rapi di kepala.'),
    SY('pakJoko','Nah, itu dia petani andalan desa! Hari ini kita panen wortel dan jagung. Pasar minta kiriman sebelum siang.'),
    CH('pakJoko','Mau mulai dari mana, Nak?',[["Cek tanah dan air dulu, baru panen.",2,"Pak Joko mengangguk puas. “Bagus. Tanah yang dirawat, hasilnya lebih manis.”"],["Langsung panen saja, waktu mepet!",1,"“Cepat sih. Semoga tak ada yang terlewat, ya.”"],["Istirahat dulu, masih pagi...",0,"“Haduh, tanaman tidak panen sendiri, Nak.”"]]),
@@ -11948,7 +11955,7 @@ try{
    MGB('timing',{label:'Timbang Dagangan',hint:'Ketuk saat jarum timbangan berada di zona hijau agar takarannya pas.',icon:'⚖️',btn:'PAS!',rounds:4,speed:1.2}),
    SY('pakKarto','Senang berdagang denganmu. Minggu depan saya datang lagi!')]}],
  guru:[
-  {title:'Kelas Pagi di Balai Desa',sub:'Bel kecil berdentang. Anak-anak berlarian masuk kelas.',loc:[27.5,10.2,11],tint:'day',cast:['dimas','siti'],beats:[
+  {title:'Kelas Pagi di Balai Desa',sub:'Bel kecil berdentang. Anak-anak berlarian masuk kelas.',loc:[16,8.2,13],tint:'day',cast:['dimas','siti'],beats:[
    SY('nar','Bel kecil berdentang. Anak-anak berlarian masuk ke balai desa yang disulap jadi kelas.'),
    SY('dimas','Selamat pagi, Guru!'),
    SY('siti','Hari ini belajar apa, Guru? Semoga bukan ulangan...'),
@@ -11957,7 +11964,7 @@ try{
    CH('siti','Guru, Dimas bilang ada temannya yang menyontek. Apa yang Guru lakukan?',[["Bicara baik-baik berdua setelah kelas.",2,"“Guru bijak ya. Pasti dia jadi malu dan berubah.”"],["Tegur keras di depan kelas.",0,"Suasana kelas membeku. “Duh...”"],["Pura-pura tidak tahu.",1,"“Hmm, semoga tidak terulang.”"]]),
    MGB('timing',{label:'Praktik Menyiram Kebun Sekolah',hint:'Ajari anak menyiram: ketuk saat penanda di zona hijau.',icon:'💧',btn:'SIRAM!',rounds:3,speed:1.0}),
    SY('dimas','Terima kasih sudah mengajar kami, Guru!')]},
-  {title:'Cerita Sebelum Pulang',sub:'Sore di balai desa. Satu pelajaran terakhir tentang desa kita.',loc:[27.5,10.2,11],tint:'dusk',cast:['siti','dimas'],beats:[
+  {title:'Cerita Sebelum Pulang',sub:'Sore di balai desa. Satu pelajaran terakhir tentang desa kita.',loc:[16,8.2,13],tint:'dusk',cast:['siti','dimas'],beats:[
    SY('nar','Matahari condong ke barat. Anak-anak duduk melingkar di lantai balai desa, menunggu cerita terakhir hari ini.'),
    SY('siti','Guru, ceritakan tentang desa kita dong!'),
    MGB('quiz',{label:'Mengenal Desa Kita',qs:[{q:'Tempat warga berkumpul dan bermusyawarah di desa disebut?',o:['Balai desa','Bandara','Pelabuhan'],a:0,w:'Balai desa untuk berkumpul dan bermusyawarah.'},{q:'Gotong royong artinya?',o:['Bekerja bersama-sama','Bekerja sendiri','Libur bersama'],a:0,w:'Gotong royong: bekerja bersama untuk kepentingan bersama.'},{q:'Apa manfaat menanam pohon di tepi sungai?',o:['Menahan longsor','Menambah macet','Mengeringkan sungai'],a:0,w:'Akar pohon menahan tanah supaya tidak longsor.'}]}),
@@ -11997,6 +12004,35 @@ try{
    MGB('tap',{label:'Lari Mengejar Waktu',hint:'Ketuk cepat untuk berlari ke pasar sebelum lapak buka!',icon:'🏃',secs:6,step:.08}),
    SY('ibuTinah','Sampai tepat waktu. Terima kasih banyak, ini upahmu.',['ibuTinah',null])]}]
  };
+ EPS.satpam=[{title:'Jaga Gerbang di Pagi Hari',sub:'Pukul enam pagi. Murid-murid mulai berdatangan ke SD Harapan Desa.',loc:[16,19.2,10],tint:'dawn',cast:['buGuru',null],beats:[
+   SY('nar','Embun masih menempel di pagar sekolah. Kamu berdiri di depan pos satpam, topi dirapikan, peluit tergantung di leher.'),
+   SY('buGuru','Selamat pagi, Pak Satpam! Hari ini tolong awasi gerbang baik-baik ya. Jangan sampai ada yang masuk tanpa lapor.'),
+   CH('buGuru','Seorang bapak ingin masuk membawa bingkisan, tapi tidak mau mengisi buku tamu karena “buru-buru”.',[["Tetap minta mengisi buku tamu dengan sopan.",2,"“Benar. Aturan tetap aturan, demi keamanan anak-anak.”"],["Biarkan masuk, kasihan buru-buru.",1,"“Hmm, lain kali tetap catat, ya.”"],["Usir saja, jangan banyak bicara.",0,"“Jangan kasar, Pak. Sampaikan baik-baik.”"]]),
+   MGB('timing',{label:'Buka-Tutup Gerbang',hint:'Gerbang digeser bergantian: ketuk saat penanda di zona hijau agar gerbang terbuka mulus.',icon:'🚧',btn:'GESER!',rounds:4,speed:1.15}),
+   SY('nar','Bel hampir berbunyi. Dari kejauhan, seorang murid berlari menuju gerbang... lalu berbelok membelakangi sekolah.'),
+   MGB('spot',{label:'Cegah Murid Membolos',hint:'Geser jari untuk menyorot. Ketuk murid yang membawa tas dan mau kabur lewat gerbang samping!',rounds:3,bad:'🧒',loot:'🎒',norm:['🚶','🚶‍♀️','🧓','🛵','🚴','🧑‍🌾']}),
+   CH('buGuru','Murid itu ketahuan. Dia bilang takut ulangan matematika. Apa yang kamu lakukan?',[["Antar ke kelas dan sampaikan ke Bu Guru dengan baik.",2,"“Terima kasih, Pak. Nanti saya bantu belajar bersamanya.”"],["Marahi dia di depan teman-temannya.",0,"Murid itu menunduk malu. “Maaf...”"],["Suruh pulang saja.",1,"“Hmm, sebaiknya jangan begitu, tapi ya sudahlah.”"]]),
+   SY('buGuru','Gerbang aman sampai bel berbunyi. Kerja bagus, Pak Satpam!',['buGuru',null])]}];
+ EPS.polisi=[{title:'Piket SPKT: Laporan Warga',sub:'Pagi di Kantor Polisi. Warga datang membawa laporan kehilangan.',loc:[16,7.4,13],tint:'day',cast:['polisi','rina'],beats:[
+   SY('nar','Kamu duduk di balik meja SPKT. Lampu biru kantor polisi berkedip pelan di luar jendela.'),
+   SY('rina','Permisi, Pak Polisi... dompet saya hilang di pasar tadi pagi. Isinya uang jualan seminggu.'),
+   CH('rina','Saya panik sekali. Bagaimana ini?',[["Tenangkan dulu, lalu catat kronologinya satu per satu.",2,"“Terima kasih, Pak. Saya jadi lebih tenang.”"],["Suruh datang lagi besok.",0,"“Tapi ini mendesak, Pak...”"],["Langsung janji pasti ketemu.",1,"“Wah, semoga benar ya, Pak.”"]]),
+   MGB('quiz',{label:'Prosedur Laporan',qs:[{q:'Apa yang pertama dicatat dalam laporan kehilangan?',o:['Waktu dan lokasi kejadian','Warna baju petugas','Cuaca bulan lalu'],a:0,w:'Waktu dan lokasi membantu penelusuran.'},{q:'Bila menemukan barang milik orang lain, sebaiknya?',o:['Menyerahkan ke pihak berwenang','Menyimpannya sendiri','Menjualnya'],a:0,w:'Barang temuan diserahkan ke kantor polisi atau pemiliknya.'},{q:'Nomor darurat polisi di Indonesia?',o:['110','999','911'],a:0,w:'Nomor 110 untuk layanan darurat kepolisian.'}]}),
+   SY('nar','Tiba-tiba radio berbunyi: ada orang mencurigakan di area parkir kantor polisi.',['polisi',null]),
+   MGB('spot',{label:'Periksa Area Parkir',hint:'Geser jari untuk menyorot parkiran. Ketuk orang yang membawa tas curian!',rounds:3,bad:'🥷',loot:'👜'}),
+   CH('polisi','Pelakunya ternyata anak muda yang kehilangan pekerjaan. Bagaimana kamu menanganinya?',[["Proses sesuai aturan, tapi perlakukan dengan manusiawi.",2,"“Itu sikap polisi yang baik. Hukum tegas, hati tetap hangat.”"],["Langsung borgol dan bentak.",0,"“Tenang, tidak perlu kasar.”"],["Lepaskan saja, kasihan.",1,"“Hmm, tetap harus ada pembinaan.”"]]),
+   MGB('timing',{label:'Cap Berkas Laporan',hint:'Ketuk saat penanda di zona hijau agar stempel jatuh tepat.',icon:'📝',btn:'CAP!',rounds:3,speed:1.15}),
+   SY('polisi','Laporanmu rapi sekali hari ini. Warga terbantu berkat kamu.',['polisi',null])]}];
+ EPS.prajurit=[{title:'Apel Pagi dan Latihan Fisik',sub:'Pukul lima. Markas Koramil membentuk barisan di lapangan apel.',loc:[16,11,13],tint:'dawn',cast:['tni',null],beats:[
+   SY('nar','Terompet apel menggema di Markas Koramil. Kamu berdiri tegak di lapangan, sepatu mengilap, nafas mengepul di udara subuh.'),
+   SY('tni','Siap, Komandan! Barisan lengkap! Hari ini kita berlatih sebelum matahari tinggi.'),
+   MGB('timing',{label:'Baris-Berbaris',hint:'Ketuk saat penanda di zona hijau agar langkahmu serempak dengan barisan.',icon:'🥾',btn:'LANGKAH!',rounds:5,speed:1.25}),
+   CH('tni','Komandan memberi perintah mendadak: “Lari lima putaran!” Kakimu sudah pegal. Bagaimana?',[["Laksanakan dengan semangat tanpa mengeluh.",2,"“Disiplin yang bagus! Itu baru prajurit.”"],["Laksanakan sambil menggerutu.",1,"“Hmm, tetap lanjut. Jangan mengeluh.”"],["Pura-pura sakit supaya bebas.",0,"“Jangan bohong pada komandan!”"]]),
+   MGB('tap',{label:'Push-Up Lima Puluh Kali',hint:'Ketuk cepat berulang-ulang untuk menyelesaikan push-up sebelum waktu habis!',icon:'💪',secs:7,step:.075}),
+   SY('nar','Matahari naik. Komandan menugaskanmu berjaga di perimeter markas sambil mengawasi area sekitar gerbang.',['tni',null]),
+   MGB('spot',{label:'Jaga Perimeter',hint:'Geser jari untuk menyorot. Ketuk penyusup yang diam-diam memotret fasilitas militer!',rounds:3,bad:'🥷',loot:'📷'}),
+   CH('tni','Penyusup tertangkap. Ternyata turis nyasar. Apa yang kamu lakukan?',[["Jelaskan aturan, hapus foto, antar keluar dengan sopan.",2,"“Tegas tapi santun. Itu cara tentara melayani rakyat.”"],["Bentak dan usir kasar.",0,"“Prajurit tidak boleh arogan pada warga.”"],["Biarkan saja, toh tidak bahaya.",1,"“Hmm, aturan tetap harus ditegakkan.”"]]),
+   SY('tni','Apel selesai. Kerja bagus, Prajurit. Istirahat!',['tni',null])]}];
  /* ---------- alur shift ---------- */
  function episodeFor(jid){const C=CA.state,list=EPS[jid]||EPS.serabutan,sh=C.shifts&&C.shifts[jid];return list[((S.d|0)+(sh?sh.n:0))%list.length]}
  async function play(){
@@ -12026,7 +12062,7 @@ try{
   c.classList.add('on');await new Promise(r=>{$('cashok').onclick=r});c.classList.remove('on');leave()}
  function leave(){abort=true;cancelAnimationFrame(bgRaf);closeMg();$('cashdlg').classList.remove('on');$('cashcard').classList.remove('on');const o=$('cash');o.classList.remove('cine');setTimeout(()=>o.classList.remove('on'),500);try{if(modal==='carsh')modal=null}catch(e){}try{if(typeof hud==='function')hud()}catch(e){}}
  function start(){const C=CA.state;if(!C||!C.job){try{say('Pilih pekerjaan dulu di menu Karier')}catch(e){}return}
-  if($('cash').classList.contains('on'))return;const j=CA.jobs.find(x=>x.id===C.job.id);if(!j)return;run={j};ep=episodeFor(j.id);play()}
+  if($('cash').classList.contains('on'))return;const j=CA.jobs.find(x=>x.id===C.job.id);if(!j)return;const w=window.__ZONES?__ZONES.where(j.id):null;if(w&&!w.ok){try{say('📍 '+w.txt)}catch(e){}return}run={j};ep=episodeFor(j.id);play()}
  function peek(jid){const e=episodeFor(jid);return{title:e.title,sub:e.sub}}
  /* kontrol dasar */
  const root=$('cash');
@@ -12034,8 +12070,294 @@ try{
  let qt=0;$('cashx').addEventListener('click',()=>{const b=$('cashx');if(!qt){qt=1;b.textContent='?';b.style.width='auto';b.style.padding='0 10px';b.title='Ketuk lagi untuk keluar';setTimeout(()=>{qt=0;b.textContent='✕';b.style.width='';b.style.padding=''},2500);try{say('Ketuk ✕ sekali lagi untuk keluar (tanpa hadiah)')}catch(e){}return}
   qt=0;abort=true;const r=tapRes;tapRes=null;if(typing)typing();if(r)r();const m=$('cashmg');m.classList.remove('on');setTimeout(leave,50)});
  addEventListener('resize',()=>{if(root.classList.contains('on'))sizeBg()});
- window.__SHIFT={start,peek,EPS,CAST,get ep(){return ep}};
+ async function talkScene(def){
+  if($('cash').classList.contains('on'))return[];
+  ep={title:'',loc:def.loc||[27,10,10],tint:def.tint||'day',cast:def.cast||[null,null],beats:def.beats};run={j:{e:'💬',n:''}};abort=false;scores=[];total=0;combo=0;
+  const out=[],o=$('cash');o.classList.add('talk');sizeBg();tintMode=ep.tint;$('cashtint').style.background=TINT[tintMode];o.classList.add('on');setTimeout(()=>o.classList.add('cine'),60);try{modal='carsh'}catch(e){}
+  cancelAnimationFrame(bgRaf);bgRaf=requestAnimationFrame(bgLoop);setCast(ep.cast[0],ep.cast[1]);$('cashdlg').classList.remove('on');closeMg();
+  for(let i=0;i<ep.beats.length&&!abort;i++){const b=ep.beats[i];if(b.show)setCast(b.show[0],b.show[1]);
+   if(b.t==='say')await say(b.who,b.text);
+   else if(b.t==='ch'){const k=await choose(b.who,b.text,b.opts);if(abort)break;out.push(k);const op=b.opts[k];if(op[2])await say(b.who,op[2])}}
+  leave();setTimeout(()=>o.classList.remove('talk'),600);return out}
+ window.__SHIFT={start,peek,EPS,CAST,talk:talkScene,SY,CH,MGB,get ep(){return ep}};
 }catch(e){console.warn('[shift]',e)}
+})();
+</script>
+
+<script id="zones-js">
+/* ===== hud3_29: Zona Sekolah, Zona Militer, Zona Polisi (kompleks besar, berpagar, dijaga) ===== */
+(function(){
+"use strict";
+if(window.__ZONES)return;
+try{
+ if(typeof ZD==='undefined'||typeof ZN==='undefined'||typeof mkZ!=='function'||typeof goScene!=='function'||typeof rng!=='function'){console.warn('[zones] dependensi tidak ada');return}
+ const $=id=>document.getElementById(id);
+ /* ---------- helper gambar ---------- */
+ const fr=(X,x,y,w,h,c)=>{X.fillStyle=c;X.fillRect(x*T,y*T,w*T,h*T)};
+ const rr=(X,x,y,w,h,r,f,s,lw)=>{X.beginPath();X.roundRect(x*T,y*T,w*T,h*T,r);if(f){X.fillStyle=f;X.fill()}if(s){X.strokeStyle=s;X.lineWidth=lw||2;X.stroke()}};
+ const el=(X,x,y,rx,ry,f)=>{X.fillStyle=f;X.beginPath();X.ellipse(x*T,y*T,rx*T,ry*T,0,0,7);X.fill()};
+ const txt=(X,t,x,y,sz,c,st)=>{X.font='bold '+sz+'px sans-serif';X.textAlign='center';X.textBaseline='middle';if(st){X.lineWidth=3;X.strokeStyle=st;X.strokeText(t,x*T,y*T)}X.fillStyle=c;X.fillText(t,x*T,y*T);X.textAlign='left';X.textBaseline='alphabetic'};
+ function ground(X,R,c1,c2,n){fr(X,0,0,32,22,c1);for(let i=0;i<n;i++){X.fillStyle=R()<.5?c2:'rgba(255,255,255,.07)';X.fillRect(R()*32*T,R()*22*T,2+R()*3,2)}}
+ function pave(X,x,y,w,h,a,b){for(let i=0;i<w;i++)for(let j=0;j<h;j++){X.fillStyle=(i+j)%2?a:b;X.fillRect((x+i)*T,(y+j)*T,T,T)}X.strokeStyle='rgba(0,0,0,.06)';X.lineWidth=1;for(let i=0;i<=w;i++){X.beginPath();X.moveTo((x+i)*T,y*T);X.lineTo((x+i)*T,(y+h)*T);X.stroke()}for(let j=0;j<=h;j++){X.beginPath();X.moveTo(x*T,(y+j)*T);X.lineTo((x+w)*T,(y+j)*T);X.stroke()}}
+ function tree(X,C,x,y,s,col){s=s||1;el(X,x+.1,y+.28,.62*s,.2*s,'rgba(0,0,0,.25)');fr(X,x-.09,y-.5*s,.18,.7*s,'#6a4a2a');
+  [[0,-.95,.55],[-.38,-.62,.42],[.38,-.62,.42],[0,-.5,.5]].forEach(a=>el(X,x+a[0]*s,y+a[1]*s,a[2]*s,a[2]*s*.9,col||'#3f8a42'));
+  el(X,x-.15*s,y-1.05*s,.22*s,.16*s,'rgba(255,255,255,.18)');C.push([x,y,.3])}
+ function lamp(X,x,y){fr(X,x-.04,y-1.1,.08,1.1,'#3a3a40');el(X,x,y-1.14,.14,.1,'#ffe9a0');el(X,x,y+.04,.12,.05,'rgba(0,0,0,.25)')}
+ function bench(X,x,y,w){w=w||1.1;fr(X,x-w/2,y-.34,w,.1,'#7a5a36');fr(X,x-w/2,y-.18,w,.1,'#8a6a42');fr(X,x-w/2+.06,y-.08,.07,.26,'#4a3a22');fr(X,x+w/2-.13,y-.08,.07,.26,'#4a3a22')}
+ function flagpole(X,x,y,h,big){h=h||3;fr(X,x-.04,y-h,.08,h,'#d8d8d8');el(X,x,y+.02,.13,.06,'rgba(0,0,0,.25)');const fw=big?1.5:1,fh=big?.5:.34;fr(X,x+.04,y-h+.04,fw,fh/2,'#d42b2b');fr(X,x+.04,y-h+.04+fh/2,fw,fh/2,'#fff');el(X,x,y-h,.07,.07,'#e8c34a')}
+ function cctv(X,x,y){fr(X,x-.04,y-1.05,.08,1.05,'#555');fr(X,x-.02,y-1.12,.4,.14,'#2a2a2e');el(X,x+.3,y-1.05,.04,.04,'#ff3a3a');X.fillStyle='#3a3a40';X.fillRect((x+.36)*T,(y-1.08)*T,.08*T,.1*T)}
+ function sign(X,x,y,w,t,bg,fg,sz){rr(X,x-w/2,y-.2,w,.4,6,bg,'rgba(0,0,0,.4)',2);txt(X,t,x,y+.01,sz||13,fg||'#fff')}
+ function bld(X,o){const x=o.x,y=o.y,w=o.w,h=o.h,X0=x*T,Y0=y*T,W0=w*T,H0=h*T,rh=(o.roofH||1)*T;
+  X.fillStyle='rgba(0,0,0,.24)';X.fillRect(X0+7,Y0+H0-5,W0,12);
+  X.fillStyle=o.wall;X.fillRect(X0,Y0+rh,W0,H0-rh);X.fillStyle='rgba(0,0,0,.1)';X.fillRect(X0,Y0+H0-.22*T,W0,.22*T);X.fillStyle='rgba(255,255,255,.2)';X.fillRect(X0,Y0+rh,W0,3);
+  X.fillStyle=o.roof;X.beginPath();X.moveTo(X0-10,Y0+rh);X.lineTo(X0+.5*T,Y0);X.lineTo(X0+W0-.5*T,Y0);X.lineTo(X0+W0+10,Y0+rh);X.closePath();X.fill();
+  X.fillStyle='rgba(255,255,255,.16)';X.beginPath();X.moveTo(X0+.5*T,Y0);X.lineTo(X0+W0-.5*T,Y0);X.lineTo(X0+W0-.62*T,Y0+.16*T);X.lineTo(X0+.62*T,Y0+.16*T);X.closePath();X.fill();
+  X.strokeStyle='rgba(0,0,0,.16)';X.lineWidth=1;for(let i=1;i<5;i++){const yy=Y0+i*rh/5,off=(5-i)*.1*T*.5;X.beginPath();X.moveTo(X0-10+i*2+off*0,yy);X.lineTo(X0+W0+10-i*2,yy);X.stroke()}
+  X.fillStyle='rgba(0,0,0,.22)';X.fillRect(X0-6,Y0+rh,W0+12,5);
+  const rows=o.rows||1,cols=o.cols||Math.max(2,Math.floor(w/2)),dx=o.door==null?x+w/2:o.door,wh=(H0-rh-.5*T)/rows;
+  for(let r=0;r<rows;r++)for(let c=0;c<cols;c++){const wx=X0+(c+.5)*(W0/cols)-.3*T,wy=Y0+rh+.15*T+r*wh+Math.max(0,(wh-.62*T)/2);
+   if(r===rows-1&&Math.abs(wx+.3*T-dx*T)<1.1*T)continue;
+   X.fillStyle=o.trim||'#fff';X.fillRect(wx-2,wy-2,.6*T+4,.62*T+4);X.fillStyle='#9ad0e6';X.fillRect(wx,wy,.6*T,.62*T);X.fillStyle='rgba(255,255,255,.5)';X.fillRect(wx+3,wy+3,.17*T,.12*T);X.fillStyle=o.trim||'#fff';X.fillRect(wx+.29*T,wy,2,.62*T)}
+  const dw=(o.doorW||.9)*T,dh=.82*T;X.fillStyle=o.trim||'#fff';X.fillRect(dx*T-dw/2-3,Y0+H0-dh-.2*T-3,dw+6,dh+3);X.fillStyle=o.doorC||'#5a4028';X.fillRect(dx*T-dw/2,Y0+H0-dh-.2*T,dw,dh);X.fillStyle='rgba(0,0,0,.25)';X.fillRect(dx*T-1,Y0+H0-dh-.2*T,2,dh);X.fillStyle='#d4a020';X.fillRect(dx*T-dw*.25,Y0+H0-.55*T,3,5);X.fillRect(dx*T+dw*.2,Y0+H0-.55*T,3,5);
+  X.fillStyle='#c9c2ae';X.fillRect(dx*T-dw/2-6,Y0+H0-.2*T,dw+12,.12*T);
+  if(o.label){const lw=Math.min(W0*.7,(o.label.length*.2+.9)*T);rr(X,x+w/2-lw/T/2,y+.12,lw/T,.4,5,o.labelBg||'#fff','rgba(0,0,0,.45)',2);txt(X,o.label,x+w/2,y+.33,o.labelSz||13,o.labelC||'#222')}}
+ function car(X,x,y,body,pol){const X0=x*T,Y0=y*T;el(X,x,y+.34,.95,.14,'rgba(0,0,0,.28)');X.fillStyle=body;X.beginPath();X.roundRect(X0-.85*T,Y0-.2*T,1.7*T,.5*T,6);X.fill();X.beginPath();X.roundRect(X0-.45*T,Y0-.52*T,.95*T,.4*T,6);X.fill();
+  X.fillStyle='#9ad0e6';X.fillRect(X0-.38*T,Y0-.46*T,.38*T,.28*T);X.fillRect(X0+.03*T,Y0-.46*T,.38*T,.28*T);X.fillStyle='#1a1a1e';X.beginPath();X.arc(X0-.5*T,Y0+.3*T,.14*T,0,7);X.arc(X0+.5*T,Y0+.3*T,.14*T,0,7);X.fill();
+  if(pol){X.fillStyle='#fff';X.fillRect(X0-.85*T,Y0-.02*T,1.7*T,.12*T);X.fillStyle='#ff3a3a';X.fillRect(X0-.18*T,Y0-.6*T,.16*T,.08*T);X.fillStyle='#3a7bff';X.fillRect(X0+.02*T,Y0-.6*T,.16*T,.08*T)}}
+ function bike(X,x,y,col){el(X,x,y+.22,.4,.07,'rgba(0,0,0,.25)');X.fillStyle='#1a1a1e';X.beginPath();X.arc((x-.28)*T,(y+.1)*T,.12*T,0,7);X.arc((x+.28)*T,(y+.1)*T,.12*T,0,7);X.fill();X.fillStyle=col;X.fillRect((x-.3)*T,(y-.12)*T,.6*T,.14*T);X.fillRect((x+.12)*T,(y-.3)*T,.1*T,.2*T);X.fillStyle='#222';X.fillRect((x-.1)*T,(y-.2)*T,.3*T,.08*T)}
+ function tank(X,x,y){const X0=x*T,Y0=y*T;el(X,x,y+.5,1.5,.18,'rgba(0,0,0,.3)');X.fillStyle='#3a3f2a';X.beginPath();X.roundRect(X0-1.35*T,Y0+.05*T,2.7*T,.5*T,10);X.fill();X.fillStyle='#202418';for(let i=0;i<8;i++){X.beginPath();X.arc(X0-1.1*T+i*.32*T,Y0+.32*T,.11*T,0,7);X.fill()}
+  X.fillStyle='#55603a';X.beginPath();X.roundRect(X0-1.1*T,Y0-.28*T,2.2*T,.42*T,8);X.fill();X.fillStyle='#667246';X.beginPath();X.roundRect(X0-.55*T,Y0-.62*T,1.1*T,.4*T,10);X.fill();X.fillStyle='#2a2e1c';X.fillRect(X0+.5*T,Y0-.5*T,1.4*T,.12*T);X.fillStyle='rgba(255,255,255,.12)';X.fillRect(X0-.5*T,Y0-.6*T,1*T,3)}
+ function jeep(X,x,y){const X0=x*T,Y0=y*T;el(X,x,y+.36,.95,.14,'rgba(0,0,0,.28)');X.fillStyle='#4f5f33';X.beginPath();X.roundRect(X0-.9*T,Y0-.22*T,1.8*T,.55*T,5);X.fill();X.fillStyle='#3a4726';X.fillRect(X0-.3*T,Y0-.52*T,.9*T,.32*T);X.fillStyle='#9ad0e6';X.fillRect(X0-.22*T,Y0-.48*T,.74*T,.22*T);X.fillStyle='#1a1a1e';X.beginPath();X.arc(X0-.55*T,Y0+.32*T,.15*T,0,7);X.arc(X0+.55*T,Y0+.32*T,.15*T,0,7);X.fill();X.fillStyle='#c8c8b0';X.fillRect(X0+.7*T,Y0-.05*T,.1*T,.1*T)}
+ function sandbags(X,x,y,n){for(let i=0;i<n;i++)for(let r=0;r<2-(i%2?0:0);r++){X.fillStyle=r?'#a89868':'#b8a878';X.beginPath();X.roundRect((x+i*.34-(r?.17:0))*T,(y-r*.2)*T,.34*T,.2*T,5);X.fill()}}
+ function barrier(X,x,y,w,open){fr(X,x-.12,y-.7,.24,.8,'#555');for(let i=0;i<8;i++)fr(X,x+.1+i*w/8,y-.55,w/8,.12,i%2?'#fff':'#d42b2b');fr(X,x+w+.04,y-.7,.2,.8,'#555');el(X,x,y+.12,.2,.08,'rgba(0,0,0,.25)')}
+ function post(X,x,y,w,h,wall,roof,label){bld(X,{x,y,w,h,wall,roof,roofH:.55,rows:1,cols:2,door:x+w/2,doorW:.5,trim:'#fff'});if(label)txt(X,label,x+w/2,y+.1,10,'#fff','rgba(0,0,0,.6)')}
+ function fence(X,x0,y0,x1,y1,c){X.strokeStyle=c||'#444';X.lineWidth=2;X.beginPath();X.moveTo(x0*T,y0*T);X.lineTo(x1*T,y1*T);X.stroke();const n=Math.floor(Math.hypot(x1-x0,y1-y0)*3);for(let i=0;i<=n;i++){const t=i/n,px=(x0+(x1-x0)*t)*T,py=(y0+(y1-y0)*t)*T;X.beginPath();X.moveTo(px,py);X.lineTo(px,py-.42*T);X.stroke()}X.beginPath();X.moveTo(x0*T,y0*T-.4*T);X.lineTo(x1*T,y1*T-.4*T);X.stroke()}
+ function wall(X,x,y,w,h,c1,c2){fr(X,x,y,w,h,c1);X.fillStyle=c2;for(let i=0;i<w*3;i++)for(let j=0;j<h*3;j++){if((i+j)%2===0)X.fillRect((x+i/3)*T,(y+j/3)*T,T/3-1,T/3-1)}}
+ function perimeter(X,c1,c2,gx0,gx1){wall(X,0,0,32,1,c1,c2);wall(X,0,0,1,22,c1,c2);wall(X,31,0,1,22,c1,c2);wall(X,0,21,gx0,1,c1,c2);wall(X,gx1,21,32-gx1,1,c1,c2);fr(X,0,.9,32,.12,'rgba(0,0,0,.25)');fr(X,gx0-.25,20.3,.5,.7,'#dcd8cc');fr(X,gx1-.25,20.3,.5,.7,'#dcd8cc');fr(X,gx0,21,gx1-gx0,1,'#cfc9b8')}
+ function gatepad(X,gx0,gx1,c){fr(X,gx0,19,gx1-gx0,2,c||'#d6d0bf');X.strokeStyle='rgba(0,0,0,.18)';X.lineWidth=2;X.setLineDash([8,8]);X.beginPath();X.moveTo((gx0+gx1)/2*T,19*T);X.lineTo((gx0+gx1)/2*T,21*T);X.stroke();X.setLineDash([])}
+ /* ---------- NPC zona ---------- */
+ const NP=(id,n,home,r,col,L,o)=>Object.assign({id,k:'h',n,home,r,col,L},o||{});
+ /* ---------- ZONA 4: SD HARAPAN DESA ---------- */
+ const SCH={build(){const{c,x:X}=mkZ(1.5),R=rng(401),C=this.C;
+   ground(X,R,'#86b866','#6fa354',900);
+   pave(X,14.6,6,2.8,15,'#dcd6c6','#d3cdbc');
+   pave(X,8,8,16,7,'#cfc9b8','#c6c0af');
+   X.strokeStyle='rgba(255,255,255,.75)';X.lineWidth=3;X.strokeRect(8.4*T,8.4*T,15.2*T,6.2*T);X.beginPath();X.moveTo(16*T,8.4*T);X.lineTo(16*T,14.6*T);X.stroke();X.beginPath();X.arc(16*T,11.5*T,1.3*T,0,7);X.stroke();
+   X.strokeStyle='rgba(255,255,255,.6)';X.lineWidth=2;X.strokeRect(9.2*T,9.1*T,3*T,4.8*T);X.strokeRect(19.8*T,9.1*T,3*T,4.8*T);
+   bld(X,{x:4,y:1.1,w:24,h:4.9,wall:'#f1e4c4',wall2:'#d9c9a0',roof:'#c0503a',rows:2,cols:9,door:16,doorW:1.2,label:'SD HARAPAN DESA',labelSz:15,labelBg:'#fff9e6',labelC:'#7a2a1a',trim:'#fff'});
+   for(let i=0;i<4;i++){fr(X,14.4+i*.55,5.35,.16,.7,'#e8e0cc')}
+   bld(X,{x:2,y:8,w:5,h:3.2,wall:'#e4d6b8',roof:'#3f7a8a',rows:1,cols:2,door:4.5,label:'PERPUSTAKAAN',labelSz:10,trim:'#fff'});
+   bld(X,{x:25.5,y:8,w:5,h:3.2,wall:'#f0d4a8',roof:'#c0803a',rows:1,cols:2,door:28,label:'KANTIN',labelSz:12,trim:'#fff'});
+   for(let i=0;i<3;i++){const tx=26.4+i*1.5;fr(X,tx,12.4,1.1,.5,'#8a6a42');fr(X,tx+.05,12.9,.1,.4,'#4a3a22');fr(X,tx+.95,12.9,.1,.4,'#4a3a22');fr(X,tx-.1,13.35,1.3,.12,'#6a5232')}
+   /* taman & pohon */
+   [[2.5,6.8],[7.5,7.2],[24.5,7],[29.5,6.6],[2.4,13.4],[6.8,12.6],[29.4,13.6],[3,20],[7,20.2],[25,20.2],[29,20],[2.3,18],[29.6,18.2],[11,16.2],[21.5,16.4]].forEach(a=>tree(X,C,a[0],a[1],1,a[0]>16?'#3f8a42':'#4a9a48'));
+   /* taman bermain */
+   X.fillStyle='rgba(130,100,60,.55)';X.beginPath();X.roundRect(2.5*T,14.8*T,6*T,4*T,14);X.fill();
+   [[3.2,0],[5.6,0]].forEach(a=>{fr(X,a[0],15.2,.08,1.5,'#c04a4a');fr(X,a[0]+1.3,15.2,.08,1.5,'#c04a4a');fr(X,a[0],15.2,1.38,.08,'#c04a4a');fr(X,a[0]+.3,15.3,.03,1.1,'#444');fr(X,a[0]+.9,15.3,.03,1.1,'#444');fr(X,a[0]+.2,16.4,.3,.08,'#e0b040');fr(X,a[0]+.8,16.4,.3,.08,'#e0b040')});
+   fr(X,3.4,18.0,2.4,.1,'#4a7ad0');el(X,4.6,18.05,.12,.12,'#4a7ad0');
+   /* parkir motor */
+   for(let i=0;i<4;i++)bike(X,25.3+i*1.15,16.6,['#c04a4a','#4a7ad0','#e0b040','#444'][i]);fr(X,24.6,17.3,5,.06,'rgba(255,255,255,.6)');
+   /* upacara */
+   flagpole(X,16,9.6,2.8,true);
+   /* pos satpam + gerbang */
+   post(X,10.6,19.1,2.8,1.8,'#d8e2f0','#2a4a8a','POS SATPAM');
+   fr(X,17.7,19.9,.5,.9,'#dcd8cc');
+   [[13.4,19.4],[18.6,19.4],[8,7.8],[24,7.8],[16,6.6]].forEach(a=>cctv(X,a[0],a[1]));
+   [[14.4,10.4],[17.6,10.4],[12.5,16.6],[19.5,16.6],[5,9.8],[27,9.6]].forEach(a=>lamp(X,a[0],a[1]));
+   bench(X,12,15.4);bench(X,20,15.4);bench(X,9,12.3,1.4);
+   perimeter(X,'#c9c2ae','#b6af9b',14,18);
+   gatepad(X,14.2,17.8);
+   sign(X,16,20.35,3.2,'SELAMAT DATANG','#2a6a4a','#fff',11);
+   this.bg=c},
+  TS:new Set(),TL:[],WZ:[],DOCK:[0,0,0,0],FS:[],NODES:[],C:[],
+  R:[[4,1,27,5],[2,8,6,10],[26,8,30,10],[10,19,13,20],[3,15,4,15],[6,15,7,15],[25,16,29,16]],
+  NPC:[
+   NP('sat1','Pak Anton (Satpam)',[15.1,19.6],.25,'#2a4a8a',['Selamat datang di SD Harapan Desa. Mohon tertib ya.','Tamu wajib lapor ke saya dulu.','Anak-anak jam masuk 07.00, jangan sampai telat.'],{hat:'#1a2a5a',hair:'#111'}),
+   NP('sat2','Pak Rudi (Satpam)',[16,12.2],4.5,'#2a4a8a',['Saya keliling memastikan halaman aman.','Awas licin, baru dipel!','Kalau ada yang mencurigakan, lapor ke saya.'],{hat:'#1a2a5a',hair:'#111'}),
+   NP('gr1','Bu Ani (Guru)',[13.4,7.2],1.3,'#2f8f7a',['Selamat pagi! Siap belajar hari ini?','Belajar itu seperti menanam, perlu sabar.','Jangan lupa PR matematikanya ya.'],{fem:1,hair:'#1f1a18'}),
+   NP('gr2','Pak Dedi (Guru)',[19,7.2],1.3,'#a0522d',['Kelas saya sebentar lagi mulai.','Olahraga dulu, baru belajar.','Rajin pangkal pandai!'],{hat:'#222',hair:'#222'}),
+   NP('sd1','Dimas',[12,11.5],3,'#e0802a',['Bu Guru, aku dapat nilai seratus!','Main bola yuk!','Jam istirahat masih lama?'],{hair:'#222'}),
+   NP('sd2','Siti',[20,11.5],3,'#e06a9a',['Aku suka pelajaran menggambar.','Tadi aku jajan es di kantin.','Jangan lari-lari di halaman ya.'],{fem:1,hair:'#3a2216'}),
+   NP('sd3','Rafi',[16,13],3,'#4a7ad0',['Aku mau jadi nelayan kayak Pak Dodi!','Ayo baris, bel mau bunyi.','Kantinnya jual gorengan enak.'],{hair:'#222'}),
+   NP('sd4','Nia',[6,17],1.6,'#7ab04a',['Ayunan ini paling seru!','Aku takut ketinggian tapi tetap main.','Gantian dong mainnya!'],{fem:1,hair:'#2a1a10'}),
+   NP('kan','Bu Kantin',[28,12],1,'#d09a40',['Gorengan hangat, es teh manis!','Anak-anak jangan jajan sembarangan.','Bayar dulu, baru makan ya.'],{fem:1,hair:'#2a1a10'}),
+   NP('cln','Pak Min (Kebersihan)',[6,12.3],2,'#6a7a4a',['Sekolah bersih, belajar nyaman.','Buang sampah pada tempatnya.','Daun-daun ini nggak ada habisnya.'],{hat:'#cdb060',hair:'#333'})
+  ]};
+ /* ---------- ZONA 5: MARKAS MILITER ---------- */
+ const MIL={build(){const{c,x:X}=mkZ(1.5),R=rng(502),C=this.C;
+   ground(X,R,'#9a9468','#857f58',1100);
+   for(let i=0;i<46;i++)el(X,R()*32,R()*22,.6+R()*1.2,.3+R()*.6,'rgba(70,95,40,.28)');
+   pave(X,14.4,6,3.2,15,'#c9c4ac','#c0bba3');
+   pave(X,9,8.5,14,7,'#bdb9a0','#b4b098');
+   X.strokeStyle='rgba(255,255,255,.7)';X.lineWidth=3;X.strokeRect(9.4*T,8.9*T,13.2*T,6.2*T);X.setLineDash([14,10]);X.beginPath();X.moveTo(9.4*T,12*T);X.lineTo(22.6*T,12*T);X.stroke();X.setLineDash([]);
+   X.fillStyle='rgba(255,255,255,.65)';X.font='900 34px sans-serif';X.textAlign='center';X.fillText('H',6.3*T,14.4*T);X.textAlign='left';X.strokeStyle='rgba(255,255,255,.55)';X.lineWidth=3;X.beginPath();X.arc(6.3*T,13.9*T,1.5*T,0,7);X.stroke();
+   bld(X,{x:11,y:1.1,w:10,h:4.9,wall:'#cfc9a0',wall2:'#b3ad84',roof:'#4a5a30',roof2:'rgba(255,255,255,.12)',rows:2,cols:5,door:16,doorW:1.2,label:'MARKAS KORAMIL',labelSz:14,labelBg:'#f1edd2',labelC:'#3a4a22',trim:'#ece5bd'});
+   bld(X,{x:2,y:3,w:7,h:4.6,wall:'#c4bf96',roof:'#556638',rows:1,cols:4,door:5.5,doorW:1,label:'BARAK A',labelSz:11,trim:'#ece5bd'});
+   bld(X,{x:23,y:3,w:7,h:4.6,wall:'#c4bf96',roof:'#556638',rows:1,cols:4,door:26.5,doorW:1,label:'BARAK B',labelSz:11,trim:'#ece5bd'});
+   flagpole(X,16,9.8,2.9,true);
+   tank(X,4.6,11.4);fr(X,2.9,12.15,3.4,.2,'rgba(0,0,0,.25)');txt(X,'TANK DISPLAY',4.6,12.7,9,'#fff','rgba(0,0,0,.6)');
+   jeep(X,25.2,11);jeep(X,27.7,12.2);
+   /* arena rintangan */
+   X.fillStyle='rgba(110,85,50,.6)';X.beginPath();X.roundRect(2.4*T,15.4*T,8.2*T,4.4*T,12);X.fill();
+   for(let i=0;i<5;i++){X.fillStyle='#222';X.beginPath();X.arc((3.2+i*.42)*T,(16.5)*T,.17*T,0,7);X.fill();X.fillStyle='#444';X.beginPath();X.arc((3.2+i*.42)*T,(16.5)*T,.08*T,0,7);X.fill()}
+   fr(X,6.2,15.7,.12,1.3,'#7a5a2a');fr(X,8.4,15.7,.12,1.3,'#7a5a2a');fr(X,6.2,15.7,2.3,.1,'#9a7a3a');fr(X,3.4,18.2,5.2,.12,'#6a4a22');fr(X,4.1,17.6,.1,.7,'#6a4a22');fr(X,5.9,17.6,.1,.7,'#6a4a22');fr(X,7.7,17.6,.1,.7,'#6a4a22');
+   txt(X,'ARENA LATIHAN',6.5,19.5,9,'#fff','rgba(0,0,0,.6)');
+   bld(X,{x:22.6,y:15.4,w:7,h:3.4,wall:'#8a8a78',roof:'#44443a',rows:1,cols:3,door:26.1,doorW:.9,label:'GUDANG',labelSz:11,labelBg:'#d8d4b8',trim:'#cfc9a0'});
+   fence(X,22.2,19.4,29.8,19.4,'#444');
+   /* menara & karung pasir */
+   [[2.3,2.2],[29.7,2.2],[2.3,20.2],[29.7,20.2]].forEach(a=>{const[x,y]=a;el(X,x,y+.1,.6,.2,'rgba(0,0,0,.3)');fr(X,x-.4,y-1.2,.8,1.3,'#8a7a50');fr(X,x-.55,y-1.7,1.1,.55,'#6a5a38');fr(X,x-.6,y-1.8,1.2,.14,'#3a3a2a');fr(X,x-.35,y-1.6,.7,.28,'#9ad0e6');C.push([x,y,.45])});
+   sandbags(X,10.6,19.0,4);sandbags(X,18.6,19.0,4);sandbags(X,22.5,6.8,5);
+   post(X,10.2,19.0,3,1.8,'#c8c8a8','#4a5a30','POS JAGA 1');post(X,18.8,19.0,3,1.8,'#c8c8a8','#4a5a30','POS JAGA 2');
+   barrier(X,14.4,20.2,3.2);
+   [[13.6,19.4],[18.4,19.4],[8.5,7.8],[23.5,7.8],[16,6.5]].forEach(a=>cctv(X,a[0],a[1]));
+   [[14.2,9.4],[17.8,9.4],[14.2,14.8],[17.8,14.8]].forEach(a=>lamp(X,a[0],a[1]));
+   [[2.5,8.8],[29.5,9],[10,16.6],[21,16.8],[8.5,20.3],[26,20.3]].forEach(a=>tree(X,C,a[0],a[1],.9,'#486a38'));
+   perimeter(X,'#8f8a6a','#7a7557',14.4,17.6);
+   for(let i=0;i<32;i++){fr(X,i,.25,.08,.4,'#555');}X.strokeStyle='rgba(60,60,60,.7)';X.lineWidth=1.5;X.beginPath();for(let i=0;i<64;i++){X.moveTo(i*.5*T,.35*T);X.arc(i*.5*T+6,.35*T,6,Math.PI,0)}X.stroke();
+   gatepad(X,14.4,17.6,'#bcb8a0');
+   sign(X,16,20.35,3.6,'AREA MILITER - DILARANG MASUK','#8a1f1f','#fff',9);
+   this.bg=c},
+  TS:new Set(),TL:[],WZ:[],DOCK:[0,0,0,0],FS:[],NODES:[],C:[],
+  R:[[11,1,20,5],[2,3,8,7],[23,3,29,7],[3,11,6,12],[24,10,28,12],[22,15,29,18],[10,19,12,20],[19,19,21,20],[3,16,4,16],[6,15,7,15]],
+  NPC:[
+   NP('mg1','Prada Rizal (Penjaga Gerbang)',[13.6,20],.25,'#4f5f33',['Berhenti! Tunjukkan keperluan Anda.','Area ini dijaga 24 jam.','Dilarang memotret fasilitas militer.'],{hat:'#3a4a2a',hair:'#111'}),
+   NP('mg2','Prada Yusuf (Penjaga Gerbang)',[18.4,20],.25,'#4f5f33',['Siap! Laporkan dulu ke pos jaga.','Tertib, jangan melewati garis.','Tamu harus didampingi petugas.'],{hat:'#3a4a2a',hair:'#111'}),
+   NP('mp1','Serda Hendra (Patroli)',[16,12],6,'#4f5f33',['Patroli rutin, semua aman.','Kalau lihat orang mencurigakan, lapor!','Disiplin adalah kunci.'],{hat:'#3a4a2a',hair:'#111'}),
+   NP('mp2','Pratu Bima (Patroli)',[16,17],5,'#4f5f33',['Siap, tugas jaga berjalan lancar.','Jam berapa pergantian shift ya?','Kopi hitam dulu, baru patroli lagi.'],{hat:'#3a4a2a',hair:'#111'}),
+   NP('mcm','Mayor Bambang (Danramil)',[16,7.2],1.3,'#4f5f33',['Selamat datang di Markas Koramil.','Bela negara dimulai dari bela desa.','Latihan pagi ini dimulai pukul 05.30.'],{hat:'#6b1f1f',hair:'#111'}),
+   NP('mt1','Prada Dika (Latihan)',[6.5,17.4],1.6,'#4f5f33',['Push up lima puluh kali, siap!','Rintangan hari ini lebih licin dari kemarin.','Semangat, jangan menyerah!'],{hat:'#3a4a2a',hair:'#111'}),
+   NP('mt2','Pratu Rian (Latihan)',[8.4,16.6],1.4,'#4f5f33',['Tali ini berat sekali.','Komandan, izin istirahat lima menit!','Ayo lanjut putaran berikutnya.'],{hat:'#3a4a2a',hair:'#111'}),
+   NP('mlt','Letda Sari (Perwira Jaga)',[12,10],3,'#4f5f33',['Semua pos sudah dicek.','Apel pagi dipimpin Danramil.','Laporan jaga akan saya serahkan.'],{fem:1,hat:'#6b1f1f',hair:'#111'})
+  ]};
+ /* ---------- ZONA 6: KANTOR POLISI ---------- */
+ const POLZ={build(){const{c,x:X}=mkZ(1.5),R=rng(603),C=this.C;
+   ground(X,R,'#aab2ba','#98a0aa',1000);
+   for(let i=0;i<28;i++)el(X,R()*32,R()*22,.5+R()*1,.25+R()*.5,'rgba(90,150,90,.18)');
+   pave(X,14.4,6,3.2,15,'#d7dbe0','#cfd4da');
+   pave(X,9,8.5,14,7,'#c3c9d0','#bac0c8');
+   X.strokeStyle='rgba(255,255,255,.8)';X.lineWidth=3;X.strokeRect(9.4*T,8.9*T,13.2*T,6.2*T);
+   X.fillStyle='rgba(42,74,138,.25)';X.beginPath();X.arc(16*T,12*T,2*T,0,7);X.fill();txt(X,'⭐',16,12,40,'#d4a020');
+   bld(X,{x:8,y:1.1,w:16,h:4.9,wall:'#e8ecf2',wall2:'#c9d0dc',roof:'#2a4a8a',roof2:'rgba(255,255,255,.16)',rows:2,cols:7,door:16,doorW:1.3,label:'POLSEK  ·  KEPOLISIAN',labelSz:14,labelBg:'#fff',labelC:'#2a4a8a',trim:'#fff'});
+   fr(X,12.2,5.5,7.6,.5,'#2a4a8a');txt(X,'SPKT 24 JAM',16,5.78,10,'#fff');
+   bld(X,{x:2,y:3,w:5,h:4.6,wall:'#b9bec8',roof:'#3a3f4a',rows:1,cols:2,door:4.5,doorW:.8,doorC:'#3a3a3e',label:'RUTAN',labelSz:11,labelBg:'#e8ecf2',trim:'#e8ecf2'});
+   for(let i=0;i<5;i++){fr(X,2.35+i*.25,5.08,.05,.56,'#222')}for(let i=0;i<5;i++){fr(X,5.05+i*.25,5.08,.05,.56,'#222')}
+   /* parkir mobil patroli */
+   fr(X,22.6,9,8,5.2,'#8f97a2');for(let i=0;i<4;i++)fr(X,22.9+i*1.9,9.2,.06,2.6,'rgba(255,255,255,.7)');
+   car(X,23.8,11.4,'#f4f6fa',true);car(X,25.8,11.4,'#2a4a8a',true);car(X,27.8,11.4,'#f4f6fa',true);
+   for(let i=0;i<3;i++)bike(X,24+i*1.4,13.5,'#2a4a8a');
+   txt(X,'PARKIR DINAS',26.6,9.55,9,'#fff','rgba(0,0,0,.5)');
+   flagpole(X,16,9.6,2.7,true);
+   /* kandang K9 */
+   X.fillStyle='rgba(120,130,110,.5)';X.beginPath();X.roundRect(2.4*T,15.2*T,6.4*T,4.6*T,10);X.fill();
+   for(let i=0;i<3;i++){bld(X,{x:2.8+i*1.9,y:16,w:1.6,h:1.4,wall:'#c4a074',roof:'#6a4a2a',roofH:.4,rows:0,cols:1,door:3.6+i*1.9,doorW:.5,doorC:'#2a1a0a'})}
+   fence(X,2.4,19.7,8.8,19.7,'#555');txt(X,'UNIT K-9',5.6,15.5,9,'#fff','rgba(0,0,0,.55)');
+   /* garasi motor */
+   fr(X,23,15.4,7,3.6,'#a6adb8');for(let i=0;i<5;i++)bike(X,24+i*1.2,17.2,['#2a4a8a','#fff','#2a4a8a','#fff','#2a4a8a'][i]);txt(X,'GARASI MOTOR',26.5,15.8,9,'#fff','rgba(0,0,0,.5)');
+   /* tugu */
+   fr(X,15.4,13.8,1.2,.5,'#8a8f98');fr(X,15.7,12.9,.6,.95,'#a9aeb8');el(X,16,12.7,.25,.25,'#d4a020');
+   sandbags(X,10.6,19.0,3);
+   post(X,10.2,19.0,3,1.8,'#dfe6f2','#2a4a8a','POS POLISI');post(X,18.8,19.0,3,1.8,'#dfe6f2','#2a4a8a','POS POLISI');
+   barrier(X,14.4,20.2,3.2);
+   [[13.6,19.4],[18.4,19.4],[8,7.8],[24,7.8],[16,6.5],[27,9.2]].forEach(a=>cctv(X,a[0],a[1]));
+   [[14.2,9.4],[17.8,9.4],[12,15.8],[20,15.8],[8.4,10],[22,10]].forEach(a=>lamp(X,a[0],a[1]));
+   [[2.5,9.6],[7.8,9.2],[29.8,7.4],[10,16.8],[21,16.8],[8,20.3],[26.5,20.5]].forEach(a=>tree(X,C,a[0],a[1],.95,'#3f8a52'));
+   perimeter(X,'#b8bec8','#a4abb6',14.4,17.6);
+   gatepad(X,14.4,17.6,'#cdd2da');
+   sign(X,16,20.35,3.4,'KANTOR POLISI - DIAWASI CCTV','#2a4a8a','#fff',9);
+   this.bg=c},
+  TS:new Set(),TL:[],WZ:[],DOCK:[0,0,0,0],FS:[],NODES:[],C:[],
+  R:[[8,1,23,5],[2,3,6,7],[23,11,29,11],[24,13,27,13],[3,16,8,16],[23,17,28,17],[10,19,12,20],[19,19,21,20]],
+  NPC:[
+   NP('pg1','Bripda Anwar (Penjaga Gerbang)',[13.6,20],.25,'#7a5a3a',['Selamat siang. Ada keperluan di kantor polisi?','Kendaraan dilarang parkir di depan gerbang.','Silakan lapor ke SPKT di dalam.'],{hat:'#2a2018',hair:'#111'}),
+   NP('pg2','Bripda Ratna (Penjaga Gerbang)',[18.4,20],.25,'#7a5a3a',['Selamat datang. Harap tertib ya.','Seluruh area ini diawasi CCTV.','Mohon tunjukkan identitas bila diminta.'],{fem:1,hat:'#2a2018',hair:'#111'}),
+   NP('pd1','Bripka Rahmat (Piket SPKT)',[14,6.9],1,'#7a5a3a',['SPKT siap melayani laporan 24 jam.','Silakan sampaikan kronologi kejadian.','Laporan Anda akan kami tindaklanjuti.'],{hat:'#2a2018',hair:'#111'}),
+   NP('pd2','Brigadir Wulan (Piket SPKT)',[18.4,6.9],1,'#7a5a3a',['Ada yang bisa dibantu, Pak/Bu?','Surat kehilangan diurus di loket ini.','Tertib ya, antre satu per satu.'],{fem:1,hat:'#2a2018',hair:'#111'}),
+   NP('pp1','Bripda Fikri (Patroli)',[16,12],5.5,'#7a5a3a',['Patroli dalam kompleks, aman terkendali.','Kalau ada yang tertinggal, lapor ke SPKT.','Jangan lupa pasang helm kalau naik motor.'],{hat:'#2a2018',hair:'#111'}),
+   NP('pp2','Brigadir Tomi (Patroli)',[16,16.5],5,'#7a5a3a',['Saya jaga area parkir.','Mobil patroli baru dicuci, jangan disentuh.','Siap, laksanakan.'],{hat:'#2a2018',hair:'#111'}),
+   NP('pkp','AKP Surya (Kapolsek)',[16,7.4],1.2,'#8a6a44',['Selamat datang di Polsek. Keamanan desa tanggung jawab bersama.','Masyarakat yang taat hukum, desa yang tenteram.','Kalau butuh bantuan, jangan ragu lapor.'],{hat:'#2a2018',hair:'#111'}),
+   NP('pk9','Bripda Joni (Pawang K-9)',[5.5,17.8],1.6,'#7a5a3a',['Anjing pelacak kami sangat terlatih.','Jangan dekat-dekat kalau lagi latihan.','Dia suka dikasih tulang.'],{hat:'#2a2018',hair:'#111'}),
+   NP('ptn','Tahanan (Pencuri Ayam)',[4.5,6.4],.1,'#a05a2a',['Pak, saya cuma lapar...','Saya janji nggak mengulang lagi.','Tolong, ayamnya sudah dikembalikan kok.'],{hair:'#222'})
+  ]};
+ /* ---------- registrasi zona ---------- */
+ const reg=(n,e,info,def)=>{const id=ZN.length;ZN.push({n,e,L:null,R:null});try{if(typeof ZINFO!=='undefined')ZINFO[id]=info}catch(x){}ZD[id]=def;return id};
+ const Z_SCH=reg('SD Harapan Desa','🏫','Kompleks sekolah. Satpam berjaga di gerbang.',SCH);
+ const Z_MIL=reg('Markas Koramil','🪖','Area militer terbatas. Penjaga bersenjata di pos gerbang.',MIL);
+ const Z_POL=reg('Kantor Polisi','👮','Kompleks Polsek. Diawasi CCTV dan petugas piket.',POLZ);
+ const SP={x:16,y:19.0};
+ try{Object.assign(window.__SHIFT.CAST,{satpam:{n:'Pak Anton (Satpam)',col:'#2a4a8a',hat:'#1a2a5a',hair:'#111'},tni:{n:'Prada Rizal (Penjaga)',col:'#4f5f33',hat:'#3a4a2a',hair:'#111'},polisi:{n:'Bripda Anwar (Penjaga)',col:'#7a5a3a',hat:'#2a2018',hair:'#111'}})}catch(e){}
+ /* ---------- masuk & keluar ---------- */
+ function enter(zid,why){goScene(()=>{setZone(zid);me.x=SP.x*T;me.y=SP.y*T;me.f='up';outPos={x:me.x,y:me.y};applyZ();say(ZN[zid].e+' '+ZN[zid].n+(why?' — '+why:''));sfx('door');lastP='';hud()})}
+ function leaveTo(g){goScene(()=>{setZone(0);me.x=g.rx*T;me.y=g.ry*T;me.f='down';outPos={x:me.x,y:me.y};applyZ();say('Kembali ke desa');sfx('door');lastP='';hud()})}
+ const SY=(w,t)=>({t:'say',who:w,text:t}),CHB=(w,t,o)=>({t:'ch',who:w,text:t,opts:o});
+ const talk=def=>(window.__SHIFT&&__SHIFT.talk)?__SHIFT.talk(def):Promise.resolve([0]);
+ const D5=()=>window.__D5S||{};
+ const GATES=[
+  {z:0,x:27.0,y:4.1,r:1.5,to:Z_SCH,lab:['🏫','SD Harapan Desa','Masuk sekolah (ada satpam)'],rx:27,ry:4.1,
+   run:async()=>{const o=await talk({loc:[27,4.6,9],tint:'day',cast:['satpam',null],beats:[SY('satpam','Selamat datang di SD Harapan Desa. Mohon isi buku tamu dulu, ya.'),CHB('satpam','Ada keperluan apa di sekolah?',[['Mengajar atau ada urusan dengan guru.',2,'“Silakan masuk. Ruang guru ada di gedung utama.”'],['Hanya berkunjung melihat-lihat.',1,'“Boleh, tapi jangan mengganggu kelas yang sedang belajar.”'],['Cuma lewat saja.',0,'“Baik, hati-hati di jalan.”']])]});if(o[0]!==2)enter(Z_SCH,'Satpam menjaga gerbang')}},
+  {z:0,x:null,y:null,r:1.35,pos:'pos',to:Z_POL,lab:['👮','Kantor Polisi','Masuk / layanan Polsek'],rx:21.25,ry:20.2,
+   run:async()=>{const o=await talk({loc:[21.25,18.8,9],tint:'day',cast:['polisi',null],beats:[SY('polisi','Selamat siang. Selamat datang di Kantor Polisi.'),CHB('polisi','Ada yang bisa kami bantu?',[['Masuk ke kompleks kantor polisi.',2,'“Silakan. Lapor dulu ke SPKT di gedung utama.”'],['Layanan Polsek (lapor, denda).',1,'“Baik, silakan ke loket di sini.”'],['Hanya lewat.',0,'“Baik, selamat beraktivitas.”']])]});if(o[0]===0)enter(Z_POL,'Petugas jaga di gerbang');else if(o[0]===1&&window.__zoneOrigInter)window.__zoneOrigInter()}},
+  {z:0,x:null,y:null,r:1.35,pos:'kor',to:Z_MIL,lab:['🪖','Markas Koramil','Masuk / temui Babinsa'],rx:41.15,ry:20.2,
+   run:async()=>{const o=await talk({loc:[41.15,18.8,9],tint:'day',cast:['tni',null],beats:[SY('tni','Berhenti! Ini area militer. Sebutkan keperluan Anda.'),CHB('tni','Tunjukkan identitas. Anda ada urusan apa?',[['Saya warga desa, ingin bertemu Danramil.',2,'“Baik. Silakan masuk, Anda akan didampingi petugas.”'],['Mau layanan Babinsa.',1,'“Silakan ke loket Babinsa di sini.”'],['Maaf, hanya lewat.',0,'“Segera menjauh dari gerbang.”']])]});if(o[0]===0)enter(Z_MIL,'Penjaga memeriksa identitasmu');else if(o[0]===1&&window.__zoneOrigInter)window.__zoneOrigInter()}}
+ ];
+ const EXITS=[[Z_SCH,27,4.05],[Z_POL,21.25,20.2],[Z_MIL,41.15,20.2]];
+ const exitOf=zid=>{const e=EXITS.find(a=>a[0]===zid);return{rx:e[1],ry:e[2]}};
+ function gateAt(){if(!started||scene||trans||modal)return null;
+  if(zone===0){const d5=D5(),F=d5.POS&&d5.KOR?{pos:[d5.POS.x,d5.POS.y+1.0],kor:[d5.KOR.x,d5.KOR.y+1.0]}:null;
+   for(const g of GATES){let gx=g.x,gy=g.y;if(g.pos){if(!F)continue;gx=F[g.pos][0];gy=F[g.pos][1]}if(Math.hypot(me.x/T-gx,(me.y/T-gy)*1.15)<g.r)return{lab:g.lab,act:()=>{window.__zoneOrigInter=window.__zoneInterNext;g.run()}}}return null}
+  if(zone>=Z_SCH&&Math.hypot(me.x/T-16,(me.y/T-20.3)*1.2)<1.5)return{lab:['🚪','Keluar','Keluar dari '+ZN[zone].n],act:()=>leaveTo(exitOf(zone))};return null}
+ /* ---------- papan kerja (lokasi pekerjaan) ---------- */
+ const BOARDS=[
+  {id:'petani',z:0,x:14.4,y:11.4,e:'🌾',n:'Petani Desa',label:'Kebun'},
+  {id:'nelayan',z:0,x:23.4,y:16.3,e:'🎣',n:'Nelayan Telaga',label:'Dermaga Danau'},
+  {id:'koki',z:0,x:19.6,y:4.2,e:'🍳',n:'Juru Masak Warung',label:'Warung Bu Tinah'},
+  {id:'pedagang',z:0,x:14.6,y:14.4,e:'🛒',n:'Pedagang Pasar',label:'Pasar'},
+  {id:'hansip',z:0,x:42.7,y:11.5,e:'🛡️',n:'Petugas Ronda Desa',label:'Pos Kamling Timur'},
+  {id:'serabutan',z:0,x:46.0,y:10.7,e:'🧰',n:'Pekerja Serabutan',label:'Lumbung Pak Haji'},
+  {id:'guru',z:Z_SCH,x:13.2,y:6.8,e:'👩‍🏫',n:'Guru Desa',label:'Ruang Guru, SD Harapan Desa'},
+  {id:'satpam',z:Z_SCH,x:13.0,y:18.5,e:'💂',n:'Satpam Sekolah',label:'Pos Satpam, SD Harapan Desa'},
+  {id:'polisi',z:Z_POL,x:13.2,y:6.8,e:'👮',n:'Polisi Desa',label:'SPKT, Kantor Polisi'},
+  {id:'prajurit',z:Z_MIL,x:13.2,y:6.8,e:'🪖',n:'Prajurit Koramil',label:'Markas Komando, Markas Koramil'}];
+ let snapped=false;
+ function snapAll(){if(snapped||zone!==0||!started)return;snapped=true;
+  BOARDS.filter(b=>b.z===0).forEach(b=>{let best=null;for(let r=0;r<=3&&!best;r+=.5)for(let a=0;a<12&&!best;a++){const x=b.x+Math.cos(a/12*6.283)*r,y=b.y+Math.sin(a/12*6.283)*r;if(!solid(x*T,y*T)&&!wet(x*T,y*T)&&!solid((x+.5)*T,y*T)&&!solid((x-.5)*T,y*T)&&!solid(x*T,(y+.5)*T))best=[x,y]}if(best){b.x=best[0];b.y=best[1]}})}
+ const jobOf=()=>{const CA=window.__CAREER;return CA&&CA.state&&CA.state.job?CA.state.job.id:null};
+ function boardAt(){if(!started||scene||trans||modal)return null;snapAll();
+  for(const b of BOARDS){if(b.z!==zone)continue;if(Math.hypot(me.x/T-b.x,(me.y/T-b.y)*1.1)<1.5){const mine=jobOf()===b.id;return{lab:mine?['🎬','Mulai Shift: '+b.n,'Mulai shift kerja '+b.n]:['📋','Papan Kerja · '+b.n,'Lihat lowongan '+b.n],act:()=>{
+   if(mine&&window.__SHIFT){__SHIFT.start();return}
+   if(window.__CAREER&&!jobOf()){say('📋 Lowongan: '+b.n+' (lokasi kerja: '+b.label+'). Lamar lewat ☰ Menu → 💼 Karier.');return}
+   say('📋 Ini lokasi kerja '+b.n+'. Pekerjaanmu saat ini berbeda.')}}}}return null}
+ const _near=near;near=function(){try{const g=gateAt()||boardAt();if(g)return g.lab}catch(e){}return _near.apply(this,arguments)};
+ const _inter=inter;inter=function(){try{const g=gateAt()||boardAt();if(g){window.__zoneInterNext=()=>_inter.apply(this,arguments);window.__zoneOrigInter=window.__zoneInterNext;g.act();return}}catch(e){console.warn('[zones]',e)}return _inter.apply(this,arguments)};
+ /* ---------- gambar papan kerja per frame ---------- */
+ const _env=window.__envDraw;
+ window.__envDraw=function(E,time){try{_env&&_env.apply(this,arguments)}catch(e){}
+  try{snapAll();const mine=jobOf();
+   BOARDS.forEach(b=>{if(b.z!==zone)return;const px=b.x*T,py=b.y*T;if(px<cam.x-80||px>cam.x+VW/Z+80||py<cam.y-120||py>cam.y+VH/Z+80)return;
+    E.push({y:py+6,d:()=>{g.save();g.fillStyle='rgba(0,0,0,.25)';g.beginPath();g.ellipse(px,py+2,13,4,0,0,7);g.fill();g.fillStyle='#6a4a2a';g.fillRect(px-3,py-26,6,28);
+     g.fillStyle=mine===b.id?'#e8b84a':'#b9843f';g.beginPath();g.roundRect(px-24,py-54,48,30,5);g.fill();g.strokeStyle='#5a3a1c';g.lineWidth=2;g.stroke();
+     g.textAlign='center';g.font='17px '+(typeof EMO!=='undefined'?EMO:'sans-serif');g.fillStyle='#fff';g.fillText(b.e,px,py-33);g.font='bold 8px sans-serif';g.fillStyle='#3a2412';g.fillText('KERJA',px,py-26);g.textAlign='left';
+     if(mine===b.id){const bob=Math.sin(time/260)*4;g.fillStyle='#ffd24a';g.strokeStyle='#7a4a08';g.lineWidth=2;g.beginPath();g.moveTo(px,py-62+bob+10);g.lineTo(px-8,py-62+bob);g.lineTo(px+8,py-62+bob);g.closePath();g.fill();g.stroke()}
+     g.restore()}})})}catch(e){}};
+ /* ---------- fasad gerbang sekolah di peta utama ---------- */
+ const SRp_=typeof SRp!=='undefined'?SRp:null;
+ if(SRp_)SRp_.push([23.6,4.25,26.0,4.75],[28.0,4.25,30.4,4.75],[26.0,4.95,28.0,6.4],[22.5,4.35,23.9,5.5]);
+ const _bb=buildBG;
+ buildBG=function(){_bb.apply(this,arguments);try{facade()}catch(e){console.warn('[zones]',e)}};
+ function facade(){const X=b;X.save();
+  bld(X,{x:24.1,y:4.9,w:5.8,h:1.6,wall:'#f1e4c4',roof:'#c0503a',roofH:.6,rows:1,cols:4,door:27,doorW:.7,trim:'#fff'});
+  wall(X,23.6,4.15,2.4,.6,'#c9c2ae','#b6af9b');wall(X,28,4.15,2.4,.6,'#c9c2ae','#b6af9b');
+  fr(X,23.6,4.1,2.4,.08,'rgba(255,255,255,.4)');fr(X,28,4.1,2.4,.08,'rgba(255,255,255,.4)');
+  fr(X,25.9,3.75,.42,1.35,'#d8d2c0');fr(X,27.7,3.75,.42,1.35,'#d8d2c0');fr(X,25.85,3.7,.52,.12,'#bdb6a2');fr(X,27.65,3.7,.52,.12,'#bdb6a2');
+  rr(X,25.95,3.95,2.1,.42,6,'#fff9e6','rgba(0,0,0,.45)',2);txt(X,'SD HARAPAN DESA',27,4.17,10,'#7a2a1a');
+  post(X,22.4,4.35,1.5,1.2,'#d8e2f0','#2a4a8a','SATPAM');
+  cctv(X,25.6,4.9);cctv(X,28.5,4.9);
+  X.restore()}
+ window.__ZONES={where:jobId=>{const bd=BOARDS.find(x=>x.id===jobId);if(!bd)return{ok:true};
+   if(zone!==bd.z)return{ok:false,txt:'Pergi ke '+bd.label+(bd.z?' (masuk lewat gerbangnya, '+ZN[bd.z].n+')':'')+' dulu.',bd};
+   const dx=bd.x-me.x/T,dy=bd.y-me.y/T,d=Math.hypot(dx,dy);if(d<=2.4)return{ok:true,bd,d};
+   const dir=(Math.abs(dx)>Math.abs(dy)?(dx>0?'timur':'barat'):(dy>0?'selatan':'utara'));return{ok:false,txt:'Datangi papan kerja di '+bd.label+' (±'+Math.round(d)+' petak ke '+dir+') lalu tekan tombol aksi.',bd,d}},
+  boards:BOARDS,enter,zones:{school:Z_SCH,mil:Z_MIL,pol:Z_POL}};
+}catch(e){console.warn('[zones]',e)}
 })();
 </script>
 
