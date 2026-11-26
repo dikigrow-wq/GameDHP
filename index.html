@@ -9617,6 +9617,7 @@ const doorOf=n=>{const h=HOUSES.find(x=>x.nm===HOMEH[n.id]);return h?[HX(h)*T,(H
 /* hud3_29: warga kadang menyeberang lewat jembatan ke sisi sungai seberang (kota sebelah) */
 const XW=[[19.8,16.4],[16.8,17.4],[22.6,14.4],[14.8,12.3],[33.0,16.2]],XE=[[41.0,15.4],[47.5,12.4],[40.5,12.4],[50.5,12.4],[50.0,17.4],[43.5,9.5]];
 function crossSpot(n,R){const L=n.home[0]<35.6?XE:XW,o=Math.floor(R()*L.length);for(let i=0;i<L.length;i++){const q=L[(o+i)%L.length],x=q[0]*T,y=q[1]*T;if(npcSpotOK(x,y)&&(!window.__npcNavFree||window.__npcNavFree(x,y)))return[x,y]}return null}
+const STU={dimas:0,siti:1},CLASSEND=140;
 function gen(n,d){
   const hum=n.k==='h',R=rng(hash(n.id+'|d4|'+d)),legs=[],SP=hum?50:30;let t=0,cur;
   const stay=(dur,act,f,af,o)=>{legs.push(Object.assign({t0:t,t1:t+dur,m:'s',x:cur[0],y:cur[1],f:f||'down',act:act||null,af:af||null},o||{}));t+=dur};
@@ -9633,6 +9634,7 @@ function gen(n,d){
   const surau=SURAU.indexOf(n.id),ronda=RONDA[n.id];
   const eve=surau>=0?ctr([SURAU_SP[surau][0]*T,SURAU_SP[surau][1]*T]):door;
   stay(1.2,'look','down',null,{fi:1});
+  if(hum&&STU[n.id]!=null&&((((d|0)-1)%7)+7)%7<5){const gp=ctr([(26.2+STU[n.id]*1.1)*T,3.95*T]);walk(gp);stay(1.5,'look','up');legs.push({t0:t,t1:Math.max(t,CLASSEND),m:'g'});t=Math.max(t,CLASSEND);stay(1,'look','down',null,{fi:1})}
   const spotAt=()=>{for(let k=0;k<6;k++){const s=npcSpot(n,(R()*100000)|0,hs);if(s&&s[2]&&window.__npcNavFree(s[0],s[1])||s&&s[2]&&!NAV)return s}return null};
   if(hum&&!att&&R()<.6){const vs=crossSpot(n,R);if(vs){const vc=ctr(vs),pp=path(cur,vc),dur=18+R()*14,back=surau>=0?eve:door;if(pp&&pp.length>1&&t+est(cur,vc)+dur+est(vc,back)<dl-6){walk(vc);stay(dur,'look','down')}}}
   for(let g=0;g<40;g++){const s=spotAt();if(!s)break;const dur=12+R()*14,to=[s[0],s[1]];
@@ -11023,7 +11025,7 @@ const em=(id,e)=>{try{window.__EMOTE(id,e,2000)}catch(x){}};
 /* ---------- titik penting (piksel, disnap ke area jalan) ---------- */
 let K=null;
 function pts(){if(K)return K;const D8=window.__D8;
-  K={pos:P(21.25,19.65),kor:P(41.15,19.6),brd:P(29.95,11.6),plaza:P(28.2,13.6),field:P(41.0,15.4),term:P(14.6,20.2),hangP:P(13.3,17.6),farmH:P(53.2,16.7,),gateE:P(43.4,12.4),gateW:P(10.6,12.4),eastH:P(44.2,12.4),
+  K={pos:P(21.25,19.65),kor:P(41.15,19.6),sgate:P(27.0,4.15),brd:P(29.95,11.6),plaza:P(28.2,13.6),field:P(41.0,15.4),term:P(14.6,20.2),hangP:P(13.3,17.6),farmH:P(53.2,16.7,),gateE:P(43.4,12.4),gateW:P(10.6,12.4),eastH:P(44.2,12.4),
    ps:[P(21.6,12.6),P(19.8,16.4),P(16.8,17.6),P(19.8,19.0),P(23.5,15.0),P(33.0,16.2)],
    pe:[P(33.2,12.4),P(37.5,12.4),P(41.5,12.4),P(36,15.2),P(32,15.0)],
    pw:[P(15.0,12.2),P(10.5,12.4),P(8.8,15.2),P(13.5,14.0),P(20,12.4)],
@@ -11051,7 +11053,7 @@ function build(){if(built)return;built=1;const k=pts();
   /* ibu-ibu */
   [['yati','Bu Yati','#c0607a'],['mira','Bu Mira','#5a8ac0'],['dewi','Bu Dewi','#d09a40']].forEach((a,i)=>mk('ibu_'+a[0],a[1],'ibu',{col:a[2],idx:i,home:k.term,o:{fem:1,hair:'#2a1a10'},sp:46}));
   /* anak-anak */
-  [['bagas','Bagas','#d04a3a'],['nina','Nina','#e07aa0',1],['cakra','Cakra','#4a7ad0'],['laras','Laras','#7ab04a',1]].forEach((a,i)=>mk('kid_'+a[0],a[1],'anak',{col:a[2],idx:i,home:P(41.0,15.4),kid:1,o:{fem:!!a[3],hair:'#222'},sp:84}));
+  [['bagas','Bagas','#d04a3a',0,[44.1,5.3]],['nina','Nina','#e07aa0',1,[32.0,7.7]],['cakra','Cakra','#4a7ad0',0,[16.4,6.4]],['laras','Laras','#7ab04a',1,[39.9,12.4]],['rafi','Rafi','#e0a030',0,[14.6,13.4]],['putri','Putri','#a06ad0',1,[46.3,12.4]]].forEach((a,i)=>mk('kid_'+a[0],a[1],'anak',{col:a[2],idx:i,home:P(a[4][0],a[4][1]),house:P(a[4][0],a[4][1]),kid:1,o:{fem:!!a[3],hair:'#222'},sp:84}));
   /* tukang bakso */
   mk('bakso','Mang Ujang','bakso',{col:'#e8e8e8',idx:0,home:k.eastH,o:{hat:'#c02828',hair:'#111'},sp:38,cart:1});
   {const sg=P(25.3,4.05);mk('satpam_sd','Pak Anton (Satpam)','satpam',{col:'#2a4a8a',idx:0,home:sg,gx:sg[0],gy:sg[1],gf:'down',o:{hat:'#1a2a5a',hair:'#111'},sp:50})}}
@@ -11098,7 +11100,15 @@ function sched(e,h,now){const k=pts();if(e.role==='satpam')return{k:'gate',x:e.g
   if(e.role==='parkir'){if(h<8.6||h>=17.3)return null;if(e.flee>now)return{k:'lari',x:k.eastH[0],y:k.eastH[1],f:'right',act:'talk',walk:1,sp:110};
     const b=[k.hangP[0]+e.idx*34-30,k.hangP[1]+(e.idx%2)*18];return{k:'nongkrong',x:b[0],y:b[1],f:e.idx%2?'right':'left',act:h<12?'smoke':'sit'}}
   if(e.role==='ibu'){if(h<6.8||h>=11.8||rainy())return null;const s=k.stall[(leg(3,30000)+e.idx)%3];return{k:'belanja'+e.idx+':'+s[0]|0,x:s[0]+(e.idx-1)*26,y:s[1]+30,f:'up',act:'talk',walk:1}}
-  if(e.role==='anak'){if(h<14.5||h>=17.7||rainy())return null;return{k:'bola',x:0,y:0,f:'down',act:'bola'}}
+  if(e.role==='anak'){const wd=((((S.d|0)-1)%7)+7)%7,sch=wd<5,hm=e.house||e.home,gt=k.sgate;
+    if(sch){if(h<6.0){e.home=hm;return null}
+     if(h<6.95){e.home=hm;return{k:'sekolah',x:gt[0]+(e.idx-2.5)*22,y:gt[1]+(e.idx%2)*16,f:'up',act:'talk',walk:1,sp:150,sx:hm[0],sy:hm[1]}}
+     if(h<12.0){e.home=gt;return null}
+     if(h<12.8){e.home=hm;return{k:'pulang',x:hm[0],y:hm[1],f:'down',act:'talk',walk:1,sp:100,sx:gt[0],sy:gt[1]}}
+     if(h<14.5||h>=17.7||rainy()){e.home=hm;return null}
+     return{k:'bola',x:0,y:0,f:'down',act:'bola'}}
+    if(h<8||(h>=11.6&&h<13.2)||h>=17.7||rainy()){e.home=hm;return null}
+    return{k:'bola',x:0,y:0,f:'down',act:'bola'}}
   if(e.role==='bakso'){if(h<16||h>=20.6||rainy())return null;const L=k.bak,i=leg(L.length,26000),p=L[i];return{k:'jual'+i,x:p[0],y:p[1],f:'right',act:(performance.now()%26000)>20000?'sell':'talk',walk:1,sp:38}}
   return null}
 /* ---------- gerak ---------- */
@@ -11129,9 +11139,9 @@ function step(dt,now){const h=hrN(),k=pts();
   for(const e of EX){const st=sched(e,h,now);e.st=st;
     if(!st){if(e.al>0){const hm=e.home;const d=Math.hypot(e.x-hm[0],e.y-hm[1]);if(d>30&&!away)go(e,hm[0],hm[1],e.sp,dt,e.free);else e.al=Math.max(0,e.al-dt/1.2);if(away)e.al=0}continue}
     /* aktif */
-    if(e.al<=0){const sp=away||e.role==='petani'||e.role==='anak'?[st.x,st.y]:e.home;e.x=sp[0];e.y=sp[1];if(e.role==='anak'){e.x=k.field[0]+(R()-.5)*160;e.y=k.field[1]+(R()-.5)*60}e.path=null}
+    if(e.al<=0){const sp=away||e.role==='petani'||e.role==='anak'?[st.x,st.y]:e.home;e.x=sp[0];e.y=sp[1];if(e.role==='anak'){if(st.sx!=null){e.x=st.sx;e.y=st.sy}else{e.x=k.field[0]+(R()-.5)*160;e.y=k.field[1]+(R()-.5)*60}}e.path=null}
     e.al=Math.min(1,e.al+dt/1.2);if(away){e.x=st.x;e.y=st.y;e.path=null}
-    if(e.role==='anak'){continue}
+    if(e.role==='anak'&&st.act==='bola'){continue}
     let tx=st.x,ty=st.y,sp=st.sp||e.sp,act_=st.act;
     /* polisi/tentara menghentikan perkelahian */
     if(boss&&(e.role==='polisi'||e.role==='kapolsek'||e.role==='tni'||e.role==='danramil')&&Math.hypot(e.x-boss.x,e.y-boss.y)<16*T){tx=boss.x;ty=boss.y;sp=125;act_='lari';
@@ -11304,7 +11314,7 @@ setInterval(function(){var el=document.getElementById('pfRM');if(el&&!el._i){el.
  #tl{padding:3px 6px 3px 5px!important;gap:6px!important;border-radius:11px!important;opacity:.94}
  #tl #av{width:26px!important;height:26px!important;min-width:26px!important}
  #tl #pn{font-size:12px!important;line-height:1.15!important}
- #tl #dt{font-size:10.5px!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+ #tl #dt{font-size:9.4px!important;letter-spacing:-.2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
  #ui:not(.h29x) #tl #dt .bar{display:none!important}
  #ui:not(.h29x) #tl #dt .ic:nth-of-type(n+2){display:none!important}
  #tl #gold{font-size:11.5px!important;padding:2px 7px!important;min-width:0!important}
@@ -11503,7 +11513,7 @@ try{
  function checkDaily(j){if(!C.dd.paid&&dailyDone(j)){C.dd.paid=1;const b=Math.round(j.bonus*RMULT[C.job.rank-1]);try{grant({g:b})}catch(e){}say('🎉 Semua tugas harian '+j.n+' selesai! Bonus 🪙'+b)}}
  /* ---- hari & gaji ---- */
  function onDay(d){const j=C.job&&jobById(C.job.id);
-  if(j&&C.day!=null&&dailyDone(j))C.m.days=Math.min(PAY_DAYS,(C.m.days|0)+1);
+  if(j&&C.day!=null&&(dailyDone(j)||(j.id==='guru'&&((((C.day|0)-1)%7)+7)%7>=5)))C.m.days=Math.min(PAY_DAYS,(C.m.days|0)+1);
   C.day=d;C.dp={};C.dd={};C.talk={};
   if(j&&d-C.m.start>=PAY_DAYS)payroll(j,d);
   save();if(modal==='carm')render()}
@@ -12293,7 +12303,7 @@ try{
  const D5=()=>window.__D5S||{};
  const GATES=[
   {z:0,x:27.0,y:4.1,r:1.5,to:Z_SCH,lab:['🏫','SD Harapan Desa','Masuk sekolah (ada satpam)'],rx:27,ry:4.1,
-   run:async()=>{const o=await talk({loc:[27,4.6,9],tint:'day',cast:['satpam',null],beats:[SY('satpam','Selamat datang di SD Harapan Desa. Mohon isi buku tamu dulu, ya.'),CHB('satpam','Ada keperluan apa di sekolah?',[['Mengajar atau ada urusan dengan guru.',2,'“Silakan masuk. Ruang guru ada di gedung utama.”'],['Hanya berkunjung melihat-lihat.',1,'“Boleh, tapi jangan mengganggu kelas yang sedang belajar.”'],['Cuma lewat saja.',0,'“Baik, hati-hati di jalan.”']])]});if(o[0]!==2)enter(Z_SCH,'Satpam menjaga gerbang')}},
+   run:async()=>{const o=await talk({loc:[27,4.6,9],tint:'day',cast:['satpam',null],beats:[(((((S.d|0)-1)%7)+7)%7>=5)?SY('satpam','Hari ini hari libur sekolah. Tapi silakan kalau mau lihat-lihat, ya.'):SY('satpam','Selamat datang di SD Harapan Desa. Mohon isi buku tamu dulu, ya.'),CHB('satpam','Ada keperluan apa di sekolah?',[['Mengajar atau ada urusan dengan guru.',2,'“Silakan masuk. Ruang guru ada di gedung utama.”'],['Hanya berkunjung melihat-lihat.',1,'“Boleh, tapi jangan mengganggu kelas yang sedang belajar.”'],['Cuma lewat saja.',0,'“Baik, hati-hati di jalan.”']])]});if(o[0]!==2)enter(Z_SCH,'Satpam menjaga gerbang')}},
   {z:0,x:null,y:null,r:1.35,pos:'pos',to:Z_POL,lab:['👮','Kantor Polisi','Masuk / layanan Polsek'],rx:21.25,ry:20.2,
    run:async()=>{const o=await talk({loc:[21.25,18.8,9],tint:'day',cast:['polisi',null],beats:[SY('polisi','Selamat siang. Selamat datang di Kantor Polisi.'),CHB('polisi','Ada yang bisa kami bantu?',[['Masuk ke kompleks kantor polisi.',2,'“Silakan. Lapor dulu ke SPKT di gedung utama.”'],['Layanan Polsek (lapor, denda).',1,'“Baik, silakan ke loket di sini.”'],['Hanya lewat.',0,'“Baik, selamat beraktivitas.”']])]});if(o[0]===0)enter(Z_POL,'Petugas jaga di gerbang');else if(o[0]===1&&window.__zoneOrigInter)window.__zoneOrigInter()}},
   {z:0,x:null,y:null,r:1.35,pos:'kor',to:Z_MIL,lab:['🪖','Markas Koramil','Masuk / temui Babinsa'],rx:41.15,ry:20.2,
@@ -12352,12 +12362,57 @@ try{
   post(X,22.4,4.35,1.5,1.2,'#d8e2f0','#2a4a8a','SATPAM');
   cctv(X,25.6,4.9);cctv(X,28.5,4.9);
   X.restore()}
- window.__ZONES={where:jobId=>{const bd=BOARDS.find(x=>x.id===jobId);if(!bd)return{ok:true};
+ window.__ZONES={where:jobId=>{const bd=BOARDS.find(x=>x.id===jobId);if(!bd)return{ok:true};if(jobId==='guru'&&((((S.d|0)-1)%7)+7)%7>=5)return{ok:false,holiday:true,txt:'Sekolah libur hari Sabtu dan Minggu. Shift Guru dibuka lagi hari Senin.',bd};
    if(zone!==bd.z)return{ok:false,txt:'Pergi ke '+bd.label+(bd.z?' (masuk lewat gerbangnya, '+ZN[bd.z].n+')':'')+' dulu.',bd};
    const dx=bd.x-me.x/T,dy=bd.y-me.y/T,d=Math.hypot(dx,dy);if(d<=2.4)return{ok:true,bd,d};
    const dir=(Math.abs(dx)>Math.abs(dy)?(dx>0?'timur':'barat'):(dy>0?'selatan':'utara'));return{ok:false,txt:'Datangi papan kerja di '+bd.label+' (±'+Math.round(d)+' petak ke '+dir+') lalu tekan tombol aksi.',bd,d}},
   boards:BOARDS,enter,zones:{school:Z_SCH,mil:Z_MIL,pol:Z_POL}};
 }catch(e){console.warn('[zones]',e)}
+})();
+</script>
+
+<script id="life-js">
+/* ===== hud3_29: Kehidupan Sekolah (Senin-Minggu, libur akhir pekan) & penyebaran penduduk ===== */
+(function(){
+"use strict";
+if(window.__LIFE)return;
+try{
+ if(!window.__ZONES||typeof NPC==='undefined'||typeof npcPos!=='function'||typeof S==='undefined'){console.warn('[life] dependensi tidak ada');return}
+ const SCHZ=__ZONES.zones.school,DN=['Sen','Sel','Rab','Kam','Jum','Sab','Min'],DF=['Senin','Selasa','Rabu','Kamis','Jumat','Sabtu','Minggu'];
+ const wdOf=d=>((((d|0)-1)%7)+7)%7,hr=()=>6+Math.max(0,Math.min(1,S.t/DAY))*18;
+ /* hari di HUD */
+ setInterval(()=>{try{const dt=document.getElementById('dt');if(!dt||!S)return;const wd=wdOf(S.d);const w=document.createTreeWalker(dt,NodeFilter.SHOW_TEXT);let n;
+  while(n=w.nextNode()){if(/Hari \d+/.test(n.nodeValue)&&!/Hari \d+·/.test(n.nodeValue))n.nodeValue=n.nodeValue.replace(/Hari (\d+)/,'Hari $1·'+DN[wd])}}catch(e){}},500);
+ /* murid & guru di zona sekolah mengikuti jadwal */
+ try{const zs=ZD[SCHZ];zs.NPC.forEach(n=>{if(/^sd/.test(n.id))n.stu=1;if(['gr1','gr2','kan','cln'].includes(n.id))n.wk=1})}catch(e){}
+ const _np=npcPos;
+ npcPos=function(n,now){const p=_np.apply(this,arguments);
+  try{if(zone===SCHZ&&(n.stu||n.wk)){const wd=wdOf(S.d),h=hr();let vis=false;
+   if(wd<5){vis=n.wk?(h>=6.4&&h<13):((h>=6.9&&h<7.5)||(h>=9.5&&h<10.2)||(h>=11.6&&h<12.1))}
+   if(!vis)return{x:-9999,y:-9999,mv:false,f:'down',act:null,af:null,t:0,al:0}}}catch(e){}
+  return p};
+ /* sebar penduduk: kurangi kerumunan di sekitar kebun awal */
+ let redis=false;
+ function redistribute(){if(redis||typeof started==='undefined'||!started)return;redis=true;
+  const N=id=>NPC.find(n=>n.id===id);
+  const set=(id,home,r,sp)=>{const n=N(id);if(!n)return;n.home=home;n.r=r;n.sp=sp.map(a=>[a[0],a[1],a[2]||'look',a[3]||'down'])};
+  set('sari',[17.2,17.6],2.6,[[13.6,17.6],[19.8,17.4],[17.2,18.8],[14.6,18.6]]);
+  set('ratmi',[20.6,13.3],1.6,[[20.2,13.3],[22.0,13.2],[19.4,13.3,'look','right']]);
+  set('dimas',[41.4,15.3],2.2,[[41.2,15.2],[43.0,16.4,'look','left'],[40.2,14.4]]);
+  set('siti',[21.6,14.2],2.2,[[21.2,14.2],[23.0,14.1,'look','up'],[19.8,14.0,'look','right']]);
+  try{delete window.__npcSchCache}catch(e){}}
+ /* bel sekolah & penanda hari */
+ let lastPh=undefined,lastDay=null;
+ function ticker(){try{if(typeof started==='undefined'||!started||!S)return;redistribute();
+  if(lastDay===null)lastDay=S.d;else if(lastDay!==S.d){lastDay=S.d;const wd=wdOf(S.d);setTimeout(()=>{try{say('📅 Hari '+DF[wd]+(wd>=5?' — libur sekolah, anak-anak bermain':' — hari sekolah'))}catch(e){}},1500)}
+  const wd=wdOf(S.d),h=hr();if(wd>=5){lastPh=undefined;return}
+  const ph=h>=12?'pulang':h>=10.2?'kelas2':h>=9.5?'istirahat':h>=6.95?'masuk':'pagi';
+  if(lastPh!==undefined&&ph!==lastPh&&ph!=='pagi'){const near=zone===SCHZ||(zone===0&&Math.hypot(me.x/T-27,me.y/T-4)<26);
+   if(near){try{say(ph==='masuk'?'🔔 Bel masuk berbunyi — murid masuk kelas':ph==='pulang'?'🔔 Bel pulang berbunyi — sekolah usai':ph==='istirahat'?'🔔 Bel istirahat berbunyi':'🔔 Bel berbunyi — pelajaran dimulai lagi');sfx('chime')}catch(e){}}}
+  lastPh=ph}catch(e){}}
+ setInterval(ticker,1000);
+ window.__LIFE={wdOf,hr,DN,DF,isWeekend:()=>wdOf(S.d)>=5,redistribute};
+}catch(e){console.warn('[life]',e)}
 })();
 </script>
 
